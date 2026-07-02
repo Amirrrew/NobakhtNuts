@@ -1,0 +1,222 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load poll_extras %}
+{% load render_partial %}
+
+{% block page_title %}
+    | {{ title_prd }}
+
+{% endblock %}
+
+{% block page_content %}
+    <div class="prd-grid mt-50">
+        <div class="text-center">
+            <h1 class="productgrid-title text-6xl relative" style="animation: load3 500ms">{{ title_prd }}</h1>
+            {% if products %}
+                <h2 class=" mt-2 text-[var(--color10)]">{{ page_obj.paginator.count|to_fanum }} محصول</h2>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="centerbox">
+        <div class="centerbox w-[97%] gap-2 mt-5">
+                <button class="btn-slider btn-slider-cat mt-4" id="swiper-button-prev">
+                    <svg id="Arrow - Left" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <g id="Iconly/Bulk/Arrow---Left" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                            <g id="Arrow---Left" transform="translate(12.000000, 12.000000) rotate(-90.000000) translate(-12.000000, -12.000000) translate(6.000000, 3.000000)" fill="#674d45" fill-rule="nonzero">
+                                <path d="M4.80969341,5.20248239 L4.48254085,1.50325451 C4.48254085,0.673082751 5.16218102,1.37667655e-14 6.00044061,1.37667655e-14 C6.8387002,1.37667655e-14 7.51834037,0.673082751 7.51834037,1.50325451 L7.19118781,5.20248239 C7.19118781,5.85374723 6.6580503,6.38174083 6.00044061,6.38174083 C5.34172939,6.38174083 4.80969341,5.85374723 4.80969341,5.20248239" id="Fill-1" opacity="0.400000006"></path>
+                                <path d="M4.86983661,17.6247318 C4.81145585,17.5669143 4.56471452,17.350917 4.3598311,17.1480103 C3.0765559,15.9643883 0.978153112,12.8738803 0.335964751,11.2571726 C0.23352304,11.0117211 0.0154213328,10.3910013 1.27897692e-13,10.0582781 C1.27897692e-13,9.74082738 0.0738020929,9.43755833 0.219203231,9.14847093 C0.422985129,8.7873844 0.744630072,8.49938789 1.12355425,8.34011709 C1.38571691,8.23866377 2.17330641,8.07939298 2.18762622,8.07939298 C3.04791628,7.92121308 4.44685148,7.8350323 5.99339086,7.8350323 C7.46502662,7.8350323 8.80668258,7.92121308 9.68129245,8.05102968 C9.69671379,8.06521133 10.6737654,8.22448213 11.0086286,8.39793457 C11.6210758,8.71538527 12,9.33610502 12,10.0004606 L12,10.0582781 C11.9856802,10.4913637 11.6056545,11.4011709 11.5924362,11.4011709 C10.9502478,12.9316978 8.95318524,15.9491158 7.62584909,17.162192 C7.62584909,17.162192 7.28437672,17.5047333 7.07178263,17.6530951 C6.76555902,17.884365 6.38663484,18 6.00771067,18 C5.58472554,18 5.19148155,17.8701834 4.86983661,17.6247318" id="Fill-4"></path>
+                            </g>
+                        </g>
+                    </svg>
+                </button>
+                <div class="swiper swiper-category" style="height: auto;">
+                    <div class="swiper-wrapper items-start" style="">
+
+                        <a href="{% url 'all_products_page' %}" class="{% if request.resolver_match.url_name == 'all_products_page' %}active-category{% else %} {% endif %} flex-nowrap p-2 rounded-xl bg-[var(--color12)] swiper-slide relative" style="animation: load3 {% widthratio forloop.counter 1 100 %}ms;">
+                            <div class="flex gap-2">
+                                <div class="emoji-card text-2xl bg-[var(--color13)] centerbox items-center  w-15 h-15 rounded-xl">
+                                    <svg id="Category" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                        <g id="Iconly/Bulk/Category" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                                            <g id="Category" transform="translate(2.000000, 2.000000)" fill="#674d45" fill-rule="nonzero">
+                                                <path d="M14.0755097,2.66453526e-15 L17.4614756,2.66453526e-15 C18.8637443,2.66453526e-15 20,1.1458518 20,2.55996321 L20,5.97452492 C20,7.38863633 18.8637443,8.53448813 17.4614756,8.53448813 L14.0755097,8.53448813 C12.673241,8.53448813 11.5369853,7.38863633 11.5369853,5.97452492 L11.5369853,2.55996321 C11.5369853,1.1458518 12.673241,2.66453526e-15 14.0755097,2.66453526e-15" id="Fill-1" opacity="0.400000006"></path>
+                                                <path d="M5.9244903,11.4655119 C7.32675901,11.4655119 8.46301469,12.6113637 8.46301469,14.0254751 L8.46301469,17.4400368 C8.46301469,18.8531901 7.32675901,20 5.9244903,20 L2.53852439,20 C1.13625568,20 8.8817842e-16,18.8531901 8.8817842e-16,17.4400368 L8.8817842e-16,14.0254751 C8.8817842e-16,12.6113637 1.13625568,11.4655119 2.53852439,11.4655119 L5.9244903,11.4655119 Z M17.4614756,11.4655119 C18.8637443,11.4655119 20,12.6113637 20,14.0254751 L20,17.4400368 C20,18.8531901 18.8637443,20 17.4614756,20 L14.0755097,20 C12.673241,20 11.5369853,18.8531901 11.5369853,17.4400368 L11.5369853,14.0254751 C11.5369853,12.6113637 12.673241,11.4655119 14.0755097,11.4655119 L17.4614756,11.4655119 Z M5.9244903,7.99360578e-15 C7.32675901,7.99360578e-15 8.46301469,1.1458518 8.46301469,2.55996321 L8.46301469,5.97452492 C8.46301469,7.38863633 7.32675901,8.53448813 5.9244903,8.53448813 L2.53852439,8.53448813 C1.13625568,8.53448813 8.8817842e-16,7.38863633 8.8817842e-16,5.97452492 L8.8817842e-16,2.55996321 C8.8817842e-16,1.1458518 1.13625568,7.99360578e-15 2.53852439,7.99360578e-15 L5.9244903,7.99360578e-15 Z" id="Combined-Shape"></path>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                </div>
+                                <div class="mt-2 text-nowrap">
+                                    <div class="text-xl">همه محصولات</div>
+                                    <div class="cat-sub flex gap-1 text-sm text-[var(--color10)] mt-[-3px]"><div class="text-">{{ category_grid.count|to_fanum }}</div>دسته بندی</div>
+                                </div>
+                            </div>
+                        </a>
+                        {% for cat in category_grid %}
+                            {% include 'product_module/include/category_option.html' %}
+                        {% endfor %}
+
+                    </div>
+                </div>
+                <button class="btn-slider btn-slider-cat mt-4" id="swiper-button-next">
+                    <svg id="Arrow - Left" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <g id="Iconly/Bulk/Arrow---Left" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                            <g id="Arrow---Left" transform="translate(12.000000, 12.000000) rotate(90.000000) translate(-12.000000, -12.000000) translate(6.000000, 3.000000)" fill="#674d45" fill-rule="nonzero">
+                                <path d="M4.80969341,5.20248239 L4.48254085,1.50325451 C4.48254085,0.673082751 5.16218102,1.37667655e-14 6.00044061,1.37667655e-14 C6.8387002,1.37667655e-14 7.51834037,0.673082751 7.51834037,1.50325451 L7.19118781,5.20248239 C7.19118781,5.85374723 6.6580503,6.38174083 6.00044061,6.38174083 C5.34172939,6.38174083 4.80969341,5.85374723 4.80969341,5.20248239" id="Fill-1" opacity="0.400000006"></path>
+                                <path d="M4.86983661,17.6247318 C4.81145585,17.5669143 4.56471452,17.350917 4.3598311,17.1480103 C3.0765559,15.9643883 0.978153112,12.8738803 0.335964751,11.2571726 C0.23352304,11.0117211 0.0154213328,10.3910013 1.27897692e-13,10.0582781 C1.27897692e-13,9.74082738 0.0738020929,9.43755833 0.219203231,9.14847093 C0.422985129,8.7873844 0.744630072,8.49938789 1.12355425,8.34011709 C1.38571691,8.23866377 2.17330641,8.07939298 2.18762622,8.07939298 C3.04791628,7.92121308 4.44685148,7.8350323 5.99339086,7.8350323 C7.46502662,7.8350323 8.80668258,7.92121308 9.68129245,8.05102968 C9.69671379,8.06521133 10.6737654,8.22448213 11.0086286,8.39793457 C11.6210758,8.71538527 12,9.33610502 12,10.0004606 L12,10.0582781 C11.9856802,10.4913637 11.6056545,11.4011709 11.5924362,11.4011709 C10.9502478,12.9316978 8.95318524,15.9491158 7.62584909,17.162192 C7.62584909,17.162192 7.28437672,17.5047333 7.07178263,17.6530951 C6.76555902,17.884365 6.38663484,18 6.00771067,18 C5.58472554,18 5.19148155,17.8701834 4.86983661,17.6247318" id="Fill-4"></path>
+                            </g>
+                        </g>
+                    </svg>
+                </button>
+        </div>
+    </div>
+
+    <div id="product_grid" class="centerbox w-[100%] relative mt-20">
+        <div class="product-grid flex w-[100%] gap-5">
+            <div class="relative pr-5">
+                {% include 'include/filter_side.html' %}
+            </div>
+            <div class="w-[100%]">
+                <div class="filterbar-mobile overflow-hidden hidden items-start justify-between border-b border-[var(--color11)] bg-[var(--header-bg)] z-7 backdrop-filter-[blur(10px)] top-[60px] pt-1.5 sticky pb-2">
+                    <div onclick="document.documentElement.scrollTop = 0" id="product_grid_cattitle" class="relative cursor-pointer flex items-start gap-2 top-20 font-semibold transition-all ">
+                        <button class="rounded-xl bg-[var(--color12)] w-8 h-8 m-1 cursor-pointer text-[var(--color6)]"><i class="fa fa-arrow-up text-sm mt-1"></i></button>
+                        <div class="pt-2">{{ title_prd }}</div>
+                    </div>
+                    <div class="flex gap-3">
+                        {% if has_filters %}
+                            <a href="{{ request.path }}" class="gap-1 mt-2.5">
+                                <i class="fa fa-close mt-0.5"></i>
+                                حذف فیلتر ها
+                            </a>
+                        {% endif %}
+                        <button class="{% if has_filters %}bg-[var(--color11)]{% else %}bg-[var(--color12)]{% endif %} p-2 rounded-xl flex items-start" onclick="SideMenu('open' ,'filter-side')">
+                            <svg id="Filter" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g opacity="0.4">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M10.7345 16.8484H4.26147C3.70947 16.8484 3.26147 17.2954 3.26147 17.8484C3.26147 18.4014 3.70947 18.8484 4.26147 18.8484H10.7345C11.2865 18.8484 11.7345 18.4014 11.7345 17.8484C11.7345 17.2954 11.2865 16.8484 10.7345 16.8484Z" fill="#674d45"></path>
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M20.2383 6.35919H13.7673C13.2153 6.35919 12.7673 6.80619 12.7673 7.35919C12.7673 7.91219 13.2153 8.35919 13.7673 8.35919H20.2383C20.7903 8.35919 21.2383 7.91219 21.2383 7.35919C21.2383 6.80619 20.7903 6.35919 20.2383 6.35919Z" fill="#674d45"></path>
+                                    </g>
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M17.5172 14.6274C15.1992 14.6274 14.2952 15.5304 14.2952 17.8494C14.2952 20.1684 15.1992 21.0714 17.5172 21.0714C19.8362 21.0714 20.7392 20.1684 20.7392 17.8494C20.7392 15.5304 19.8362 14.6274 17.5172 14.6274Z" fill="#674d45"></path>
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M6.98347 10.5805C9.30247 10.5805 10.2055 9.67754 10.2055 7.35754C10.2055 5.03954 9.30247 4.13654 6.98347 4.13654C4.66447 4.13654 3.76147 5.03954 3.76147 7.35754C3.76147 9.67754 4.66447 10.5805 6.98347 10.5805Z" fill="#674d45"></path>
+                            </svg>
+                            <h1 class="">فیلتر ها</h1>
+                            {% if has_filters %}<div class="p-1 bg-[var(--color6)] rounded-full mt-1.5 mr-1"></div>{% endif %}
+                        </button>
+                    </div>
+                </div>
+                <div class="flex gap-1 w-[100%] items-start flex-wrap mt-2">
+                    {% for sub in subcats %}
+                        <a onclick="Showloader(3000)" class="{% if sub.id == current_subcategory.id %}active-category{% endif %} bg-[var(--color12)] p-2 rounded-xl text-[var(--color6)]" href="{{ sub.get_absolute_url }}">{{ sub.title }}</a>
+                    {% endfor%}
+                </div>
+                {% if products.count > 0 %}
+                <div class="flex gap-3 flex-wrap mt-2">
+                    {% for p in products %}
+                        {% include 'product_module/include/product_card.html' %}
+                    {% endfor %}
+                </div>
+                {% else %}
+                    <div class="centerbox mt-30">
+                        <div class=" text-center w-[100%]">
+                        <div class="centerbox gap-2">
+                            <div class="text-9xl font-black text-[var(--color9)] relative" style="animation: load3 500ms">4</div>
+                            <div class="text-9xl font-black text-[var(--color6)] relative" style="animation: load3 800ms">0</div>
+                            <div class="text-9xl font-black text-[var(--color7)] relative" style="animation: load3 1100ms">4</div>
+                        </div>
+                        <div class="text-4xl">
+                            ای بــــابــــا !
+                        </div>
+                        <div class="text-[var(--color6)]">
+                            محصولی پیدا نشد
+                        </div>
+                        <div class="centerbox mt-2">
+                            <a href="{% url 'all_products_page' %}">
+                                <button class="btn-defIconFlex">
+                                    <svg id="Search" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M11.5139 2.20227C6.51788 2.20227 2.45288 6.26727 2.45288 11.2643C2.45288 16.2603 6.51788 20.3243 11.5139 20.3243C16.5099 20.3243 20.5749 16.2603 20.5749 11.2643C20.5749 6.26727 16.5099 2.20227 11.5139 2.20227Z" fill="#c5b8b4"></path>
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M20.1373 17.9767C19.0833 17.9767 18.2253 18.8327 18.2253 19.8867C18.2253 20.9407 19.0833 21.7977 20.1373 21.7977C21.1903 21.7977 22.0473 20.9407 22.0473 19.8867C22.0473 18.8327 21.1903 17.9767 20.1373 17.9767Z" fill="#c5b8b4"></path>
+                                    </svg>
+                                    <div>
+                                        گشتن دیگر دسته بندی ها
+                                    </div>
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                    </div>
+
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {% if page_obj.has_other_pages %}
+        <ul class="centerbox gap-2 mt-10 flex-wrap">
+            {% if page_obj.has_previous %}<a href="?{% query_transform page=page_obj.previous_page_number %}"><button class="rounded-xl bg-[var(--color12)] w-8 h-8 m-1 cursor-pointer text-[var(--color6)]"><i class="fa fa-arrow-right text-sm mt-1"></i></button></a>{% endif %}
+            <div class="flex gap-2">
+                {% for page_index in paginator.page_range %}
+                    <a class="" href="?{% query_transform page=page_index %}"><li class="{% if page_index == page_obj.number %}bg-[var(--color6)] text-[var(--color3)]{% endif %} pt-2 cursor-pointer transition-all px-4 rounded-lg hover:bg-[var(--color12)] hover:text-[var(--color2)]">{{ page_index|to_fanum }}</li></a>
+                {% endfor %}
+            </div>
+            {% if page_obj.has_next %}<a href="?{% query_transform page=page_obj.next_page_number %}"><button class="rounded-xl bg-[var(--color12)] w-8 h-8 m-1 cursor-pointer text-[var(--color6)]"><i class="fa fa-arrow-left text-sm mt-1"></i></button></a>{% endif %}
+        </ul>
+    {% endif %}
+
+
+    
+    <script>
+    let product_grid = document.getElementById('product_grid').offsetTop
+    let product_grid_cattitle = document.getElementById('product_grid_cattitle')
+    document.addEventListener('scroll' ,()=> {
+        if (document.documentElement.scrollTop > product_grid) {
+            product_grid_cattitle.style = 'top: 0px; animation: load 300ms;'
+        }
+        else {
+            product_grid_cattitle.style = 'top: 100px; animation: none;'
+        }
+    })
+
+    const swiper = new Swiper(".swiper-category", {
+        slidesPerView: {{ category.count }},
+        spaceBetween: 10,
+
+        navigation: {
+            nextEl: "#swiper-button-next",
+            prevEl: "#swiper-button-prev",
+        },
+
+        autoplay: {
+            pauseOnMouseEnter: true
+        },
+        speed: 500,
+
+
+        breakpoints: {
+            320: {
+                slidesPerView: 2.2
+            },
+            600: {
+                slidesPerView: 3.5
+            },
+            800: {
+                slidesPerView: 4.5
+            },
+            990: {
+                slidesPerView: 5.5
+            },
+            1300: {
+                slidesPerView: 6.5,
+            }
+        },
+    });
+
+    const activeSlide = document.querySelector(".swiper-category .swiper-slide.active-category");
+
+    if (activeSlide) {
+        const index = [...activeSlide.parentNode.children].indexOf(activeSlide);
+        swiper.slideTo(index, 0);
+        swiper.autoplay = false
+    }
+
+
+
+    </script>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% load static %}
+{% load poll_extras %}
+                <div class="basket-total w-[400px] min-h-[290px] bg-[var(--color12)] rounded-2xl p-4 relative mt-2">
+                    <div class="flex gap-2 pt-2">
+                        <div class="text-nowrap">تعداد اقلام سبد خرید</div>
+                        <div class="w-[100%] mt-2.5" style="border-top: 1px dashed var(--color10);"></div>
+                        <div class="text-2xl mt-[-4px]">{{ total_items|to_fanum }}</div>
+                    </div>
+                    <div class="flex gap-2 pt-2">
+                        <div class="text-nowrap">وزن کل سفارش</div>
+                        <div class="w-[100%] mt-2.5" style="border-top: 1px dashed var(--color10);"></div>
+                        <div class="text-nowrap mt-[-4px]">{{ total_weight|to_fanum }} کیلو</div>
+                    </div>
+                    <div class="mt-2">
+                        <div class="text-[var(--color10)] border-t border-dashed border-[var(--color11)] pt-2 mt-2">مجموع سبد خرید</div>
+                        <div class="text-3xl relative" style="animation: load 300ms">{{ total_amount|three_digits_currency }}</div>
+                    </div>
+                    <div class="text-2xl text-[var(--color6)]"></div>
+                    <div class="w-[100%] absolute bottom-4">
+                        <a href="{% url 'checkout_page' %}"{% if not orders.orderdetails_set.all %}disabled class="disabled"{% endif %}>
+                            <button type="submit" style="width: 90%; height: 50px; padding-top: 13px; justify-content: center" class="btn-defIconFlex gap-1">
+                                <svg class="mt-[-2px]" id="Wallet" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M17.5207 15.1719C15.6937 15.1719 14.2077 13.6859 14.2077 11.8599C14.2077 10.0329 15.6937 8.54594 17.5207 8.54594H21.7307C20.8527 4.49194 18.0597 2.96094 12.2507 2.96094C5.01471 2.96094 2.44971 5.32694 2.44971 11.9999C2.44971 18.6739 5.01471 21.0389 12.2507 21.0389C18.1927 21.0389 20.9807 19.4389 21.7887 15.1719H17.5207Z" fill="#c5b8b4"></path>
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M11.9017 8.64099H7.84167C7.42767 8.64099 7.09167 8.30499 7.09167 7.89099C7.09167 7.47699 7.42767 7.14099 7.84167 7.14099H11.9017C12.3157 7.14099 12.6517 7.47699 12.6517 7.89099C12.6517 8.30499 12.3157 8.64099 11.9017 8.64099Z" fill="#c5b8b4"></path>
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M17.5205 13.6719C16.5215 13.6719 15.7075 12.8589 15.7075 11.8599C15.7075 10.8599 16.5215 10.0459 17.5205 10.0459H21.9565C22.0155 10.6549 22.0505 11.2979 22.0505 11.9999C22.0505 12.5949 22.0225 13.1439 21.9805 13.6719H17.5205ZM18.4106 11.7998C18.4106 12.2138 18.0746 12.5498 17.6606 12.5498C17.2466 12.5498 16.9106 12.2138 16.9106 11.7998C16.9106 11.3858 17.2466 11.0498 17.6606 11.0498C18.0746 11.0498 18.4106 11.3858 18.4106 11.7998Z" fill="#c5b8b4"></path>
+                                </svg>
+                                <div>تایید و ادامه</div>
+                            </button>
+                        </a>
+                        <button onclick="OpenDialog('آیا از حذف کردن سبد خرید خود مطمئن هستید؟' ,'/orders/delete-basket/')" type="submit" style="width: 90%; height: 50px; padding-top: 13px; justify-content: center" class="btn-defIconFlex2 gap-1 mt-2">
+                            <svg id="Delete" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <g id="Iconly/Bulk/Delete" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                                    <g id="Delete" transform="translate(3.000000, 2.000000)" fill="#674d45" fill-rule="nonzero">
+                                        <path d="M16.6432894,7.4884379 C16.6432894,7.55643552 16.1103307,14.2971996 15.8059218,17.1341003 C15.6153015,18.8750394 14.492976,19.9310024 12.8094878,19.9610014 C11.5159931,19.9900003 10.2497298,20 9.00389021,20 C7.68121893,20 6.38772423,19.9900003 5.13215907,19.9610014 C3.50507888,19.9220027 2.38178085,18.8450404 2.2008861,17.1341003 C1.88772423,14.2871999 1.36449103,7.55643552 1.35476551,7.4884379 C1.34503998,7.28344508 1.41117355,7.0884519 1.54538578,6.93045743 C1.67765291,6.78446254 1.86827318,6.69646562 2.06861898,6.69646562 L15.9391614,6.69646562 C16.1385347,6.69646562 16.3194294,6.78446254 16.4623946,6.93045743 C16.5956343,7.0884519 16.6627404,7.28344508 16.6432894,7.4884379" id="Fill-1" opacity="0.400000006"></path>
+                                        <path d="M18,3.97686081 C18,3.56587519 17.67614,3.24388646 17.2871191,3.24388646 L14.371407,3.24388646 C13.77815,3.24388646 13.2626972,2.82190123 13.1304301,2.22692206 L12.9670413,1.49794757 C12.7384915,0.616978406 11.9497515,-1.50990331e-14 11.0647288,-1.50990331e-14 L6.93624379,-1.50990331e-14 C6.04149557,-1.50990331e-14 5.26053598,0.616978406 5.0232332,1.54594589 L4.87054247,2.22792202 C4.73730279,2.82190123 4.22185001,3.24388646 3.62956559,3.24388646 L0.713853469,3.24388646 C0.323859952,3.24388646 0,3.56587519 0,3.97686081 L0,4.35684751 C0,4.75783348 0.323859952,5.08982186 0.713853469,5.08982186 L17.2871191,5.08982186 C17.67614,5.08982186 18,4.75783348 18,4.35684751 L18,3.97686081 Z" id="Fill-4"></path>
+                                    </g>
+                                </g>
+                            </svg>
+                            <div>خالی کردن سبد خرید</div>
+                        </button>
+                    </div>
+                </div>

@@ -1,0 +1,46 @@
+{% load poll_extras %}
+
+                <div class="w-[100%] p-3 mt-3 rounded-xl border border-[var(--color11)]">
+                    <div class="flex justify-between border-b border-[var(--color11)] pb-2">
+                        <div class="flex gap-2">
+                            <svg id="Scan" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 3.25C5.051 3.25 2.5 5.802 2.5 13C2.5 20.198 5.051 22.75 12.25 22.75C19.449 22.75 22 20.198 22 13C22 5.802 19.449 3.25 12.25 3.25Z" fill="#674d45"></path>
+                            <path d="M14.4513 14.7558L15.8683 10.2278C15.9433 9.98883 15.8793 9.72683 15.7013 9.54883C15.5243 9.37083 15.2623 9.30483 15.0223 9.38183L10.4923 10.7988C10.2813 10.8648 10.1153 11.0298 10.0493 11.2418L8.63128 15.7718C8.55628 16.0118 8.62128 16.2738 8.79828 16.4508C8.92728 16.5798 9.10028 16.6488 9.27628 16.6488C9.34428 16.6488 9.41128 16.6388 9.47828 16.6178L14.0083 15.1998C14.2193 15.1338 14.3853 14.9678 14.4513 14.7558Z" fill="#674d45"></path>
+                            </svg>
+                            <h1 class="text-lg">جدیدترین محصولات</h1>
+                        </div>
+                        <a target="_blank" href="{% url 'all_products_page' %}"><i class="fa fa-arrow-left mt-1 ml-1 text-[var(--color14)]"></i></a>
+                    </div>
+                    <div class="mt-2">
+                        {% for product in recent_products %}
+                            <a href="{{ product.get_absolute_url }}" class="{% if not forloop.last %}border-b border-[var(--color12)] {% endif %} relative flex p-2 gap-3 rounded-xl transition-all hover:bg-gray-50 active:filter-[blur(3px)] active:transform-[scale(0.97)]">
+                                <div class="bg-[var(--color12)] min-w-20 min-h-20 max-h-20 max-w-20 rounded-xl overflow-hidden">
+                                    <img class="w-[100%] h-[100%]" loading="lazy" alt="{{ product.title }}" src="{{ product.product_image.first.image.url }}">
+                                </div>
+                                <div>
+                                    <h1 class="article-suggest-title mt-1">{{ product.title|to_fanum }}</h1>
+                                    <div class="absolute bottom-0 flex justify-between w-[68%] gap-1">
+                                        <div class="transition-all flex gap-3 pt-3 w-[100%] pr-2 mb-2">
+                                            {% if product.offer <= 0 %}
+                                                <div class="text-xl" id="">
+                                                    {{ product.price|three_digits_currency }}
+                                                </div>
+
+                                            {% else %}
+                                                <div class="">
+                                                    <div class="text-sm flex w-[100%] gap-2">
+                                                        <div style="text-decoration: line-through 1px solid var(--color7)" class="mt-5">{{ product.price|three_digits_currency }}</div>
+                                                        <div class="h-5 px-2 mt-5 bg-[var(--color5)] text-[var(--color3)] rounded-lg">
+                                                            {{ product.offer|to_fanum }} %
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-xl">{{ product.final_price|three_digits_currency }}</div>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>

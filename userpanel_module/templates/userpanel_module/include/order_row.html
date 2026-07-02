@@ -1,0 +1,13 @@
+{% load static %}
+{% load poll_extras %}
+
+    <a href="{{ order.get_absolute_url }}" class="w-[100%] flex justify-between mt-2 p-3 bg-[var(--color12)] rounded-lg">
+        <div class="flex w-15 h-15 mr-8">
+            {% for o in order.orderdetails_set.all|slice:":3" %}
+                <img class="bg-[var(--color15)] w-15 h-15 rounded-full border-2 border-[var(--color17)] mr-[-30px]" src="{{ o.product.product_image.first.image.url }}">
+            {% endfor %}
+        </div>
+        <div class="order-statusbox-price text-3xl mt-3">
+            {{ order.finalized_price|three_digits_currency }}
+        </div>
+    </a>

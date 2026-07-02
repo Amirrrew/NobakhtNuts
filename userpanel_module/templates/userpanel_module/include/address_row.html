@@ -1,0 +1,56 @@
+{% load static %}
+
+<div class="ticket" id="a{{ a.id }}" onclick="ExpandTicket('a{{ a.id }}' ,'ticket-text{{ a.id }}')">
+    <div style="display: flex;  justify-content: space-between; margin-top: 15px">
+        <div style="display: flex; width: 100%">
+            <div class="t-col1" style="width: 100%; overflow: hidden">
+                {{ a.title }}
+            </div>
+
+            <div class="t-col2" style="width: 100%">
+                {{ a.province }} ,{{ a.city }}
+            </div>
+
+            <div class="t-col3" style="width: 100%;">
+                {{ a.postal_code }}
+            </div>
+        </div>
+
+
+            <button class="{% if not a.can_delete %}disabled{% endif %} btn-del m-0" onclick="OpenDialog('آیا از حذف این آدرس مطمئن هستید؟', '/userpanel/my-address/{{ a.pk }}/delete')">
+            <i class="fa fa-trash"></i>
+            </button>
+
+
+    </div>
+
+    <div style="height: 0; overflow: hidden;color: var(--color10); transition: 200ms; opacity:0; margin-top: 15px" id="ticket-text{{ a.id }}">
+        <ul>
+            <li>دریافت کننده: {{ a.receiver }}</li>
+            <li class="address-opt-mobile hidden">استان و شهر: {{ a.province }} ,{{ a.city }}</li>
+            <li class="address-opt-mobile hidden">کد پستی: {{ a.number_plate }}</li>
+            <li>پلاک: {{ a.number_plate }}</li>
+            <li>شماره تلفن آدرس: {{ a.phone }}</li>
+            <li>{{ a.details }}</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+
+    let ExpandTicket = (tid, ttid) => {
+        let ttext = document.getElementById(ttid)
+        let t = document.getElementById(tid)
+
+        if (ttext.style.opacity === "0") {
+            t.style.height = "auto"
+            ttext.style.opacity = 1
+            ttext.style.height = "200px"
+        }
+        else {
+            t.style.height = "auto"
+            ttext.style.opacity = 0
+            ttext.style.height = "0"
+        }
+    }
+</script>

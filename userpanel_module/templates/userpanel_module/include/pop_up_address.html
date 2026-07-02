@@ -1,0 +1,207 @@
+{% load static %}
+
+<div id="popup-parent-pop" class="popup-parent" style="{% if popup_open %}display: flex;{% endif %}">
+    <div id="popup-form" class="popup-form form-default">
+        <div class="flex justify-between p-5">
+            <div class="flex gap-2 ">
+                <svg id="Paper" width="50px" height="50px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <g id="Iconly/Bulk/Paper" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                        <g id="Paper" transform="translate(3.500000, 2.000000)" fill="#674d45" fill-rule="nonzero">
+                            <path d="M15.3088124,7.021 C14.8573009,7.021 14.2592463,7.011 13.5146485,7.011 C11.6987011,7.011 10.2055449,5.508 10.2055449,3.675 L10.2055449,0.459 C10.2055449,0.206 10.0035529,0 9.75304328,0 L4.4636263,0 C1.99516571,0 0,2.026 0,4.509 L0,15.284 C0,17.889 2.09022075,20 4.66957889,20 L12.5462753,20 C15.0058245,20 17,17.987 17,15.502 L17,7.471 C17,7.217 16.7989982,7.012 16.5474984,7.013 C16.1247015,7.016 15.6177413,7.021 15.3088124,7.021" id="Fill-3" opacity="0.400000006"></path>
+                            <path d="M12.584,0.5673 C12.285,0.2563 11.763,0.4703 11.763,0.9013 L11.763,3.5383 C11.763,4.6443 12.674,5.5543 13.78,5.5543 C14.477,5.5623 15.445,5.5643 16.267,5.5623 C16.688,5.5613 16.902,5.0583 16.61,4.7543 C15.555,3.6573 13.666,1.6913 12.584,0.5673" id="Fill-1" opacity="0.400000006"></path>
+                            <path d="M10.918,12.8928 C11.329,12.8928 11.663,13.2268 11.663,13.6378 C11.663,14.0488 11.329,14.3818 10.918,14.3818 L5.474,14.3818 C5.063,14.3818 4.73,14.0488 4.73,13.6378 C4.73,13.2268 5.063,12.8928 5.474,12.8928 L10.918,12.8928 Z M8.8589,7.8986 C9.2699,7.8986 9.6039,8.2326 9.6039,8.6436 C9.6039,9.0546 9.2699,9.3876 8.8589,9.3876 L5.4739,9.3876 C5.0629,9.3876 4.7299,9.0546 4.7299,8.6436 C4.7299,8.2326 5.0629,7.8986 5.4739,7.8986 L8.8589,7.8986 Z" id="Combined-Shape"></path>
+                        </g>
+                    </g>
+                </svg>
+                <div id="form-title" class=" text-5xl mt-1 font-black">
+                    آدرس جدید
+                </div>
+            </div>
+            <button onclick="PopUp('none' ,'close')" class="btn-icon2" style="color: #d1c1bd; width: 40px; height: 40px; padding-right: 8px">
+                <svg id="Close Square" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.052 2.78467 2.5 5.33667 2.5 12.5347C2.5 19.7327 5.052 22.2847 12.25 22.2847C19.449 22.2847 22 19.7327 22 12.5347C22 5.33667 19.449 2.78467 12.25 2.78467Z" fill="#c5b8b4"></path>
+                <path d="M14.6504 15.6777C14.8424 15.6777 15.0344 15.6037 15.1804 15.4577C15.4734 15.1647 15.4734 14.6897 15.1804 14.3967L13.3064 12.5237L15.1694 10.6597C15.4624 10.3667 15.4624 9.89268 15.1694 9.59968C14.8764 9.30668 14.4024 9.30668 14.1094 9.59968L12.2454 11.4637L10.3794 9.59768C10.0864 9.30468 9.61236 9.30468 9.31936 9.59768C9.02636 9.89068 9.02636 10.3647 9.31936 10.6577L11.1854 12.5237L9.31936 14.3917C9.02636 14.6847 9.02636 15.1587 9.31936 15.4517C9.46536 15.5987 9.65836 15.6717 9.84936 15.6717C10.0414 15.6717 10.2334 15.5987 10.3794 15.4517L12.2464 13.5847L14.1194 15.4577C14.2664 15.6037 14.4574 15.6777 14.6504 15.6777Z" fill="#c5b8b4"></path>
+                </svg>
+            </button>
+        </div>
+
+        <form method="post" id="popup-actual-form" class="popup-actual-form px-4">
+            {% csrf_token %}
+            <div class="flex mt-7 gap-4 editpanel-row">
+
+                <div class="input-icon-def1" style="width: 100%">
+                    <svg class="mt-1" id="Chart" width="20px" height="20px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <g id="Iconly/Light/Chart" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+                            <g id="Chart" transform="translate(2.000000, 2.000000)" stroke="#674d45" stroke-width="1.5">
+                                <line x1="5.37142857" y1="8.20171265" x2="5.37142857" y2="15.0618459" id="Line_182"></line>
+                                <line x1="10.0380952" y1="4.91912464" x2="10.0380952" y2="15.0618459" id="Line_183"></line>
+                                <line x1="14.6285714" y1="11.8268316" x2="14.6285714" y2="15.0618459" id="Line_184"></line>
+                                <path d="M14.6857143,0 L5.31428571,0 C2.04761905,0 0,2.31208373 0,5.58515699 L0,14.414843 C0,17.6879163 2.03809524,20 5.31428571,20 L14.6857143,20 C17.9619048,20 20,17.6879163 20,14.414843 L20,5.58515699 C20,2.31208373 17.9619048,0 14.6857143,0 Z" id="Path"></path>
+                            </g>
+                        </g>
+                    </svg>
+                    <input onfocus="PlaceHolderHandle('ad-title' ,'adtitle-plc' ,'fc')" onblur="PlaceHolderHandle('ad-title' ,'adtitle-plc' ,'bl')" class="" id="ad-title" type="text" name="title">
+                    <div class="input-placeholder input-placeholder-popup" id="adtitle-plc">عنوان آدرس (فقط برای شما نمایش داده میشود)</div>
+                </div>
+
+            </div>
+            <div class="flex mt-3 gap-3 editpanel-row">
+
+                <div class="input-icon-def1" style="width: 100%">
+                    <svg id="Image" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path opacity="0.4" d="M6.07056 16.855C6.07056 16.855 6.88256 15.218 8.06456 15.218C9.24656 15.218 9.85056 16.593 11.1606 16.593C12.4696 16.593 13.9386 13.145 15.4226 13.145C16.9046 13.145 17.9706 15.536 17.9706 15.536" stroke="#674d45" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M10.1392 9.50087C10.1392 10.3609 9.44217 11.0589 8.58117 11.0589C7.72117 11.0589 7.02417 10.3609 7.02417 9.50087C7.02417 8.64087 7.72117 7.94287 8.58117 7.94287C9.44217 7.94387 10.1392 8.64087 10.1392 9.50087Z" stroke="#674d45" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M2.75024 12.3961C2.75024 19.3331 5.06324 21.6461 12.0002 21.6461C18.9372 21.6461 21.2502 19.3331 21.2502 12.3961C21.2502 5.45912 18.9372 3.14612 12.0002 3.14612C5.06324 3.14612 2.75024 5.45912 2.75024 12.3961Z" stroke="#674d45" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                    <select id="select-pr" name="province">
+                        {% for p in provinces %}
+                            <option value="{{ p.id }}" data-province="{{ city.province_id }}">{{ p.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="input-icon-def1" style="width: 100%">
+                    <svg id="Home" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path opacity="0.4" d="M9.32874 16.1354H15.1437" stroke="#674d45" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M2.65002 13.713C2.65002 8.082 3.26402 8.475 6.56902 5.41C8.01502 4.246 10.265 2 12.208 2C14.15 2 16.445 4.235 17.904 5.41C21.209 8.475 21.822 8.082 21.822 13.713C21.822 22 19.863 22 12.236 22C4.60903 22 2.65002 22 2.65002 13.713Z" stroke="#674d45" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                    <select id="select-ct" name="city">
+                        <option>برای انتخاب شهر استان را وارد کنید</option>
+                    </select>
+{#                    <div class="input-placeholder" id="adtitle-plc">عنوان آدرس (فقط برای شما نمایش داده میشود)</div>#}
+                </div>
+
+            </div>
+
+            <div class="flex mt-3 gap-3">
+
+                <div style="width: 100%">
+                    <div class="input-icon-def1" style="width: 100%">
+                        <svg id="Bank Card" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21.45 19.03V4.96997H2.95001V19.03H21.45Z" stroke="#674d45" stroke-width="1.5" stroke-linecap="square"></path>
+                        <path opacity="0.4" d="M3.01874 9.78296L21.4499 9.78296" stroke="#674d45" stroke-width="1.5" stroke-linecap="square"></path>
+                        <path opacity="0.4" d="M15.0521 15.342H18.5271" stroke="#674d45" stroke-width="1.5" stroke-linecap="square"></path>
+                        <path opacity="0.4" d="M10.8255 15.342H11.5735" stroke="#674d45" stroke-width="1.5" stroke-linecap="square"></path>
+                        </svg>
+                        <input onfocus="PlaceHolderHandle('ad-postal' ,'postal-plc' ,'fc')" onblur="PlaceHolderHandle('ad-postal' ,'postal-plc' ,'bl')" oninput="CheckPostalCode('ad-postal' ,'postal-err')" class="" id="ad-postal" type="number" name="postal_code" value="">
+                        <div class="input-placeholder input-placeholder-popup" id="postal-plc">کد پستی</div>
+                    </div>
+                    <div style="color: var(--color5); opacity: 0;" class="account-error hidden gap-1 mt-1" id="postal-err">
+                        <svg id="Danger Circle" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.052 2.78467 2.5 5.33667 2.5 12.5347C2.5 19.7327 5.052 22.2847 12.25 22.2847C19.448 22.2847 22 19.7327 22 12.5347C22 5.33667 19.448 2.78467 12.25 2.78467Z" fill="#f97e7e"></path>
+                        <path d="M11.499 16.0346C11.499 16.4486 11.84 16.7846 12.254 16.7846C12.668 16.7846 13.004 16.4486 13.004 16.0346C13.004 15.6206 12.668 15.2846 12.254 15.2846H12.245C11.831 15.2846 11.499 15.6206 11.499 16.0346Z" fill="#f97e7e"></path>
+                        <path d="M12.25 7.88965C11.836 7.88965 11.5 8.22565 11.5 8.63965V12.5346C11.5 12.9486 11.836 13.2846 12.25 13.2846C12.664 13.2846 13 12.9486 13 12.5346V8.63965C13 8.22565 12.664 7.88965 12.25 7.88965Z" fill="#f97e7e"></path>
+                        </svg>
+                        <div id="postal-errtext" class="mt-0.5">
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-icon-def1" style="width: 100%">
+                    <svg id="Bookmark" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7.78313 3H16.2178C19.1659 3 21 5.08119 21 8.02735V15.9736C21 18.9188 19.1659 21 16.2169 21H7.78313C4.83503 21 3 18.9188 3 15.9736V8.02735C3 5.08119 4.84378 3 7.78313 3Z" stroke="#674d45" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M11.4844 3V12.8825L14.0919 11.4396L16.6801 12.8825L16.6791 3.06032" stroke="#674d45" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+
+                    <input onfocus="PlaceHolderHandle('ad-plaque' ,'plaque-plc' ,'fc')" onblur="PlaceHolderHandle('ad-plaque' ,'plaque-plc' ,'bl')" class="" id="ad-plaque" type="number" name="number_plate" value="">
+                    <div class="input-placeholder input-placeholder-popup" id="plaque-plc">پلاک</div>
+                </div>
+
+            </div>
+
+            <div class="mt-3 gap-3 flex">
+
+                <div class="input-icon-def1" style="width: 100%">
+                    <svg id="User" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <g id="Iconly/Bulk/2-User" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                            <g id="2-User" transform="translate(2.000000, 3.000000)" fill="#c5b8b4" fill-rule="nonzero">
+                                <path d="M7.34933305,11.8577345 C3.38552687,11.8577345 -6.83897383e-14,12.4700446 -6.83897383e-14,14.9173685 C-6.83897383e-14,17.3666088 3.3640004,18 7.34933305,18 C11.3131392,18 14.6986661,17.3876899 14.6986661,14.940366 C14.6986661,12.4911257 11.3346657,11.8577345 7.34933305,11.8577345" id="Fill-1"></path>
+                                <path d="M7.34933305,9.52482353 C10.0489483,9.52482353 12.2123586,7.40617314 12.2123586,4.76241176 C12.2123586,2.11865038 10.0489483,-9.76996262e-15 7.34933305,-9.76996262e-15 C4.65069631,-9.76996262e-15 2.48630745,2.11865038 2.48630745,4.76241176 C2.48630745,7.40617314 4.65069631,9.52482353 7.34933305,9.52482353" id="Fill-3" opacity="0.400000006"></path>
+                                <path d="M14.1734202,4.84874844 C14.1734202,6.19506404 13.7605033,7.45130586 13.0364311,8.49482023 C12.9610885,8.60214218 13.0276248,8.74683517 13.1587406,8.76983274 C13.3407371,8.79953792 13.527626,8.81774432 13.7184289,8.82157725 C15.6166723,8.87044707 17.3201989,7.67361562 17.7908459,5.87118171 C18.4884992,3.19675692 16.4415275,0.79542817 13.833889,0.79542817 C13.5511095,0.79542817 13.2800716,0.824175122 13.0158831,0.876877868 C12.9796795,0.884543722 12.9405405,0.901791893 12.9209709,0.932455309 C12.8955306,0.971742811 12.9141216,1.02252909 12.939562,1.0560672 C13.7233212,2.13216145 14.1734202,3.44206424 14.1734202,4.84874844" id="Fill-5" opacity="0.400000006"></path>
+                                <path d="M19.779109,12.1693515 C19.4317501,11.4439701 18.5931962,10.9466478 17.3172635,10.7022987 C16.7155008,10.5585639 15.0853598,10.3544606 13.5697005,10.3832075 C13.5471956,10.3860822 13.5344754,10.4014139 13.5325184,10.4109962 C13.529583,10.4263279 13.5364323,10.4493255 13.5657866,10.4656155 C14.2663754,10.8048295 16.9738184,12.2805064 16.6333088,15.3928431 C16.6186317,15.528912 16.7291994,15.6438998 16.8671645,15.6247352 C17.5335067,15.5317867 19.2477966,15.1705333 19.779109,14.0474857 C20.0736303,13.453382 20.0736303,12.7634552 19.779109,12.1693515" id="Fill-7"></path>
+                            </g>
+                        </g>
+                    </svg>
+                    <input onfocus="PlaceHolderHandle('ad-rec' ,'rec-plc' ,'fc')" onblur="PlaceHolderHandle('ad-rec' ,'rec-plc' ,'bl')" class="" id="ad-rec" type="text" name="receiver" value="">
+                    <div class="input-placeholder input-placeholder-popup" id="rec-plc">نام دریافت کننده</div>
+                </div>
+
+
+                <div class="input-icon-def1" style="width: 100%">
+                    <svg id="Call" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M21.4974 16.4125C18.8594 13.2125 17.5444 13.4995 16.0984 14.2025C15.0974 14.6885 14.2334 15.1105 11.9874 12.8635C9.74141 10.6165 10.1624 9.75354 10.6484 8.75454C11.3534 7.30754 11.6394 5.98954 8.43641 3.35254C7.67341 2.72754 6.84141 2.48754 5.97541 2.65554C4.14241 2.99854 2.84741 5.03854 2.84941 5.03854C2.03741 6.17454 0.925409 9.59054 8.09241 16.7585C12.8064 21.4735 15.8974 22.6045 17.7734 22.6045C18.7504 22.6045 19.3964 22.2985 19.7704 22.0295C19.7914 22.0175 21.8494 20.7425 22.1964 18.8735C22.3584 18.0045 22.1234 17.1775 21.4974 16.4125Z" fill="#674d45"></path>
+                    </svg>
+                    <input onfocus="PlaceHolderHandle('ad-phone' ,'phone-plc' ,'fc')" onblur="PlaceHolderHandle('ad-phone' ,'phone-plc' ,'bl')" oninput="CheckPhone('ad-phone' ,'phone-err')" class="" id="ad-phone" type="number" name="phone" value="">
+                    <div class="input-placeholder input-placeholder-popup" id="phone-plc">شماره دریافت کننده</div>
+                </div>
+                <div style="color: var(--color5); opacity: 0;" class="account-error hidden gap-1 mt-1" id="phone-err">
+                    <svg id="Danger Circle" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.052 2.78467 2.5 5.33667 2.5 12.5347C2.5 19.7327 5.052 22.2847 12.25 22.2847C19.448 22.2847 22 19.7327 22 12.5347C22 5.33667 19.448 2.78467 12.25 2.78467Z" fill="#f97e7e"></path>
+                        <path d="M11.499 16.0346C11.499 16.4486 11.84 16.7846 12.254 16.7846C12.668 16.7846 13.004 16.4486 13.004 16.0346C13.004 15.6206 12.668 15.2846 12.254 15.2846H12.245C11.831 15.2846 11.499 15.6206 11.499 16.0346Z" fill="#f97e7e"></path>
+                        <path d="M12.25 7.88965C11.836 7.88965 11.5 8.22565 11.5 8.63965V12.5346C11.5 12.9486 11.836 13.2846 12.25 13.2846C12.664 13.2846 13 12.9486 13 12.5346V8.63965C13 8.22565 12.664 7.88965 12.25 7.88965Z" fill="#f97e7e"></path>
+                        </svg>
+                        <div id="phone-errtext" class="mt-0.5">
+
+                        </div>
+                    </div>
+
+            </div>
+
+            <div class="flex mt-3 gap-3">
+
+                <div class="input-icon-def1" style="width: 100%; height: 100%;">
+                    <svg id="More Circle" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.051 2.78467 2.5 5.33567 2.5 12.5347C2.5 19.7327 5.051 22.2847 12.25 22.2847C19.449 22.2847 22 19.7327 22 12.5347C22 5.33567 19.449 2.78467 12.25 2.78467Z" fill="#674d45"></path>
+                    <path d="M14.4592 14.4346C14.4592 14.9876 14.9112 15.4346 15.4632 15.4346C16.0152 15.4346 16.4632 14.9876 16.4632 14.4346C16.4632 13.8816 16.0152 13.4346 15.4632 13.4346H15.4542C14.9022 13.4346 14.4592 13.8816 14.4592 14.4346Z" fill="#674d45"></path>
+                    <path d="M11.4592 10.4346C11.4592 10.9876 11.9112 11.4346 12.4632 11.4346C13.0152 11.4346 13.4632 10.9876 13.4632 10.4346C13.4632 9.88157 13.0152 9.43457 12.4632 9.43457H12.4542C11.9022 9.43457 11.4592 9.88157 11.4592 10.4346Z" fill="#674d45"></path>
+                    <path d="M8.4502 14.4346C8.4502 14.9876 8.9032 15.4346 9.4552 15.4346C10.0072 15.4346 10.4552 14.9876 10.4552 14.4346C10.4552 13.8816 10.0072 13.4346 9.4552 13.4346H9.4462C8.8942 13.4346 8.4502 13.8816 8.4502 14.4346Z" fill="#674d45"></path>
+                    </svg>
+                    <textarea onfocus="PlaceHolderHandle('ad-details' ,'details-plc' ,'fc')" onblur="PlaceHolderHandle('ad-details' ,'details-plc' ,'bl')" id="ad-details" name="details"></textarea>
+                    <div class="input-placeholder input-placeholder-popup" id="details-plc" style="z-index: -1">جزئیات آدرس</div>
+                </div>
+
+            </div>
+
+
+            <div class="flex gap-2 w-[94%] absolute bottom-4">
+                <button name="form_type" value="new_address" type="submit" class="btn-defIconFlex gap-2" style="width: 100%; height: 50px; font-size: 17px; justify-content: center; padding-top: 12px">
+                    <svg style="margin-top: -1px" id="Plus" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.2499 2.29761C4.69094 2.29761 2.01294 4.97561 2.01294 12.5346C2.01294 20.0936 4.69094 22.7716 12.2499 22.7716C19.8079 22.7716 22.4869 20.0936 22.4869 12.5346C22.4869 4.97561 19.8079 2.29761 12.2499 2.29761Z" fill="#c5b8b4"></path>
+                        <path d="M12.9996 13.2847H15.8276C16.2416 13.2847 16.5776 12.9487 16.5776 12.5347C16.5776 12.1207 16.2416 11.7847 15.8276 11.7847H12.9996V8.96069C12.9996 8.54669 12.6636 8.21069 12.2496 8.21069C11.8356 8.21069 11.4996 8.54669 11.4996 8.96069V11.7847H8.67163C8.25763 11.7847 7.92163 12.1207 7.92163 12.5347C7.92163 12.9487 8.25763 13.2847 8.67163 13.2847H11.4996V16.1087C11.4996 16.5227 11.8356 16.8587 12.2496 16.8587C12.6636 16.8587 12.9996 16.5227 12.9996 16.1087V13.2847Z" fill="#c5b8b4"></path>
+                        </svg>
+                    <div>
+                        افزودن آدرس
+                    </div>
+                </button>
+                <button type="button" onclick="PopUp('none' ,'close')" class="submit-btn btn-defIconFlex2" style="width: 100%; height: 50px; border-radius: 7px; display: block">لغو</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    let provinceSelect= document.getElementById('select-pr')
+    let citySelect = document.getElementById('select-ct')
+
+    provinceSelect.addEventListener("change", GetCity);
+
+    async function GetCity() {
+        const response = await fetch(
+            `/userpanel/get-cities/?province_id=${provinceSelect.value}`
+        );
+
+        const cities = await response.json();
+
+        citySelect.innerHTML = '';
+
+        cities.forEach(city => {
+            citySelect.innerHTML += `
+                <option value="${city.id}">
+                    ${city.name}
+                </option>
+            `;
+        });
+    }
+
+    GetCity()
+</script>

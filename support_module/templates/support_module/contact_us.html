@@ -1,0 +1,139 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load poll_extras %}
+
+{% block page_title %}
+	 | ارتباط باما
+{% endblock %}
+
+{% block page_content %}
+    {% include 'userpanel_module/include/pop_up_ticket.html' %}
+    <div class="centerbox mt-40">
+        <div>
+            <div class="centerbox">
+                <svg style="position: relative; animation: phonering 1s" id="Calling" width="70" height="70" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M13.8515 16.2338C13.3315 16.0538 11.8365 15.4498 10.4695 14.0838C9.18645 12.8008 8.65145 11.3828 8.49445 10.8888L10.1935 7.93779L6.49545 2.85779L6.10445 3.08779C4.52245 4.01579 3.36245 5.17579 2.45345 6.73879L2.39445 6.89879C1.88045 9.64279 3.45145 13.6868 6.30045 16.9628C9.39045 20.5158 13.4025 22.5178 17.3845 22.5178C17.5645 22.5178 17.7455 22.5138 17.9245 22.5058L18.0435 22.5008L18.1465 22.4418C19.7485 21.5448 20.9135 20.3808 21.8095 18.7788L22.0245 18.3938L16.7965 14.5388L13.8515 16.2338Z" fill="#674d45"></path>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M20.6279 10.6343L20.7109 11.3803L22.2019 11.2123L22.1179 10.4673C21.6609 6.39031 18.4939 3.22631 14.4159 2.77331L13.6699 2.69031L13.5049 4.18131L14.2499 4.26431C17.6269 4.63931 20.2489 7.25931 20.6279 10.6343Z" fill="#674d45"></path>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M17.0966 10.7046L17.2406 11.4406L18.7126 11.1546L18.5696 10.4186C18.1636 8.33662 16.5576 6.72962 14.4766 6.32562L13.7406 6.18262L13.4536 7.65462L14.1896 7.79762C15.6676 8.08462 16.8086 9.22562 17.0966 10.7046Z" fill="#674d45"></path>
+                </svg>
+            </div>
+            <div class="text-5xl relative text-center mt-5 font-black" style="animation: load 500ms">
+                راه های ارتباط باما
+            </div>
+            <div class="text-center text-[var(--color7)] p-3 relative" style="animation: load 700ms">
+                <div>در صورت نیاز میتوانید از راه های زیادی برای ارتباط باما استفاده کنید...</div>
+                <div>در صورت بروز مشکل میتوانید تیکت پشتیبانی ارسال کنید، بعد از ارسال تیکت، ما مشکل شما را در سریع ترین زمان ممکن پیگیری میکنیم و آنرا جزو وظایف اولویت اول خود میشماریم.</div>
+            </div>
+            <div class="centerbox mt-3 gap-2 flex-wrap mb-10">
+                {% for s in support %}
+                    {% include 'support_module/include/support_option.html' %}
+                {% endfor %}
+            </div>
+            <div class="text-center text-3xl">یا</div>
+            <div class="centerbox">
+                <div class="send-ticket w-[100%] centerbox rounded-2xl gap-3 py-10 mt-10 cursor-pointer bg-[var(--color12)] transition-all hover:bg-[var(--color8)] text-5xl" onclick="PopUp('ticket' ,'open')">
+                    <svg id="Send" width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M11.3565 12.8934C11.3694 12.9519 11.3842 13.0176 11.4006 13.09C11.4738 13.4129 11.581 13.8688 11.7172 14.4028C11.989 15.4682 12.3788 16.8545 12.8475 18.1152C13.0818 18.7455 13.339 19.3529 13.6149 19.8769C13.8872 20.3942 14.194 20.8617 14.5381 21.1862C14.8813 21.5098 15.3414 21.7597 15.8734 21.6332C16.3742 21.514 16.7676 21.0965 17.0902 20.5376C18.1385 18.7214 19.5304 14.763 20.5433 11.0838C21.0521 9.23596 21.4716 7.43589 21.7073 5.98436C21.825 5.25971 21.8989 4.60988 21.9128 4.07868C21.9243 3.64052 21.9223 3.14268 21.7108 2.74545C21.664 2.65772 21.5922 2.5859 21.5045 2.53917C21.1072 2.32761 20.6094 2.32565 20.1712 2.33712C19.64 2.35102 18.9902 2.42491 18.2656 2.54259C16.814 2.7783 15.014 3.19781 13.1661 3.70659C9.48696 4.71957 5.52852 6.11138 3.71239 7.1597C3.15349 7.48233 2.73593 7.8757 2.61678 8.37649C2.49019 8.90853 2.74015 9.36859 3.06377 9.71184C3.38819 10.0559 3.85573 10.3627 4.37304 10.6351C4.89706 10.911 5.50445 11.1681 6.13473 11.4024C7.39547 11.8711 8.78173 12.2609 9.84714 12.5327C10.3811 12.6689 10.8371 12.7761 11.1599 12.8493C11.2323 12.8658 11.2981 12.8805 11.3565 12.8934Z" fill="#674d45"></path>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M19.0624 5.60285C19.3553 5.89574 19.3553 6.37062 19.0624 6.66351L13.5306 12.1953C13.2377 12.4882 12.7628 12.4882 12.4699 12.1953C12.177 11.9024 12.177 11.4275 12.4699 11.1346L18.0017 5.60285C18.2946 5.30996 18.7695 5.30996 19.0624 5.60285Z" fill="#674d45"></path>
+                    </svg>
+                    <div>
+                        ارسال تیکت
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="address" class="centerbox opacity-0 mt-30 relative">
+        <div class="contact-address flex w-[80%] justify-between">
+            <div>
+                <div class="flex gap-2">
+                    <svg class="mt-[-3px]" id="Location" width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.5C7.839 2.5 4.25 6.133 4.25 10.599C4.25 16.007 8.904 21.5 12.25 21.5C15.595 21.5 20.25 16.007 20.25 10.599C20.25 6.133 16.661 2.5 12.25 2.5Z" fill="#674d45"></path>
+                    <path d="M9.39697 10.7102C9.39697 12.2892 10.681 13.5732 12.26 13.5732C13.839 13.5732 15.124 12.2892 15.124 10.7102C15.124 9.13117 13.839 7.84717 12.26 7.84717C10.681 7.84717 9.39697 9.13117 9.39697 10.7102Z" fill="#674d45"></path>
+                    </svg>
+                    <div class="text-6xl font-semibold">
+                        آدرس ما
+                    </div>
+                </div>
+                <div class="text-lg mt-2">
+                    -مازندران ،قائمشهر ،خیابان جویبار (شریعتی) ،روبروی خزر 11 (بانک صادرات)، برنج و خشکبار نوبخت
+                </div>
+                <div class="flex gap-2 mt-5">
+                    <svg id="Time Square" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.25C5.051 2.25 2.5 4.801 2.5 12C2.5 19.198 5.051 21.75 12.25 21.75C19.449 21.75 22 19.198 22 12C22 4.801 19.449 2.25 12.25 2.25Z" fill="#674d45"></path>
+                    <path d="M15.639 14.7668C15.895 14.7668 16.144 14.6358 16.284 14.4008C16.496 14.0458 16.38 13.5858 16.024 13.3728L12.999 11.5688V7.63281C12.999 7.21881 12.663 6.88281 12.249 6.88281C11.835 6.88281 11.499 7.21881 11.499 7.63281V11.9948C11.499 12.2578 11.638 12.5038 11.865 12.6388L15.256 14.6618C15.376 14.7328 15.509 14.7668 15.639 14.7668Z" fill="#674d45"></path>
+                    </svg>
+                    <div>
+                        <div>
+                            ساعات کاری: شنبه تا پنجشنبه ساعت {{ 8|to_fanum }} الی  {{ 22|to_fanum }}
+                        </div>
+                        <div>
+                            جمعه ها 15 الی 21
+                        </div>
+                        <div class="mt-2">
+                            پیگیری سفارش از وبسایت طی روز های شنبه الی پنجشنبه
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 bg-[var(--color12)] rounded-2xl mt-5">
+                <iframe class="contact-map rounded-lg" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2268.758773648922!2d52.861884471990784!3d36.46941014313385!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f855d58102a0db7%3A0xb69861e003f349f9!2z2KjYsdmG2Kwg2Ygg2K7YtNqp2KjYp9ixINmG2YjYqNiu2Ko!5e0!3m2!1sen!2scz!4v1782806634386!5m2!1sen!2scz" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+            </div>
+        </div>
+    </div>
+    <div id="quis" class="opacity-0 relative">
+        <div class="mt-30 centerbox text-center">
+            <div>
+                <div class="centerbox">
+                    <div class="bg-[#C2B8B5] text-[var(--color6)] w-14 h-14 pt-3 rounded-2xl"><i class="fa fa-question fa-2x"></i></div>
+                </div>
+                <div class="text-5xl mt-3 font-black">
+                    سوالات متداول
+                </div>
+            </div>
+        </div>
+        <div class="centerbox mt-4">
+            <div class="w-[80%]">
+                {% for qc in questions %}
+                    <div class="question-drawer" id="qc-draw{{ qc.id }}">
+                        <div class="flex gap-3" onclick="DrawerQuestion('qc-draw{{ qc.id }}' ,'drawer{{ qc.id }}' ,'drawer-icon{{ qc.id }}')">
+                            <i id="drawer-icon{{ qc.id }}" class="fa fa-add text-[var(--color6)] h-5 w-5 transition-all text-xl mt-1 relative"></i>
+                            <div class="text-3xl">{{ qc.title }}</div>
+                        </div>
+                        <div id="drawer{{ qc.id }}" style="display: none;" class="mt-3 relative">
+                            {% for q in qc.question_set.all %}
+                                <div class="question-drawer mx-3" id="q-draw{{ q.id }}" onclick="DrawerQuestion('q-draw{{ q.id }}' ,'qdrawer{{ q.id }}' ,'qdrawer-icon{{ q.id }}')">
+                                    <div class="flex gap-1">
+                                        <i id="qdrawer-icon{{ q.id }}" class="fa fa-add text-[var(--color6)] h-5 w-5 transition-all mt-1 relative"></i>
+                                        <div class="text-xl text-[var(--color6)]">{{ q.question }}</div>
+                                    </div>
+                                    <div id="qdrawer{{ q.id }}" style="display: none" class="relative">
+                                        <div class="mt-2 text-[var(--color10)]">
+                                            {{ q.answer }}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let style = 'opacity: 1; animation: load8 500ms;'
+        let scroll;
+        let address = document.getElementById('address')
+        let quis = document.getElementById('quis')
+        document.addEventListener('scroll' ,()=> {
+            scroll = document.documentElement.scrollTop + 500
+            if (scroll > address.offsetTop) {
+                address.style = style
+            }
+            if (scroll > quis.offsetTop) {
+                quis.style = style
+            }
+        })
+    </script>
+{% endblock %}

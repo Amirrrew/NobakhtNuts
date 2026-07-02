@@ -1,0 +1,240 @@
+from gc import get_objects
+from itertools import product
+
+from django.contrib.messages.context_processors import messages
+from django.http import JsonResponse, HttpResponse, HttpRequest
+from django.shortcuts import render, get_object_or_404, redirect
+from django.template.context_processors import request
+from django.template.defaulttags import comment
+from django.template.loader import render_to_string
+from django.urls import reverse
+from django.views import View
+from django.views.generic import ListView, DetailView
+from unicodedata import category
+
+from order_module.models import Order
+from product_module.form import ProductCommentForm
+from product_module.models import Product, ProductCategory, ProductSubCategory, ProductBrand, ProductComment
+from django.db.models import Q
+
+from utils.my_decorators import filter_products
+
+
+class ProductListView(ListView):
+    model = Product
+    template_name = 'product_module/product_grid.html'
+    paginate_by = 12
+    context_object_name = "products"
+    def get_queryset(self):
+        queryset = Product.objects.filter(
+            is_active=True,
+            is_deleted=False
+        ).order_by('-quantity')
+
+        category_slug = self.kwargs.get("category")
+        subcategory_slug = self.kwargs.get("subcategory")
+
+        if category_slug:
+            category = get_object_or_404(ProductCategory,slug=category_slug)
+            queryset = queryset.filter(category__main_category=category)
+
+        elif subcategory_slug:
+            subcategory = get_object_or_404(ProductSubCategory,slug=subcategory_slug)
+            queryset = queryset.filter(category=subcategory)
+
+        return filter_products(
+            self.request,
+            queryset
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        category_slug = self.kwargs.get("category")
+        subcategory_slug = self.kwargs.get("subcategory")
+
+        if category_slug:
+            category = ProductCategory.objects.prefetch_related('subcategory').filter(slug=category_slug).first()
+            context["title_prd"] = category.title
+            context["current_category"] = category
+            context['subcats'] = category.subcategory.all()
+
+        elif subcategory_slug:
+            subcategory = get_object_or_404(
+                ProductSubCategory,
+                slug=subcategory_slug
+            )
+            context["title_prd"] = subcategory.title
+            context["current_category"] = subcategory.main_category
+            context["current_subcategory"] = subcategory
+            context['subcats'] = ProductSubCategory.objects.filter(main_category=subcategory.main_category)
+        else:
+            context["title_prd"] = "همه محصولات"
+
+        max_price = Product.objects.order_by("-price").first()
+        context["db_max_price"] = max_price.price if max_price else 0
+        context["brands"] = ProductBrand.objects.all()
+        context["category_grid"] = ProductCategory.objects.filter(
+            is_active=True
+        )
+        context['selected_brands'] = ProductBrand.objects.filter(id__in=self.request.GET.getlist('brand'))
+        context["selected_brands_ids"] = self.request.GET.getlist("brand")
+        context["has_filters"] = any([
+            self.request.GET.get("order"),
+            self.request.GET.get("start_price"),
+            self.request.GET.get("end_price"),
+            self.request.GET.getlist("brand"),
+            self.request.GET.get("available"),
+        ])
+        return context
+
+
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = 'product_module/Product_details.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if not self.object.is_active:
+            return redirect('home')
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        product = self.object
+        context['related_products'] = Product.objects.filter(
+            category__main_category=product.category.main_category ,is_active=True ,quantity__gt=0
+        ).exclude(
+            id=product.id
+        )[:7]
+        context['slider_title'] = 'محصولات مرتبط'
+        product.view+=1
+        product.save()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        message = None
+        message_e = None
+        self.object = self.get_object()
+        product = self.object
+        comment_form = ProductCommentForm(request.POST)
+
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.product = product
+
+            if request.user.is_authenticated:
+                comment.user = request.user
+                comment.save()
+                message = 'نظر شما با موفقیت ارسال شد!'
+                popup_open = False
+            else:
+                message_e = 'برای ارسال نظر باید وارد شوید'
+                popup_open = True
+        else:
+            message_e = 'لطفا فیلد متن نظر را پر کنید'
+            popup_open = True
+
+        context = self.get_context_data(object=self.object)
+        context['message'] = message
+        context['message_e'] = message_e
+        context['comment_form'] = ProductCommentForm()
+        context['popup_open'] = popup_open
+
+        return self.render_to_response(context)
+
+def delete_comment(self ,id):
+    try:
+        comment = get_object_or_404(ProductComment, id=id)
+        if comment:
+            comment.delete()
+            return redirect('product_detail_page', slug=comment.product.slug)
+    except:
+        return redirect('home')
+
+
+def like_comment(request: HttpRequest):
+    comment_id = request.GET.get('id')
+
+    if not request.user.is_authenticated:
+        return JsonResponse({
+            'message': 'برای لایک کردن باید وارد شوید',
+            'error': True
+        })
+
+    comment = ProductComment.objects.get(id=comment_id)
+
+    if not comment:
+        return JsonResponse({
+            'message': 'کامنت پیدا نشد',
+            'error': True
+        })
+
+    if request.user in comment.like.all():
+        comment.like.remove(request.user)
+    else:
+        comment.like.add(request.user)
+
+    html = render_to_string(
+        'product_module/product_comment_section.html',
+        {
+            'product': comment.product,
+            'comment': comment,
+        },
+        request=request
+    )
+
+    return JsonResponse({
+        'html': html,
+        'error': False
+    })
+
+
+def search_product(request):
+    try:
+        q = request.GET.get('q', '').strip()
+
+        if len(q) < 2:
+            return JsonResponse([], safe=False)
+
+        words = q.split()
+
+        products = Product.objects.filter(
+            is_active=True,
+            is_deleted=False,
+        )
+
+        for word in words:
+            products = products.filter(
+                Q(title__icontains=word) |
+                Q(category__title__icontains=word) |
+                Q(brand__title__icontains=word)
+            ).order_by('-quantity')
+
+        data = []
+
+        for p in products:
+            data.append({
+                'title': p.title,
+                'category': p.category.title,
+                'price': p.price,
+                'offer': p.offer,
+                'final_price': p.final_price,
+                'rating': f'{p.average_rating}({p.comments_count})',
+                'is_byWeight': p.is_byWeight,
+                'url': p.get_absolute_url(),
+                'image': p.product_image.first().image.url
+            })
+
+        return JsonResponse(data, safe=False)
+
+    except:
+        return JsonResponse({
+            'message': 'در جستجو مشکلی پیش آمده!',
+            'error': True
+        })
+
+
+
+

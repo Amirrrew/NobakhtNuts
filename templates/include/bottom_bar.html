@@ -1,0 +1,70 @@
+{% load static %}
+{% load poll_extras %}
+
+<div class="centerbox" style="{% if request.resolver_match.url_name == 'product_detail_page' %}display: none{% endif %}">
+    <div class="bottom-bar">
+        <div onclick="SideMenu('open' ,'side-menu')" class="bottom-bar-option text-[var(--color10)] bg-[var(--color6)]">
+            <div class="centerbox">
+                <i class="fa fa-navicon text-xl mt-1"></i>
+            </div>
+        </div>
+        <a href="{% url 'home' %}" class="bottom-bar-option">
+            <div class="centerbox">
+                <svg id="Home" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M19.4991 6.158C19.1361 5.838 18.7231 5.476 18.2311 5.021C18.0081 4.841 17.7641 4.635 17.5051 4.417C16.0451 3.186 14.0451 1.5 12.2221 1.5C10.4201 1.5 8.54906 3.092 7.04606 4.371C6.76806 4.607 6.50806 4.829 6.24306 5.044C5.77706 5.476 5.36406 5.839 5.00006 6.16C2.61306 8.261 2.16406 8.812 2.16406 13.713C2.16406 22.5 4.70506 22.5 12.2501 22.5C19.7941 22.5 22.3361 22.5 22.3361 13.713C22.3361 8.811 21.8871 8.26 19.4991 6.158Z" fill="#674d45"></path>
+                <path d="M9.34277 16.8848H15.1578C15.5718 16.8848 15.9078 16.5488 15.9078 16.1348C15.9078 15.7208 15.5718 15.3848 15.1578 15.3848H9.34277C8.92877 15.3848 8.59277 15.7208 8.59277 16.1348C8.59277 16.5488 8.92877 16.8848 9.34277 16.8848Z" fill="#674d45"></path>
+                </svg>
+            </div>
+        </a>
+        <div onclick="SideMenu('open' ,'search-menu' ,'search')" class="bottom-bar-option" style="">
+            <div class="centerbox">
+                <svg id="Search" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M11.5139 2.20227C6.51788 2.20227 2.45288 6.26727 2.45288 11.2643C2.45288 16.2603 6.51788 20.3243 11.5139 20.3243C16.5099 20.3243 20.5749 16.2603 20.5749 11.2643C20.5749 6.26727 16.5099 2.20227 11.5139 2.20227Z" fill="#674d45"></path>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M20.1373 17.9767C19.0833 17.9767 18.2253 18.8327 18.2253 19.8867C18.2253 20.9407 19.0833 21.7977 20.1373 21.7977C21.1903 21.7977 22.0473 20.9407 22.0473 19.8867C22.0473 18.8327 21.1903 17.9767 20.1373 17.9767Z" fill="#674d45"></path>
+                </svg>
+            </div>
+        </div>
+        <a href="{% url 'my_basket_page' %}" class="bottom-bar-option" style="">
+            <div class="centerbox">
+                <svg id="Buy" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M6.39507 6.30158L6.09507 3.24158H2.19507V4.74158H4.73507L6.01507 17.4416H20.8351L22.3051 6.30158H6.39507Z" fill="#674d45"></path>
+                <path d="M13.8245 11.7118H17.9945V10.2118H13.8245V11.7118Z" fill="#674d45"></path>
+                <path d="M6.57983 20.5527C6.57983 19.8497 7.15083 19.2787 7.85383 19.2787C8.55583 19.2787 9.12683 19.8497 9.12683 20.5527C9.12683 21.2557 8.55583 21.8277 7.85383 21.8277C7.15083 21.8277 6.57983 21.2557 6.57983 20.5527Z" fill="#674d45"></path>
+                <path d="M17.447 20.5527C17.447 19.8497 18.018 19.2787 18.721 19.2787C19.424 19.2787 19.995 19.8497 19.995 20.5527C19.995 21.2557 19.424 21.8277 18.721 21.8277C18.018 21.8277 17.447 21.2557 17.447 20.5527Z" fill="#674d45"></path>
+                </svg>
+            </div>
+            {% if basket.orderdetails_set.all %}
+                <div class="fixed top-2 mt-1 mr-3 h-4 w-4 text-[var(--color11)] text-center pt-0.5 text-xs rounded-full bg-[var(--color6)]">
+                    {{ basket.total_items|to_fanum }}
+                </div>
+            {% endif %}
+        </a>
+        <a {% if not request.user.is_authenticated %}href="{% url 'login_page' %}"{% else %}onclick="SideMenu('open' ,'user-panel')" {% endif %} class="bottom-bar-option">
+            <div class="centerbox">
+                {% if request.user.is_authenticated %}
+                    {% if not request.user.avatar %}
+                        <svg id="User" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M16.2398 10.8672H16.2698C18.3998 10.8672 20.1298 9.13722 20.1298 7.00722C20.1298 4.87722 18.3998 3.14722 16.2698 3.14722C15.8498 3.14722 15.4498 3.21722 15.0698 3.33722C15.7598 4.35722 16.1598 5.58722 16.1598 6.90722C16.1598 8.29722 15.7098 9.58722 14.9498 10.6372C15.3498 10.7872 15.7898 10.8672 16.2398 10.8672Z" fill="#674d45"></path>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M9.76712 11.7755H9.79712C12.4801 11.7755 14.6621 9.59351 14.6621 6.91151C14.6621 4.22851 12.4801 2.04651 9.79712 2.04651C7.11612 2.04651 4.93412 4.22851 4.93412 6.90951C4.92912 8.20451 5.42812 9.42351 6.34112 10.3425C7.25412 11.2615 8.47012 11.7705 9.76712 11.7755Z" fill="#674d45"></path>
+                        <g opacity="0.4">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M16.2702 12.3073C15.1402 12.3073 14.0702 12.5373 13.1702 12.9173C16.3302 13.8373 18.5602 16.0273 18.6102 18.5773C20.2502 18.3573 22.0102 17.7473 22.0102 16.0473C22.0102 14.0173 19.3802 12.3073 16.2702 12.3073Z" fill="#674d45"></path>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M9.79875 13.9465C5.83675 13.9465 2.48975 16.1115 2.48975 18.6745C2.48975 21.6135 6.66075 21.9535 9.79875 21.9535C11.6067 21.9535 17.1077 21.9535 17.1077 18.6545C17.1077 16.1025 13.7607 13.9465 9.79875 13.9465Z" fill="#674d45"></path>
+                        </g>
+                        </svg>
+                        {% else %}
+                        <img class="rounded-full w-6 h-6" src="{{ request.user.avatar.url }}">
+                    {% endif %}
+                    {% else %}
+                        <svg id="User" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M16.2398 10.8672H16.2698C18.3998 10.8672 20.1298 9.13722 20.1298 7.00722C20.1298 4.87722 18.3998 3.14722 16.2698 3.14722C15.8498 3.14722 15.4498 3.21722 15.0698 3.33722C15.7598 4.35722 16.1598 5.58722 16.1598 6.90722C16.1598 8.29722 15.7098 9.58722 14.9498 10.6372C15.3498 10.7872 15.7898 10.8672 16.2398 10.8672Z" fill="#674d45"></path>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M9.76712 11.7755H9.79712C12.4801 11.7755 14.6621 9.59351 14.6621 6.91151C14.6621 4.22851 12.4801 2.04651 9.79712 2.04651C7.11612 2.04651 4.93412 4.22851 4.93412 6.90951C4.92912 8.20451 5.42812 9.42351 6.34112 10.3425C7.25412 11.2615 8.47012 11.7705 9.76712 11.7755Z" fill="#674d45"></path>
+                        <g opacity="0.4">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M16.2702 12.3073C15.1402 12.3073 14.0702 12.5373 13.1702 12.9173C16.3302 13.8373 18.5602 16.0273 18.6102 18.5773C20.2502 18.3573 22.0102 17.7473 22.0102 16.0473C22.0102 14.0173 19.3802 12.3073 16.2702 12.3073Z" fill="#674d45"></path>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M9.79875 13.9465C5.83675 13.9465 2.48975 16.1115 2.48975 18.6745C2.48975 21.6135 6.66075 21.9535 9.79875 21.9535C11.6067 21.9535 17.1077 21.9535 17.1077 18.6545C17.1077 16.1025 13.7607 13.9465 9.79875 13.9465Z" fill="#674d45"></path>
+                        </g>
+                        </svg>
+                {% endif %}
+            </div>
+        </a>
+    </div>
+</div>

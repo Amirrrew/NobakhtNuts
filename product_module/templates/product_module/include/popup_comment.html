@@ -1,0 +1,88 @@
+{% load static %}
+
+<div id="popup-parent-pop" class="popup-parent" style="{% if popup_open %}display: flex;{% endif %}">
+    <div id="popup-form" class="popup-form form-default">
+        <div class="flex justify-between p-5">
+            <div class="flex gap-2 ">
+                <svg id="Paper" width="50px" height="50px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <g id="Iconly/Bulk/Paper" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                        <g id="Paper" transform="translate(3.500000, 2.000000)" fill="#674d45" fill-rule="nonzero">
+                            <path d="M15.3088124,7.021 C14.8573009,7.021 14.2592463,7.011 13.5146485,7.011 C11.6987011,7.011 10.2055449,5.508 10.2055449,3.675 L10.2055449,0.459 C10.2055449,0.206 10.0035529,0 9.75304328,0 L4.4636263,0 C1.99516571,0 0,2.026 0,4.509 L0,15.284 C0,17.889 2.09022075,20 4.66957889,20 L12.5462753,20 C15.0058245,20 17,17.987 17,15.502 L17,7.471 C17,7.217 16.7989982,7.012 16.5474984,7.013 C16.1247015,7.016 15.6177413,7.021 15.3088124,7.021" id="Fill-3" opacity="0.400000006"></path>
+                            <path d="M12.584,0.5673 C12.285,0.2563 11.763,0.4703 11.763,0.9013 L11.763,3.5383 C11.763,4.6443 12.674,5.5543 13.78,5.5543 C14.477,5.5623 15.445,5.5643 16.267,5.5623 C16.688,5.5613 16.902,5.0583 16.61,4.7543 C15.555,3.6573 13.666,1.6913 12.584,0.5673" id="Fill-1" opacity="0.400000006"></path>
+                            <path d="M10.918,12.8928 C11.329,12.8928 11.663,13.2268 11.663,13.6378 C11.663,14.0488 11.329,14.3818 10.918,14.3818 L5.474,14.3818 C5.063,14.3818 4.73,14.0488 4.73,13.6378 C4.73,13.2268 5.063,12.8928 5.474,12.8928 L10.918,12.8928 Z M8.8589,7.8986 C9.2699,7.8986 9.6039,8.2326 9.6039,8.6436 C9.6039,9.0546 9.2699,9.3876 8.8589,9.3876 L5.4739,9.3876 C5.0629,9.3876 4.7299,9.0546 4.7299,8.6436 C4.7299,8.2326 5.0629,7.8986 5.4739,7.8986 L8.8589,7.8986 Z" id="Combined-Shape"></path>
+                        </g>
+                    </g>
+                </svg>
+                <div id="form-title" class=" text-5xl mt-1 font-black">
+                    نظر شما
+                </div>
+            </div>
+            <button onclick="PopUp('none' ,'close')" class="btn-icon2" style="color: #d1c1bd; width: 40px; height: 40px; padding-right: 8px">
+                <svg id="Close Square" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.052 2.78467 2.5 5.33667 2.5 12.5347C2.5 19.7327 5.052 22.2847 12.25 22.2847C19.449 22.2847 22 19.7327 22 12.5347C22 5.33667 19.449 2.78467 12.25 2.78467Z" fill="#c5b8b4"></path>
+                <path d="M14.6504 15.6777C14.8424 15.6777 15.0344 15.6037 15.1804 15.4577C15.4734 15.1647 15.4734 14.6897 15.1804 14.3967L13.3064 12.5237L15.1694 10.6597C15.4624 10.3667 15.4624 9.89268 15.1694 9.59968C14.8764 9.30668 14.4024 9.30668 14.1094 9.59968L12.2454 11.4637L10.3794 9.59768C10.0864 9.30468 9.61236 9.30468 9.31936 9.59768C9.02636 9.89068 9.02636 10.3647 9.31936 10.6577L11.1854 12.5237L9.31936 14.3917C9.02636 14.6847 9.02636 15.1587 9.31936 15.4517C9.46536 15.5987 9.65836 15.6717 9.84936 15.6717C10.0414 15.6717 10.2334 15.5987 10.3794 15.4517L12.2464 13.5847L14.1194 15.4577C14.2664 15.6037 14.4574 15.6777 14.6504 15.6777Z" fill="#c5b8b4"></path>
+                </svg>
+            </button>
+        </div>
+
+        <form enctype="multipart/form-data" method="post" id="popup-actual-form" class="popup-actual-form px-4">
+            {% csrf_token %}
+            <div class="flex mt-7 gap-3">
+                <div class="star">
+                    <div class="star-back">
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+
+                    <div class="star-front">
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                </div>
+
+                <div class="flex gap-2">
+                    <button type="button" onclick="change_rating('increase')" class="btn-prdcounter mt-8"><i class="fa fa-add mt-1.5 text-sm"></i></button>
+                    <div class="flex">
+                        <input readonly name="rating" class="outline-none border-none w-5 text-3xl h-auto cursor-default" id="ratingInput" type="number" min="0" max="5" step="1" value="5">
+                        <div class="mt-8.5 text-[var(--color14)]">/5</div>
+                    </div>
+                    <button type="button" onclick="change_rating('decrease')" class="btn-prdcounter mt-8"><i class="fa fa-minus mt-1.5 text-sm"></i></button>
+                </div>
+            </div>
+            <div class="input-icon-def1" style="height: 250px">
+                <svg id="Chat 2" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M19.1555 5.25821C17.3205 3.42321 14.8795 2.41321 12.2795 2.41321C9.68049 2.41321 7.23749 3.42421 5.40249 5.25921C3.56249 7.09921 2.55049 9.54321 2.55249 12.1442C2.55549 15.4952 2.50449 21.3382 2.50449 21.3382L2.50049 21.8472L3.00849 21.8432C3.06649 21.8422 8.81749 21.7912 12.0685 21.8622C12.1425 21.8632 12.2155 21.8642 12.2895 21.8642C14.8825 21.8642 17.3135 20.8572 19.1555 19.0152C22.9475 15.2222 22.9475 9.05121 19.1555 5.25821Z" fill="#674d45"></path>
+                    <path d="M16.7872 13.2701H15.1892V11.7701H16.7872V13.2701Z" fill="#674d45"></path>
+                    <path d="M13.0532 13.2701H11.4542V11.7701H13.0532V13.2701Z" fill="#674d45"></path>
+                    <path d="M9.31921 13.2701H7.72021V11.7701H9.31921V13.2701Z" fill="#674d45"></path>
+                </svg>
+                <textarea style="height: 100%; min-height: 250px" name="text" id="comment-inp" onfocus="PlaceHolderHandle('comment-inp' ,'comment-plc' ,'fc')" onblur="PlaceHolderHandle('comment-inp' ,'comment-plc' ,'bl')"></textarea>
+                <div class="input-placeholder input-placeholder-popup" style="" id="comment-plc">
+                    نظر خود را بنویسید
+                </div>
+            </div>
+
+
+            <div class="flex gap-2 w-[94%] absolute bottom-4">
+                {% if request.user.is_authenticated %}
+                    <button type="submit" class="btn-defIconFlex gap-2" style="width: 100%; height: 50px; font-size: 17px; justify-content: center; padding-top: 12px">
+                        <svg id="Send" width="24" style="margin-top: 0;" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M11.3565 12.8934C11.3694 12.9519 11.3842 13.0176 11.4006 13.09C11.4738 13.4129 11.581 13.8688 11.7172 14.4028C11.989 15.4682 12.3788 16.8545 12.8475 18.1152C13.0818 18.7455 13.339 19.3529 13.6149 19.8769C13.8872 20.3942 14.194 20.8617 14.5381 21.1862C14.8813 21.5098 15.3414 21.7597 15.8734 21.6332C16.3742 21.514 16.7676 21.0965 17.0902 20.5376C18.1385 18.7214 19.5304 14.763 20.5433 11.0838C21.0521 9.23596 21.4716 7.43589 21.7073 5.98436C21.825 5.25971 21.8989 4.60988 21.9128 4.07868C21.9243 3.64052 21.9223 3.14268 21.7108 2.74545C21.664 2.65772 21.5922 2.5859 21.5045 2.53917C21.1072 2.32761 20.6094 2.32565 20.1712 2.33712C19.64 2.35102 18.9902 2.42491 18.2656 2.54259C16.814 2.7783 15.014 3.19781 13.1661 3.70659C9.48696 4.71957 5.52852 6.11138 3.71239 7.1597C3.15349 7.48233 2.73593 7.8757 2.61678 8.37649C2.49019 8.90853 2.74015 9.36859 3.06377 9.71184C3.38819 10.0559 3.85573 10.3627 4.37304 10.6351C4.89706 10.911 5.50445 11.1681 6.13473 11.4024C7.39547 11.8711 8.78173 12.2609 9.84714 12.5327C10.3811 12.6689 10.8371 12.7761 11.1599 12.8493C11.2323 12.8658 11.2981 12.8805 11.3565 12.8934Z" fill="#c5b8b4"></path>
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M19.0624 5.60285C19.3553 5.89574 19.3553 6.37062 19.0624 6.66351L13.5306 12.1953C13.2377 12.4882 12.7628 12.4882 12.4699 12.1953C12.177 11.9024 12.177 11.4275 12.4699 11.1346L18.0017 5.60285C18.2946 5.30996 18.7695 5.30996 19.0624 5.60285Z" fill="#c5b8b4"></path>
+                        </svg>
+                        <div>
+                            ارسال نظر
+                        </div>
+                    </button>
+                    {% else %}
+                    <a href="{% url 'login_page' %}" class="w-[100%]">
+                        <button type="button" class="btn-defIconFlex gap-2" style="width: 100%; height: 50px; font-size: 17px; justify-content: center; padding-top: 12px;">
+                            <div>
+                                ورود به حساب
+                            </div>
+                        </button>
+                    </a>
+                {% endif %}
+                <button type="button" onclick="PopUp('none' ,'close')" class="btn-defIconFlex2" style="width: 100%; height: 50px; border-radius: 7px; display: block">لغو</button>
+            </div>
+        </form>
+    </div>
+</div>

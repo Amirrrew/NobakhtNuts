@@ -1,0 +1,173 @@
+{% load static %}
+{% load poll_extras %}
+                    <form method="get" class="filter-list-desktop sticky top-[100px] border-l border-[var(--color9)] pl-4 w-[300px]" id="filter-side">
+                        <div class="filter-list-title flex gap-2">
+                            <button type="button" class="btn-filter-list hidden btn-prdcounter text-sm pt-1 rounded-2xl mt-0.5" onclick="SideMenu('close' ,'filter-side')"><i class="fa fa-angle-right"></i></button>
+                            <svg class="mt-[-2px]" id="Filter" width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g opacity="0.4">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M10.7345 16.8484H4.26147C3.70947 16.8484 3.26147 17.2954 3.26147 17.8484C3.26147 18.4014 3.70947 18.8484 4.26147 18.8484H10.7345C11.2865 18.8484 11.7345 18.4014 11.7345 17.8484C11.7345 17.2954 11.2865 16.8484 10.7345 16.8484Z" fill="#674d45"></path>
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M20.2383 6.35919H13.7673C13.2153 6.35919 12.7673 6.80619 12.7673 7.35919C12.7673 7.91219 13.2153 8.35919 13.7673 8.35919H20.2383C20.7903 8.35919 21.2383 7.91219 21.2383 7.35919C21.2383 6.80619 20.7903 6.35919 20.2383 6.35919Z" fill="#674d45"></path>
+                                </g>
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M17.5172 14.6274C15.1992 14.6274 14.2952 15.5304 14.2952 17.8494C14.2952 20.1684 15.1992 21.0714 17.5172 21.0714C19.8362 21.0714 20.7392 20.1684 20.7392 17.8494C20.7392 15.5304 19.8362 14.6274 17.5172 14.6274Z" fill="#674d45"></path>
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M6.98347 10.5805C9.30247 10.5805 10.2055 9.67754 10.2055 7.35754C10.2055 5.03954 9.30247 4.13654 6.98347 4.13654C4.66447 4.13654 3.76147 5.03954 3.76147 7.35754C3.76147 9.67754 4.66447 10.5805 6.98347 10.5805Z" fill="#674d45"></path>
+                                </svg>
+                            <h1 class="text-3xl font-black">فیلتر ها</h1>
+                        </div>
+
+                        <div class="filter-list-inner mt-4">
+
+                            <div class="drawer-menu mt-2"  id="drawer-order">
+                                <div class="flex justify-between cursor-pointer m-2.5" onclick="Drawer('drawer-order' ,'drawer2' ,'drawer-angle-2')">
+                                    <div class="flex gap-1">
+                                        <svg id="Category" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M21.2504 6.6738C21.2504 8.7024 19.6052 10.3476 17.5766 10.3476C15.548 10.3476 13.9037 8.7024 13.9037 6.6738C13.9037 4.6452 15.548 3 17.5766 3C19.6052 3 21.2504 4.6452 21.2504 6.6738Z" stroke="#674d45" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M10.5967 6.6738C10.5967 8.7024 8.9524 10.3476 6.9229 10.3476C4.8952 10.3476 3.25 8.7024 3.25 6.6738C3.25 4.6452 4.8952 3 6.9229 3C8.9524 3 10.5967 4.6452 10.5967 6.6738Z" stroke="#674d45" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M21.2504 17.2619C21.2504 19.2905 19.6052 20.9348 17.5766 20.9348C15.548 20.9348 13.9037 19.2905 13.9037 17.2619C13.9037 15.2333 15.548 13.5881 17.5766 13.5881C19.6052 13.5881 21.2504 15.2333 21.2504 17.2619Z" stroke="#674d45" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                        <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M10.5967 17.2619C10.5967 19.2905 8.9524 20.9348 6.9229 20.9348C4.8952 20.9348 3.25 19.2905 3.25 17.2619C3.25 15.2333 4.8952 13.5881 6.9229 13.5881C8.9524 13.5881 10.5967 15.2333 10.5967 17.2619Z" stroke="#674d45" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                        </svg>
+                                        <div class="{% if request.GET.order %}mt-[-9px]{% endif %}">
+                                            <h1 class="">مرتب سازی</h1>
+                                            <div id="filter-ordering" class="flex gap-1 text-sm text-[var(--color10)] items-start mt-[-3px]">{% if request.GET.order %}<div class="p-1 rounded-full mt-1 bg-[var(--color6)]"></div>{% endif %}{% if request.GET.order == '-price' %}بیشترین قیمت{% elif request.GET.order == 'price' %}کمترین قیمت{% elif request.GET.order == '-created_at' %}جدیدترین{% elif request.GET.order == '-view' %}پربازدید ترین{% endif %}</div>
+                                        </div>
+                                    </div>
+                                    <i class="fa fa-angle-down mt-1.5 text-[var(--color10)] relative" id="drawer-angle-2"></i>
+                                </div>
+
+                                <div class="drawer-section" id="drawer2" style="display: none">
+                                    <label for="-price" class="drawer-option relative text-[var(--color6)] text-lg cursor-pointer" style="animation: load5 200ms">
+                                        <div class="flex gap-2">
+                                            <i class="fa fa-sort-amount-desc text-[var(--color10)]" style="transform: rotate(180deg)"></i>
+                                            <h1 class="mt-[-2px]">بیشترین قیمت</h1>
+                                        </div>
+                                        <input id="-price" type="radio" class="ui-checkbox" name="order" value="-price" {% if request.GET.order == '-price' %}checked{% endif %}>
+                                    </label>
+
+                                    <label for="price" class="drawer-option relative text-[var(--color6)] text-lg cursor-pointer" style="animation: load5 300ms">
+                                        <div class="flex gap-2">
+                                            <i class="fa fa-sort-amount-desc text-[var(--color10)]"></i>
+                                            <h1 class="mt-[-2px]">کمترین قیمت</h1>
+                                        </div>
+                                        <input id="price" type="radio" class="ui-checkbox" name="order" value="price" {% if request.GET.order == 'price' %}checked{% endif %}>
+                                    </label>
+
+                                    <label for="-created_at" class="drawer-option relative text-[var(--color6)] text-lg cursor-pointer" style="animation: load5 400ms">
+                                        <div class="flex gap-2">
+                                            <i class="fa fa-star text-[var(--color10)]"></i>
+                                            <h1 class="mt-[-2px]">جدیدترین</h1>
+                                        </div>
+                                        <input id="-created_at" type="radio" class="ui-checkbox" name="order" value="-created_at" {% if request.GET.order == '-created_at' %}checked{% endif %}>
+                                    </label>
+
+                                    <label for="-view" class="drawer-option relative text-[var(--color6)] text-lg cursor-pointer" style="animation: load5 500ms">
+                                        <div class="flex gap-2">
+                                            <i class="fa fa-eye text-[var(--color10)] mt-0.5"></i>
+                                            <h1 class="mt-[-2px]">پربازدید ترین</h1>
+                                        </div>
+                                        <input id="-view" type="radio" class="ui-checkbox" name="order" value="-view" {% if request.GET.order == '-view' %}checked{% endif %}>
+                                    </label>
+
+                                </div>
+                            </div>
+
+                            <div class="input-icon-def1 mt-2">
+                                <svg id="Arrow - Down" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                    <g id="Iconly/Bulk/Arrow---Down" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                                        <g id="Arrow---Down" transform="translate(6.000000, 3.000000)" fill="#674d45" fill-rule="nonzero">
+                                            <path d="M4.80969341,5.20248239 L4.48254085,1.50325451 C4.48254085,0.673082751 5.16218102,1.37667655e-14 6.00044061,1.37667655e-14 C6.8387002,1.37667655e-14 7.51834037,0.673082751 7.51834037,1.50325451 L7.19118781,5.20248239 C7.19118781,5.85374723 6.6580503,6.38174083 6.00044061,6.38174083 C5.34172939,6.38174083 4.80969341,5.85374723 4.80969341,5.20248239" id="Fill-1" opacity="0.400000006"></path>
+                                            <path d="M4.86983661,17.6247318 C4.81145585,17.5669143 4.56471452,17.350917 4.3598311,17.1480103 C3.0765559,15.9643883 0.978153112,12.8738803 0.335964751,11.2571726 C0.23352304,11.0117211 0.0154213328,10.3910013 1.27897692e-13,10.0582781 C1.27897692e-13,9.74082738 0.0738020929,9.43755833 0.219203231,9.14847093 C0.422985129,8.7873844 0.744630072,8.49938789 1.12355425,8.34011709 C1.38571691,8.23866377 2.17330641,8.07939298 2.18762622,8.07939298 C3.04791628,7.92121308 4.44685148,7.8350323 5.99339086,7.8350323 C7.46502662,7.8350323 8.80668258,7.92121308 9.68129245,8.05102968 C9.69671379,8.06521133 10.6737654,8.22448213 11.0086286,8.39793457 C11.6210758,8.71538527 12,9.33610502 12,10.0004606 L12,10.0582781 C11.9856802,10.4913637 11.6056545,11.4011709 11.5924362,11.4011709 C10.9502478,12.9316978 8.95318524,15.9491158 7.62584909,17.162192 C7.62584909,17.162192 7.28437672,17.5047333 7.07178263,17.6530951 C6.76555902,17.884365 6.38663484,18 6.00771067,18 C5.58472554,18 5.19148155,17.8701834 4.86983661,17.6247318" id="Fill-4"></path>
+                                        </g>
+                                    </g>
+                                </svg>
+                                <input class="input-filter" placeholder="شروع قیمت از:" oninput="InputSetCurrency('start-price')" maxlength="15" type="text" name="start_price" id="start-price" value="{{ request.GET.start_price }}">
+                                <div class="pt-4 pl-2 text-[var(--color7)] text-sm">تومان</div>
+                            </div>
+
+                            <div class="input-icon-def1 mt-2">
+                                <svg id="Arrow - Up" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                    <g id="Iconly/Bulk/Arrow---Up" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                                        <g id="Arrow---Up" transform="translate(12.000000, 12.000000) rotate(-180.000000) translate(-12.000000, -12.000000) translate(6.000000, 3.000000)" fill="#674d45" fill-rule="nonzero">
+                                            <path d="M4.80969341,5.20248239 L4.48254085,1.50325451 C4.48254085,0.673082751 5.16218102,1.37667655e-14 6.00044061,1.37667655e-14 C6.8387002,1.37667655e-14 7.51834037,0.673082751 7.51834037,1.50325451 L7.19118781,5.20248239 C7.19118781,5.85374723 6.6580503,6.38174083 6.00044061,6.38174083 C5.34172939,6.38174083 4.80969341,5.85374723 4.80969341,5.20248239" id="Fill-1" opacity="0.400000006"></path>
+                                            <path d="M4.86983661,17.6247318 C4.81145585,17.5669143 4.56471452,17.350917 4.3598311,17.1480103 C3.0765559,15.9643883 0.978153112,12.8738803 0.335964751,11.2571726 C0.23352304,11.0117211 0.0154213328,10.3910013 1.27897692e-13,10.0582781 C1.27897692e-13,9.74082738 0.0738020929,9.43755833 0.219203231,9.14847093 C0.422985129,8.7873844 0.744630072,8.49938789 1.12355425,8.34011709 C1.38571691,8.23866377 2.17330641,8.07939298 2.18762622,8.07939298 C3.04791628,7.92121308 4.44685148,7.8350323 5.99339086,7.8350323 C7.46502662,7.8350323 8.80668258,7.92121308 9.68129245,8.05102968 C9.69671379,8.06521133 10.6737654,8.22448213 11.0086286,8.39793457 C11.6210758,8.71538527 12,9.33610502 12,10.0004606 L12,10.0582781 C11.9856802,10.4913637 11.6056545,11.4011709 11.5924362,11.4011709 C10.9502478,12.9316978 8.95318524,15.9491158 7.62584909,17.162192 C7.62584909,17.162192 7.28437672,17.5047333 7.07178263,17.6530951 C6.76555902,17.884365 6.38663484,18 6.00771067,18 C5.58472554,18 5.19148155,17.8701834 4.86983661,17.6247318" id="Fill-4"></path>
+                                        </g>
+                                    </g>
+                                </svg>
+                                <input class="input-filter" placeholder="تا:" oninput="InputSetCurrency('end-price')" maxlength="15" type="text" name="end_price" id="end-price" value="{{ request.GET.end_price }}">
+                                <div class="pt-4 pl-2 text-[var(--color7)] text-sm">تومان</div>
+                            </div>
+
+
+                            <div class="drawer-menu mt-2"  id="drawer-brand">
+                                <div class="flex justify-between cursor-pointer m-2.5" onclick="Drawer('drawer-brand' ,'drawer' ,'drawer-angle')">
+                                    <div class="flex gap-1">
+                                        <div class="{% if request.GET.brand %}mt-[-7px]{% endif %}">
+                                            <h1 class="">برند ها</h1>
+                                            {% if request.GET.brand %}
+                                                <div class="flex gap-1 items-start">
+                                                    <div class="p-1 rounded-full bg-[var(--color6)]"></div>
+                                                    <div class="text-[var(--color10)] text-sm mt-[-3px]">
+                                                        {% for br in selected_brands|slice:4 %}
+                                                            {{ br.title }} {% if not forloop.last %},{% endif %} {% if forloop.last and selected_brands.count > 4 %} ...{% endif %}
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <i class="fa fa-angle-down mt-1.5 text-[var(--color10)] relative" id="drawer-angle"></i>
+                                </div>
+
+                                <div class="drawer-section" id="drawer" style="display: none">
+                                    {% for b in brand %}
+                                        <label for="{{ b.id }}" class="drawer-option relative text-[var(--color6)] text-lg cursor-pointer transition-all active:transform-[scale(0.95)] active:filter-[blur(2px)]" style="animation: load5 {% widthratio forloop.counter 1 50 %}ms">
+                                            <div class="flex gap-2">
+                                                <img loading="lazy" alt="{{ b.title }}" class="w-5 h-5" src="{% if b.logo %}{{ b.logo.url }}{% endif %}">
+                                                <h1 class="mt-[-2px]">{{ b.title }}</h1>
+                                            </div>
+                                            <input value="{{ b.id }}" id="{{ b.id }}" name="brand" type="checkbox" class="ui-checkbox" {% if b.id|stringformat:'s' in selected_brands_ids %} checked {% endif %}>
+                                        </label>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <label for="available" class="flex justify-between w-[100%] h-[60px] border-2 border-[var(--color8)] rounded-lg mt-2 p-4">
+                                <div class="flex gap-1">
+                                    <svg class="mt-[-2px]" id="Shield Done" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M19.9377 5.42951C19.3317 4.82251 16.0037 2.67651 12.2497 2.67651C8.49369 2.67651 5.16769 4.82251 4.56169 5.42951C3.98069 6.01151 3.98969 6.46451 4.03369 8.97851C4.05269 9.99851 4.07769 11.3865 4.07769 13.3045C4.07769 19.8245 9.39969 22.5315 12.2497 22.5315C15.0987 22.5315 20.4217 19.8245 20.4217 13.3045C20.4217 11.3855 20.4467 9.99651 20.4657 8.97751C20.5107 6.46351 20.5187 6.01151 19.9377 5.42951Z" fill="#674d45"></path>
+                                    <path d="M12.073 14.7244L15.971 10.8254C16.264 10.5324 16.264 10.0574 15.971 9.76443C15.678 9.47143 15.203 9.47143 14.91 9.76443L11.543 13.1334L10.181 11.7694C9.88802 11.4764 9.41302 11.4764 9.12102 11.7694C8.82702 12.0614 8.82702 12.5374 9.12002 12.8304L11.012 14.7244C11.153 14.8654 11.344 14.9444 11.543 14.9444C11.742 14.9444 11.932 14.8654 12.073 14.7244Z" fill="#674d45"></path>
+                                    </svg>
+                                    <h1 class="text-[var(--color10)] mt-0.5">فقط کالا های موجود</h1>
+                                </div>
+                                <input id="available" type="checkbox" value="1" name="available" {% if request.GET.available %}checked{% endif %} class="ui-checkbox mt-0.5">
+                            </label>
+                        </div>
+
+                        <div class="filter-list-btns">
+                                <button onclick="Showloader(3000)" type="submit" class="btn-defIconFlex mt-2 w-[100%] centerbox gap-2" style="height: 50px; padding-top: 14px">
+                                    <svg class="mt-[-2px]" id="Tick Square" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                        <g id="Iconly/Bulk/Tick-Square" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                                            <g id="Tick-Square" transform="translate(2.000300, 1.999800)" fill="#c5b8b4" fill-rule="nonzero">
+                                                <path d="M14.34,0 L5.67,0 C2.28,0 0,2.38 0,5.92 L0,14.09 C0,17.62 2.28,20 5.67,20 L14.34,20 C17.73,20 20,17.62 20,14.09 L20,5.92 C20,2.38 17.73,0 14.34,0" id="Fill-1" opacity="0.400000006"></path>
+                                                <path d="M8.8131,13.2481 C8.5891,13.2481 8.3651,13.1631 8.1941,12.9921 L5.8211,10.6191 C5.4791,10.2771 5.4791,9.7231 5.8211,9.3821 C6.1631,9.0401 6.7161,9.0391 7.0581,9.3811 L8.8131,11.1361 L12.9411,7.0081 C13.2831,6.6661 13.8361,6.6661 14.1781,7.0081 C14.5201,7.3501 14.5201,7.9041 14.1781,8.2461 L9.4321,12.9921 C9.2611,13.1631 9.0371,13.2481 8.8131,13.2481" id="Fill-4"></path>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                    اعمال فیلتر
+                                </button>
+
+                                <a href="{{ request.path }}">
+                                    <button type="button" class="btn-defIconFlex2 mt-2 w-[100%] centerbox gap-2" style="backdrop-filter: blur(10px); height: 50px; padding-top: 14px">
+                                        <svg class="mt-[-3px]" id="Delete" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                            <g id="Iconly/Bulk/Delete" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                                                <g id="Delete" transform="translate(3.000000, 2.000000)" fill="#674d45" fill-rule="nonzero">
+                                                    <path d="M16.6432894,7.4884379 C16.6432894,7.55643552 16.1103307,14.2971996 15.8059218,17.1341003 C15.6153015,18.8750394 14.492976,19.9310024 12.8094878,19.9610014 C11.5159931,19.9900003 10.2497298,20 9.00389021,20 C7.68121893,20 6.38772423,19.9900003 5.13215907,19.9610014 C3.50507888,19.9220027 2.38178085,18.8450404 2.2008861,17.1341003 C1.88772423,14.2871999 1.36449103,7.55643552 1.35476551,7.4884379 C1.34503998,7.28344508 1.41117355,7.0884519 1.54538578,6.93045743 C1.67765291,6.78446254 1.86827318,6.69646562 2.06861898,6.69646562 L15.9391614,6.69646562 C16.1385347,6.69646562 16.3194294,6.78446254 16.4623946,6.93045743 C16.5956343,7.0884519 16.6627404,7.28344508 16.6432894,7.4884379" id="Fill-1" opacity="0.400000006"></path>
+                                                    <path d="M18,3.97686081 C18,3.56587519 17.67614,3.24388646 17.2871191,3.24388646 L14.371407,3.24388646 C13.77815,3.24388646 13.2626972,2.82190123 13.1304301,2.22692206 L12.9670413,1.49794757 C12.7384915,0.616978406 11.9497515,-1.50990331e-14 11.0647288,-1.50990331e-14 L6.93624379,-1.50990331e-14 C6.04149557,-1.50990331e-14 5.26053598,0.616978406 5.0232332,1.54594589 L4.87054247,2.22792202 C4.73730279,2.82190123 4.22185001,3.24388646 3.62956559,3.24388646 L0.713853469,3.24388646 C0.323859952,3.24388646 0,3.56587519 0,3.97686081 L0,4.35684751 C0,4.75783348 0.323859952,5.08982186 0.713853469,5.08982186 L17.2871191,5.08982186 C17.67614,5.08982186 18,4.75783348 18,4.35684751 L18,3.97686081 Z" id="Fill-4"></path>
+                                                </g>
+                                            </g>
+                                        </svg>
+                                        حذف فیلتر ها
+                                    </button>
+                                </a>
+                            </div>
+                    </form>
+
+

@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    {% include 'include/head_refrence.html' %}
+  <title>
+      برنج و خشکبار نوبخت
+      {% block page_title %}
+      {% endblock %}
+  </title>
+</head>
+<body onscroll="HeaderManage()" onload="StartIntervals(true)">
+    {% include 'loader.html' %}
+    {% include 'yesno_dialog.html' %}
+    {% include 'include/header_refrence.html' %}
+    {% include 'message.html' %}
+    {% block page_content %}
+
+    {% endblock %}
+    {% include 'include/bottom_bar.html' %}
+    {% include 'include/footer_refrence.html' %}
+</body>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'scripts/main.js' %}"></script>
+<script src="{% static 'scripts/verfiy.js' %}"></script>
+
+{#<script src="{% static 'scripts/account.js' %}"></script>#}
+</html>

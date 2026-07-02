@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load poll_extras %}
+
+{% block page_title %}
+    بررسی سفارش
+{% endblock %}
+
+
+{% block page_content %}
+    {% include 'userpanel_module/include/pop_up_address.html' %}
+    <div class="centerbox">
+        <div class="checkout-title flex mt-35 w-[90%] gap-2 text-[var(--color10)] text-lg">
+            <div><button class="btn-prdcounter text-sm pt-1 rounded-2xl" onclick="history.back()"><i class="fa fa-angle-right"></i></button></div>
+            <a href="{% url 'my_basket_page' %}" class=" cursor-pointer hover:text-[var(--color6)]">سبد خرید</a>
+            <div><i class="fa fa-angle-left text-sm mt-0.5"></i></div>
+            <a href="{% url 'checkout_page' %}" class="text-[var(--color6)] cursor-pointer hover:text-[var(--color6)]">بررسی سفارش</a>
+        </div>
+    </div>
+    <form method="post" class="checkout centerbox">
+        {% csrf_token %}
+        <div class="w-[90%] flex items-start gap-3">
+            
+            <div class="w-[100%]">
+                <div class="mt-3">
+                    <div class="flex justify-between">
+                        <div class="flex gap-1">
+                            <svg id="Location" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.5C7.839 2.5 4.25 6.133 4.25 10.599C4.25 16.007 8.904 21.5 12.25 21.5C15.595 21.5 20.25 16.007 20.25 10.599C20.25 6.133 16.661 2.5 12.25 2.5Z" fill="#674d45"></path>
+                            <path d="M9.39697 10.7102C9.39697 12.2892 10.681 13.5732 12.26 13.5732C13.839 13.5732 15.124 12.2892 15.124 10.7102C15.124 9.13117 13.839 7.84717 12.26 7.84717C10.681 7.84717 9.39697 9.13117 9.39697 10.7102Z" fill="#674d45"></path>
+                            </svg>
+                            <div class="text-xl font-bold">
+                                آدرس خود را انتخاب کنید
+                            </div>
+                        </div>
+                        {% if my_address %}
+                            <button type="button" onclick="PopUp('address' ,'open')" class="btn-defIconFlex mt-[-7px] gap-2">
+                                <svg class="mt-[-1px]" id="Plus" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.2499 2.29761C4.69094 2.29761 2.01294 4.97561 2.01294 12.5346C2.01294 20.0936 4.69094 22.7716 12.2499 22.7716C19.8079 22.7716 22.4869 20.0936 22.4869 12.5346C22.4869 4.97561 19.8079 2.29761 12.2499 2.29761Z" fill="#c5b8b4"></path>
+                                <path d="M12.9996 13.2847H15.8276C16.2416 13.2847 16.5776 12.9487 16.5776 12.5347C16.5776 12.1207 16.2416 11.7847 15.8276 11.7847H12.9996V8.96069C12.9996 8.54669 12.6636 8.21069 12.2496 8.21069C11.8356 8.21069 11.4996 8.54669 11.4996 8.96069V11.7847H8.67163C8.25763 11.7847 7.92163 12.1207 7.92163 12.5347C7.92163 12.9487 8.25763 13.2847 8.67163 13.2847H11.4996V16.1087C11.4996 16.5227 11.8356 16.8587 12.2496 16.8587C12.6636 16.8587 12.9996 16.5227 12.9996 16.1087V13.2847Z" fill="#c5b8b4"></path>
+                                </svg>
+                                <div>
+                                    آدرس جدید
+                                </div>
+                            </button>
+                        {% endif %}
+                    </div>
+                    {% include 'order_module/include/checkout_address.html' %}
+
+                    {% include 'order_module/include/checkout_post.html' %}
+
+
+                    <div class="mt-10 mb-50">
+                        <div class="flex gap-1">
+                            <svg id="Info Square" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.052 2.78467 2.5 5.33667 2.5 12.5347C2.5 19.7327 5.052 22.2847 12.25 22.2847C19.448 22.2847 22 19.7327 22 12.5347C22 5.33667 19.448 2.78467 12.25 2.78467Z" fill="#674d45"></path>
+                            <path d="M12.2461 9.78467H12.2551C12.6691 9.78467 13.0011 9.44867 13.0011 9.03467C13.0011 8.62067 12.6601 8.28467 12.2461 8.28467C11.8321 8.28467 11.4961 8.62067 11.4961 9.03467C11.4961 9.44867 11.8321 9.78467 12.2461 9.78467Z" fill="#674d45"></path>
+                            <path d="M12.2501 17.1797C12.6641 17.1797 13.0001 16.8437 13.0001 16.4297V12.5347C13.0001 12.1207 12.6641 11.7847 12.2501 11.7847C11.8361 11.7847 11.5001 12.1207 11.5001 12.5347V16.4297C11.5001 16.8437 11.8361 17.1797 12.2501 17.1797Z" fill="#674d45"></path>
+                            </svg>
+                            <div class="text-xl font-bold">
+                                توضیحات سفارش
+                            </div>
+                        </div>
+                        <div class="text-[var(--color10)]">
+                            در صورت نیاز برای سفارش خود توضیحاتی بنویسید.
+                        </div>
+                        <textarea name="desc" class="w-[100%] border-2 border-[var(--color11)] mt-2 p-4 h-80 text-xl outline-none min-h-80 max-h-80 rounded-2xl transition-all focus:border-[var(--color6)]" placeholder="توضیحات خود را وارد کنید ...">{% if orders.desc %}{{ orders.desc }}{% endif %}</textarea>
+                    </div>
+                </div>
+            </div>
+            
+
+            {% include 'order_module/include/checkout_totalbox_desktop.html' %}
+        </div>
+        {% include 'order_module/include/checkout_totalbox_mobile.html' %}
+    </form>
+{% endblock %}

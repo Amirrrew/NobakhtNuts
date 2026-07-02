@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load  render_partial %}
+{% load poll_extras %}
+
+{% block page_title %}
+    پنل کاربری
+{% endblock %}
+
+
+{% block page_content %}
+    <div class="flex">
+        {% render_partial 'userpanel_module.views.side_bar' %}
+        {% block panel_content %}
+
+        {% endblock %}
+    </div>
+{% endblock %}

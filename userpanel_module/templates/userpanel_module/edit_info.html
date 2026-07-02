@@ -1,0 +1,157 @@
+{% extends 'userpanel_module/panel_index.html' %}
+{% load static %}
+{% load render_partial %}
+
+{% block page_title %}
+    ویرایش اطلاعات
+{% endblock %}
+
+{% block panel_content %}
+    <div class="w-[100%] mt-25 editpanel">
+        <div class="flex editpanel-box">
+
+
+
+{#            ----form-----#}
+            <div class=" userpanel-form">
+                <div class="flex gap-2">
+                    <button class="btn-prdcounter text-sm pt-1.5 rounded-2xl mt-2" onclick="history.back()"><i class="fa fa-angle-right"></i></button>
+                    <svg class="mt-[-5px]" id="Info Square" width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.052 2.78467 2.5 5.33667 2.5 12.5347C2.5 19.7327 5.052 22.2847 12.25 22.2847C19.448 22.2847 22 19.7327 22 12.5347C22 5.33667 19.448 2.78467 12.25 2.78467Z" fill="#674d45"></path><path d="M12.2461 9.78467H12.2551C12.6691 9.78467 13.0011 9.44867 13.0011 9.03467C13.0011 8.62067 12.6601 8.28467 12.2461 8.28467C11.8321 8.28467 11.4961 8.62067 11.4961 9.03467C11.4961 9.44867 11.8321 9.78467 12.2461 9.78467Z" fill="#674d45"></path><path d="M12.2501 17.1797C12.6641 17.1797 13.0001 16.8437 13.0001 16.4297V12.5347C13.0001 12.1207 12.6641 11.7847 12.2501 11.7847C11.8361 11.7847 11.5001 12.1207 11.5001 12.5347V16.4297C11.5001 16.8437 11.8361 17.1797 12.2501 17.1797Z" fill="#674d45"></path></svg>
+                    <div class="text-4xl font-black userpanel-title">
+                        ویرایش اطلاعات
+                    </div>
+                </div>
+
+                <form method="post" enctype="multipart/form-data" class="editpanel-inputbox">
+                    {% csrf_token %}
+                    <div class="flex mt-5 w-[100%] bg-[var(--color12)] p-3 rounded-xl">
+                        <div id="upload-avatar" class="image-inputbox" style="{% if user.avatar %}background-image: url({{ user.avatar.url }});{% endif %}">
+                            <input oninput="SetUploadedImage(event ,'upload-avatar')" name="avatar" type="file" class="cursor-pointer w-[100%] h-[100%] opacity-0" style="z-index: 100">
+                            {% if not user.avatar %}
+                                <svg style="z-index: -1" class="relative top-[-75px] right-6" id="Upload" width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M16.65 7.28717C15.53 7.20717 14.3499 7.16735 13.1199 7.15735H11.6199C10.4099 7.16735 9.15 7.21717 7.85 7.28717H7.83C3.8 7.65717 2.5 9.48717 2.5 14.7872C2.5 22.3872 5.35 22.3872 12.25 22.3872C19.15 22.3872 22 22.3872 22 14.7872C22 9.48717 20.7 7.65717 16.65 7.28717Z" fill="#674d45"></path>
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M12.9998 4.16917L14.6388 5.81217C14.7848 5.95917 14.9778 6.03316 15.1698 6.03316C15.3608 6.03316 15.5528 5.95917 15.6988 5.81417C15.9928 5.52117 15.9928 5.04617 15.7008 4.75317L12.7808 1.82517C12.4998 1.54217 11.9998 1.54217 11.7188 1.82517L8.79883 4.75317C8.50683 5.04617 8.50683 5.52117 8.80083 5.81417C9.09483 6.10617 9.56883 6.10617 9.86083 5.81217L11.4998 4.16917V14.406C11.4998 14.8177 11.8454 15.1483 12.257 15.1483C12.6689 15.1483 12.9998 14.8173 12.9998 14.4054V4.16917Z" fill="#674d45"></path>
+                                </svg>
+                            {% endif %}
+                        </div>
+                        <div class="mx-3 mt-3">
+                            {% if user.avatar %}
+                                <div class="profile-info">
+                                    <div class="text-xl">
+                                        تصویر پروفایل
+                                    </div>
+                                </div>
+                                <div>
+                                    <a class="mt-2" href="{% url 'delete_avatar_page' %}">
+                                        <button type="button" class="btn-defIconFlex btn-delete-upload gap-2" style="z-index: 200">
+                                            <svg id="Delete" width="22px" height="22px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                <g id="Iconly/Bulk/Delete" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                                                    <g id="Delete" transform="translate(3.000000, 2.000000)" fill="#c5b8b4" fill-rule="nonzero">
+                                                        <path d="M16.6432894,7.4884379 C16.6432894,7.55643552 16.1103307,14.2971996 15.8059218,17.1341003 C15.6153015,18.8750394 14.492976,19.9310024 12.8094878,19.9610014 C11.5159931,19.9900003 10.2497298,20 9.00389021,20 C7.68121893,20 6.38772423,19.9900003 5.13215907,19.9610014 C3.50507888,19.9220027 2.38178085,18.8450404 2.2008861,17.1341003 C1.88772423,14.2871999 1.36449103,7.55643552 1.35476551,7.4884379 C1.34503998,7.28344508 1.41117355,7.0884519 1.54538578,6.93045743 C1.67765291,6.78446254 1.86827318,6.69646562 2.06861898,6.69646562 L15.9391614,6.69646562 C16.1385347,6.69646562 16.3194294,6.78446254 16.4623946,6.93045743 C16.5956343,7.0884519 16.6627404,7.28344508 16.6432894,7.4884379" id="Fill-1" opacity="0.400000006"></path>
+                                                        <path d="M18,3.97686081 C18,3.56587519 17.67614,3.24388646 17.2871191,3.24388646 L14.371407,3.24388646 C13.77815,3.24388646 13.2626972,2.82190123 13.1304301,2.22692206 L12.9670413,1.49794757 C12.7384915,0.616978406 11.9497515,-1.50990331e-14 11.0647288,-1.50990331e-14 L6.93624379,-1.50990331e-14 C6.04149557,-1.50990331e-14 5.26053598,0.616978406 5.0232332,1.54594589 L4.87054247,2.22792202 C4.73730279,2.82190123 4.22185001,3.24388646 3.62956559,3.24388646 L0.713853469,3.24388646 C0.323859952,3.24388646 0,3.56587519 0,3.97686081 L0,4.35684751 C0,4.75783348 0.323859952,5.08982186 0.713853469,5.08982186 L17.2871191,5.08982186 C17.67614,5.08982186 18,4.75783348 18,4.35684751 L18,3.97686081 Z" id="Fill-4"></path>
+                                                    </g>
+                                                </g>
+                                            </svg>
+                                            <div style="color: #e8afaf">
+                                                حذف عکس پروفایل
+                                            </div>
+                                        </button>
+                                    </a>
+                                </div>
+                            {% else %}
+                                <div class="profile-info">
+                                    <div class="text-xl">
+                                        تصویر پروفایل
+                                    </div>
+                                    <div class="text-sm" style="color: var(--color6)">
+                                        برای آپلود روی اعمال تغییرات کلیک کنید
+                                    </div>
+                                    <div class="text-sm" style="color: var(--color5)">
+                                        فرمت عکس باید png - jpg - jpeg - webp
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="flex mt-7 gap-4 editpanel-row">
+
+                        <div class="input-icon-def1" style="width: 100%">
+                            <svg id="Call" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <g id="Iconly/Bulk/Call" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                                    <g id="Call" transform="translate(2.500000, 2.500000)" fill="#a89995">
+                                        <path d="M9.03174073,9.97238745 C13.0208243,13.9603606 13.9257751,9.34671782 16.4656491,11.8848116 C18.9142765,14.3327574 20.32162,14.8232052 17.2192381,17.9247236 C16.8306352,18.2370218 14.3616115,21.9942591 5.68460336,13.3196663 C-2.99347825,4.64400029 0.761584769,2.17244427 1.07396994,1.78394958 C4.18386634,-1.32615434 4.6658627,0.0893829491 7.11449014,2.53732879 C9.6543641,5.07649576 5.04265719,5.9844143 9.03174073,9.97238745 Z" id="Stroke-1"></path>
+                                    </g>
+                                </g>
+                            </svg>
+                            <input disabled class="disabled" type="number" name="phone" value="{{ user.phone }}">
+                            <div class="input-placeholder-edit2" id="">شماره تلفن ( عدم امکان ویرایش )</div>
+                        </div>
+
+                        <div class="input-icon-def1" style="width: 100%">
+                            <svg id="User" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <g id="Iconly/Bulk/2-User" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                                    <g id="2-User" transform="translate(2.000000, 3.000000)" fill="#a89995" fill-rule="nonzero">
+                                        <path d="M7.34933305,11.8577345 C3.38552687,11.8577345 -6.83897383e-14,12.4700446 -6.83897383e-14,14.9173685 C-6.83897383e-14,17.3666088 3.3640004,18 7.34933305,18 C11.3131392,18 14.6986661,17.3876899 14.6986661,14.940366 C14.6986661,12.4911257 11.3346657,11.8577345 7.34933305,11.8577345" id="Fill-1"></path>
+                                        <path d="M7.34933305,9.52482353 C10.0489483,9.52482353 12.2123586,7.40617314 12.2123586,4.76241176 C12.2123586,2.11865038 10.0489483,-9.76996262e-15 7.34933305,-9.76996262e-15 C4.65069631,-9.76996262e-15 2.48630745,2.11865038 2.48630745,4.76241176 C2.48630745,7.40617314 4.65069631,9.52482353 7.34933305,9.52482353" id="Fill-3" opacity="0.400000006"></path>
+                                        <path d="M14.1734202,4.84874844 C14.1734202,6.19506404 13.7605033,7.45130586 13.0364311,8.49482023 C12.9610885,8.60214218 13.0276248,8.74683517 13.1587406,8.76983274 C13.3407371,8.79953792 13.527626,8.81774432 13.7184289,8.82157725 C15.6166723,8.87044707 17.3201989,7.67361562 17.7908459,5.87118171 C18.4884992,3.19675692 16.4415275,0.79542817 13.833889,0.79542817 C13.5511095,0.79542817 13.2800716,0.824175122 13.0158831,0.876877868 C12.9796795,0.884543722 12.9405405,0.901791893 12.9209709,0.932455309 C12.8955306,0.971742811 12.9141216,1.02252909 12.939562,1.0560672 C13.7233212,2.13216145 14.1734202,3.44206424 14.1734202,4.84874844" id="Fill-5" opacity="0.400000006"></path>
+                                        <path d="M19.779109,12.1693515 C19.4317501,11.4439701 18.5931962,10.9466478 17.3172635,10.7022987 C16.7155008,10.5585639 15.0853598,10.3544606 13.5697005,10.3832075 C13.5471956,10.3860822 13.5344754,10.4014139 13.5325184,10.4109962 C13.529583,10.4263279 13.5364323,10.4493255 13.5657866,10.4656155 C14.2663754,10.8048295 16.9738184,12.2805064 16.6333088,15.3928431 C16.6186317,15.528912 16.7291994,15.6438998 16.8671645,15.6247352 C17.5335067,15.5317867 19.2477966,15.1705333 19.779109,14.0474857 C20.0736303,13.453382 20.0736303,12.7634552 19.779109,12.1693515" id="Fill-7"></path>
+                                    </g>
+                                </g>
+                            </svg>
+                            <input value="{{ user.username }}"  onfocus="PlaceHolderHandle('edit-username' ,'username-plc' ,'fc')" onblur="PlaceHolderHandle('edit-username' ,'username-plc' ,'bl')"  name="username" id="edit-username">
+                            <div class="input-placeholder-edit2" id="username-plc">نام کاربری</div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="flex mt-5 gap-4 editpanel-row">
+
+                        <div class="input-icon-def1" style="width: 100%">
+                            <svg id="Face" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.38867C6.874 2.38867 2.5 6.76267 2.5 12.1387C2.5 17.5147 6.874 21.8887 12.25 21.8887C17.626 21.8887 22 17.5147 22 12.1387C22 6.76267 17.626 2.38867 12.25 2.38867Z" fill="#a89995"></path>
+                            <path d="M15.8956 12.0629H17.3956V10.5629H15.8856L15.8956 12.0629Z" fill="#a89995"></path>
+                            <path d="M9.52762 15.9609H14.2936V14.4609H10.6846L12.6176 7.90889L11.1786 7.48389L8.95762 15.0129L9.52762 15.9609Z" fill="#a89995"></path>
+                            <path d="M6.44262 12.0629H7.94262V10.5629H6.43262L6.44262 12.0629Z" fill="#a89995"></path>
+                            </svg>
+                            <input value="{{ user.first_name }}" onfocus="PlaceHolderHandle('edit-name' ,'name-plc' ,'fc')" onblur="PlaceHolderHandle('edit-name' ,'name-plc' ,'bl')" type="text" name="first_name" id="edit-name">
+                            <div class="input-placeholder-edit2" id="name-plc">نام</div>
+                        </div>
+
+                        <div class="input-icon-def1" style="width: 100%">
+                            <svg id="Face" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.38867C6.874 2.38867 2.5 6.76267 2.5 12.1387C2.5 17.5147 6.874 21.8887 12.25 21.8887C17.626 21.8887 22 17.5147 22 12.1387C22 6.76267 17.626 2.38867 12.25 2.38867Z" fill="#a89995"></path>
+                            <path d="M15.8956 12.0629H17.3956V10.5629H15.8856L15.8956 12.0629Z" fill="#a89995"></path>
+                            <path d="M9.52762 15.9609H14.2936V14.4609H10.6846L12.6176 7.90889L11.1786 7.48389L8.95762 15.0129L9.52762 15.9609Z" fill="#a89995"></path>
+                            <path d="M6.44262 12.0629H7.94262V10.5629H6.43262L6.44262 12.0629Z" fill="#a89995"></path>
+                            </svg>
+                            <input value="{{ user.last_name }}" onblur="PlaceHolderHandle('edit-lastname' ,'lastname-plc' ,'bl')" onfocus="PlaceHolderHandle('edit-lastname' ,'lastname-plc' ,'fc')" type="text" name="last_name" id="edit-lastname">
+                            <div class="input-placeholder-edit2" id="lastname-plc">نام خانوادگی</div>
+                        </div>
+
+
+
+                    </div>
+                    <textarea placeholder="درباره ی خود بنویسید" class="input-icon-def1 outline-none p-5 mt-5" style="width: 100%; max-width: 100%; max-height: 300px; min-height: 200px; min-width: 100%;" name="about_me">{% if user.about_me %}{{ user.about_me }}{% endif %}</textarea>
+                    <button type="submit" class="submit-btn btn-defIconFlex w-[100%] justify-center gap-1 mt-4" style="padding: 15px 0; height: auto">
+                        <svg id="Paper Upload" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                            <g id="Iconly/Bulk/Paper-Upload" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                                <g id="Paper-Upload" transform="translate(3.500000, 2.000000)" fill="#c5b8b4" fill-rule="nonzero">
+                                    <path d="M15.3088124,7.021 C14.8573009,7.021 14.2592463,7.011 13.5146485,7.011 C11.6987011,7.011 10.2055449,5.508 10.2055449,3.675 L10.2055449,0.459 C10.2055449,0.206 10.0025628,0 9.75304328,0 L4.4636263,0 C1.99516571,0 0,2.026 0,4.509 L0,15.284 C0,17.889 2.09022075,20 4.66957889,20 L12.5452851,20 C15.0058245,20 17,17.987 17,15.502 L17,7.471 C17,7.217 16.798008,7.012 16.5465082,7.013 C16.1247015,7.016 15.6167511,7.021 15.3088124,7.021" id="Fill-3" opacity="0.400000006"></path>
+                                    <path d="M12.5842,0.5673 C12.2852,0.2563 11.7632,0.4703 11.7632,0.9013 L11.7632,3.5383 C11.7632,4.6443 12.6742,5.5543 13.7792,5.5543 C14.4772,5.5623 15.4452,5.5643 16.2672,5.5623 C16.6882,5.5613 16.9022,5.0583 16.6102,4.7543 C15.5552,3.6573 13.6662,1.6913 12.5842,0.5673" id="Fill-1" opacity="0.400000006"></path>
+                                    <path d="M11.6052,10.8837 C11.3142,11.1727 10.8432,11.1747 10.5512,10.8817 L8.9622,9.2847 L8.9622,14.1117 C8.9622,14.5227 8.6282,14.8567 8.2172,14.8567 C7.8062,14.8567 7.4732,14.5227 7.4732,14.1117 L7.4732,9.2847 L5.8822,10.8817 C5.5922,11.1747 5.1202,11.1727 4.8292,10.8837 C4.5382,10.5947 4.5372,10.1227 4.8272,9.8307 L7.6892,6.9557 C7.6902,6.9547 7.6902,6.9547 7.6902,6.9547 C7.7582,6.8867 7.8402,6.8317 7.9302,6.7947 C8.0202,6.7567 8.1182,6.7367 8.2172,6.7367 C8.3172,6.7367 8.4152,6.7567 8.5052,6.7947 C8.5942,6.8317 8.6752,6.8867 8.7432,6.9537 C8.7442,6.9547 8.7452,6.9547 8.7452,6.9557 L11.6072,9.8307 C11.8972,10.1227 11.8972,10.5947 11.6052,10.8837" id="Fill-6"></path>
+                                </g>
+                            </g>
+                        </svg>
+                        <div>
+                            ذخیره تغییرات
+                        </div>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+
+    </script>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% load static %}
+{% load poll_extras %}
+                <div class="basket-total w-[400px] min-h-[300px] bg-[var(--color12)] rounded-2xl p-4 sticky top-[100px] mt-12">
+                    <div class="flex gap-2 pt-2">
+                        <div class="text-nowrap">تعداد اقلام سبد خرید</div>
+                        <div class="w-[100%] mt-2.5" style="border-top: 1px dashed var(--color10);"></div>
+                        <div class="text-2xl mt-[-4px]">{{ total_items|to_fanum }}</div>
+                    </div>
+                    <div class="flex gap-2 pt-2">
+                        <div class="text-nowrap">وزن مرسوله</div>
+                        <div class="w-[100%] mt-2.5" style="border-top: 1px dashed var(--color10);"></div>
+                        <div class="text mt-[-4px] text-nowrap">{{ total_weight|to_fanum }} کیلو</div>
+                    </div>
+                    <div class="flex gap-2 pt-3">
+                        <div class="text-nowrap">روش ارسال</div>
+                        <div class="w-[100%] mt-2.5" style="border-top: 1px dashed var(--color10);"></div>
+                        <div class="text mt-[-4px] text-nowrap">{{ orders.posting_method }}</div>
+                    </div>
+                    <div class="flex gap-2 pt-3">
+                        <div class="text-nowrap">هزینه ارسال</div>
+                        <div class="w-[100%] mt-2.5" style="border-top: 1px dashed var(--color10);"></div>
+                        <div class="text mt-[-4px] text-nowrap">{% if postage_fee == 0 %}پسکرایه{% else %}{{ postage_fee|three_digits_currency }}{% endif %}</div>
+                    </div>
+                    <div class="mt-2">
+                        <div class="text-[var(--color10)] border-t border-dashed border-[var(--color11)] pt-2 mt-2">مجموع سبد خرید</div>
+                        <div class="text-3xl relative" style="animation: load 300ms">{{ total_amount|three_digits_currency }}</div>
+                    </div>
+                    <div class="text-2xl text-[var(--color6)]"></div>
+                    <div class="w-[100%] absolute bottom-4">
+                            <button onclick="Showloader(4000)" name="form_type" value="order" type="submit" style="width: 90%; height: 50px; padding-top: 13px; justify-content: center" class="btn-defIconFlex gap-1">
+                                <svg class="mt-[-2px]" id="Tick Square" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.052 2.78467 2.5 5.33667 2.5 12.5347C2.5 19.7327 5.052 22.2847 12.25 22.2847C19.448 22.2847 22 19.7327 22 12.5347C22 5.33667 19.448 2.78467 12.25 2.78467Z" fill="#c5b8b4"></path>
+                                <path d="M11.5912 15.4375L16.3412 10.6915C16.6342 10.3985 16.6342 9.92351 16.3412 9.63051C16.0482 9.33851 15.5732 9.33751 15.2802 9.63051L11.0612 13.8465L9.2202 12.0035C8.9282 11.7125 8.4532 11.7105 8.1592 12.0035C7.8662 12.2965 7.8662 12.7715 8.1592 13.0645L10.5302 15.4375C10.6712 15.5785 10.8622 15.6575 11.0612 15.6575C11.2602 15.6575 11.4502 15.5785 11.5912 15.4375Z" fill="#c5b8b4"></path>
+                                </svg>
+                                <div>پرداخت</div>
+                            </button>
+                    </div>
+                </div>

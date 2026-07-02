@@ -1,0 +1,29 @@
+{% load poll_extras %}
+{% load static %}
+
+                    <div>
+                        {% for pay in payment_method %}
+                            <input type="radio" name="payment" id="{{ pay.id }}" value="{{ pay.id }}" {% if forloop.first %} checked {% endif %} hidden>
+                            <label class="{% if not pay.is_active %}disabled{% endif %} address-check flex items-start w-[100%] gap-2 bg-[var(--color12)] text-[var(--color6)] cursor-pointer border-2 border-[var(--color12)] p-3 rounded-xl mt-2 relative transition-all" style="animation: load {% widthratio forloop.counter 1 300 %}ms" for="{{ pay.id }}">
+                                <div class="address-checked transition-all centerbox items-center rounded-xl w-10 h-10 mt-1 bg-[var(--color9)]">
+                                    <div class="address-checked-icon text-[var(--color14)] mt-1"><i class="fa fa-check"></i></div>
+                                    <div class="address-unchecked-icon text-[var(--color10)] mt-1"><i class="fa fa-circle"></i></div>
+                                </div>
+                                <div>
+                                    <div class="text-[var(--color6)] text-xl flex gap-1 items-start">
+                                        <svg id="Bank Card" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M2.5 19.6686H22V10.6716H2.5V19.6686Z" fill="#674d45"></path>
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M2.5 9.17164H22V4.60864H2.5V9.17164Z" fill="#674d45"></path>
+                                        <path d="M19.327 16.2307H14.352V14.7307H19.327V16.2307Z" fill="#674d45"></path>
+                                        <path d="M12.374 16.2307H10.126V14.7307H12.374V16.2307Z" fill="#674d45"></path>
+                                        </svg>
+                                        {{ pay.title|to_fanum }}
+                                        {% if not pay.is_active %}<div class="bg-[var(--color8)] text-sm px-1 py-0.5 rounded-lg">غیرفعال</div>{% endif %}
+                                    </div>
+                                    <div class="text-[var(--color10)]" style="max-width: 700px">
+                                        {{ pay.desc }}
+                                    </div>
+                                </div>
+                            </label>
+                        {% endfor %}
+                    </div>

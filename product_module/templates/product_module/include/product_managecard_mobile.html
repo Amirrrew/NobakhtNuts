@@ -1,0 +1,138 @@
+{% load static %}
+{% load poll_extras %}
+<div class="prd-navbarbox centerbox w-[100%] fixed bottom-1" style="z-index: 100">
+        <div id="prd-navbar" class="prd-navbar">
+            <div onclick="PrdNav()" class="btn-prdnavbar flex justify-between w-[100%] p-2 pt-3 items-start">
+                <div>{{ product.title|to_fanum }}</div>
+                <button class="btn-prdnavbar rounded-lg bg-[var(--color9)] w-6 pt-1 h-6 text-xs cursor-pointer"><i id="btn-navicon" class="fa fa-angle-down"></i></button>
+            </div>
+                <div id="prd-items-mobile" class="relative">
+                    {% include 'product_module/include/product_incart.html' %}
+                </div>
+                    <div id="prd-priceandstuff" class="">
+                        <div id="prd-packsize">
+                            {% if product.packs and product.is_byWeight %}
+                                <div class="text-[var(--color10)] mt-5">
+                                    اندازه بسته بندی را انتخاب کنید
+                                </div>
+                                <div class="flex flex-wrap gap-2 mt-1" >
+                                    {% for pack in product.packs.all %}
+                                        <input class="pack-size-input" onchange="CartCheck('btn-addtocart-mobile' ,{{ product.final_price }} ,{{ pack.size }} ,'{{ pack.title }}')" type="radio" name="pack_mobile" id="pack_mobile_{{ pack.id }}" value="{{ pack.id }}" hidden>
+                                        <label class="pack-size" for="pack_mobile_{{ pack.id }}" class="cursor-pointer bg-[var(--color11)] border border-[var(--color8)] py-1 px-2 rounded-xl text-sm text-[var(--color6)] peer-checked:bg-[var(--color6)]">{{ pack.title|to_fanum }}</label>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        {% if product.quantity < 6 and product.quantity > 0 %}
+                            {% if product.is_byWeight %}
+                                <div class="flex mt-3 gap-2 text-[var(--color5)]">
+                                    <svg class="mt-[-2px]" id="Bag" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path opacity="0.4" d="M2.95996 22.6598L3.90996 7.02979H20.59L21.54 22.6598H2.95996Z" fill="#f97e7e"></path>
+                                    <path d="M10.1497 4.90967C10.7797 4.27967 11.6597 3.90967 12.5497 3.90967H12.5697C14.3497 3.90967 15.7897 5.28967 15.9397 7.02967H17.4397C17.2897 4.45967 15.1697 2.40967 12.5697 2.40967H12.5497C11.2597 2.40967 9.99969 2.92967 9.08969 3.83967C8.23969 4.68967 7.74969 5.83967 7.67969 7.02967H9.17969C9.24969 6.23967 9.57969 5.46967 10.1497 4.90967Z" fill="#f97e7e"></path>
+                                    <path d="M9.01978 12.3999H10.5598V10.8999H9.01978V12.3999Z" fill="#f97e7e"></path>
+                                    <path d="M14.6298 12.3999H16.1698V10.8999H14.6298V12.3999Z" fill="#f97e7e"></path>
+                                    </svg>
+                                    <div id="prd-rem">{{ product.quantity }} کیلو در انبار باقیمانده</div>
+                                </div>
+                                {% else %}
+                                <div class="flex mt-3 gap-2 text-[var(--color5)]">
+                                    <svg class="mt-[-2px]" id="Bag" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path opacity="0.4" d="M2.95996 22.6598L3.90996 7.02979H20.59L21.54 22.6598H2.95996Z" fill="#f97e7e"></path>
+                                    <path d="M10.1497 4.90967C10.7797 4.27967 11.6597 3.90967 12.5497 3.90967H12.5697C14.3497 3.90967 15.7897 5.28967 15.9397 7.02967H17.4397C17.2897 4.45967 15.1697 2.40967 12.5697 2.40967H12.5497C11.2597 2.40967 9.99969 2.92967 9.08969 3.83967C8.23969 4.68967 7.74969 5.83967 7.67969 7.02967H9.17969C9.24969 6.23967 9.57969 5.46967 10.1497 4.90967Z" fill="#f97e7e"></path>
+                                    <path d="M9.01978 12.3999H10.5598V10.8999H9.01978V12.3999Z" fill="#f97e7e"></path>
+                                    <path d="M14.6298 12.3999H16.1698V10.8999H14.6298V12.3999Z" fill="#f97e7e"></path>
+                                    </svg>
+                                    <div id="prd-rem">{{ product.quantity|floatformat }} عدد در انبار باقیمانده</div>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                        <div class="transition-all flex justify-between pt-3 w-[100%] pr-2 mb-2">
+                            {% if product.offer <= 0 %}
+                                <div class="text-3xl font-black" id="">
+                                    {{ product.price|three_digits_currency }}
+                                </div>
+
+                                <div class="h-7 px-2 pt-0.5 mt-1 bg-[var(--color11)] text-[var(--color6)] rounded-lg">
+                                    {% if product.is_byWeight %}
+                                        کیلویی
+                                    {% else %}
+                                        عددی
+                                    {% endif %}
+                                </div>
+
+                            {% else %}
+                                <div class="">
+                                    <div style="text-decoration: line-through 1px solid var(--color7)" class="text-sm">{{ product.price|three_digits_currency }}</div>
+                                    <div class="text-2xl font-black">{{ product.final_price|three_digits_currency }}</div>
+                                </div>
+                                <div class="flex gap-2">
+                                    <div class="h-7 px-2 pt-0.5 mt-5 bg-[var(--color11)] text-[var(--color6)] rounded-lg">
+                                        {% if product.is_byWeight %}
+                                            کیلویی
+                                        {% else %}
+                                            عددی
+                                        {% endif %}
+                                    </div>
+                                    <div class=" h-7 px-2 pt-0.5 mt-5 bg-[var(--color5)] text-[var(--color12)] rounded-lg">
+                                        {{ product.offer|to_fanum }} %
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="w-[100%] flex rounded-lg bg-[var(--color15)] p-2 text-3xl text-[var(--color6)] relative" style="display: none;" id="pricebox">
+                            <div id="prd-pack">قیمت بسته</div>
+                        </div>
+                        {% if request.user.is_authenticated %}
+                                <div class="flex gap-2 w-[100%]">
+                                    {% if product.quantity > 0 %}
+                                    <button id="btn-addtocart-mobile" onclick="AddToOrder({{ product.id }} ,1 ,{% if product.is_byWeight %}'true'{% else %}'false'{% endif %})" type="button" class="btn-defIconFlex gap-1 mt-2 w-[100%] justify-center" style="height: 50px; padding-top: 13px;{% if product.is_byWeight %}background-color: var(--color9); pointer-events: none;{% endif %}">
+                                        <svg class="mt-[-3px]" id="Buy" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M6.39507 6.30158L6.09507 3.24158H2.19507V4.74158H4.73507L6.01507 17.4416H20.8351L22.3051 6.30158H6.39507Z" fill="#c5b8b4"></path>
+                                            <path d="M13.8245 11.7118H17.9945V10.2118H13.8245V11.7118Z" fill="#c5b8b4"></path>
+                                            <path d="M6.57983 20.5527C6.57983 19.8497 7.15083 19.2787 7.85383 19.2787C8.55583 19.2787 9.12683 19.8497 9.12683 20.5527C9.12683 21.2557 8.55583 21.8277 7.85383 21.8277C7.15083 21.8277 6.57983 21.2557 6.57983 20.5527Z" fill="#c5b8b4"></path>
+                                            <path d="M17.447 20.5527C17.447 19.8497 18.018 19.2787 18.721 19.2787C19.424 19.2787 19.995 19.8497 19.995 20.5527C19.995 21.2557 19.424 21.8277 18.721 21.8277C18.018 21.8277 17.447 21.2557 17.447 20.5527Z" fill="#c5b8b4"></path>
+                                        </svg>
+                                        <div>
+                                            افزودن به سبد خرید
+                                        </div>
+                                    </button>
+                                    {% else %}
+                                    <button id="" type="button" class="btn-defIconFlex  gap-1 mt-2 w-[100%] justify-center" style="height: 50px; padding-top: 13px;">
+                                        <div>
+                                            ناموجود
+                                        </div>
+                                    </button>
+                            {% endif %}
+                                <a href="{% url 'my_basket_page' %}" class="bottom-bar-option" style="width: 20%; margin-top: -2px;">
+                                    <button style="width: 100%; height: 50px; padding-top: 13px; justify-content: center" class="btn-defIconFlex2">
+                                        <svg id="Buy" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M6.39507 6.30158L6.09507 3.24158H2.19507V4.74158H4.73507L6.01507 17.4416H20.8351L22.3051 6.30158H6.39507Z" fill="#674d45"></path>
+                                            <path d="M13.8245 11.7118H17.9945V10.2118H13.8245V11.7118Z" fill="#674d45"></path>
+                                            <path d="M6.57983 20.5527C6.57983 19.8497 7.15083 19.2787 7.85383 19.2787C8.55583 19.2787 9.12683 19.8497 9.12683 20.5527C9.12683 21.2557 8.55583 21.8277 7.85383 21.8277C7.15083 21.8277 6.57983 21.2557 6.57983 20.5527Z" fill="#674d45"></path>
+                                            <path d="M17.447 20.5527C17.447 19.8497 18.018 19.2787 18.721 19.2787C19.424 19.2787 19.995 19.8497 19.995 20.5527C19.995 21.2557 19.424 21.8277 18.721 21.8277C18.018 21.8277 17.447 21.2557 17.447 20.5527Z" fill="#674d45"></path>
+                                        </svg>
+                                    </button>
+                                </a>
+                            </div>
+                            {% else %}
+                            <a href="{% url 'login_page' %}">
+                                <button id="btn-addtocart-mobile" type="button" class="btn-defIconFlex gap-1 mt-2 w-[100%] justify-center" style="height: 50px; padding-top: 13px;">
+                                    <svg id="User" width="22px" height="22px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                    <g id="Iconly/Bulk/2-User" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                                        <g id="2-User" transform="translate(2.000000, 3.000000)" fill="#e5e5e5" fill-rule="nonzero">
+                                            <path d="M7.34933305,11.8577345 C3.38552687,11.8577345 -6.83897383e-14,12.4700446 -6.83897383e-14,14.9173685 C-6.83897383e-14,17.3666088 3.3640004,18 7.34933305,18 C11.3131392,18 14.6986661,17.3876899 14.6986661,14.940366 C14.6986661,12.4911257 11.3346657,11.8577345 7.34933305,11.8577345" id="Fill-1"></path>
+                                            <path d="M7.34933305,9.52482353 C10.0489483,9.52482353 12.2123586,7.40617314 12.2123586,4.76241176 C12.2123586,2.11865038 10.0489483,-9.76996262e-15 7.34933305,-9.76996262e-15 C4.65069631,-9.76996262e-15 2.48630745,2.11865038 2.48630745,4.76241176 C2.48630745,7.40617314 4.65069631,9.52482353 7.34933305,9.52482353" id="Fill-3" opacity="0.400000006"></path>
+                                            <path d="M14.1734202,4.84874844 C14.1734202,6.19506404 13.7605033,7.45130586 13.0364311,8.49482023 C12.9610885,8.60214218 13.0276248,8.74683517 13.1587406,8.76983274 C13.3407371,8.79953792 13.527626,8.81774432 13.7184289,8.82157725 C15.6166723,8.87044707 17.3201989,7.67361562 17.7908459,5.87118171 C18.4884992,3.19675692 16.4415275,0.79542817 13.833889,0.79542817 C13.5511095,0.79542817 13.2800716,0.824175122 13.0158831,0.876877868 C12.9796795,0.884543722 12.9405405,0.901791893 12.9209709,0.932455309 C12.8955306,0.971742811 12.9141216,1.02252909 12.939562,1.0560672 C13.7233212,2.13216145 14.1734202,3.44206424 14.1734202,4.84874844" id="Fill-5" opacity="0.400000006"></path>
+                                            <path d="M19.779109,12.1693515 C19.4317501,11.4439701 18.5931962,10.9466478 17.3172635,10.7022987 C16.7155008,10.5585639 15.0853598,10.3544606 13.5697005,10.3832075 C13.5471956,10.3860822 13.5344754,10.4014139 13.5325184,10.4109962 C13.529583,10.4263279 13.5364323,10.4493255 13.5657866,10.4656155 C14.2663754,10.8048295 16.9738184,12.2805064 16.6333088,15.3928431 C16.6186317,15.528912 16.7291994,15.6438998 16.8671645,15.6247352 C17.5335067,15.5317867 19.2477966,15.1705333 19.779109,14.0474857 C20.0736303,13.453382 20.0736303,12.7634552 19.779109,12.1693515" id="Fill-7"></path>
+                                        </g>
+                                    </g>
+                                    </svg>
+                                    <div>
+                                        ورود به حساب برای خرید
+                                    </div>
+                                </button>
+                            </a>
+                        {% endif %}
+                    </div>
+        </div>
+    </div>

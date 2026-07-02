@@ -1,0 +1,134 @@
+{% extends 'userpanel_module/my_orders.html' %}
+{% load static %}
+{% load poll_extras %}
+
+{% block order_serial %}
+    <i class="order-id fa fa-angle-left mt-3 mr-2"></i>
+    <a href="{{ order.get_absolute_url }}" class="order-id text-3xl mr-1 mt-1 text-[var(--color10)]"> سفارش #{{ order.id }} </a>
+{% endblock %}
+
+
+{% block order_content %}
+    <div class="mt-20">
+	    {% include 'userpanel_module/include/order_status_stepper_horizontal.html' %}
+    </div>
+
+    <div class="order-features flex mt-20 gap-2  w-[100%]">
+        <div class="w-[100%] p-4 bg-[var(--color12)] rounded-xl">
+            <div class="text-[var(--color10)]">
+                <i class="fa fa-wallet ml-1"></i> مجموع سفارش
+            </div>
+            <div class="text-4xl mt-1 font-semibold">
+                {{ order.finalized_price|three_digits_currency }}
+            </div>
+        </div>
+        <div class="w-[100%] p-4 bg-[var(--color12)] rounded-xl">
+            <div class="text-[var(--color10)]">
+                <i class="fa fa-sort-amount-desc ml-1"></i>تعداد اقلام
+            </div>
+            <div class="text-4xl mt-1 font-semibold">
+                {{ order.total_items|to_fanum }} عدد
+            </div>
+        </div>
+        <div class="w-[100%] p-4 bg-[var(--color12)] rounded-xl">
+            <div class="text-[var(--color10)]">
+                <i class="fa fa-weight ml-1"></i>وزن کل مرسوله
+            </div>
+            <div class="text-4xl mt-1 font-semibold">
+                {{ order.order_weight|to_fanum }} کیلو
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-10">
+        <div class="flex gap-1">
+            <svg id="Folder" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M20.5419 7.25362C19.4449 6.07162 18.0459 6.09962 16.8129 6.12162C16.0399 6.13562 15.3089 6.15062 14.7869 5.85262C14.1419 5.48562 13.9189 5.06962 13.6599 4.58662C13.3739 4.05262 13.0499 3.44762 12.1689 2.97162C10.5429 2.09562 8.63389 1.92462 6.16189 2.43462C3.71889 2.93462 2.13989 5.09962 2.13989 7.94962V14.0156C2.13989 21.2876 6.33089 21.8506 12.2499 21.8506C17.9779 21.8506 22.3599 21.2736 22.3599 13.9886C22.3599 12.2036 22.3599 9.21562 20.5419 7.25362Z" fill="#674d45"></path>
+            <path d="M7.44556 15.4756H17.0386C17.4526 15.4756 17.7886 15.1396 17.7886 14.7256C17.7886 14.3116 17.4526 13.9756 17.0386 13.9756H7.44556C7.03156 13.9756 6.69556 14.3116 6.69556 14.7256C6.69556 15.1396 7.03156 15.4756 7.44556 15.4756Z" fill="#674d45"></path>
+            </svg>
+            <div class="text-xl font-bold">
+                اقلام سفارش ({{ order.total_items }})
+            </div>
+        </div>
+    </div>
+
+    <div class="order-detail-grid grid grid-cols-2 sm:grid-cols-1 lg:grid-cols-2 mt-2 gap-2">
+        {% for o in order.orderdetails_set.all %}
+            <a href="{{ o.product.get_absolute_url }}" class="w-[100%]">
+                <div class="flex justify-between p-2 bg-[var(--color12)] h-auto mt-1 w-[100%] rounded-2xl items-start">
+                    <div class="flex gap-4">
+                        <div class="w-30 h-30 min-w-30 max-h-30 overflow-hidden rounded-xl bg-[var(--color13)]">
+                            <img class="w-[100%] h-[100%]" src="{{ o.product.product_image.first.image.url }}">
+                        </div>
+                        <div>
+                            <div class="mt-3 flex gap-1 items-start flex-wrap">
+                                <h1 class="text-2xl">{{ o.product.title|to_fanum }}</h1>
+                                {% if o.product.is_byWeight %}
+                                    <div class="text-sm bg-[var(--color17)] mt-0.5 py-0.5 px-1 rounded-lg">
+                                        {{ o.pack_size|to_fanum }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="flex gap-1 mt-2 text-[var(--color10)]">
+                                <svg id="Category" width="20px" height="20px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                    <g id="Iconly/Bulk/Category" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                                        <g id="Category" transform="translate(2.000000, 2.000000)" fill="#674d45" fill-rule="nonzero">
+                                            <path d="M14.0755097,2.66453526e-15 L17.4614756,2.66453526e-15 C18.8637443,2.66453526e-15 20,1.1458518 20,2.55996321 L20,5.97452492 C20,7.38863633 18.8637443,8.53448813 17.4614756,8.53448813 L14.0755097,8.53448813 C12.673241,8.53448813 11.5369853,7.38863633 11.5369853,5.97452492 L11.5369853,2.55996321 C11.5369853,1.1458518 12.673241,2.66453526e-15 14.0755097,2.66453526e-15" id="Fill-1" opacity="0.400000006"></path>
+                                            <path d="M5.9244903,11.4655119 C7.32675901,11.4655119 8.46301469,12.6113637 8.46301469,14.0254751 L8.46301469,17.4400368 C8.46301469,18.8531901 7.32675901,20 5.9244903,20 L2.53852439,20 C1.13625568,20 8.8817842e-16,18.8531901 8.8817842e-16,17.4400368 L8.8817842e-16,14.0254751 C8.8817842e-16,12.6113637 1.13625568,11.4655119 2.53852439,11.4655119 L5.9244903,11.4655119 Z M17.4614756,11.4655119 C18.8637443,11.4655119 20,12.6113637 20,14.0254751 L20,17.4400368 C20,18.8531901 18.8637443,20 17.4614756,20 L14.0755097,20 C12.673241,20 11.5369853,18.8531901 11.5369853,17.4400368 L11.5369853,14.0254751 C11.5369853,12.6113637 12.673241,11.4655119 14.0755097,11.4655119 L17.4614756,11.4655119 Z M5.9244903,7.99360578e-15 C7.32675901,7.99360578e-15 8.46301469,1.1458518 8.46301469,2.55996321 L8.46301469,5.97452492 C8.46301469,7.38863633 7.32675901,8.53448813 5.9244903,8.53448813 L2.53852439,8.53448813 C1.13625568,8.53448813 8.8817842e-16,7.38863633 8.8817842e-16,5.97452492 L8.8817842e-16,2.55996321 C8.8817842e-16,1.1458518 1.13625568,7.99360578e-15 2.53852439,7.99360578e-15 L5.9244903,7.99360578e-15 Z" id="Combined-Shape"></path>
+                                        </g>
+                                    </g>
+                                </svg>
+                                <h2>{{ o.product.category }}</h2>
+                            </div>
+                            <h2 class="text-2xl mt-2"> {{ o.count|to_fanum }} <i class="fa fa-close text-xs mx-1"></i> {{ o.final_price|three_digits_currency }}</h2>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+    <div class="mt-20">
+        <div class="flex gap-1">
+            <svg id="More Square" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.051 2.78467 2.5 5.33667 2.5 12.5347C2.5 19.7327 5.051 22.2847 12.25 22.2847C19.449 22.2847 22 19.7327 22 12.5347C22 5.33667 19.449 2.78467 12.25 2.78467Z" fill="#674d45"></path>
+            <path d="M15.249 12.5347C15.249 13.0877 15.701 13.5347 16.253 13.5347C16.805 13.5347 17.253 13.0877 17.253 12.5347C17.253 11.9817 16.805 11.5347 16.253 11.5347H16.244C15.692 11.5347 15.249 11.9817 15.249 12.5347Z" fill="#674d45"></path>
+            <path d="M11.25 12.5347C11.25 13.0877 11.702 13.5347 12.254 13.5347C12.806 13.5347 13.254 13.0877 13.254 12.5347C13.254 11.9817 12.806 11.5347 12.254 11.5347H12.245C11.693 11.5347 11.25 11.9817 11.25 12.5347Z" fill="#674d45"></path>
+            <path d="M7.25 12.5347C7.25 13.0877 7.702 13.5347 8.254 13.5347C8.806 13.5347 9.254 13.0877 9.254 12.5347C9.254 11.9817 8.806 11.5347 8.254 11.5347H8.245C7.693 11.5347 7.25 11.9817 7.25 12.5347Z" fill="#674d45"></path>
+            </svg>
+            <div class="text-xl font-bold">
+                جزئیات تکمیلی
+            </div>
+        </div>
+    </div>
+    <table class="tb-features mt-3 w-[100%]">
+        <tbody class="border-t border-[var(--color12)]">
+            <tr>
+                <td class="border border-[var(--color13)]">تاریخ ثبت</td>
+                <td class="border border-[var(--color13)]">{{ order.payment_date|show_jalali_date|to_fanum }}</td>
+            </tr>
+            <tr>
+                <td class="border border-[var(--color13)]">روش پرداخت</td>
+                <td class="border border-[var(--color13)]">{{ order.payment_method }}</td>
+            </tr>
+            <tr>
+                <td class="border border-[var(--color13)]">روش ارسال</td>
+                <td class="border border-[var(--color13)]">{{ order.posting_method }}</td>
+            </tr>
+            <tr>
+                <td class="border border-[var(--color13)]">هزینه ارسال</td>
+                <td class="border border-[var(--color13)]">{% if not order.postage_fee == 0 %}{{ order.postage_fee|three_digits_currency }}{% else %}پسکرایه{% endif %}</td>
+            </tr>
+            {% if order.address %}
+                <tr>
+                    <td class="border border-[var(--color13)]">آدرس</td>
+                    <td class="border border-[var(--color13)]">{{ order.address.details|to_fanum }}</td>
+                </tr>
+            {% endif %}
+            <tr>
+                <td class="border border-[var(--color13)]">توضیحات</td>
+                <td class="border border-[var(--color13)]">{% if order.desc %}{{ order.desc }}{% else %}-{% endif %}</td>
+            </tr>
+
+        </tbody>
+    </table>
+{% endblock %}

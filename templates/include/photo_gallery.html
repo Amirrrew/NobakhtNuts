@@ -1,0 +1,45 @@
+{% load static %}
+
+<div id="popup-parent" class="popup-parent-gallery relative text-[var(--color3)]">
+    <div class="p-2 w-[100%]">
+        <div class="flex justify-between w-[100%]">
+            <div class="gallery-title text-3xl p-3">تصاویر {{ product.title }}</div>
+            <button onclick="PhotoGallery(true)" class="btn-closegallery"><i class="fa fa-close text-xl pt-1.5"></i></button>
+        </div>
+
+        <div class="centerbox gap-5">
+            <button id="swiper-button-prev-gal" class="btn-gallery mt-70">
+                <i class="fa fa-angle-right mt-1.5"></i>
+            </button>
+            <div class="photo-galbox centerbox w-[500px] mt-10">
+                <div id="swiper-gal" class="swiper mt-3 gap-4" style="width: 100%;">
+                    <div class="swiper-wrapper">
+                        {% for img in product.product_image.all %}
+                            <div style="animation: load3 500ms" class="swiper-slide pg-mainphotocard">
+                                <img loading="lazy" alt="{{ product.title }}" src="{{ img.image.url }}">
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <button id="swiper-button-next-gal" class="btn-gallery mt-70" >
+                <i class="fa fa-angle-left mt-1.5"></i>
+            </button>
+        </div>
+
+    </div>
+</div>
+    <script>
+    const swipe = new Swiper("#swiper-gal", {
+        slidesPerView: 1,
+
+        navigation: {
+            nextEl: "#swiper-button-next-gal",
+            prevEl: "#swiper-button-prev-gal",
+        },
+
+
+    });
+
+
+    </script>

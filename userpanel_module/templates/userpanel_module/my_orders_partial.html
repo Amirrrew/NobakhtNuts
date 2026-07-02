@@ -1,0 +1,41 @@
+{% extends 'userpanel_module/my_orders.html' %}
+{% load static %}
+{% load poll_extras %}
+
+{% block page_title %}
+	سفارشات من
+{% endblock %}
+
+{% block order_content %}
+                {% if order_list %}
+                    <div class="mt-5">
+                        {% for order in order_list %}
+                            {% if order.is_paid and not order.is_done %}
+                                {% include 'userpanel_module/include/order_statusbox.html' %}
+                                {% else %}
+                                {% include 'userpanel_module/include/order_row.html' %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div>
+                        <div class="centerbox mt-30">
+                            <img src="{% static 'media/icons/empty.png' %}">
+                        </div>
+                        <div class="text-center text-3xl text-[var(--color6)] mt-5">شما تا به حال سفارشی ثبت نکردید!</div>
+                        <div class="centerbox mt-2">
+                            <a href="{% url 'all_products_page' %}">
+                                <button class="btn-defIconFlex2" style="background-color: var(--color12);">
+                                    <svg id="Discovery" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.25C5.051 2.25 2.5 4.802 2.5 12C2.5 19.198 5.051 21.75 12.25 21.75C19.449 21.75 22 19.198 22 12C22 4.802 19.449 2.25 12.25 2.25Z" fill="#674d45"></path>
+                                    <path d="M14.4513 13.7558L15.8683 9.22783C15.9433 8.98883 15.8793 8.72683 15.7013 8.54883C15.5243 8.37083 15.2623 8.30483 15.0223 8.38183L10.4923 9.79883C10.2813 9.86483 10.1153 10.0298 10.0493 10.2418L8.63128 14.7718C8.55628 15.0118 8.62128 15.2738 8.79828 15.4508C8.92728 15.5798 9.10028 15.6488 9.27628 15.6488C9.34428 15.6488 9.41128 15.6388 9.47828 15.6178L14.0083 14.1998C14.2193 14.1338 14.3853 13.9678 14.4513 13.7558Z" fill="#674d45"></path>
+                                    </svg>
+                                    <div>
+                                        گشتن بین محصولات
+                                    </div>
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+{% endblock %}

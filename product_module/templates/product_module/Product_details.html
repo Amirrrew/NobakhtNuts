@@ -1,0 +1,208 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load poll_extras %}
+
+{% block page_title %}
+    | {{ product.title }}
+{% endblock %}
+
+{% block page_content %}
+    {% include 'product_module/include/popup_comment.html' %}
+    {% include 'message_cart_json.html' %}
+    {% include 'include/photo_gallery.html' %}
+    <div class="product-detail-box mt-40 centerbox">
+
+        <div class="product-detail w-[95%]">
+
+            <div class="product-titlebar">
+                <div class="flex text-[var(--color14)] gap-3">
+                    <div><button class="btn-prdcounter text-sm pt-1 rounded-2xl" onclick="history.back()"><i class="fa fa-angle-right"></i></button></div>
+                    <a href="{{ product.category.main_category.get_absolute_url }}" class="">{{ product.category.main_category }}</a>
+                    <i class="fa fa-angle-left mt-1.5 text-xs"></i>
+                    <a href="{{ product.category.get_absolute_url }}" class="">{{ product.category }}</a>
+                </div>
+
+                <div class="product-titlebar flex gap-2 mt-2">
+                    <div class="title-opener bg-[var(--color6)]" style="background-color: var(--color6)"></div>
+                    <div class="product-title text-4xl">{{ product.title|to_fanum }}</div>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-start gap-2">
+
+                <div class="prd-section flex w-[75%] mt-5 gap-5 relative">
+                    <div class="prd-photo-gallery">
+                        <div onclick="PhotoGallery(false ,0)" class="pg-mainphoto">
+                            <img loading="lazy" alt="{{ product.title }}" onclick="" src="{{ product.product_image.first.image.url }}">
+                        </div>
+                        <div id="swiper-prd" class="swiper mt-2">
+                            <div class="swiper-wrapper">
+                                {% for img in product.product_image.all %}
+                                    {% if not img.is_Main %}
+                                        <div onclick="PhotoGallery(false ,{{ forloop.counter0 }})" class="swiper-slide pg-img-card">
+                                            <img loading="lazy" alt="{{ product.title }}" src="{{ img.image.url }}">
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="prd-detail-row1 border-t border-[var(--color9)]">
+                    {% if product.features.all %}
+                        <div class="flex w-[100%] justify-between mt-3">
+                            <div>
+                                ویژگی ها محصول
+                            </div>
+                            <button onclick="ScrollTo('full-features')" class="btn-prdnavbar rounded-lg bg-[var(--color12)] px-3 flex gap-1 text-[var(--color6)] pt-1 h-6 text-xs cursor-pointer">مشخصات کامل<i class="fa fa-arrow-left mt-[1px]"></i></button>
+                        </div>
+                    {% endif %}
+                        <div class="flex flex-wrap mt-2 gap-2">
+                            {% for spec in product.features.all|slice:3 %}
+                                <div class="prd-feature overflow-hidden flex-nowrap w-[32.3%] h-14 rounded-xl p-2 bg-[var(--color12)] relative" style="animation: load3 {% widthratio forloop.counter 1 300 %}ms">
+                                    <div class="text-[var(--color10)] px-1 text-sm">{{ spec.title }}</div>
+                                    <div class="text-m text-[var(--color6)] mt-[-3px] text-nowrap">{{ spec.desc|to_fanum }}</div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="w-[100%] flex bg-[var(--color12)] gap-2 mt-2 rounded-xl text-[var(--color6)] p-2 cursor-pointer relative" style="animation: load3 500ms">
+                            <div class="bg-[var(--color15)] p-3 rounded-lg">
+                                <svg id="Chat" width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M19.6766 4.57605C17.6956 2.59505 15.0586 1.50305 12.2526 1.50305C9.44664 1.50305 6.80964 2.59505 4.82864 4.57605C1.72664 7.67905 0.880636 12.4411 2.70564 16.3751C2.73864 16.5371 2.64964 17.1961 2.58564 17.6781C2.34364 19.4841 2.21964 20.8101 2.83264 21.4241C3.44464 22.0371 4.76964 21.9131 6.57564 21.6701C7.05764 21.6061 7.72464 21.5201 7.82864 21.5311C9.23464 22.1821 10.7376 22.4971 12.2296 22.4971C14.9676 22.4971 17.6696 21.4351 19.6766 19.4271C23.7696 15.3321 23.7706 8.67005 19.6766 4.57605Z" fill="#674d45"></path>
+                                <path d="M15.1955 12.4161C15.1955 12.9691 15.6485 13.4161 16.2005 13.4161C16.7525 13.4161 17.2005 12.9691 17.2005 12.4161C17.2005 11.8631 16.7525 11.4161 16.2005 11.4161H16.1915C15.6385 11.4161 15.1955 11.8631 15.1955 12.4161Z" fill="#674d45"></path>
+                                <path d="M11.1865 12.4161C11.1865 12.9691 11.6385 13.4161 12.1915 13.4161C12.7435 13.4161 13.1915 12.9691 13.1915 12.4161C13.1915 11.8631 12.7435 11.4161 12.1915 11.4161H12.1825C11.6305 11.4161 11.1865 11.8631 11.1865 12.4161Z" fill="#674d45"></path>
+                                <path d="M7.17847 12.4161C7.17847 12.9691 7.63047 13.4161 8.18247 13.4161C8.73447 13.4161 9.18247 12.9691 9.18247 12.4161C9.18247 11.8631 8.73447 11.4161 8.18247 11.4161H8.17347C7.62047 11.4161 7.17847 11.8631 7.17847 12.4161Z" fill="#674d45"></path>
+                                </svg>
+                            </div>
+                            <div onclick="ScrollTo('comments')" class="flex justify-between w-[100%] relative">
+                                <div class="pt-1">
+                                    <div class="text-xl flex gap-2">
+                                        <div>دیدگاه های کاربران</div>
+                                        <div class="text-[var(--color14)]">({{ product.comments_count|to_fanum }})</div>
+                                    </div>
+                                    <div class="flex gap-2 mt-0.5">
+                                        <div class="flex">
+                                            <i class="fa-solid fa-star text-[var(--color14)]"></i>
+                                        </div>
+                                        <div class="text-xl mt-[-4px]">
+                                            {{ product.average_rating|to_fanum }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-4 mt-1">
+                                    <button class="btn-prdnavbar rounded-lg bg-[var(--color9)] w-6 pt-1 h-6 text-xs cursor-pointer"><i  class="fa fa-arrow-down"></i></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="prd-detail-row1 flex border-t border-[var(--color9)] pt-3 mt-3 gap-3">
+                            <div>
+                                <svg id="Info Square" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.052 2.78467 2.5 5.33667 2.5 12.5347C2.5 19.7327 5.052 22.2847 12.25 22.2847C19.448 22.2847 22 19.7327 22 12.5347C22 5.33667 19.448 2.78467 12.25 2.78467Z" fill="#c5b8b4"></path>
+                                <path d="M12.2461 9.78467H12.2551C12.6691 9.78467 13.0011 9.44867 13.0011 9.03467C13.0011 8.62067 12.6601 8.28467 12.2461 8.28467C11.8321 8.28467 11.4961 8.62067 11.4961 9.03467C11.4961 9.44867 11.8321 9.78467 12.2461 9.78467Z" fill="#c5b8b4"></path>
+                                <path d="M12.2501 17.1797C12.6641 17.1797 13.0001 16.8437 13.0001 16.4297V12.5347C13.0001 12.1207 12.6641 11.7847 12.2501 11.7847C11.8361 11.7847 11.5001 12.1207 11.5001 12.5347V16.4297C11.5001 16.8437 11.8361 17.1797 12.2501 17.1797Z" fill="#c5b8b4"></path>
+                                </svg>
+                            </div>
+                            <div class="w-[490px] text-[var(--color10)]">
+                                مرجوع کردن محصول در صورت عدم رضایت یا دلایل همانند خرابی و ایراد در کالا امکان پذیر است. جهت کسب اطلاعات بیشتر درباره شرایط مرجوع کردن بار در بخش
+                                <a target="_blank" style="display: inline" class="font-black text-[var(--color6)] hover:underline" href="{% url 'support_page' %}"> سوالات متداول <i class="fa fa-external-link text-xs ml-1"></i></a>
+                                منوی
+                                <a target="_blank" style="display: inline" class="font-black text-[var(--color6)] hover:underline" href="{% url 'support_page' %}">مرجوعی سفارش</a>
+                                را مطالعه کنید.
+                            </div>
+                        </div>
+
+                        <div class="prd-aspects hidden mt-5">
+                            <div class="flex gap-2 border-t border-[var(--color8)] pt-1 pb-2">
+                                <svg class="mt-2" id="Send" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M11.3565 12.8934C11.3694 12.9519 11.3842 13.0176 11.4006 13.09C11.4738 13.4129 11.581 13.8688 11.7172 14.4028C11.989 15.4682 12.3788 16.8545 12.8475 18.1152C13.0818 18.7455 13.339 19.3529 13.6149 19.8769C13.8872 20.3942 14.194 20.8617 14.5381 21.1862C14.8813 21.5098 15.3414 21.7597 15.8734 21.6332C16.3742 21.514 16.7676 21.0965 17.0902 20.5376C18.1385 18.7214 19.5304 14.763 20.5433 11.0838C21.0521 9.23596 21.4716 7.43589 21.7073 5.98436C21.825 5.25971 21.8989 4.60988 21.9128 4.07868C21.9243 3.64052 21.9223 3.14268 21.7108 2.74545C21.664 2.65772 21.5922 2.5859 21.5045 2.53917C21.1072 2.32761 20.6094 2.32565 20.1712 2.33712C19.64 2.35102 18.9902 2.42491 18.2656 2.54259C16.814 2.7783 15.014 3.19781 13.1661 3.70659C9.48696 4.71957 5.52852 6.11138 3.71239 7.1597C3.15349 7.48233 2.73593 7.8757 2.61678 8.37649C2.49019 8.90853 2.74015 9.36859 3.06377 9.71184C3.38819 10.0559 3.85573 10.3627 4.37304 10.6351C4.89706 10.911 5.50445 11.1681 6.13473 11.4024C7.39547 11.8711 8.78173 12.2609 9.84714 12.5327C10.3811 12.6689 10.8371 12.7761 11.1599 12.8493C11.2323 12.8658 11.2981 12.8805 11.3565 12.8934Z" fill="#674d45"></path>
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M19.0624 5.60285C19.3553 5.89574 19.3553 6.37062 19.0624 6.66351L13.5306 12.1953C13.2377 12.4882 12.7628 12.4882 12.4699 12.1953C12.177 11.9024 12.177 11.4275 12.4699 11.1346L18.0017 5.60285C18.2946 5.30996 18.7695 5.30996 19.0624 5.60285Z" fill="#674d45"></path>
+                                </svg>
+                                <div class="mt-1.5">
+                                    ارسال سریع با پست پیشتاز ،باربری یا اتوبوس
+                                </div>
+                            </div>
+                            <div class="flex gap-2 border-t border-[var(--color8)] pt-1 pb-2">
+                                <svg class="mt-1" id="Shield Done" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M19.9377 5.42951C19.3317 4.82251 16.0037 2.67651 12.2497 2.67651C8.49369 2.67651 5.16769 4.82251 4.56169 5.42951C3.98069 6.01151 3.98969 6.46451 4.03369 8.97851C4.05269 9.99851 4.07769 11.3865 4.07769 13.3045C4.07769 19.8245 9.39969 22.5315 12.2497 22.5315C15.0987 22.5315 20.4217 19.8245 20.4217 13.3045C20.4217 11.3855 20.4467 9.99651 20.4657 8.97751C20.5107 6.46351 20.5187 6.01151 19.9377 5.42951Z" fill="#674d45"></path>
+                                <path d="M12.073 14.7244L15.971 10.8254C16.264 10.5324 16.264 10.0574 15.971 9.76443C15.678 9.47143 15.203 9.47143 14.91 9.76443L11.543 13.1334L10.181 11.7694C9.88802 11.4764 9.41302 11.4764 9.12102 11.7694C8.82702 12.0614 8.82702 12.5374 9.12002 12.8304L11.012 14.7244C11.153 14.8654 11.344 14.9444 11.543 14.9444C11.742 14.9444 11.932 14.8654 12.073 14.7244Z" fill="#674d45"></path>
+                                </svg>
+                                <div class="mt-2">
+                                    امکان ارجاع محصول
+                                </div>
+                            </div>
+                            <a href="" class="flex gap-2 border-t border-[var(--color8)] pt-2" >
+                                <svg class="" id="Danger" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M19.3101 10.6927L19.0981 10.3187C16.1121 5.00867 14.2561 3.03467 12.2501 3.03467C10.2441 3.03467 8.38808 5.00867 5.40208 10.3187L5.19108 10.6927C4.11808 12.5747 1.88808 16.4897 2.30208 18.8257C2.79008 21.5887 5.63508 22.0347 12.2501 22.0347C18.8661 22.0347 21.7111 21.5887 22.1981 18.8257C22.6121 16.4897 20.3821 12.5747 19.3101 10.6927Z" fill="#f97e7e"></path>
+                                <path d="M11.5005 16.4297C11.5005 16.8437 11.8405 17.1797 12.2545 17.1797C12.6685 17.1797 13.0045 16.8437 13.0045 16.4297C13.0045 16.0157 12.6685 15.6797 12.2545 15.6797H12.2455C11.8315 15.6797 11.5005 16.0157 11.5005 16.4297Z" fill="#f97e7e"></path>
+                                <path d="M12.2495 8.28467C11.8355 8.28467 11.4995 8.62067 11.4995 9.03467V12.9297C11.4995 13.3437 11.8355 13.6797 12.2495 13.6797C12.6635 13.6797 12.9995 13.3437 12.9995 12.9297V9.03467C12.9995 8.62067 12.6635 8.28467 12.2495 8.28467Z" fill="#f97e7e"></path>
+                                </svg>
+                                <div class="mt-1 text-[var(--color5)]">
+                                    گزارش مشکل
+                                </div>
+                            </a>
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+                {% include 'product_module/include/product_managecard_desktop.html' %}
+            </div>
+            {% include 'product_module/include/product_features.html' %}
+            {% include 'product_module/product_comment_section.html' %}
+            {% include 'product_module/include/product_suggestion.html' %}
+        </div>
+    </div>
+
+
+    {% include 'product_module/include/product_managecard_mobile.html' %}
+    <script>
+    const swiper = new Swiper("#swiper-prd", {
+        slidesPerView: 'auto',
+        spaceBetween: 10,
+
+        navigation: {
+            nextEl: "#swiper-button-next",
+            prevEl: "#swiper-button-prev",
+        },
+
+
+        breakpoints: {
+            100: {
+                slidesPerView: 2.5
+            },
+            400: {
+                slidesPerView: 2.5
+            },
+            520: {
+                slidesPerView: 2.5
+            },
+            800: {
+                slidesPerView: 3.5
+            },
+            1300: {
+                slidesPerView: 4.5,
+            }
+        },
+    });
+
+    let PhotoGallery = (action ,slide) => {
+        let parent = document.getElementById('popup-parent')
+
+        if (action) {
+            parent.style = "display: none;"
+        }
+        else {
+            parent.style = 'display: flex;'
+            swipe.slideTo(slide);
+        }
+    }
+
+
+
+
+
+    </script>
+{% endblock %}

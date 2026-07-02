@@ -1,0 +1,97 @@
+{% load static %}
+{% load poll_extras %}
+            <div id="comments" class="comments mt-20">
+                <div class="w-[100%]">
+                    <div class="comment-titlebar flex w-[60%] justify-between border-b border-[var(--color9)] pb-3">
+                        <div class="flex gap-2 mt-1">
+                            <svg id="Chat" width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M19.6766 4.57605C17.6956 2.59505 15.0586 1.50305 12.2526 1.50305C9.44664 1.50305 6.80964 2.59505 4.82864 4.57605C1.72664 7.67905 0.880636 12.4411 2.70564 16.3751C2.73864 16.5371 2.64964 17.1961 2.58564 17.6781C2.34364 19.4841 2.21964 20.8101 2.83264 21.4241C3.44464 22.0371 4.76964 21.9131 6.57564 21.6701C7.05764 21.6061 7.72464 21.5201 7.82864 21.5311C9.23464 22.1821 10.7376 22.4971 12.2296 22.4971C14.9676 22.4971 17.6696 21.4351 19.6766 19.4271C23.7696 15.3321 23.7706 8.67005 19.6766 4.57605Z" fill="#674d45"></path>
+                                <path d="M15.1955 12.4161C15.1955 12.9691 15.6485 13.4161 16.2005 13.4161C16.7525 13.4161 17.2005 12.9691 17.2005 12.4161C17.2005 11.8631 16.7525 11.4161 16.2005 11.4161H16.1915C15.6385 11.4161 15.1955 11.8631 15.1955 12.4161Z" fill="#674d45"></path>
+                                <path d="M11.1865 12.4161C11.1865 12.9691 11.6385 13.4161 12.1915 13.4161C12.7435 13.4161 13.1915 12.9691 13.1915 12.4161C13.1915 11.8631 12.7435 11.4161 12.1915 11.4161H12.1825C11.6305 11.4161 11.1865 11.8631 11.1865 12.4161Z" fill="#674d45"></path>
+                                <path d="M7.17847 12.4161C7.17847 12.9691 7.63047 13.4161 8.18247 13.4161C8.73447 13.4161 9.18247 12.9691 9.18247 12.4161C9.18247 11.8631 8.73447 11.4161 8.18247 11.4161H8.17347C7.62047 11.4161 7.17847 11.8631 7.17847 12.4161Z" fill="#674d45"></path>
+                            </svg>
+                            <div class="font-black text-2xl mt-1">نظرات کاربران</div>
+                        </div>
+                        <button onclick="PopUp('' ,'open')" type="submit" style="width: 150px; justify-content: center" class="btn-defIconFlex gap-2">
+                            <svg id="Send" width="24" style="margin-top: 0;" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M11.3565 12.8934C11.3694 12.9519 11.3842 13.0176 11.4006 13.09C11.4738 13.4129 11.581 13.8688 11.7172 14.4028C11.989 15.4682 12.3788 16.8545 12.8475 18.1152C13.0818 18.7455 13.339 19.3529 13.6149 19.8769C13.8872 20.3942 14.194 20.8617 14.5381 21.1862C14.8813 21.5098 15.3414 21.7597 15.8734 21.6332C16.3742 21.514 16.7676 21.0965 17.0902 20.5376C18.1385 18.7214 19.5304 14.763 20.5433 11.0838C21.0521 9.23596 21.4716 7.43589 21.7073 5.98436C21.825 5.25971 21.8989 4.60988 21.9128 4.07868C21.9243 3.64052 21.9223 3.14268 21.7108 2.74545C21.664 2.65772 21.5922 2.5859 21.5045 2.53917C21.1072 2.32761 20.6094 2.32565 20.1712 2.33712C19.64 2.35102 18.9902 2.42491 18.2656 2.54259C16.814 2.7783 15.014 3.19781 13.1661 3.70659C9.48696 4.71957 5.52852 6.11138 3.71239 7.1597C3.15349 7.48233 2.73593 7.8757 2.61678 8.37649C2.49019 8.90853 2.74015 9.36859 3.06377 9.71184C3.38819 10.0559 3.85573 10.3627 4.37304 10.6351C4.89706 10.911 5.50445 11.1681 6.13473 11.4024C7.39547 11.8711 8.78173 12.2609 9.84714 12.5327C10.3811 12.6689 10.8371 12.7761 11.1599 12.8493C11.2323 12.8658 11.2981 12.8805 11.3565 12.8934Z" fill="#c5b8b4"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M19.0624 5.60285C19.3553 5.89574 19.3553 6.37062 19.0624 6.66351L13.5306 12.1953C13.2377 12.4882 12.7628 12.4882 12.4699 12.1953C12.177 11.9024 12.177 11.4275 12.4699 11.1346L18.0017 5.60285C18.2946 5.30996 18.7695 5.30996 19.0624 5.60285Z" fill="#c5b8b4"></path>
+                            </svg>
+                            <div>نظر شما</div>
+                        </button>
+                    </div>
+                    <div class="comment-box w-[60%]">
+                        {% if product.comment_set.all %}
+                            {% for comment in product.comment_set.all|dictsortreversed:"created_at" %}
+                                <div id="comment-{{ comment.id }}" class="border-b border-[var(--color9)] w-[100%] p-2">
+                                    <div class="flex justify-between">
+                                        <div class="flex gap-2">
+                                                {% if comment.user.avatar %}
+                                                    <div class="w-10 h-10 p-0.5 rounded-xl text-[var(--color10)] bg-[var(--color2)]">
+                                                        <img alt="{{ comment.user }} avatar" class="w-[100%] rounded-lg" src="{{ comment.user.avatar.url }}">
+                                                    </div>
+                                                    {% else %}
+                                                    <div class="w-10 h-10 p-3 pr-3.5 rounded-xl text-[var(--color10)] bg-[var(--color2)]">
+                                                        <i class="fa fa-user"></i>
+                                                    </div>
+                                                {% endif %}
+
+
+                                            {% if comment.user.first_name and comment.user.last_name %}
+                                                <div>
+                                                    <div class="text-lg flex gap-2">
+                                                        <div>{{ comment.user }}</div>
+                                                        <div class="h-fit bg-[var(--color12)] mt-0.5 text-sm py-0.5 px-1 px-1 rounded-lg"><i class="fa fa-star text-[var(--color10)] text-xs ml-1"></i>{{ comment.rating|floatformat|to_fanum }}</div>
+                                                    </div>
+                                                    <div class="text-[var(--color10)] mt-[-7px]">{{ comment.user.username }}</div>
+                                                </div>
+                                                {% else %}
+                                                    <div class="text-lg mt-1.5 flex gap-2">
+                                                        <div>{{ comment.user }}</div>
+                                                        <div class="h-fit bg-[var(--color12)] mt-0.5 text-sm py-0.5 px-1 px-1 rounded-lg"><i class="fa fa-star text-[var(--color10)] text-xs ml-1"></i>{{ comment.rating|floatformat|to_fanum }}</div>
+                                                    </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="flex gap-1 p-1">
+                                            <svg class="mt-[1px]" id="Time Square" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.25C5.051 2.25 2.5 4.801 2.5 12C2.5 19.198 5.051 21.75 12.25 21.75C19.449 21.75 22 19.198 22 12C22 4.801 19.449 2.25 12.25 2.25Z" fill="#674d45"></path>
+                                            <path d="M15.639 14.7668C15.895 14.7668 16.144 14.6358 16.284 14.4008C16.496 14.0458 16.38 13.5858 16.024 13.3728L12.999 11.5688V7.63281C12.999 7.21881 12.663 6.88281 12.249 6.88281C11.835 6.88281 11.499 7.21881 11.499 7.63281V11.9948C11.499 12.2578 11.638 12.5038 11.865 12.6388L15.256 14.6618C15.376 14.7328 15.509 14.7668 15.639 14.7668Z" fill="#674d45"></path>
+                                            </svg>
+                                            <div>
+                                                {{ comment.passed_time|to_fanum }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2 text-[var(--color6)]">
+                                        {{ comment|to_fanum }}
+                                    </div>
+                                    <div class=" flex gap-1 mt-2 mb-1">
+                                        {% if comment.user == request.user %}
+                                            <div class="bg-red-100 p-2 rounded-lg cursor-pointer" onclick="OpenDialog('آیا از حذف نظر خود مطمئن هستید؟' ,'/products/details/{{ comment.id }}/delete')">
+                                                <svg id="Delete" width="20px" height="20px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                    <g id="Iconly/Bulk/Delete" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                                                        <g id="Delete" transform="translate(3.000000, 2.000000)" fill="#f97e7e" fill-rule="nonzero">
+                                                            <path d="M16.6432894,7.4884379 C16.6432894,7.55643552 16.1103307,14.2971996 15.8059218,17.1341003 C15.6153015,18.8750394 14.492976,19.9310024 12.8094878,19.9610014 C11.5159931,19.9900003 10.2497298,20 9.00389021,20 C7.68121893,20 6.38772423,19.9900003 5.13215907,19.9610014 C3.50507888,19.9220027 2.38178085,18.8450404 2.2008861,17.1341003 C1.88772423,14.2871999 1.36449103,7.55643552 1.35476551,7.4884379 C1.34503998,7.28344508 1.41117355,7.0884519 1.54538578,6.93045743 C1.67765291,6.78446254 1.86827318,6.69646562 2.06861898,6.69646562 L15.9391614,6.69646562 C16.1385347,6.69646562 16.3194294,6.78446254 16.4623946,6.93045743 C16.5956343,7.0884519 16.6627404,7.28344508 16.6432894,7.4884379" id="Fill-1" opacity="0.400000006"></path>
+                                                            <path d="M18,3.97686081 C18,3.56587519 17.67614,3.24388646 17.2871191,3.24388646 L14.371407,3.24388646 C13.77815,3.24388646 13.2626972,2.82190123 13.1304301,2.22692206 L12.9670413,1.49794757 C12.7384915,0.616978406 11.9497515,-1.50990331e-14 11.0647288,-1.50990331e-14 L6.93624379,-1.50990331e-14 C6.04149557,-1.50990331e-14 5.26053598,0.616978406 5.0232332,1.54594589 L4.87054247,2.22792202 C4.73730279,2.82190123 4.22185001,3.24388646 3.62956559,3.24388646 L0.713853469,3.24388646 C0.323859952,3.24388646 0,3.56587519 0,3.97686081 L0,4.35684751 C0,4.75783348 0.323859952,5.08982186 0.713853469,5.08982186 L17.2871191,5.08982186 C17.67614,5.08982186 18,4.75783348 18,4.35684751 L18,3.97686081 Z" id="Fill-4"></path>
+                                                        </g>
+                                                    </g>
+                                                </svg>
+                                            </div>
+                                        {% endif %}
+                                        <input hidden onchange="LikeAction({{ comment.id}})" id="check-like{{ comment.id }}" name="check-like" class="like-input" type="checkbox" {% if comment|is_liked:request.user %}checked{% endif %}>
+                                        <label for="check-like{{ comment.id }}" class="like-btn flex gap-1 px-2 bg-[var(--color12)] p-1.5 rounded-lg cursor-pointer">
+                                            <div>
+                                                <i class="fa fa-heart mt-1 text-[var(--color10)] like-btn"></i>
+                                            </div>
+                                            {{ comment.like.count|to_fanum }}
+                                        </label>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            {% else %}
+                                <div class="text-2xl mt-10 text-center">تا کنون نظری ثبت نشده!</div>
+                                <div class="text-center text-[var(--color10)]">اولین نفر باش که نظرشو میفرسته! <span class="mr-2 text-[var(--color6)] cursor-pointer hover:underline" onclick="PopUp('' ,'open')">ارسال نظر</span><i class="fa fa-external-link text-xs mr-1"></i></div>
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>

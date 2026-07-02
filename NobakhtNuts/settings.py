@@ -1,0 +1,118 @@
+from pathlib import Path
+import os
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+SECRET_KEY = 'django-insecure-a(rbz%ol#r48a3axv6ludycfre26(5ha#sn+p(b8%sw7na(7w#'
+
+DEBUG = True
+
+ALLOWED_HOSTS = [
+    '*'
+]
+
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'cachalot',
+    'ckeditor',
+    'iranian_cities',
+    'django_jalali',
+    'account_module',
+    'product_module',
+    'home_module',
+    'support_module',
+    'order_module',
+    'polls',
+    'article_module',
+    'userpanel_module',
+    'django_render_partial',
+    'site_settings',
+    'documents_module',
+    'adminpanel_module',
+]
+
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+ROOT_URLCONF = 'NobakhtNuts.urls'
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [BASE_DIR / 'templates']
+        ,
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+                'NobakhtNuts.context_processors.global_context',
+                'site_settings.context_processors.site_settings',
+                'order_module.context_processors.orders'
+            ],
+        },
+    },
+]
+
+WSGI_APPLICATION = 'NobakhtNuts.wsgi.application'
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
+
+LANGUAGE_CODE = 'fa-ir'
+
+TIME_ZONE = 'UTC'
+
+USE_I18N = True
+USE_L10N = True
+USE_TZ = True
+
+
+STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+AUTH_USER_MODEL = 'account_module.User'
+
+MERCHANT = '5b3eda13-235e-4673-bfb7-46cae5a8f3ba'
+SANDBOX = True
+
+
+SMS_API_KEY = "https://console.melipayamak.com/api/send/otp/410281e7a9a74a2283fd51b6b8653654"

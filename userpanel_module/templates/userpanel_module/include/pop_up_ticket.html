@@ -1,0 +1,155 @@
+{% load static %}
+
+<div id="popup-parent-pop" class="popup-parent" style="{% if popup_open %}display: flex;{% endif %}">
+    <div id="popup-form" class="popup-form form-default">
+        <div class="flex justify-between p-5">
+            <div class="flex gap-2 ">
+                <svg id="Paper" width="50px" height="50px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <g id="Iconly/Bulk/Paper" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                        <g id="Paper" transform="translate(3.500000, 2.000000)" fill="#674d45" fill-rule="nonzero">
+                            <path d="M15.3088124,7.021 C14.8573009,7.021 14.2592463,7.011 13.5146485,7.011 C11.6987011,7.011 10.2055449,5.508 10.2055449,3.675 L10.2055449,0.459 C10.2055449,0.206 10.0035529,0 9.75304328,0 L4.4636263,0 C1.99516571,0 0,2.026 0,4.509 L0,15.284 C0,17.889 2.09022075,20 4.66957889,20 L12.5462753,20 C15.0058245,20 17,17.987 17,15.502 L17,7.471 C17,7.217 16.7989982,7.012 16.5474984,7.013 C16.1247015,7.016 15.6177413,7.021 15.3088124,7.021" id="Fill-3" opacity="0.400000006"></path>
+                            <path d="M12.584,0.5673 C12.285,0.2563 11.763,0.4703 11.763,0.9013 L11.763,3.5383 C11.763,4.6443 12.674,5.5543 13.78,5.5543 C14.477,5.5623 15.445,5.5643 16.267,5.5623 C16.688,5.5613 16.902,5.0583 16.61,4.7543 C15.555,3.6573 13.666,1.6913 12.584,0.5673" id="Fill-1" opacity="0.400000006"></path>
+                            <path d="M10.918,12.8928 C11.329,12.8928 11.663,13.2268 11.663,13.6378 C11.663,14.0488 11.329,14.3818 10.918,14.3818 L5.474,14.3818 C5.063,14.3818 4.73,14.0488 4.73,13.6378 C4.73,13.2268 5.063,12.8928 5.474,12.8928 L10.918,12.8928 Z M8.8589,7.8986 C9.2699,7.8986 9.6039,8.2326 9.6039,8.6436 C9.6039,9.0546 9.2699,9.3876 8.8589,9.3876 L5.4739,9.3876 C5.0629,9.3876 4.7299,9.0546 4.7299,8.6436 C4.7299,8.2326 5.0629,7.8986 5.4739,7.8986 L8.8589,7.8986 Z" id="Combined-Shape"></path>
+                        </g>
+                    </g>
+                </svg>
+                <div id="form-title" class=" text-5xl mt-1 font-black">
+                    ارسال تیکت
+                </div>
+            </div>
+            <button onclick="PopUp('none' ,'close')" class="btn-icon2" style="color: #d1c1bd; width: 40px; height: 40px; padding-right: 8px">
+                <svg id="Close Square" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.052 2.78467 2.5 5.33667 2.5 12.5347C2.5 19.7327 5.052 22.2847 12.25 22.2847C19.449 22.2847 22 19.7327 22 12.5347C22 5.33667 19.449 2.78467 12.25 2.78467Z" fill="#c5b8b4"></path>
+                <path d="M14.6504 15.6777C14.8424 15.6777 15.0344 15.6037 15.1804 15.4577C15.4734 15.1647 15.4734 14.6897 15.1804 14.3967L13.3064 12.5237L15.1694 10.6597C15.4624 10.3667 15.4624 9.89268 15.1694 9.59968C14.8764 9.30668 14.4024 9.30668 14.1094 9.59968L12.2454 11.4637L10.3794 9.59768C10.0864 9.30468 9.61236 9.30468 9.31936 9.59768C9.02636 9.89068 9.02636 10.3647 9.31936 10.6577L11.1854 12.5237L9.31936 14.3917C9.02636 14.6847 9.02636 15.1587 9.31936 15.4517C9.46536 15.5987 9.65836 15.6717 9.84936 15.6717C10.0414 15.6717 10.2334 15.5987 10.3794 15.4517L12.2464 13.5847L14.1194 15.4577C14.2664 15.6037 14.4574 15.6777 14.6504 15.6777Z" fill="#c5b8b4"></path>
+                </svg>
+            </button>
+        </div>
+
+        <form enctype="multipart/form-data" method="post" id="popup-actual-form" class="popup-actual-form px-4">
+            {% csrf_token %}
+            <div class="flex mt-7 gap-2 editpanel-row">
+
+                <div class="input-icon-def1" style="width: 100%">
+                    <svg class="mt-1" id="Chart" width="20px" height="20px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <g id="Iconly/Light/Chart" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+                            <g id="Chart" transform="translate(2.000000, 2.000000)" stroke="#674d45" stroke-width="1.5">
+                                <line x1="5.37142857" y1="8.20171265" x2="5.37142857" y2="15.0618459" id="Line_182"></line>
+                                <line x1="10.0380952" y1="4.91912464" x2="10.0380952" y2="15.0618459" id="Line_183"></line>
+                                <line x1="14.6285714" y1="11.8268316" x2="14.6285714" y2="15.0618459" id="Line_184"></line>
+                                <path d="M14.6857143,0 L5.31428571,0 C2.04761905,0 0,2.31208373 0,5.58515699 L0,14.414843 C0,17.6879163 2.03809524,20 5.31428571,20 L14.6857143,20 C17.9619048,20 20,17.6879163 20,14.414843 L20,5.58515699 C20,2.31208373 17.9619048,0 14.6857143,0 Z" id="Path"></path>
+                            </g>
+                        </g>
+                    </svg>
+                    <input onfocus="PlaceHolderHandle('t-title' ,'ttitle-plc' ,'fc')" onblur="PlaceHolderHandle('t-title' ,'ttitle-plc' ,'bl')" class="" id="t-title" type="text" name="title">
+                    <div class="input-placeholder input-placeholder-popup" id="ttitle-plc">عنوان تیکت</div>
+                </div>
+
+                <div class="input-icon-def1" style="width: 100%">
+                    <svg id="Image" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path opacity="0.4" d="M6.07056 16.855C6.07056 16.855 6.88256 15.218 8.06456 15.218C9.24656 15.218 9.85056 16.593 11.1606 16.593C12.4696 16.593 13.9386 13.145 15.4226 13.145C16.9046 13.145 17.9706 15.536 17.9706 15.536" stroke="#674d45" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M10.1392 9.50087C10.1392 10.3609 9.44217 11.0589 8.58117 11.0589C7.72117 11.0589 7.02417 10.3609 7.02417 9.50087C7.02417 8.64087 7.72117 7.94287 8.58117 7.94287C9.44217 7.94387 10.1392 8.64087 10.1392 9.50087Z" stroke="#674d45" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M2.75024 12.3961C2.75024 19.3331 5.06324 21.6461 12.0002 21.6461C18.9372 21.6461 21.2502 19.3331 21.2502 12.3961C21.2502 5.45912 18.9372 3.14612 12.0002 3.14612C5.06324 3.14612 2.75024 5.45912 2.75024 12.3961Z" stroke="#674d45" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                    <select id="select-pr" name="reason">
+                        {% for tr in ticket_reasons %}
+                            <option value="{{ tr.id }}">{{ tr.title }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="input-placeholder-edit" id="ttitle-plc">دلیل ارسال تیکت</div>
+                </div>
+
+            </div>
+
+            <div class="flex mt-3 gap-3">
+
+                <div class="input-icon-def1" style="width: 100%; height: 100%;">
+                    <svg id="More Circle" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.051 2.78467 2.5 5.33567 2.5 12.5347C2.5 19.7327 5.051 22.2847 12.25 22.2847C19.449 22.2847 22 19.7327 22 12.5347C22 5.33567 19.449 2.78467 12.25 2.78467Z" fill="#674d45"></path>
+                    <path d="M14.4592 14.4346C14.4592 14.9876 14.9112 15.4346 15.4632 15.4346C16.0152 15.4346 16.4632 14.9876 16.4632 14.4346C16.4632 13.8816 16.0152 13.4346 15.4632 13.4346H15.4542C14.9022 13.4346 14.4592 13.8816 14.4592 14.4346Z" fill="#674d45"></path>
+                    <path d="M11.4592 10.4346C11.4592 10.9876 11.9112 11.4346 12.4632 11.4346C13.0152 11.4346 13.4632 10.9876 13.4632 10.4346C13.4632 9.88157 13.0152 9.43457 12.4632 9.43457H12.4542C11.9022 9.43457 11.4592 9.88157 11.4592 10.4346Z" fill="#674d45"></path>
+                    <path d="M8.4502 14.4346C8.4502 14.9876 8.9032 15.4346 9.4552 15.4346C10.0072 15.4346 10.4552 14.9876 10.4552 14.4346C10.4552 13.8816 10.0072 13.4346 9.4552 13.4346H9.4462C8.8942 13.4346 8.4502 13.8816 8.4502 14.4346Z" fill="#674d45"></path>
+                    </svg>
+                    <textarea onfocus="PlaceHolderHandle('ad-details' ,'details-plc' ,'fc')" onblur="PlaceHolderHandle('ad-details' ,'details-plc' ,'bl')" id="ad-details" name="text" style="max-height: 150px; min-height: 150px"></textarea>
+                    <div class="input-placeholder input-placeholder-popup" id="details-plc" style="z-index: -1">مشکل خود را شرح دهید</div>
+                </div>
+
+            </div>
+
+            <div class="flex mt-3 w-[100%] bg-[var(--color17)] p-3 rounded-xl">
+                        <div id="upload-avatar" class="image-inputbox" style="{% if t.image %}background-image: url({{ t.image.url }});{% endif %} width: 140px; height: 140px">
+                            <input oninput="SetUploadedImage(event ,'upload-avatar')" name="image" type="file" class="cursor-pointer w-[100%] h-[100%] opacity-0" style="z-index: 100">
+                            {% if not t.image %}
+                                <div class="centerbox">
+                                    <svg style="z-index: -1" class="relative top-[-100px]" id="Upload" width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M16.65 7.28717C15.53 7.20717 14.3499 7.16735 13.1199 7.15735H11.6199C10.4099 7.16735 9.15 7.21717 7.85 7.28717H7.83C3.8 7.65717 2.5 9.48717 2.5 14.7872C2.5 22.3872 5.35 22.3872 12.25 22.3872C19.15 22.3872 22 22.3872 22 14.7872C22 9.48717 20.7 7.65717 16.65 7.28717Z" fill="#674d45"></path>
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12.9998 4.16917L14.6388 5.81217C14.7848 5.95917 14.9778 6.03316 15.1698 6.03316C15.3608 6.03316 15.5528 5.95917 15.6988 5.81417C15.9928 5.52117 15.9928 5.04617 15.7008 4.75317L12.7808 1.82517C12.4998 1.54217 11.9998 1.54217 11.7188 1.82517L8.79883 4.75317C8.50683 5.04617 8.50683 5.52117 8.80083 5.81417C9.09483 6.10617 9.56883 6.10617 9.86083 5.81217L11.4998 4.16917V14.406C11.4998 14.8177 11.8454 15.1483 12.257 15.1483C12.6689 15.1483 12.9998 14.8173 12.9998 14.4054V4.16917Z" fill="#674d45"></path>
+                                    </svg>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="mx-3 mt-3">
+                            {% if t.image %}
+                                <div class="profile-info">
+                                    <div class="text-xl">
+                                        تصویر ضمیمه
+                                    </div>
+                                </div>
+                                <div>
+                                    <a class="mt-2" href="{% url 'delete_avatar_page' %}">
+                                        <button type="button" class="btn-defIconFlex btn-delete-upload gap-2" style="z-index: 200">
+                                            <svg id="Delete" width="22px" height="22px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                <g id="Iconly/Bulk/Delete" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                                                    <g id="Delete" transform="translate(3.000000, 2.000000)" fill="#c5b8b4" fill-rule="nonzero">
+                                                        <path d="M16.6432894,7.4884379 C16.6432894,7.55643552 16.1103307,14.2971996 15.8059218,17.1341003 C15.6153015,18.8750394 14.492976,19.9310024 12.8094878,19.9610014 C11.5159931,19.9900003 10.2497298,20 9.00389021,20 C7.68121893,20 6.38772423,19.9900003 5.13215907,19.9610014 C3.50507888,19.9220027 2.38178085,18.8450404 2.2008861,17.1341003 C1.88772423,14.2871999 1.36449103,7.55643552 1.35476551,7.4884379 C1.34503998,7.28344508 1.41117355,7.0884519 1.54538578,6.93045743 C1.67765291,6.78446254 1.86827318,6.69646562 2.06861898,6.69646562 L15.9391614,6.69646562 C16.1385347,6.69646562 16.3194294,6.78446254 16.4623946,6.93045743 C16.5956343,7.0884519 16.6627404,7.28344508 16.6432894,7.4884379" id="Fill-1" opacity="0.400000006"></path>
+                                                        <path d="M18,3.97686081 C18,3.56587519 17.67614,3.24388646 17.2871191,3.24388646 L14.371407,3.24388646 C13.77815,3.24388646 13.2626972,2.82190123 13.1304301,2.22692206 L12.9670413,1.49794757 C12.7384915,0.616978406 11.9497515,-1.50990331e-14 11.0647288,-1.50990331e-14 L6.93624379,-1.50990331e-14 C6.04149557,-1.50990331e-14 5.26053598,0.616978406 5.0232332,1.54594589 L4.87054247,2.22792202 C4.73730279,2.82190123 4.22185001,3.24388646 3.62956559,3.24388646 L0.713853469,3.24388646 C0.323859952,3.24388646 0,3.56587519 0,3.97686081 L0,4.35684751 C0,4.75783348 0.323859952,5.08982186 0.713853469,5.08982186 L17.2871191,5.08982186 C17.67614,5.08982186 18,4.75783348 18,4.35684751 L18,3.97686081 Z" id="Fill-4"></path>
+                                                    </g>
+                                                </g>
+                                            </svg>
+                                            <div style="color: #e8afaf">
+                                                حذف عکس
+                                            </div>
+                                        </button>
+                                    </a>
+                                </div>
+                            {% else %}
+                                <div class="profile-info">
+                                    <div class="text-xl">
+                                        تصویر ضمیمه
+                                    </div>
+                                    <div class="text-sm" style="color: var(--color6)">
+                                        در صورت نیاز میتوانید یک اسکرین شات از مشکل خود آپلود کنید
+                                    </div>
+                                    <div class="text-sm" style="color: var(--color5)">
+                                        فرمت عکس باید png - jpg - jpeg - webp
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+
+            <div class="flex gap-2 w-[94%] absolute bottom-4">
+                {% if request.user.is_authenticated %}
+                    <button type="submit" class="btn-defIconFlex gap-2" style="width: 100%; height: 50px; font-size: 17px; justify-content: center; padding-top: 12px">
+                        <svg id="Send" width="24" style="margin-top: 0;" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M11.3565 12.8934C11.3694 12.9519 11.3842 13.0176 11.4006 13.09C11.4738 13.4129 11.581 13.8688 11.7172 14.4028C11.989 15.4682 12.3788 16.8545 12.8475 18.1152C13.0818 18.7455 13.339 19.3529 13.6149 19.8769C13.8872 20.3942 14.194 20.8617 14.5381 21.1862C14.8813 21.5098 15.3414 21.7597 15.8734 21.6332C16.3742 21.514 16.7676 21.0965 17.0902 20.5376C18.1385 18.7214 19.5304 14.763 20.5433 11.0838C21.0521 9.23596 21.4716 7.43589 21.7073 5.98436C21.825 5.25971 21.8989 4.60988 21.9128 4.07868C21.9243 3.64052 21.9223 3.14268 21.7108 2.74545C21.664 2.65772 21.5922 2.5859 21.5045 2.53917C21.1072 2.32761 20.6094 2.32565 20.1712 2.33712C19.64 2.35102 18.9902 2.42491 18.2656 2.54259C16.814 2.7783 15.014 3.19781 13.1661 3.70659C9.48696 4.71957 5.52852 6.11138 3.71239 7.1597C3.15349 7.48233 2.73593 7.8757 2.61678 8.37649C2.49019 8.90853 2.74015 9.36859 3.06377 9.71184C3.38819 10.0559 3.85573 10.3627 4.37304 10.6351C4.89706 10.911 5.50445 11.1681 6.13473 11.4024C7.39547 11.8711 8.78173 12.2609 9.84714 12.5327C10.3811 12.6689 10.8371 12.7761 11.1599 12.8493C11.2323 12.8658 11.2981 12.8805 11.3565 12.8934Z" fill="#c5b8b4"></path>
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M19.0624 5.60285C19.3553 5.89574 19.3553 6.37062 19.0624 6.66351L13.5306 12.1953C13.2377 12.4882 12.7628 12.4882 12.4699 12.1953C12.177 11.9024 12.177 11.4275 12.4699 11.1346L18.0017 5.60285C18.2946 5.30996 18.7695 5.30996 19.0624 5.60285Z" fill="#c5b8b4"></path>
+                        </svg>
+                        <div>
+                            ارسال تیکت
+                        </div>
+                    </button>
+                    {% else %}
+                    <a href="{% url 'login_page' %}" class="w-[100%]">
+                        <button type="button" class="btn-defIconFlex gap-2" style="width: 100%; height: 50px; font-size: 17px; justify-content: center; padding-top: 12px;">
+                            <div>
+                                ورود به حساب
+                            </div>
+                        </button>
+                    </a>
+                {% endif %}
+                <button type="button" onclick="PopUp('none' ,'close')" class="submit-btn btn-defIconFlex2" style="width: 100%; height: 50px; border-radius: 7px; display: block">لغو</button>
+            </div>
+        </form>
+    </div>
+</div>

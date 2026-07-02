@@ -1,0 +1,61 @@
+{% load static %}
+{% load poll_extras %}
+
+<div class="basket-box flex w-[90%] items-start gap-3">
+    <div class="basket-box w-[90%]">
+        {% for o in orders.orderdetails_set.all %}
+
+            <div class="flex gap-4 py-4 border-b border-[var(--color11)] items-stretch w-full">
+
+          <a href="{{ o.product.get_absolute_url }}"
+             class="flex-shrink-0 w-[130px] h-[130px] rounded-2xl bg-[var(--color12)] overflow-hidden">
+            <img loading="lazy" class="w-full h-full object-cover"
+                 src="{{ o.product.product_image.first.image.url }}"
+                 alt="{{ o.product.title }}">
+          </a>
+
+          <div class="flex flex-col justify-between flex-1 min-w-0">
+
+            <div class="flex flex-wrap items-center gap-2">
+              <a href="{{ o.product.get_absolute_url }}"
+                 class="basket-item-title text-2xl font-medium leading-snug">
+                {{ o.product.title|to_fanum }}
+              </a>
+              {% if o.product.is_byWeight %}
+                <div class="bg-[var(--color12)] rounded-lg py-0.5 px-2.5 text-sm text-nowrap flex-shrink-0">
+                  {{ o.pack_size|to_fanum }}
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="flex items-center justify-between gap-2">
+              <div class="basket-price text-2xl font-bold">{{ o.total_price|three_digits_currency }}</div>
+
+              <div class="flex items-center rounded-lg overflow-hidden pl-3">
+                <button onclick="change_order_count_basket({{ o.id }}, 'increase')"
+                        class="btn-prdcounter flex items-center justify-center">
+                  <i class="fa fa-add text-sm"></i>
+                </button>
+                <div class="min-w-[36px] h-[38px] flex items-center justify-center text-base font-medium px-1">
+                  {{ o.count|to_fanum }}
+                </div>
+                <button onclick="change_order_count_basket({{ o.id }}, 'decrease')"
+                        class="btn-prdcounter flex items-center justify-center">
+                  {% if o.count == 1 %}
+                    <i class="fa fa-trash text-sm"></i>
+                  {% else %}
+                    <i class="fa fa-minus text-sm"></i>
+                  {% endif %}
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        {% endfor %}
+    </div>
+    {% include 'order_module/include/basket_totalbox_mobile.html' %}
+    {% include 'order_module/include/basket_totalbox_desktop.html' %}
+
+</div>

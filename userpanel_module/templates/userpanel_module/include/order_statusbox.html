@@ -1,0 +1,27 @@
+{% load static %}
+{% load poll_extras %}
+
+<div class="w-[100%] rounded-2xl p-5 bg-[var(--color12)] mt-2">
+    <div class="flex justify-between items-start">
+        <div class="flex items-start gap-2">
+            <div class="centerbox bg-[var(--color6)] p-1.5 rounded-full"><div class="bg-[var(--color15)] p-1 rounded-full"></div></div>
+            <div>سفارش جاری</div>
+        </div>
+        <a href="{{ order.get_absolute_url }}">
+            <button class="bg-[var(--color11)] cursor-pointer rounded-lg p-1 text-xs transition-all flex hover:bg-[var(--color12)]"><div>جزئیات بیشتر</div><i class="fa fa-arrow-left pt-0.5 mr-1"></i></button>
+        </a>
+    </div>
+    <div class="centerbox mt-10">
+        {% include 'userpanel_module/include/order_status_stepper_horizontal.html' %}
+    </div>
+    <a href="{{ order.get_absolute_url }}" class="w-[100%] flex justify-between mt-5 p-3 bg-[var(--color13)] rounded-lg">
+        <div class="flex w-15 h-15 mr-8">
+            {% for o in order.orderdetails_set.all|slice:":3" %}
+                <img class="bg-[var(--color15)] w-15 h-15 rounded-full border-2 border-[var(--color17)] mr-[-30px]" src="{{ o.product.product_image.first.image.url }}">
+            {% endfor %}
+        </div>
+        <div class="order-statusbox-price text-3xl mt-3">
+            {{ order.finalized_price|three_digits_currency }}
+        </div>
+    </a>
+</div>

@@ -1,0 +1,30 @@
+{% load static %}
+{% load poll_extras %}
+{% load render_partial %}
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    {% include 'include/head_refrence.html' %}
+    <link rel="stylesheet" href="{% static 'styles/admin.css' %}">
+  <title>
+       ادمین خشکبار نوبخت |
+      {% block admin_title %}
+      {% endblock %}
+  </title>
+</head>
+<body class="admin-body">
+    {% include 'loader.html' %}
+    {% include 'yesno_dialog.html' %}
+    {% include 'message.html' %}
+    {% include 'message_json.html' %}
+    {% render_partial 'adminpanel_module.views.admin_header_component' %}
+    <div class="flex">
+        {% render_partial 'adminpanel_module.views.admin_sidebar_component' %}
+        {% block admin_content %}
+
+        {% endblock %}
+    </div>
+</body>
+<script src="{% static 'scripts/main.js' %}"></script>
+<script src="{% static 'scripts/admin.js' %}"></script>
+</html>

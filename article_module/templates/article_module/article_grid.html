@@ -1,0 +1,38 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load poll_extras %}
+
+{% block page_title %}
+	 | مقالات
+{% endblock %}
+
+{% block page_content %}
+	<div class="centerbox">
+        <div class="w-[95%] mt-45">
+            <div class="text-center">
+                <h1 class="productgrid-title text-6xl relative" style="animation: load3 500ms">مقالات اخیر</h1>
+                {% if articles %}
+                    <h2 class=" mt-2 text-[var(--color10)]">{{ page_obj.paginator.count|to_fanum }} مقاله</h2>
+                {% endif %}
+            </div>
+            <div class="article-grid mt-10 flex flex-wrap gap-3">
+                {% for article in articles %}
+                    {% include 'article_module/include/article_card.html' %}
+                {% endfor %}
+            </div>
+
+            {% if page_obj.has_other_pages %}
+            <ul class="centerbox gap-2 mt-10 flex-wrap">
+                {% if page_obj.has_previous %}<a href="?{% query_transform page=page_obj.previous_page_number %}"><button class="rounded-xl bg-[var(--color12)] w-8 h-8 m-1 cursor-pointer text-[var(--color6)]"><i class="fa fa-arrow-right text-sm mt-1"></i></button></a>{% endif %}
+                <div class="flex gap-2">
+                    {% for page_index in paginator.page_range %}
+                        <a class="" href="?{% query_transform page=page_index %}"><li class="{% if page_index == page_obj.number %}bg-[var(--color6)] text-[var(--color3)]{% endif %} pt-2 cursor-pointer transition-all px-4 rounded-lg hover:bg-[var(--color12)] hover:text-[var(--color2)]">{{ page_index|to_fanum }}</li></a>
+                    {% endfor %}
+                </div>
+                {% if page_obj.has_next %}<a href="?{% query_transform page=page_obj.next_page_number %}"><button class="rounded-xl bg-[var(--color12)] w-8 h-8 m-1 cursor-pointer text-[var(--color6)]"><i class="fa fa-arrow-left text-sm mt-1"></i></button></a>{% endif %}
+            </ul>
+            {% endif %}
+
+        </div>
+    </div>
+{% endblock %}
