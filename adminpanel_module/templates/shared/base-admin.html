@@ -17,12 +17,15 @@
     {% include 'yesno_dialog.html' %}
     {% include 'message.html' %}
     {% include 'message_json.html' %}
+    {% render_partial 'adminpanel_module.views.admin_popup_user_component' %}
     {% render_partial 'adminpanel_module.views.admin_header_component' %}
     <div class="flex">
         {% render_partial 'adminpanel_module.views.admin_sidebar_component' %}
-        {% block admin_content %}
+        <div class="admin-content">
+            {% block admin_content %}
 
-        {% endblock %}
+            {% endblock %}
+        </div>
     </div>
 </body>
 <script src="{% static 'scripts/main.js' %}"></script>

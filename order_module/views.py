@@ -728,7 +728,7 @@ ZP_API_REQUEST = 'https://sandbox.zarinpal.com/pg/v4/payment/request.json'
 ZP_API_VERIFY = 'https://sandbox.zarinpal.com/pg/v4/payment/verify.json'
 ZP_API_STARTPAY = 'https://sandbox.zarinpal.com/pg/StartPay/'
 
-CallbackURL = "http://127.0.0.1:8000/orders/verify-payment/"
+CallbackURL = "https://nobakhtnuts.ir/orders/verify-payment/"
 
 @login_required
 def request_online_payment(request):
