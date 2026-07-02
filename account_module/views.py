@@ -1,4 +1,5 @@
 from datetime import timezone, timedelta, datetime
+from time import sleep
 
 from PIL.ImagePalette import random
 from django.contrib.auth import login, logout
@@ -46,6 +47,7 @@ class RegisterView(View):
                     message_e = 'یک حساب با این شماره تلفن وجود دارد!'
                 else:
                     verify_sms = send_sms(phone)
+                    sleep(1)
                     if verify_sms.get('status') == 'عملیات موفق':
                         request.session['phone'] = phone
                         request.session['password'] = password
@@ -99,14 +101,18 @@ class VerifyView(View):
                         password = request.session.get('password')
 
                         if form_type == 'register':
-                            new_user = User(
-                                phone=phone,
-                                is_active=True,
-                                username=f'user-{get_random_string(10)}',
-                            )
-                            new_user.set_password(password)
-                            new_user.save()
-                            login(request, new_user)
+                            user = User.objects.filter(phone__iexact=phone).exists()
+                            if not user:
+                                new_user = User(
+                                    phone=phone,
+                                    is_active=True,
+                                    username=f'user-{get_random_string(10)}',
+                                )
+                                new_user.set_password(password)
+                                new_user.save()
+                                login(request, new_user)
+                            else:
+                                login(request ,User.objects.filter(phone__iexact=phone).first())
 
                         elif form_type == 'login':
                             user = User.objects.filter(phone__iexact=phone).first()
