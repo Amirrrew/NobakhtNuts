@@ -109,12 +109,14 @@
 
     let verify_form = document.getElementById('verify_form')
     let verify_input = document.getElementById('ver-pass')
+    let verify_btn = document.getElementById('btn-login')
 
     verify_input.addEventListener("input", () => {
         verify_input.value = verify_input.value.replace(/\D/g, "");
 
         if (verify_input.value.length === 6) {
             Showloader(3000)
+            verify_btn.classList.add('disabled')
             verify_form.submit();
         }
     });
