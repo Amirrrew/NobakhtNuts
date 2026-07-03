@@ -6,40 +6,6 @@ from django.forms import PasswordInput
 
 from .models import User
 
-class RegisterForm(forms.Form):
-    phone = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control'}),
-        validators = [
-            validators.MaxLengthValidator(11),
-            validators.MinLengthValidator(11),
-        ]
-    )
-
-    password = forms.CharField(
-        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
-        validators= [
-            validators.MinLengthValidator(8),
-        ]
-    )
-
-    confirm_password = forms.CharField(
-        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
-        validators = [
-            validators.MinLengthValidator(8),
-        ]
-    )
-
-    def clean(self):
-        cleaned_data = super().clean()
-        phone = cleaned_data.get('phone')
-        password = cleaned_data.get('password')
-        confirm_password = cleaned_data.get('confirm_password')
-
-        if not phone:
-            raise ValidationError('شماره تلفن وارد نکردید')
-        elif password != confirm_password:
-            raise ValidationError('پسورد ها با هم مطابقت ندارند')
-        return cleaned_data
 
 class VerifySignupForm(forms.Form):
     verify_code = forms.CharField(
@@ -57,6 +23,7 @@ class VerifySignupForm(forms.Form):
             raise ValidationError('کد تایید را وارد کنید')
         return cleaned_data
 
+
 class LoginForm(forms.Form):
     phone = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control'}),
@@ -66,21 +33,11 @@ class LoginForm(forms.Form):
         ]
     )
 
-    password = forms.CharField(
-        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
-        validators = [
-            validators.MinLengthValidator(8),
-        ]
-    )
-
     def clean(self):
         cleaned_data = super().clean()
         phone = self.cleaned_data.get('phone')
-        password = self.cleaned_data.get('password')
         if not phone:
             raise ValidationError('شماره تلفن خود را وارد کنید')
-        elif not password:
-            raise ValidationError('پسورد خود را وارد کنید')
 
         return cleaned_data
 

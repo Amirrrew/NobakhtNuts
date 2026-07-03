@@ -176,3 +176,23 @@ let Checkfield = (element ,type ,err) => {
     CheckLogin('btn-login' ,IsChecked ,IsPassChecked)
 }
 
+let CheckPhone = (element ,err ,btn) => {
+    let btnLogin = $.getElementById(btn)
+    const phonePattern = /^(?:\+98|0)?(?:9\d{9}|[1-8]\d{9})$/;
+    let input = $.getElementById(element).value
+        if (input.length < 11 || input.length > 11) {
+            AccountError(err ,"شماره تلفن باید 11 رقم باشد." ,"show")
+            !btnLogin.classList.contains('disabled') ? btnLogin.classList.add('disabled') : null
+        }
+        else if (input.length === 11) {
+            let isPhoneCorrect = phonePattern.test(input)
+            if (!isPhoneCorrect) {
+                AccountError(err ,"فرمت شماره تلفن اشتباه است!" ,"show")
+                !btnLogin.classList.contains('disabled') ? btnLogin.classList.add('disabled') : null
+            }
+            else {
+                AccountError(err ,null ,"hide")
+                btnLogin.classList.remove('disabled')
+            }
+        }
+}

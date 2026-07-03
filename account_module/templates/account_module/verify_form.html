@@ -1,4 +1,5 @@
 {% load static %}
+{% load poll_extras %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,99 +9,208 @@
 <body onscroll="HeaderManage()" onload="StartIntervals(false)">
     {% include 'loader.html' %}
     {% include 'message.html' %}
-    <div class="centerbox mt-45 px-2">
-        <div class="form-default login-register-box">
-            <div class="flex gap-3 p-2">
-                <a href="{% url 'home' %}">
-                    <button type="button" class="btn-icon2 py-2 px-3 rounded-lg">
-                        <svg id="Home" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M19.4991 6.158C19.1361 5.838 18.7231 5.476 18.2311 5.021C18.0081 4.841 17.7641 4.635 17.5051 4.417C16.0451 3.186 14.0451 1.5 12.2221 1.5C10.4201 1.5 8.54906 3.092 7.04606 4.371C6.76806 4.607 6.50806 4.829 6.24306 5.044C5.77706 5.476 5.36406 5.839 5.00006 6.16C2.61306 8.261 2.16406 8.812 2.16406 13.713C2.16406 22.5 4.70506 22.5 12.2501 22.5C19.7941 22.5 22.3361 22.5 22.3361 13.713C22.3361 8.811 21.8871 8.26 19.4991 6.158Z" fill="#e5e5e5"></path>
-                        <path d="M9.34277 16.8848H15.1578C15.5718 16.8848 15.9078 16.5488 15.9078 16.1348C15.9078 15.7208 15.5718 15.3848 15.1578 15.3848H9.34277C8.92877 15.3848 8.59277 15.7208 8.59277 16.1348C8.59277 16.5488 8.92877 16.8848 9.34277 16.8848Z" fill="#e5e5e5"></path>
-                        </svg>
-                    </button>
-                </a>
-                <div>
-                    <div class="text-4xl" style="font-weight: 800;">
-                        کد تایید را وارد کنید
+    <div class="centerbox min-h-[100vh] items-center">
+        <div class="form-default account-form login-register-box">
+            <div class="w-[100%]">
+
+
+                <div class="centerbox mt-5">
+                    <div class="verify-code-titlebar">
+                        <div class="code-star mt-[-8px] relative hidden" style="animation: load8 400ms">*</div>
+                        <div class="code-star mt-[-8px] relative hidden" style="animation: load8 400ms">*</div>
+                        <div class="code-star mt-[-8px] relative hidden" style="animation: load8 400ms">*</div>
                     </div>
-                    <div class="text-sm text-[var(--color7)]">
-                        کد تایید که برایتان پیامک شده را وارد کنید
+                </div>
+
+                <div class="text-center mt-5">
+                    <h1 class="text-5xl font-semibold relative">کد تایید</h1>
+                    <p class="relative">کد تایید که برایتان پیامک شده را وارد کنید</p>
+                </div>
+
+                <form method="post" class="mt-5" id="verify_form">
+                    {% csrf_token %}
+                    <div class="verify-otp-inputrow" dir="ltr">
+                        <input type="text" maxlength="1" class="otp-input">
+                        <input type="text" maxlength="1" class="otp-input">
+                        <input type="text" maxlength="1" class="otp-input">
+                        <input type="text" maxlength="1" class="otp-input">
+                        <input type="text" maxlength="1" class="otp-input">
+                        <input type="text" maxlength="1" class="otp-input">
+                    </div>
+                    <div class="">
+                        <input type="hidden" name="verify_code" id="verify_code">
+                    </div>
+                    <div style="color: var(--color5); opacity: 0;" class="account-error hidden gap-1 mt-1" id="ver-err">
+                            <svg id="Danger Circle" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.052 2.78467 2.5 5.33667 2.5 12.5347C2.5 19.7327 5.052 22.2847 12.25 22.2847C19.448 22.2847 22 19.7327 22 12.5347C22 5.33667 19.448 2.78467 12.25 2.78467Z" fill="#f97e7e"></path>
+                            <path d="M11.499 16.0346C11.499 16.4486 11.84 16.7846 12.254 16.7846C12.668 16.7846 13.004 16.4486 13.004 16.0346C13.004 15.6206 12.668 15.2846 12.254 15.2846H12.245C11.831 15.2846 11.499 15.6206 11.499 16.0346Z" fill="#f97e7e"></path>
+                            <path d="M12.25 7.88965C11.836 7.88965 11.5 8.22565 11.5 8.63965V12.5346C11.5 12.9486 11.836 13.2846 12.25 13.2846C12.664 13.2846 13 12.9486 13 12.5346V8.63965C13 8.22565 12.664 7.88965 12.25 7.88965Z" fill="#f97e7e"></path>
+                            </svg>
+                            <div id="ver-errtext" class="mt-0.5">
+
+                            </div>
+                        </div>
+                </form>
+
+                <div class="flex items-start justify-between mt-5 w-[100%] border-t border-[var(--color11)] pt-3 ">
+                    <div class="flex gap-1">
+                        <div class="timer-stage">
+                          <div class="timer-ring-wrap" id="timerRingWrap">
+                            <svg viewBox="0 0 120 120">
+                              <circle class="timer-track" cx="60" cy="60" r="52"></circle>
+                              <circle class="timer-progress" id="timerProgress" cx="60" cy="60" r="52"></circle>
+                            </svg>
+                            <div class="timer-count" style="font-size: 15px" id="timerCount">-</div>
+                          </div>
+                        </div>
+                        <div class="pt-2">
+                            <h1 class="text-xl font-semibold">انقضا کد تایید</h1>
+                            <a id="reset_verify_code" href="{% url 'reset_verify_code' %}" class="disabled text-[var(--color6)] mt-[-4px] hover:underline">دریافت دوباره کد <i class="fa fa-external-link text-xs mr-1 mt-1"></i></a>
+                        </div>
+                    </div>
+                    <div class="mt-1.5 rounded-xl bg-[var(--color11)] pt-2 px-3">
+                        <a class="mt-[-5px]" href="{% url 'reset_phone_number' %}"><i class="fa fa-edit text-xs ml-2 mt-1"></i>ویرایش شماره</a>
                     </div>
                 </div>
             </div>
-            <form method="post" class="mt-10" id="verify_form">
-                {% csrf_token %}
-                <div class="input-icon-def1 mt-4">
-                    <svg id="Password" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.25C5.052 2.25 2.5 4.802 2.5 12C2.5 19.199 5.052 21.75 12.25 21.75C19.448 21.75 22 19.199 22 12C22 4.802 19.448 2.25 12.25 2.25Z" fill="#674d45"></path>
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M18.0103 13.8519C18.0103 14.2659 17.6743 14.6019 17.2603 14.6019C16.8463 14.6019 16.5103 14.2659 16.5103 13.8519V12.7499H15.1823V13.8519C15.1823 14.2659 14.8463 14.6019 14.4323 14.6019C14.0183 14.6019 13.6823 14.2659 13.6823 13.8519V12.7499H11.5663C11.2423 13.8179 10.2593 14.6019 9.08733 14.6019C7.65333 14.6019 6.48633 13.4349 6.48633 11.9999C6.48633 10.5659 7.65333 9.39893 9.08733 9.39893C10.2613 9.39993 11.2423 10.1839 11.5663 11.2499H17.2603C17.6743 11.2499 18.0103 11.5859 18.0103 11.9999V13.8519ZM7.98544 12.0007C7.98544 11.3927 8.48044 10.8987 9.08944 10.8987C9.69644 10.8997 10.1904 11.3937 10.1904 12.0007C10.1904 12.6077 9.69544 13.1017 9.08744 13.1017C8.48044 13.1017 7.98544 12.6077 7.98544 12.0007Z" fill="#674d45"></path>
-                    </svg>
-                    <input onblur="PlaceHolderHandle('ver-pass' ,'ver-plc' ,'bl')" onfocus="PlaceHolderHandle('ver-pass' ,'ver-plc' ,'fc')" type="text" class="tracking-widest" name="verify_code" autocomplete="one-time-code" inputmode="numeric" id="ver-pass">
-                    <div class="input-placeholder" id="ver-plc">کد تایید را وارد کنید</div>
-                    <div id="ver_code_time" class="p-3.5 text-lg" style="color: var(--color10)">
-                        -
-                    </div>
-                    <a href="{% url 'reset_verify_code' %}" >
-                        <button type="button" class="btn-defIconFlex m-1.5" id="btn-code" style="display: none">
-                            <svg id="Send" width="24" style="margin-top: 0;" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M11.3565 12.8934C11.3694 12.9519 11.3842 13.0176 11.4006 13.09C11.4738 13.4129 11.581 13.8688 11.7172 14.4028C11.989 15.4682 12.3788 16.8545 12.8475 18.1152C13.0818 18.7455 13.339 19.3529 13.6149 19.8769C13.8872 20.3942 14.194 20.8617 14.5381 21.1862C14.8813 21.5098 15.3414 21.7597 15.8734 21.6332C16.3742 21.514 16.7676 21.0965 17.0902 20.5376C18.1385 18.7214 19.5304 14.763 20.5433 11.0838C21.0521 9.23596 21.4716 7.43589 21.7073 5.98436C21.825 5.25971 21.8989 4.60988 21.9128 4.07868C21.9243 3.64052 21.9223 3.14268 21.7108 2.74545C21.664 2.65772 21.5922 2.5859 21.5045 2.53917C21.1072 2.32761 20.6094 2.32565 20.1712 2.33712C19.64 2.35102 18.9902 2.42491 18.2656 2.54259C16.814 2.7783 15.014 3.19781 13.1661 3.70659C9.48696 4.71957 5.52852 6.11138 3.71239 7.1597C3.15349 7.48233 2.73593 7.8757 2.61678 8.37649C2.49019 8.90853 2.74015 9.36859 3.06377 9.71184C3.38819 10.0559 3.85573 10.3627 4.37304 10.6351C4.89706 10.911 5.50445 11.1681 6.13473 11.4024C7.39547 11.8711 8.78173 12.2609 9.84714 12.5327C10.3811 12.6689 10.8371 12.7761 11.1599 12.8493C11.2323 12.8658 11.2981 12.8805 11.3565 12.8934Z" fill="#c5b8b4"></path>
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M19.0624 5.60285C19.3553 5.89574 19.3553 6.37062 19.0624 6.66351L13.5306 12.1953C13.2377 12.4882 12.7628 12.4882 12.4699 12.1953C12.177 11.9024 12.177 11.4275 12.4699 11.1346L18.0017 5.60285C18.2946 5.30996 18.7695 5.30996 19.0624 5.60285Z" fill="#c5b8b4"></path>
-                            </svg>
-                            <div class="text-nowrap">
-                                دریافت کد
-                            </div>
-                        </button>
-                    </a>
-                </div>
-                <div style="color: var(--color5); opacity: 0;" class="account-error hidden gap-1 mt-1" id="ver-err">
-                        <svg id="Danger Circle" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.052 2.78467 2.5 5.33667 2.5 12.5347C2.5 19.7327 5.052 22.2847 12.25 22.2847C19.448 22.2847 22 19.7327 22 12.5347C22 5.33667 19.448 2.78467 12.25 2.78467Z" fill="#f97e7e"></path>
-                        <path d="M11.499 16.0346C11.499 16.4486 11.84 16.7846 12.254 16.7846C12.668 16.7846 13.004 16.4486 13.004 16.0346C13.004 15.6206 12.668 15.2846 12.254 15.2846H12.245C11.831 15.2846 11.499 15.6206 11.499 16.0346Z" fill="#f97e7e"></path>
-                        <path d="M12.25 7.88965C11.836 7.88965 11.5 8.22565 11.5 8.63965V12.5346C11.5 12.9486 11.836 13.2846 12.25 13.2846C12.664 13.2846 13 12.9486 13 12.5346V8.63965C13 8.22565 12.664 7.88965 12.25 7.88965Z" fill="#f97e7e"></path>
-                        </svg>
-                        <div id="ver-errtext" class="mt-0.5">
-
-                        </div>
-                    </div>
-            </form>
         </div>
     </div>
 </body>
 <script>
-    const expireTime = {{ expire_time }};
-    const timer = document.getElementById("ver_code_time");
-    const btn = document.getElementById('btn-code')
 
-    const countdown = setInterval(() => {
-        const now = Date.now() / 1000;
-        const timeLeft = Math.floor(expireTime - now);
-
-        if (timeLeft <= 0) {
-            clearInterval(countdown);
-            btn.style = "display: flex;"
-            timer.style = "display: none;"
-            return;
-        }
-
-        let seconds = timeLeft;
-
-        seconds = seconds < 10 ? "0" + seconds : seconds;
-
-        timer.innerHTML = `${seconds}`;
-
-    }, 1000);
 
     let verify_form = document.getElementById('verify_form')
-    let verify_input = document.getElementById('ver-pass')
 
-    verify_input.addEventListener("input", () => {
-        verify_input.value = verify_input.value.replace(/\D/g, "");
+    let code_star = document.querySelectorAll('.code-star')
+    code_star.forEach((item ,index) => {
+        setTimeout(() => {
+            item.className = 'flex code-star mt-[-8px] relative '
+        } ,index * 400)
+    })
 
-        if (verify_input.value.length === 6) {
-            Showloader(3000)
+    const inputs = document.querySelectorAll(".otp-input");
+    const hiddenInput = document.getElementById("verify_code");
+
+    window.onload = ()=>{
+        inputs[0].focus();
+    }
+
+    inputs.forEach((input,index)=>{
+
+        input.addEventListener("input",(e)=>{
+
+            input.value = input.value.replace(/\D/g,'');
+
+            if(input.value && index < inputs.length-1){
+                inputs[index+1].focus();
+            }
+            updateHidden();
+        });
+
+        input.addEventListener("keydown",(e)=>{
+            if(e.key==="Backspace" && !input.value && index>0){
+                inputs[index-1].focus();
+            }
+        })
+
+        input.addEventListener("paste", (e) => {
+
+            e.preventDefault();
+
+            const text = e.clipboardData.getData("text")
+                .replace(/\D/g, "")   // فقط عدد
+                .slice(0, 6);         // حداکثر ۶ رقم
+
+            text.split("").forEach((char, index) => {
+                if (inputs[index]) {
+                    inputs[index].value = char;
+                }
+            });
+            updateHidden();
+        })
+    })
+
+    function updateHidden(){
+        hiddenInput.value =
+            [...inputs].map(i=>i.value).join('');
+
+        if(hiddenInput.value.length === 6){
+            Showloader(3000);
             verify_form.submit();
         }
-    });
+        console.log(hiddenInput.value)
+    }
+
+    function to_fanum_timer(num) {
+      const persianDigits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+
+      return num.toString().replace(/[0-9]/g, (d) => persianDigits[d]);
+    }
+
+
+    const EXPIRE_AT = {{ expire_time }} * 1000;
+    const R = 52;
+    const CIRC = 2 * Math.PI * R;
+
+    const progress = document.getElementById('timerProgress');
+    const ringWrap = document.getElementById('timerRingWrap');
+    const countEl = document.getElementById('timerCount');
+    const resendBtn = document.getElementById('reset_verify_code');
+
+    progress.style.strokeDasharray = CIRC;
+
+    let DURATION = 0;
+    let intervalId = null;
+
+    function getRemaining(){
+      return Math.round((EXPIRE_AT - Date.now()) / 1000);
+    }
+
+    function renderExpired(){
+      clearInterval(intervalId);
+      progress.style.strokeDashoffset = CIRC;
+      countEl.textContent = to_fanum_timer(0);
+      ringWrap.classList.remove('timer-warn');
+      resendBtn.classList.remove('disabled');
+    }
+
+    function render(remaining){
+      const ratio = remaining / DURATION;
+      progress.style.strokeDashoffset = CIRC * (1 - ratio);
+      countEl.textContent = to_fanum_timer(remaining);
+      ringWrap.classList.toggle('timer-warn', remaining <= 15);
+    }
+
+    function tick(){
+      const remaining = getRemaining();
+
+      if(remaining <= 0){
+        renderExpired();
+        return;
+      }
+
+      render(remaining);
+    }
+
+    function startTimer(){
+      const remainingNow = getRemaining();
+
+      clearInterval(intervalId);
+      resendBtn.classList.add('disabled');
+
+      if(remainingNow <= 0){
+        renderExpired();
+        return;
+      }
+
+      DURATION = remainingNow;
+      render(remainingNow);
+      intervalId = setInterval(tick, 1000);
+    }
+
+    startTimer();
+
+
 </script>
 <script src="{% static 'scripts/main.js' %}"></script>
 <script src="{% static 'scripts/verfiy.js' %}"></script>
