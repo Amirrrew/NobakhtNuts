@@ -89,7 +89,7 @@ class VerifyView(View):
                 form_type = request.session.get('form_type')
 
                 if not verify_expiry:
-                    message_e = 'کد تایید منقضی شده!'
+                    message_e = 'nigga'
                 else:
                     expire_time = datetime.fromisoformat(verify_expiry)
                     if timezone.now() > expire_time:
