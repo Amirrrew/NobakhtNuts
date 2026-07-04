@@ -26,6 +26,19 @@ def three_digits_currency(value):
 
     return value + ' تومان'
 
+@register.filter(name='three_digits_currency_no_extension')
+def three_digits_currency(value):
+    value = '{:,}'.format(value)
+
+    persian = '۰۱۲۳۴۵۶۷۸۹'
+    english = '0123456789'
+
+    value = value.translate(
+        str.maketrans(english, persian)
+    )
+
+    return value
+
 @register.filter(name='three_digits_currency_rials')
 def three_digits_currency_rials(value):
     value = '{:,}'.format(value)
@@ -83,3 +96,18 @@ def query_transform(context, **kwargs):
         query[k] = v
 
     return query.urlencode()
+
+
+WEEKDAYS = [
+    "دوشنبه",
+    "سه‌شنبه",
+    "چهارشنبه",
+    "پنجشنبه",
+    "جمعه",
+    "شنبه",
+    "یکشنبه",
+]
+
+@register.filter(name='jalali_weekday')
+def weekday_fa(value):
+    return WEEKDAYS[value.weekday()]

@@ -49,7 +49,7 @@ let admin_search_result = document.getElementById('admin-searchresult')
 // اضافه کردن ایونت لیستنر روی سرچ باکس برای بسته باز و بسته شدن سرچ باکس
 document.addEventListener("click", (e) => {
     if (!admin_searchbox.contains(e.target)) {
-        admin_searchbox.style.height = "50px";
+        admin_searchbox.style = "height: 50px;";
     }
 });
 
@@ -66,7 +66,7 @@ let AdminSearch = () => {
         for (let sr = 0; sr < results.length; sr++) {
             let res = results[sr]
             rescontent += `
-                <a href="${res.url}" class="flex relative justify-between py-3 px-3 mx-3 rounded-xl cursor-pointer transition-all hover:bg-[var(--color13)]">
+                <a href="${res.url}" class="flex relative justify-between py-3 px-3 mx-3 rounded-xl cursor-pointer transition-all hover:bg-[var(--color12)]">
                     <h1>${res.title}</h1>
                     <i class="fa fa-angle-left mt-1 text-[var(--color10)]"></i>
                 </a>

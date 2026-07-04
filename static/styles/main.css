@@ -992,6 +992,10 @@ input[type="number"] {
     cursor: pointer;
 }
 
+.tooltip-parent-chart {
+    cursor: crosshair;
+}
+
 .tooltip {
     visibility: hidden;
     background-color: var(--color12);
@@ -1006,7 +1010,7 @@ input[type="number"] {
     transition: 200ms;
 }
 
-.tooltip-parent:hover .tooltip {
+.tooltip-parent:hover .tooltip ,.tooltip-parent-chart:hover .tooltip {
     visibility: visible;
     animation: load4 250ms;
 }
@@ -1287,14 +1291,14 @@ header {
 }
 
 @keyframes shake {
-    0%   { transform: translateX(0); background-color: var(--error)}
-    15%  { transform: translateX(-8px); }
-    30%  { transform: translateX(8px); }
+    0%   { transform: translateX(0); background-color: var(--error); color: #fff;}
+    15%  { transform: translateX(-8px);}
+    30%  { transform: translateX(8px);}
     45%  { transform: translateX(-6px); }
     60%  { transform: translateX(6px); }
     75%  { transform: translateX(-4px); }
     90%  { transform: translateX(4px); }
-    100% { transform: translateX(0); background-color: var(--color14)}
+    100% { transform: translateX(0); background-color: var(--color14); color: var(--color2)}
 }
 
 .searchbox:hover {

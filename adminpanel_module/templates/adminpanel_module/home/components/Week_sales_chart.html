@@ -1,0 +1,28 @@
+{% load poll_extras %}
+
+<div class="admin-widget-medium">
+            <div class="flex justify-between w-[100%] items-start">
+                <div class="flex gap-2">
+                    <div class="dot"></div>
+                    <h1 class="mt-[-4px]">فروش هفتگی</h1>
+                </div>
+                <div class="stat-profit mt-[-5px]">
+                    <div class="stat-dot-profit"></div>
+                    <div>+ 12.23 %</div>
+                </div>
+            </div>
+            <div class="text-6xl font-semibold flex mt-2">
+                {{ weeksales|three_digits_currency_no_extension }} <span class="text-sm mr-2 relative top-4">تومان</span>
+            </div>
+            <div class="admin-widget-medium-chart mt-3">
+                {% for weekday in weekdayssales %}
+                    <div class="tooltip-parent-chart mt-auto w-[100%]" style="height:{% if not weekday.sale == 0 %}{% widthratio weekday.sale weeksales 100 %}{% else %}10{% endif %}%; ">
+                        <div class="admin-small-bar-chart" style="height: 100%; opacity: {% if not weekday.sale == 0 %}{% widthratio weekday.sale weeksales 100 %}{% else %}10{% endif %}%;"></div>
+                        <div class="tooltip" style="padding: 5px 10px;">
+                            <div class="text-xs">{{ weekday.day|jalali_weekday }}</div>
+                            <h1 class="font-semibold">{{ weekday.sale|three_digits_currency }}</h1>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
