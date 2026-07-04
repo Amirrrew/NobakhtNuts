@@ -1,7 +1,6 @@
 from datetime import timezone, timedelta, datetime
 from time import sleep
 
-from PIL.ImagePalette import random
 from django.contrib.auth import login, logout
 from django.http import Http404
 from django.shortcuts import render, redirect
