@@ -2,7 +2,7 @@ asgiref==3.11.1
 certifi==2026.6.17
 charset-normalizer==3.4.7
 cobble==0.1.4
-Django==4.2.30
+Django==5.2.14
 django-cachalot==2.9.0
 django-ckeditor==6.7.3
 django-iranian-cities==2.0.0

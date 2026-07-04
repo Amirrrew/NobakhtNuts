@@ -4,9 +4,11 @@ from datetime import timedelta
 from django.utils import timezone
 from django.db.models import Sum
 
-online_users = ActiveUser.objects.filter(
-    last_seen__gte=timezone.now() - timedelta(minutes=5)
-).count()
+def get_online_users():
+    online_users = ActiveUser.objects.filter(
+        last_seen__gte=timezone.now() - timedelta(minutes=5)
+    ).count()
+    return online_users
 
 
 today = timezone.localdate()
