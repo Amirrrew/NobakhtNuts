@@ -9,7 +9,7 @@ from django.views.generic import View, ListView, DetailView
 from iranian_cities.models import Province ,City
 import slugify
 
-from account_module.form import ResetPasswordForm
+
 from account_module.models import User, Address, Notification
 from django.shortcuts import render, redirect, get_object_or_404
 

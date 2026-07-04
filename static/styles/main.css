@@ -487,6 +487,7 @@ input[type="number"] {
         height: 100vh;
         width: 100vw;
         margin: 0;
+        padding: 0 10px;
         animation: none;
         border-radius: 0;
         align-items: center;
@@ -516,6 +517,12 @@ input[type="number"] {
         font-size: 20px;
         margin-top: 17px;
     }
+
+    body .login-back {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+    }
 }
 
 @media screen and (max-width: 450px) {
@@ -534,6 +541,10 @@ input[type="number"] {
     body .verify-otp-inputrow input{
         width: 50px;
         height: 55px;
+    }
+
+    body .verify-code-titlebar {
+        margin: 0;
     }
 }
 
@@ -1276,14 +1287,14 @@ header {
 }
 
 @keyframes shake {
-    0%   { transform: translateX(0); }
+    0%   { transform: translateX(0); background-color: var(--error)}
     15%  { transform: translateX(-8px); }
     30%  { transform: translateX(8px); }
     45%  { transform: translateX(-6px); }
     60%  { transform: translateX(6px); }
     75%  { transform: translateX(-4px); }
     90%  { transform: translateX(4px); }
-    100% { transform: translateX(0); }
+    100% { transform: translateX(0); background-color: var(--color14)}
 }
 
 .searchbox:hover {
@@ -1621,218 +1632,44 @@ footer {
     position: relative;
 }
 
-  .stage{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:28px;
-      animation: load 300ms;
-      position: relative;
-  }
+.code {
 
-  .phone-wrap{
-    position:relative;
-    width:290px;
-    height:290px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
+}
 
-  /* دایره‌ی مرکزی پشت آیکون تلفن */
-  .core{
-    position:absolute;
-    width:44px;
-    height:44px;
-    border-radius:50%;
-    background-color: var(--color6);
-    box-shadow:0 6px 18px rgba(103,77,69,.35);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    z-index:5;
-  }
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  .core svg{
-    width:20px;
-    height:20px;
-      animation: phonering 1s;
-  }
+.ball {
+  --size: 10px;
+  width: 10px;
+  height: 10px;
+  border-radius: 11px;
+    margin: 0 2px;
+    background-color: var(--color8);
+  animation: 2s bounce ease infinite;
+}
 
 
+.red {
+  animation-delay: 0.25s;
+}
 
+.yellow {
+  animation-delay: 0.5s;
+}
 
-  .dot{
-    position:absolute;
-    top:50%;
-    left:50%;
-    border-radius:50%;
-    background:var(--dot-color);
-    transform-origin:center;
-    animation:pulse 2.4s ease-in-out infinite;
-    animation-delay:var(--delay);
-  }
+.green {
+  animation-delay: 0.75s;
+}
 
-  @keyframes pulse{
-    0%,100%{
-      opacity:var(--op-min);
-      transform:translate(-50%,-50%) translate(var(--x), var(--y)) scale(0.85);
-    }
-    50%{
-      opacity:var(--op-max);
-      transform:translate(-50%,-50%) translate(var(--x), var(--y)) scale(1.15);
-    }
+@keyframes bounce {
+  50% {
+    transform: translateY(10px);
   }
-
-  .label{
-    color:#674d45;
-    font-size:14px;
-    opacity:.75;
-    letter-spacing:.3px;
-  }
-
-  .form-preview{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    background:#fff;
-    border:1.5px solid #e3dad5;
-    border-radius:14px;
-    padding:14px 18px;
-    width:260px;
-    box-shadow:0 4px 14px rgba(103,77,69,.08);
-  }
-  .form-preview input{
-    border:none;
-    outline:none;
-    flex:1;
-    font-size:15px;
-    text-align:right;
-    color:#4a3a34;
-    direction:ltr;
-    text-align:left;
-  }
-  .form-preview input::placeholder{color:#c9beb9;}
-  .form-preview svg{width:20px;height:20px;fill:#674d45;flex-shrink:0;}
-
-  .label{
-    color:#674d45;
-    font-size:14px;
-    opacity:.75;
-    letter-spacing:.3px;
-  }
-
-  .form-preview{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    background:#fff;
-    border:1.5px solid #e3dad5;
-    border-radius:14px;
-    padding:14px 18px;
-    width:260px;
-    box-shadow:0 4px 14px rgba(103,77,69,.08);
-  }
-
-
-  .otp-stage{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:22px;
-    width:320px;
-  }
-
-  .otp-title{
-    color:var(--ink);
-    font-size:15px;
-    font-weight:600;
-  }
-
-  .otp-viewport{
-    position:relative;
-    width:260px;
-    overflow:hidden;
-    /* محو شدن نرم لبه‌ی راست، به جای بریده شدن باکس‌ها */
-    -webkit-mask-image:linear-gradient(to left, transparent 0, black 34px, black 100%);
-            mask-image:linear-gradient(to left, transparent 0, black 34px, black 100%);
-  }
-
-  .otp-scroll{
-    transition:transform .4s cubic-bezier(.22,.61,.36,1);
-  }
-
-  .otp-row{
-    display:flex;
-    gap:10px;
-  }
-
-  .otp-box{
-    flex:0 0 auto;
-    width:35px;
-    height:40px;
-    border:2px solid var(--box-border);
-    border-radius:14px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:22px;
-      padding-top: 10px;
-    font-weight:700;
-    color:var(--ink);
-    background:#fff;
-    transition:border-color .25s ease, background .25s ease, transform .12s ease;
-  }
-
-  .otp-box.otp-filled{
-    border-color:var(--box-border-active);
-  }
-
-  .otp-box.otp-active{
-    border-color:var(--box-border-active);
-    box-shadow:0 0 0 3px rgba(103,77,69,.12);
-  }
-
-  .otp-box .otp-star{
-    opacity:0;
-    transform:scale(.4);
-    transition:opacity .18s ease, transform .18s cubic-bezier(.34,1.56,.64,1);
-  }
-  .otp-box.otp-filled .otp-star{
-    opacity:1;
-    transform:scale(1);
-  }
-
-  /* حالت خطا */
-  .otp-box.otp-error{
-    border-color:var(--error);
-    background:var(--error-bg);
-    color:var(--error);
-  }
-
-  .otp-row.otp-shake{
-    animation:otpShake .5s ease;
-  }
-  @keyframes otpShake{
-    0%,100%{ transform:translateX(0); }
-    15%{ transform:translateX(-6px); }
-    30%{ transform:translateX(5px); }
-    45%{ transform:translateX(-4px); }
-    60%{ transform:translateX(3px); }
-    75%{ transform:translateX(-2px); }
-    90%{ transform:translateX(1px); }
-  }
-
-  .otp-status{
-    min-height:20px;
-    font-size:13px;
-    color:var(--ink-soft);
-    transition:color .2s ease;
-  }
-  .otp-status.otp-status-error{
-    color:var(--error);
-    font-weight:600;
-  }
+}
 
 
 .input-icon-def1 {
@@ -2193,11 +2030,29 @@ footer {
       color: var(--color2);
       border-radius: 20px 5px 20px 5px;
       font-size: 40px;
-      font-family: Serif;
+      font-family: sans-serif;
       text-align: center;
       display: flex;
       justify-content: center;
       overflow: hidden;
+      animation: shake .3s;
+      animation-delay: 1500ms;
+  }
+
+  .login-animation {
+      width: 150px;
+  }
+
+  .login-titlebar {
+      width: 100px;
+      height: 20px;
+      color: var(--color2);
+      border-radius: 5px 20px 5px 20px;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
   }
 
 

@@ -15,7 +15,7 @@ from random import SystemRandom
 from polls.templatetags.poll_extras import register
 from utils.my_decorators import send_sms
 from .models import User
-from account_module.form import LoginForm, VerifySignupForm, GetForgotUserForm, EnterForgotUserForm, ResetPasswordForm
+from account_module.form import LoginForm, VerifySignupForm
 from django.utils import timezone
 
 

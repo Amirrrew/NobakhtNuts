@@ -42,37 +42,6 @@ class LoginForm(forms.Form):
         return cleaned_data
 
 
-class GetForgotUserForm(forms.Form):
-    phone = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control'}),
-        validators = [
-            validators.MaxLengthValidator(11),
-            validators.MinLengthValidator(11),
-        ]
-    )
-
-    def clean(self):
-        cleaned_data = super().clean()
-        phone = self.cleaned_data.get('phone')
-        if not phone:
-            raise ValidationError('شماره تلفن را وارد کنید')
-        return cleaned_data
-
-class EnterForgotUserForm(forms.Form):
-    verify_code = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control'}),
-        validators = [
-            validators.MaxLengthValidator(6),
-            validators.MinLengthValidator(6),
-        ]
-    )
-
-    def clean(self):
-        cleaned_data = super().clean()
-        verify_code = cleaned_data.get('verify_code')
-        if not verify_code:
-            raise ValidationError('کد تایید را وارد کنید')
-        return cleaned_data
 
 
 class ResetPasswordForm(forms.Form):

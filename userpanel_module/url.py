@@ -5,7 +5,6 @@ from account_module.views import Logout
 urlpatterns = [
     path('' ,views.index , name='user_panel'),
     path('edit-info/' ,views.EditInfo.as_view(),name='edit_info_page'),
-    path('reset-password/' ,views.ResetPassword.as_view(),name='reset_password_panel_page'),
     path('logout/' ,Logout.as_view(),name='logout_page'),
     path('my-address/' ,views.MyAddress.as_view(),name='my_address_page'),
     path('my-tickets/' ,views.MyTickets.as_view(),name='my_tickets_page'),

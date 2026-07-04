@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     {% include 'include/head_refrence.html' %}
-    <title>برنج و خشکبار نوبخت | فعالسازی حساب</title>
+    <title>برنج و خشکبار نوبخت | اعتبار سنجی حساب</title>
 </head>
 <body onscroll="HeaderManage()" onload="StartIntervals(false)">
     {% include 'loader.html' %}
@@ -14,11 +14,12 @@
             <div class="w-[100%]">
 
 
-                <div class="centerbox mt-5">
-                    <div class="verify-code-titlebar">
-                        <div class="code-star mt-[-8px] relative hidden" style="animation: load8 400ms">*</div>
-                        <div class="code-star mt-[-8px] relative hidden" style="animation: load8 400ms">*</div>
-                        <div class="code-star mt-[-8px] relative hidden" style="animation: load8 400ms">*</div>
+                <div class="centerbox">
+                    <div class="verify-code-titlebar mt-5">
+                        <div class="code-star mt-[-5px] relative hidden" style="animation: load8 400ms">*</div>
+                        <div class="code-star mt-[-5px] relative hidden" style="animation: load8 400ms">*</div>
+                        <div class="code-star mt-[-5px] relative hidden" style="animation: load8 400ms">*</div>
+                        <i id="ver-icon-approve" class="fa fa-check-square text-xl mt-1 relative mr-1" style="animation: load5 500ms; display: none"></i>
                     </div>
                 </div>
 
@@ -84,9 +85,24 @@
     let code_star = document.querySelectorAll('.code-star')
     code_star.forEach((item ,index) => {
         setTimeout(() => {
-            item.className = 'flex code-star mt-[-8px] relative '
+            item.className = 'flex code-star mt-[-8px] relative'
         } ,index * 400)
     })
+
+    setTimeout(()=> {
+        code_star.forEach((item) => {
+            item.className = 'hidden code-star mt-[-8px] relative '
+        })
+        code_star.forEach((item ,index) => {
+            setTimeout(() => {
+                item.className = 'flex code-star mt-[-8px] relative'
+            } ,index * 400)
+        })
+    } ,4000)
+
+    setTimeout(()=> {
+        document.getElementById('ver-icon-approve').style.display = 'flex'
+    },5500)
 
     const inputs = document.querySelectorAll(".otp-input");
     const hiddenInput = document.getElementById("verify_code");

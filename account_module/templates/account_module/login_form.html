@@ -12,22 +12,34 @@
     {% include 'message.html' %}
     <div class="centerbox min-h-[100vh] items-center">
         <div class="form-default account-form login-register-box">
-            <div class="w-[100%]">
-                <div>
-                    <div class="stage">
-                      <div class="phone-wrap" id="phoneWrap">
-                        <div class="core">
-                            <svg id="Call" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M21.4974 16.4125C18.8594 13.2125 17.5444 13.4995 16.0984 14.2025C15.0974 14.6885 14.2334 15.1105 11.9874 12.8635C9.74141 10.6165 10.1624 9.75354 10.6484 8.75454C11.3534 7.30754 11.6394 5.98954 8.43641 3.35254C7.67341 2.72754 6.84141 2.48754 5.97541 2.65554C4.14241 2.99854 2.84741 5.03854 2.84941 5.03854C2.03741 6.17454 0.925409 9.59054 8.09241 16.7585C12.8064 21.4735 15.8974 22.6045 17.7734 22.6045C18.7504 22.6045 19.3964 22.2985 19.7704 22.0295C19.7914 22.0175 21.8494 20.7425 22.1964 18.8735C22.3584 18.0045 22.1234 17.1775 21.4974 16.4125Z" fill="#c5b8b4"></path>
-                            </svg>
-                        </div>
-                      </div>
+            <div class="w-[100%] mr5">
+                <div class="flex gap-2 login-back">
+                    <div onclick="history.back()" class="fa fa-arrow-right cursor-pointer"></div>
+                    <div class=" relative text-center centerbox gap-2">
+                        <img src="{% static 'media/logo/nobakht-logo.png' %}" loading="lazy" alt="برنج و خشکبار نوبخت" class="mt-[-5px] w-7 h-7">
+                        <div class=" font-semibold mt-[-3px]">ورود / ثبت نام</div>
                     </div>
                 </div>
-                <div class="mt-1 text-center">
-                    <h1 class="text-4xl font-semibold relative" style="animation: load 450ms">برنج و خشکبار نوبخت</h1>
-                    <div class="relative" style="animation: load 550ms">ورود / ثبت نام</div>
+                <div class="centerbox mt-5">
+                    <div class="login-animation">
+                        <div class="login-titlebar opacity-0 bg-[var(--color9)]" style="background-color: var(--color13)" id="phone-titlebar">09XXXXXXXXX</div>
+                        <div class="flex justify-end w-[100%] opacity-0 relative" id="loading-code">
+                            <div class="wrapper mr-20">
+                              <div class="blue ball"></div>
+                              <div class="red ball"></div>
+                              <div class="yellow ball"></div>
+                            </div>
+
+                            <div class="login-titlebar opacity-0 mt-2 bg-[var(--color14)]" style="font-size: 20px; width: 80px; font-family: sans-serif">******</div>
+                        </div>
+                        <div class="flex justify-end">
+                            <div id="code" class="login-titlebar code opacity-0 mt-2 bg-[var(--color14)]" style="font-size: 20px; width: 80px; font-family: sans-serif">******</div>
+                        </div>
+                    </div>
                 </div>
+                <h1 class="text-center text-4xl font-semibold">
+                    شماره تلفن خود را وارد کنید
+                </h1>
                 <form method="post" class="mt-3">
                     {% csrf_token %}
                     <div class="input-icon-def1 relative" style="animation: load 650ms">
@@ -39,7 +51,7 @@
                             </g>
                         </svg>
                         <input onblur="PlaceHolderHandle('login-phone' ,'phone-plc' ,'bl')" onfocus="PlaceHolderHandle('login-phone' ,'phone-plc' ,'fc')" oninput="CheckPhone('login-phone' ,'phone-err' ,'btn-login')" type="number" name="phone" id="login-phone">
-                        <div class="input-placeholder" id="phone-plc">شماره تلفن خود را وارد کنید</div>
+                        <div class="input-placeholder" id="phone-plc">شماره تلفن</div>
                     </div>
                     <div style="color: var(--color5);" class="account-error hidden gap-1 mt-1 text-sm" id="phone-err">
                         <svg id="Danger Circle" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -75,63 +87,21 @@
 <script src="{% static 'scripts/account.js' %}"></script>
 <script>
 
-function hexToRgb(hex){
-  hex = hex.replace('#','');
-  let a = 255;
-  if(hex.length === 8){
-    a = parseInt(hex.slice(6,8),16);
-    hex = hex.slice(0,6);
-  }
-  const num = parseInt(hex,16);
-  return { r:(num>>16)&255, g:(num>>8)&255, b:num&255, a:a/255 };
-}
-function lerp(a,b,t){ return a + (b-a)*t; }
-function mixColor(c1,c2,t){
-  const r = Math.round(lerp(c1.r,c2.r,t));
-  const g = Math.round(lerp(c1.g,c2.g,t));
-  const b = Math.round(lerp(c1.b,c2.b,t));
-  const a = lerp(c1.a,c2.a,t);
-  return `rgba(${r},${g},${b},${a.toFixed(2)})`;
-}
+    let phone = document.getElementById('phone-titlebar')
+    let loading = document.getElementById('loading-code')
+    let code = document.getElementById('code')
+    setTimeout(()=> {
+        phone.style = 'opacity: 1; animation: load8 300ms'
+    } ,500)
 
-const near = hexToRgb('#674d45');
-const far  = hexToRgb('#a08a83c7');
+    setTimeout(()=> {
+        loading.style = 'opacity: 1; animation: load8 300ms'
+    } ,800)
 
-const wrap = document.getElementById('phoneWrap');
-const rings = 5;
-const dotsPerRing = 18;
-const minRadius = 62;
-const maxRadius = 130;
-const minSize = 5;
-const maxSizeFar = 16;
+    setTimeout(()=> {
+        loading.style = 'display: none'
+        code.style = 'opacity: 1; animation: load8 300ms; font-size: 20px; font-family: sans-serif; padding-top: -2px; border-radius: 20px 5px 20px 5px; margin-bottom: 27.5px;'
+    } ,2500)
 
-for(let ring=0; ring<rings; ring++){
-  const t = ring/(rings-1); // 0 = نزدیک، 1 = دور
-  const radius = lerp(minRadius, maxRadius, t);
-  const size = lerp(10, 4, t);
-  const color = mixColor(near, far, t);
-  const opMax = lerp(0.95, 0.35, t);
-  const opMin = opMax * 0.35;
-
-  for(let i=0; i<dotsPerRing; i++){
-    const angle = (360/dotsPerRing) * i + (ring * 12) ;
-    const rad = angle * Math.PI/180;
-    const x = Math.cos(rad) * radius;
-    const y = Math.sin(rad) * radius;
-
-    const dot = document.createElement('div');
-    dot.className = 'dot';
-    dot.style.setProperty('--x', x.toFixed(1)+'px');
-    dot.style.setProperty('--y', y.toFixed(1)+'px');
-    dot.style.width = size+'px';
-    dot.style.height = size+'px';
-    dot.style.setProperty('--dot-color', color);
-    dot.style.setProperty('--op-max', opMax.toFixed(2));
-    dot.style.setProperty('--op-min', opMin.toFixed(2));
-    const delay = ((angle % 360)/360) * 2.4 + ring*0.15;
-    dot.style.setProperty('--delay', (-delay).toFixed(2)+'s');
-    wrap.appendChild(dot);
-  }
-}
 </script>
 </html>
