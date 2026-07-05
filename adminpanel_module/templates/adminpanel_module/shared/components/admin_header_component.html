@@ -5,9 +5,6 @@
          style="transition: 200ms;">
         <a class="flex" href="{% url 'admin_home' %}">
             <img alt="برنج و خشکبار نوبخت" class="w-10 h-10 m-2 mr-3" id="" src="{% static 'media/logo/nobakht-logo.png' %}">
-            <div id="" class="text-[var(--color6)] text-2xl mt-4" style="font-weight: 800;">
-                ادمین برنج و خشکبار نوبخت
-            </div>
         </a>
         <div class="admin-searchbox">
             <div class="flex">
@@ -20,28 +17,6 @@
             <div class="admin-searchresult" id="admin-searchresult">
 
             </div>
-        </div>
-    </div>
-    <div class="admin-userbox flex gap-3 ml-3">
-       <a href="" class="mt-4">
-           <svg id="Notification" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path opacity="0.4" d="M18.9375 13.304L20.7695 18.232H3.73047L5.56247 13.304V8.813C5.56247 5.125 8.56247 2.125 12.2505 2.125C15.9375 2.125 18.9375 5.125 18.9375 8.813V13.304Z" fill="#674d45"></path>
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M16.1398 18.2319H14.6398C14.5018 19.4349 13.4898 20.3749 12.2518 20.3749C11.0128 20.3749 10.0008 19.4349 9.86279 18.2319H8.36279C8.50579 20.2619 10.1858 21.8749 12.2518 21.8749C14.3168 21.8749 15.9968 20.2619 16.1398 18.2319Z" fill="#674d45"></path>
-            </svg>
-       </a>
-        <div onclick="PopUp(null ,'open')" class="cursor-pointer overflow-hidden rounded-full border-2 border-[var(--color11)] w-10 h-10 mt-2.5">
-            {% if user.avatar %}
-                <img class="w-[100%] h-[100%]" loading="lazy" src="{{ user.avatar.url }}" alt="{{ user }}'s avatar">
-                {% else %}
-                <svg class="m-1.5" id="Profile" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                    <g id="Iconly/Bulk/Profile" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
-                        <g id="Profile" transform="translate(3.999800, 1.999700)" fill="#674d45" fill-rule="nonzero">
-                            <path d="M7.997,13.1749 C3.684,13.1749 1.42108547e-14,13.8549 1.42108547e-14,16.5749 C1.42108547e-14,19.2959 3.661,19.9999 7.997,19.9999 C12.31,19.9999 15.994,19.3209 15.994,16.5999 C15.994,13.8789 12.334,13.1749 7.997,13.1749" id="Fill-1"></path>
-                            <path d="M7.997,10.584 C10.935,10.584 13.289,8.229 13.289,5.292 C13.289,2.355 10.935,-5.32907052e-15 7.997,-5.32907052e-15 C5.06,-5.32907052e-15 2.705,2.355 2.705,5.292 C2.705,8.229 5.06,10.584 7.997,10.584" id="Fill-4" opacity="0.400000006"></path>
-                        </g>
-                    </g>
-                </svg>
-            {% endif %}
         </div>
     </div>
 </div>

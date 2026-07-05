@@ -1,0 +1,57 @@
+{% load poll_extras %}
+
+            <div class="admin-widget-small" style="height: calc(100% - 128px); padding: 20px">
+                <div class="flex justify-between w-[100%] items-start">
+                    <div class="flex gap-2">
+                        <div class="dot"></div>
+                        <h1 class="mt-[-4px]">فروش امروز</h1>
+                    </div>
+                {% if total_order_growth > 0 %}
+                    <div class="stat-profit mt-[-5px]">
+                        <div class="stat-dot-profit"></div>
+                        <div>+ {{ total_order_growth|to_fanum }} %</div>
+                    </div>
+                {% elif total_order_growth < 0 %}
+                    <div class="stat-loss mt-[-5px]">
+                        <div class="stat-dot-loss"></div>
+                        <div>- {{ total_order_growth|to_fanum }} %</div>
+                    </div>
+                {% else %}
+                    <div class="stat-static mt-[-5px]">
+                        <div class="stat-dot-static"></div>
+                        <div>{{ total_order_growth|to_fanum }} %</div>
+                    </div>
+                {% endif %}
+                </div>
+                <div class="flex mt-3 font-semibold gap-2">
+                    <h1 class="text-6xl">{{ today_total|three_digits_currency_no_extension }}</h1><div class="mt-5">تومان</div>
+                </div>
+                {% if today_total > yesterday_total %}
+                    <div class="daily-sales-growth-bar mt-5 overflow-hidden w-[100%] bg-[var(--color12)] flex h-[50px] rounded-2xl tooltip-parent-chart">
+                        <div class="tooltip">
+                            <div>دیروز</div>
+                            <h1 class="font-semibold">{{ yesterday_total|three_digits_currency }}</h1>
+                        </div>
+                    </div>
+                    <div class="bg-[var(--color6)] rounded-2xl absolute h-[50px] top-[136px] tooltip-parent-chart" style="width: {% widthratio yesterday_total today_total 100 %}%;">
+                        <div class="tooltip mt-[-60px]">
+                            <div>امروز</div>
+                            <h1 class="font-semibold">{{ today_total|three_digits_currency }}</h1>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="daily-sales-growth-bar mt-5 overflow-hidden w-[100%] bg-[var(--color6)] flex h-[50px] rounded-2xl tooltip-parent-chart">
+                        <div class="tooltip">
+                            <div>امروز</div>
+                            <h1 class="font-semibold">{{ today_total|three_digits_currency }}</h1>
+                        </div>
+                    </div>
+                    <div class="bg-[var(--color12)]  rounded-2xl absolute h-[50px] top-[135px] tooltip-parent-chart" style="width: {% widthratio yesterday_total today_total 100 %}%;">
+                        <div class="tooltip mt-[-60px]">
+                            <div>دیروز</div>
+                            <h1 class="font-semibold">{{ yesterday_total|three_digits_currency }}</h1>
+                        </div>
+                    </div>
+                {% endif %}
+
+            </div>

@@ -6,13 +6,20 @@
                     <div class="dot"></div>
                     <h1 class="mt-[-4px]">فروش هفتگی</h1>
                 </div>
-                <div class="stat-profit mt-[-5px]">
-                    <div class="stat-dot-profit"></div>
-                    <div>+ 12.23 %</div>
-                </div>
+                {% if weeksale_growth > 0 %}
+                    <div class="stat-profit mt-[-5px]">
+                        <div class="stat-dot-profit"></div>
+                        <div>+ {{ weeksale_growth|to_fanum }} %</div>
+                    </div>
+                {% else %}
+                    <div class="stat-loss mt-[-5px]">
+                        <div class="stat-dot-loss"></div>
+                        <div>- {{ weeksale_growth|to_fanum }} %</div>
+                    </div>
+                {% endif %}
             </div>
-            <div class="text-6xl font-semibold flex mt-2">
-                {{ weeksales|three_digits_currency_no_extension }} <span class="text-sm mr-2 relative top-4">تومان</span>
+            <div class="text-7xl font-semibold flex mt-3">
+                {{ total_week_sale|three_digits_currency_no_extension }} <span class="text-sm mr-2 relative top-8">تومان</span>
             </div>
             <div class="admin-widget-medium-chart mt-3">
                 {% for weekday in weekdayssales %}
@@ -20,9 +27,15 @@
                         <div class="admin-small-bar-chart" style="height: 100%; opacity: {% if not weekday.sale == 0 %}{% widthratio weekday.sale weeksales 100 %}{% else %}10{% endif %}%;"></div>
                         <div class="tooltip" style="padding: 5px 10px;">
                             <div class="text-xs">{{ weekday.day|jalali_weekday }}</div>
+                            <div class="text-sm">{{ weekday.day|show_jalali_date|to_fanum }}</div>
                             <h1 class="font-semibold">{{ weekday.sale|three_digits_currency }}</h1>
                         </div>
                     </div>
                 {% endfor %}
             </div>
+            {% if weeksale_growth > 0 %}
+                <div class="flex gap-2 items-start relative top-2"><span class="stat-dot-profit" style="margin-top: 13px"></span><div class="mt-2 text-[var(--profit-dot)]">فروش نسبت به هفته قبل حدود {{ weeksale_growth|to_fanum }} درصد افزایش داشته!!!</div></div>
+            {% else %}
+                <div class="flex gap-2 items-start relative top-2"><span class="stat-dot-loss" style="margin-top: 13px"></span><div class="mt-2 text-[var(--loss-bg)]">فروش نسبت به هفته قبل حدود {{ weeksale_growth|to_fanum }} درصد کاهش داشته!!!</div></div>
+            {% endif %}
         </div>

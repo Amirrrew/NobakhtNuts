@@ -114,7 +114,7 @@ let Menu = (model, searchManage) => {
         HeaderManage()
     }
     else if (searchManage === 'open' && model === "search" && menuopen === false && searchopen === false) {
-        searchbox.style = "animation: OpenSearch 400ms; position: fixed; width: 94%; top: 80px; height: 60px; right: 50px; margin-top: 10px;"
+        searchbox.style = "animation: OpenSearch 400ms; position: fixed; width: 97%; top: 80px; height: 60px; right: 20px; margin-top: 10px;"
         searchInner.style = 'gap: 10px'
         parentHeader.style = 'height: 100%;'
         header.style = 'height: 100%;'

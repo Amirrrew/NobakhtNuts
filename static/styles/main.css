@@ -737,14 +737,14 @@ input[type="number"] {
     }
 
     90% {
-        width: 94%;
+        width: 97%;
     }
 
     100% {
         filter: none;
         top: 80px;
         position: fixed;
-        right: 3.2%;
+        right: 20px;
     }
 }
 
@@ -1204,7 +1204,7 @@ header {
 }
 /* -------- header with box inside --------- */
 .header-innerbox {
-    width: 95%;
+    width: 98%;
     height: 100%;
     justify-content: space-between;
     padding: 10px;

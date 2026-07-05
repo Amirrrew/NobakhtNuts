@@ -3,7 +3,7 @@ let sidebar = document.querySelector('.sidebar-admin')
 // نمایش دکمه اسکرول تو تاپ سایدبار
 sidebar.addEventListener('scroll' ,()=> {
     if (sidebar.scrollTop > 20) {
-        document.getElementById('sidebar-backtotop').style = 'bottom: 10px;'
+        document.getElementById('sidebar-backtotop').style = 'bottom: 30px;'
     } else {document.getElementById('sidebar-backtotop').style = 'bottom: -200px'}
 })
 

@@ -17,16 +17,21 @@
     {% include 'yesno_dialog.html' %}
     {% include 'message.html' %}
     {% include 'message_json.html' %}
+    {% render_partial 'adminpanel_module.views.admin_user_card_component' %}
     {% render_partial 'adminpanel_module.views.admin_popup_user_component' %}
-    {% render_partial 'adminpanel_module.views.admin_header_component' %}
+
     <div class="flex">
         {% render_partial 'adminpanel_module.views.admin_sidebar_component' %}
-        <div class="admin-content w-[100%]">
-            {% block admin_content %}
+        <div class="w-[100%] admin-content">
+            {% render_partial 'adminpanel_module.views.admin_header_component' %}
+            <div class="admin-inner-content rounded-[20px] mt-18 p-[10px] bg-[var(--color3)] w-[100%]">
+                {% block admin_content %}
 
-            {% endblock %}
+                {% endblock %}
+            </div>
         </div>
     </div>
+
 </body>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script src="{% static 'scripts/main.js' %}"></script>
