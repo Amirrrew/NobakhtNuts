@@ -190,6 +190,7 @@ class Product(models.Model):
         super().save(*args, **kwargs)
 
 
+
     class Meta:
         verbose_name = "محصول"
         verbose_name_plural = "محصولات"

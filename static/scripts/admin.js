@@ -7,6 +7,59 @@ sidebar.addEventListener('scroll' ,()=> {
     } else {document.getElementById('sidebar-backtotop').style = 'bottom: -200px'}
 })
 
+
+// مدیریت ساید بار
+let admin_header = document.getElementById('admin-header')
+let admin_content = document.getElementById('admin-content')
+let admin_profile = document.getElementById('admin-profile')
+let admin_sidebar = document.getElementById('admin-sidebar')
+
+let sidebar_collapsed = localStorage.getItem('sidebar') === 'collapsed';
+
+let applySidebarState = () => {
+    if (sidebar_collapsed) {
+        admin_header.style.width = 'calc(100vw - 40px)';
+        admin_content.style.marginRight = '20px';
+        admin_profile.style.marginRight = '-1000px';
+        admin_sidebar.style.marginRight = '-1000px';
+    } else {
+        admin_header.style.width = 'calc(100vw - 400px)';
+        admin_content.style.marginRight = '380px';
+        admin_profile.style.marginRight = '20px';
+        admin_sidebar.style.marginRight = '20px';
+    }
+}
+
+applySidebarState();
+
+function AdminSideAction() {
+    sidebar_collapsed = !sidebar_collapsed;
+    localStorage.setItem(
+        'sidebar',
+        sidebar_collapsed ? 'collapsed' : 'expanded'
+    );
+    applySidebarState();
+}
+
+// پاپ آپ نوتیفیکیشن
+let PopUpNotif = (type ,action) => {
+    let parent = document.getElementById('popup-parent-pop-notif')
+    let popup = document.getElementById('popup-form-notif')
+
+    if (action === 'open') {
+        parent.style = 'display: flex'
+        document.body.style.overflowY = 'hidden'
+    } else {
+        popup.style = 'animation: unload3 200ms'
+        setTimeout(()=> {
+            parent.style = 'display: none'
+            popup.style = 'animation: load4 500ms;'
+            document.body.style.overflowY = 'scroll'
+        } ,100)
+    }
+}
+
+
 // لیست گزینه های پنل ادمین
 const admin_options = [
     {title: 'خانه' ,url: '/adminpanel/'},

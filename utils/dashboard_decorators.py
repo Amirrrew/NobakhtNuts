@@ -1,10 +1,11 @@
 from account_module.models import User
-from order_module.models import Order
+from order_module.models import Order, OrderDetail
 from datetime import timedelta
 from django.utils import timezone
-from django.db.models import Sum
+from django.db.models import Sum, Q, ExpressionWrapper, FloatField, F ,Case ,When ,OuterRef ,Subquery
 
-
+from product_module.models import Product, ProductImage
+from support_module.models import Ticket
 
 today = timezone.localdate()
 
@@ -116,6 +117,15 @@ def get_order_today():
         "difference_orders": today_orders - yesterday_orders,
     }
 
+def get_new_orders():
+    orders = Order.objects.filter(
+        is_paid=True,
+        is_done=False,
+    ).order_by('-payment_date')
+
+    return orders
+
+
 def get_user_growth():
     all_users = User.objects.all()
     week_start = timezone.now() - timedelta(days=7)
@@ -125,3 +135,47 @@ def get_user_growth():
         'all_users': all_users,
         'new_users': new_users,
     }
+
+def get_lowstock_products():
+    products = Product.objects.filter(
+        quantity__gt=0,
+        quantity__lte=10,
+    ).order_by('quantity')[:10]
+    return products
+
+def get_best_selling_products():
+    return (
+        Product.objects
+        .prefetch_related('product_image')
+        .annotate(
+            sold_count=Sum(
+                'orderdetail__count',
+                filter=Q(orderdetail__order__is_paid=True)
+            ),
+            sold_weight=Sum(
+                ExpressionWrapper(
+                    F('orderdetail__count') * F('orderdetail__pack_size__size'),
+                    output_field=FloatField()
+                ),
+                filter=Q(orderdetail__order__is_paid=True)
+            ),
+        )
+        .annotate(
+            sort_value=Case(
+                When(is_byWeight=True, then=F('sold_weight')),
+                default=F('sold_count'),
+                output_field=FloatField()
+            )
+        )
+        .filter(sort_value__isnull=False)
+        .order_by('-sort_value')[:10]
+    )
+
+
+def get_new_tickets():
+    new_tickets = Ticket.objects.filter(
+        is_closed=False,
+    ).order_by('-created_at' ,'-status')
+    return new_tickets
+
+

@@ -1,0 +1,52 @@
+{% load poll_extras %}
+<div class="tablebox-default w-[100%] mt-2 relative" style="animation: load8 1100ms">
+        <div class="flex justify-between">
+            <div class="flex gap-1 p-1 items-start">
+                <svg class="mt-[-2px]" id="Buy" width="35" height="35" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M6.39507 6.30158L6.09507 3.24158H2.19507V4.74158H4.73507L6.01507 17.4416H20.8351L22.3051 6.30158H6.39507Z" fill="#674d45"></path>
+                    <path d="M13.8245 11.7118H17.9945V10.2118H13.8245V11.7118Z" fill="#674d45"></path>
+                    <path d="M6.57983 20.5527C6.57983 19.8497 7.15083 19.2787 7.85383 19.2787C8.55583 19.2787 9.12683 19.8497 9.12683 20.5527C9.12683 21.2557 8.55583 21.8277 7.85383 21.8277C7.15083 21.8277 6.57983 21.2557 6.57983 20.5527Z" fill="#674d45"></path>
+                    <path d="M17.447 20.5527C17.447 19.8497 18.018 19.2787 18.721 19.2787C19.424 19.2787 19.995 19.8497 19.995 20.5527C19.995 21.2557 19.424 21.8277 18.721 21.8277C18.018 21.8277 17.447 21.2557 17.447 20.5527Z" fill="#674d45"></path>
+                </svg>
+                <h1 class="text-4xl font-semibold">سفارشات جدید</h1>
+                {% if new_orders %}<div class="new-dot mt- tooltip-parent"><div class="tooltip" style="top: -40px; width: 200px">سفارش جدیدی ثبت شده</div></div>{% endif %}
+            </div>
+            <a href="" class="btn-defIconFlex gap-2">
+                <div>پنل سفارشات</div>
+                <i class="fa fa-angle-left mt-[3px] text-[var(--color7)]"></i>
+            </a>
+        </div>
+
+        {% if new_orders %}
+            <table class="table-default">
+                <thead>
+                    <tr>
+                        <td>#شماره سفارش</td>
+                        <td>کاربر</td>
+                        <td>وضعیت</td>
+                        <td>تاریخ ثبت</td>
+                        <td>روش پرداخت</td>
+                        <td>مبلغ کل</td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in new_orders %}
+                        <tr class="{% if not forloop.last %} border-b border-[var(--color12)]{% endif %}">
+                            <td><a href="">#{{ order.pk }}</a></td>
+                            <td><a href="">{{ order.user }}</a></td>
+                            <td><a class="{% if order.status.title == 'در انتظار تایید' %}stat-onwait text-white{% else %}stat-profit{% endif %} w-fit flex"><div class=" {% if order.status.title == 'در انتظار تایید' %}stat-onwait-dot{% else %}stat-dot-profit{% endif %}"></div>{{ order.status }} {% if order.status.title == 'در انتظار تایید' %}رسید{% endif %}</a></td>
+                            <td>{{ order.payment_date.time }} <span class="text-[var(--color10)] text-xl">|</span>  {{ order.payment_date|show_jalali_date|to_fanum }}</td>
+                            <td>{{ order.payment_method }}</td>
+                            <td class="font-semibold text-xl">{{ order.finalized_price|three_digits_currency }}</td>
+                            <td>
+                                <a href="" class="btn-defIconFlex2 w-[100%] text-sm gap-2 text-nowrap" style="justify-content: center; padding: 10px; background-color: var(--color12)"> مشاهده سفارش</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div>سفارش جدیدی ثبت نشده!</div>
+        {% endif %}
+    </div>

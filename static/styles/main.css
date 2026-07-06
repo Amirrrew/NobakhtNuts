@@ -20,16 +20,16 @@ br {
     user-select: none;
 }
 
-table {
-  border-collapse: collapse;
 
+.tb-features table {
+  border-collapse: collapse;
 }
 
-td, th {
+.tb-features td,.tb-features th {
   padding: 8px;
 }
 
-tr:nth-child(even) {
+.tb-features tr:nth-child(even) {
   background-color: var(--color12);
 }
 

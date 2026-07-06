@@ -1,7 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest
 from django.shortcuts import render
-from utils.dashboard_decorators import get_sales_week, get_sales_week_growth, today, get_order_today, get_user_growth
+from utils.dashboard_decorators import get_sales_week, get_sales_week_growth, today, get_order_today, get_user_growth, \
+    get_new_orders, get_lowstock_products, get_best_selling_products, get_new_tickets
 from utils.my_decorators import permision_checker_decorator_factory
 
 
@@ -21,8 +22,12 @@ def index(request: HttpRequest):
         'today_total': order_today['today_total'],
         'yesterday_total': order_today['yesterday_total'],
         'total_order_growth': order_today['percent'],
+        'new_orders': get_new_orders(),
         'all_users': users['all_users'],
         'new_users': users['new_users'],
+        'low_stock_products': get_lowstock_products(),
+        'best_selling_products': get_best_selling_products(),
+        'new_tickets': get_new_tickets(),
     }
     return render(request, 'adminpanel_module/home/admin_home.html', context)
 
@@ -39,12 +44,13 @@ def admin_header_component(request):
     })
 
 def admin_user_card_component(request):
-    date = today
-    user = request.user
-    return render(request, 'adminpanel_module/shared/components/admin_user_card.html', {
-        'user': user,
-        'date': date
-    })
+    context = {
+        'new_orders': get_new_orders(),
+        'new_tickets': get_new_tickets(),
+        'user': request.user,
+        'date': today
+    }
+    return render(request, 'adminpanel_module/shared/components/admin_user_card.html', context)
 
 
 def admin_popup_user_component(request):
@@ -52,3 +58,11 @@ def admin_popup_user_component(request):
     return render(request, 'adminpanel_module/shared/components/admin_popup.html', {
         'user': user
     })
+
+def admin_popup_notif_component(request):
+    context = {
+        'new_orders': get_new_orders(),
+        'new_tickets': get_new_tickets(),
+        'user': request.user,
+    }
+    return render(request, 'adminpanel_module/shared/components/admin_popup_notif_component.html', context)

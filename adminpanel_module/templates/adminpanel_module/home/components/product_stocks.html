@@ -1,0 +1,98 @@
+{% load poll_extras %}
+
+    <div class="flex gap-2">
+        <div class="tablebox-default mt-2" style="width: 50%">
+            <div class="flex justify-between">
+                <div class="flex gap-1 p-1 items-start">
+                    <svg id="Arrow - Down Circle" width="35" height="35" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.25C5.052 2.25 2.5 4.801 2.5 12C2.5 19.198 5.052 21.75 12.25 21.75C19.448 21.75 22 19.198 22 12C22 4.801 19.448 2.25 12.25 2.25Z" fill="#674d45"></path>
+                    <path d="M12.2496 14.7942C13.5326 14.7942 15.3616 12.4052 16.3376 10.9812C16.5716 10.6392 16.4846 10.1722 16.1436 9.93922C15.8006 9.70522 15.3336 9.79322 15.1016 10.1332C14.0136 11.7202 12.6666 13.1982 12.2796 13.2952C11.8336 13.1982 10.4866 11.7202 9.3986 10.1332C9.1666 9.79322 8.6966 9.70522 8.3566 9.93922C8.0146 10.1722 7.9276 10.6392 8.1616 10.9812C9.1376 12.4052 10.9666 14.7942 12.2496 14.7942Z" fill="#674d45"></path>
+                    </svg>
+                    <h1 class="text-3xl font-semibold">محصولات رو به اتمام</h1>
+                </div>
+                <a href="" class="btn-defIconFlex gap-2">
+                    <div>محصولات</div>
+                    <i class="fa fa-angle-left mt-[3px] text-[var(--color7)]"></i>
+                </a>
+            </div>
+            <div class="mt-5">
+                {% for p in low_stock_products %}
+                    <a href="" class="flex p-1 gap-2 mt-2 transition-all rounded-2xl duration-300 hover:bg-gray-50">
+                        <div class="min-w-20 min-h-20 max-h-20 max-w-20 bg-[var(--color12)] rounded-3xl overflow-hidden">
+                            <img class="w-[100%] h-[100%]" loading="lazy" alt="{{ p.title }}" src="{{ p.product_image.first.image.url }}">
+                        </div>
+                        <div class="flex justify-between w-[100%]">
+                            <div>
+                                <h1 class="text-lg mt-2">{{ p.title|to_fanum }}</h1>
+                                <div class="text-[var(--color10)]">در دسته: {{ p.category }}</div>
+                            </div>
+                            <div class="flex mt-5 gap-1 ml-2 text-[var(--color5)]">
+                                {% if p.is_byWeight %}
+                                    <div class="text-3xl">
+                                        {{ p.quantity|to_fanum }}
+                                    </div>
+                                    <div>
+                                        کیلو
+                                    </div>
+                                {% else %}
+                                    <div class="text-3xl">
+                                        {{ p.quantity|floatformat|to_fanum }}
+                                    </div>
+                                    <div>
+                                        عدد
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="tablebox-default mt-2" style="width: 50%">
+            <div class="flex justify-between">
+                <div class="flex gap-1 p-1 items-start">
+                    <svg id="Bag 3" width="35" height="35" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M2.5 6.95215V12.3921C2.5 17.7721 6.87 22.1421 12.25 22.1421C17.63 22.1421 22 17.7721 22 12.3921V6.95215H2.5Z" fill="#674d45"></path>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M7.48048 6.87493C7.49183 4.24547 9.63258 2.12481 12.2611 2.13529C14.8891 2.13617 17.0194 4.26727 17.0194 6.89625V10.8695H15.5194V6.89625C15.5194 5.0949 14.0595 3.63529 12.2595 3.63529H12.2563C10.4552 3.62751 8.98907 5.07973 8.98047 6.87988V10.8695H7.48047L7.48048 6.87493Z" fill="#674d45"></path>
+                    </svg>
+                    <h1 class="text-3xl font-semibold">پرفروشترین محصولات</h1>
+                </div>
+                <a href="" class="btn-defIconFlex gap-2">
+                    <div>محصولات</div>
+                    <i class="fa fa-angle-left mt-[3px] text-[var(--color7)]"></i>
+                </a>
+            </div>
+            <div class="mt-5">
+                {% for p in best_selling_products %}
+                    <a href="" class="flex p-1 gap-2 mt-2 transition-all rounded-2xl duration-300 hover:bg-gray-50">
+                        <div class="min-w-20 min-h-20 max-h-20 max-w-20 bg-[var(--color12)] rounded-3xl overflow-hidden">
+                            <img class="w-[100%] h-[100%]" loading="lazy" alt="{{ p.product_title }}" src="{{ p.product_image.first.image.url }}">
+                        </div>
+                        <div class="flex justify-between w-[100%]">
+                            <div>
+                                <h1 class="text-lg mt-2">{{ p.title|to_fanum }}</h1>
+                                <div class="text-[var(--color10)]">در دسته: {{ p.category }}</div>
+                            </div>
+                            <div class="flex mt-5 gap-1 ml-2 text-[var(--profit-dot)]">
+                                {% if p.is_byWeight %}
+                                    <div class="text-3xl">
+                                        {{ p.sold_weight|to_fanum }}
+                                    </div>
+                                    <div>
+                                        کیلو
+                                    </div>
+                                {% else %}
+                                    <div class="text-3xl">
+                                        {{ p.sold_count|to_fanum }}
+                                    </div>
+                                    <div>
+                                        عدد
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>

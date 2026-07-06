@@ -17,17 +17,21 @@
     {% include 'yesno_dialog.html' %}
     {% include 'message.html' %}
     {% include 'message_json.html' %}
+    <div class="overlay"></div>
     {% render_partial 'adminpanel_module.views.admin_user_card_component' %}
     {% render_partial 'adminpanel_module.views.admin_popup_user_component' %}
-
+    {% render_partial 'adminpanel_module.views.admin_popup_notif_component' %}
     <div class="flex">
         {% render_partial 'adminpanel_module.views.admin_sidebar_component' %}
-        <div class="w-[100%] admin-content">
+        <div class="w-[100%] admin-content" id="admin-content">
             {% render_partial 'adminpanel_module.views.admin_header_component' %}
             <div class="admin-inner-content rounded-[20px] mt-18 p-[10px] bg-[var(--color3)] w-[100%]">
                 {% block admin_content %}
 
                 {% endblock %}
+                <br>
+                <br>
+                <br>
             </div>
         </div>
     </div>

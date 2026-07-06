@@ -8,6 +8,9 @@ body {
     --profit-bg: #e1f8e1;
     --loss-bg: #ed8787;
     --loss-dot: #731919;
+    --blue-bg: #c3e1ff;
+    --blue-fore: #3c6d95;
+    --hover-bg: rgba(244, 244, 244, 0.51);
 }
 
 @media screen and (max-width: 1500px) {
@@ -21,6 +24,16 @@ body {
     body .stat-order {
         display: none;
     }
+}
+
+.overlay {
+    position: fixed;
+    background-color: #000;
+    opacity: 20%;
+    inset: 0;
+    transition: 200ms;
+    visibility: hidden;
+    z-index: 100;
 }
 
 .admin-header {
@@ -43,6 +56,7 @@ body {
     border-radius: 20px;
     padding: 15px;
     border: 1px solid var(--color13);
+    transition: 500ms;
 
 }
 
@@ -53,7 +67,7 @@ body {
     overflow-y: scroll;
     padding: 10px 10px;
     padding-bottom: 20px;
-    transition: 200ms;
+    transition: 500ms;
     scrollbar-gutter: stable both-edges;
     scroll-behavior: smooth;
     background-color: var(--color3);
@@ -121,13 +135,14 @@ body {
     border-radius: 20px;
     overflow: hidden;
     height: calc(100vh - 40px);
+    transition: 500ms;
 }
 
 .admin-inner-content {
+    overflow: hidden;
     overflow-y: scroll;
     height: 100%;
-        border: 1px solid var(--color13);
-
+    border: 1px solid var(--color13);
 }
 
 .admin-inner-content::-webkit-scrollbar {
@@ -140,7 +155,7 @@ body {
 }
 
 .admin-inner-content::-webkit-scrollbar-thumb {
-    background-color: var(--color6);
+    background-color: var(--color14);
 }
 
 
@@ -161,6 +176,11 @@ body {
     outline: none;
     border: none;
 }
+
+body:has(.admin-searchbox input:focus) .overlay {
+    visibility: visible;
+}
+
 .admin-searchbox input::placeholder {
     color: var(--color14);
     font-size: 15px;
@@ -240,7 +260,7 @@ body {
     padding: 12px;
 }
 
-.stat-profit ,.stat-loss ,.stat-static{
+.stat-profit ,.stat-loss ,.stat-static ,.stat-onwait{
     padding: 3px 10px;
     background-color: var(--profit-bg);
     border-radius: 10px;
@@ -257,12 +277,17 @@ body {
     color: var(--loss-dot);
 }
 
+.stat-onwait {
+    background-color: var(--blue-bg);
+    color: var(--blue-fore);
+}
+
 .stat-static {
     background-color: var(--color12);
     color: var(--color2);
 }
 
-.stat-dot-profit ,.stat-dot-loss ,.stat-dot-static {
+.stat-dot-profit ,.stat-dot-loss ,.stat-dot-static ,.stat-onwait-dot {
     background-color: var(--profit-dot);
     padding: 4px;
     margin-top: 6px;
@@ -275,6 +300,10 @@ body {
 
 .stat-dot-static {
     background-color: var(--color14);
+}
+
+.stat-onwait-dot {
+    background-color: var(--blue-fore);
 }
 
 .widget-stat {
@@ -301,6 +330,11 @@ body {
     cursor: default;
 }
 
+@keyframes fill-horizontal-chart {
+    0% {transform: translateX(100%)}
+    100% {transform: translateX(0)}
+}
+
 /*----- chart ------*/
 .monthly-sales-chart {
     width: 70%;
@@ -311,10 +345,55 @@ body {
 
 /*------ tables ------*/
 
-.table-default {
+.tablebox-default {
     width: 100%;
-    height: 500px;
+    height: auto;
     border: 1px solid var(--color11);
     border-radius: 15px;
-    padding: 10px;
+    padding: 15px;
+    position: relative;
 }
+
+
+.tablebox-default .table-default {
+    width: 100%;
+    margin-top: 20px;
+    height: 100%;
+}
+
+.table-default thead {
+    color: var(--color10);
+    border-bottom: 1px solid var(--color11);
+}
+
+
+.table-default table {
+  border-collapse: collapse;
+}
+
+.table-default td {
+  padding: 15px;
+}
+
+.table-default tr {
+    transition: 300ms;
+}
+
+
+
+.table-default tbody tr:hover {
+    background-color: var(--hover-bg);
+    cursor: default;
+}
+
+
+
+
+.new-dot {
+    width: 10px;
+    height: 10px;
+    background-color: var(--color5);
+    border-radius: 50%;
+    position: relative;
+}
+

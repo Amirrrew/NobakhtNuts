@@ -35,7 +35,7 @@ class Ticket(models.Model):
     user = models.ForeignKey(User,null=True,blank=True, db_index=True,on_delete=models.CASCADE,verbose_name="کاربر")
     created_at = models.DateTimeField(auto_now_add=True,db_index=True ,verbose_name="تاریخ ارسال")
     slug = models.SlugField(null=True,blank=True,unique=True,max_length=200,verbose_name="عنوان در url")
-    is_active = models.BooleanField(default=True, verbose_name="فعال / غیر فعال")
+    is_closed = models.BooleanField(default=False, verbose_name="بسته شده؟")
     text = models.TextField(null=True,blank=True,verbose_name="متن")
     img = models.ImageField(upload_to="tickets" ,null=True ,blank=True ,verbose_name='عکس از مشکل')
 

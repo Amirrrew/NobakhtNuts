@@ -1,10 +1,13 @@
 {% load static %}
 
-<div class="admin-header">
-    <div class="header-logobox flex gap-3 relative" id=""
+<div class="admin-header" id="admin-header">
+    <div class="header-logobox flex relative" id=""
          style="transition: 200ms;">
+        <button onclick="AdminSideAction()" class="w-10 h-10 cursor-pointer text-[var(--color6)] rounded-xl m-2.5 pt-1 hover:bg-[var(--color12)]">
+            <i class="fa fa-navicon"></i>
+        </button>
         <a class="flex" href="{% url 'admin_home' %}">
-            <img alt="برنج و خشکبار نوبخت" class="w-10 h-10 m-2 mr-3" id="" src="{% static 'media/logo/nobakht-logo.png' %}">
+            <img alt="برنج و خشکبار نوبخت" class="w-10 h-10 mt-2 ml-2" id="" src="{% static 'media/logo/nobakht-logo.png' %}">
         </a>
         <div class="admin-searchbox">
             <div class="flex">
