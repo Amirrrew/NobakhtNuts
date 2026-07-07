@@ -131,13 +131,14 @@ let AdminSearch = () => {
 
 let order_table_partial = document.getElementById('order-table-partial')
 let order_search = document.getElementById('search-orders')
-let search_orders = () => {
+let search_tables = (table) => {
+    let table_partial = document.getElementById(table)
     loader.style = 'display: block'
     setTimeout(() => {
         let q = order_search.value.trim()
         fetch(`/adminpanel/orders/?q=${q}`).then(res => res.json()).then(
             data => {
-                data.order_length > 0 ? order_table_partial.innerHTML = data.html : order_table_partial.innerHTML = `<div class="mt-5 text-center w-[100%] mb-3">سفارشی یافت نشد!</div>`
+                data.data_length > 0 ? table_partial.innerHTML = data.html : table_partial.innerHTML = `<div class="mt-5 text-center w-[100%] mb-3">سفارشی یافت نشد!</div>`
             }
         ).finally(() => {
             ToolbarCheck()
@@ -176,6 +177,7 @@ let ToolbarDisable = ()=> {
         toolbar_item.classList.add('hidden')
     })
 }
+
 
 let OrderSelectedAction = (action) => {
     const form = document.getElementById("form-order");

@@ -1,13 +1,15 @@
+from itertools import count
+
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template.loader import render_to_string
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, DeleteView
 
 from order_module.context_processors import orders
-from order_module.models import Order
+from order_module.models import Order, OrderStatus
 from utils.dashboard_decorators import get_sales_week, get_sales_week_growth, today, get_order_today, get_user_growth, \
     get_new_orders, get_lowstock_products, get_best_selling_products, get_new_tickets
 from utils.my_decorators import permision_checker_decorator_factory
@@ -93,12 +95,14 @@ class OrdersListView(ListView):
             if search.isdigit():
                 queryset = queryset.filter(
                     Q(pk__icontains=int(search)) |
+                    Q(user__phone__icontains=search) |
                     Q(user__username__icontains=search) |
                     Q(user__first_name__icontains=search) |
                     Q(user__last_name__icontains=search)
                 )
             else:
                 queryset = queryset.filter(
+                    Q(user__phone__icontains=search) |
                     Q(user__username__icontains=search) |
                     Q(user__first_name__icontains=search) |
                     Q(user__last_name__icontains=search)
@@ -117,7 +121,7 @@ class OrdersListView(ListView):
 
             return JsonResponse({
                 'html': html,
-                'order_length': self.object_list.count() if hasattr(self.object_list, 'count') else len(self.object_list)
+                'data_length': self.object_list.count() if hasattr(self.object_list, 'count') else len(self.object_list)
             })
 
         return response
@@ -168,4 +172,18 @@ class OrderDetailView(DeleteView):
     model = Order
     template_name = 'adminpanel_module/orders/order_details_admin.html'
 
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        order = self.object
+        action = request.POST.get('order_action')
+        if action == 'approve':
+            order.approve_order()
+        elif action == 'reject':
+            order.reject_order()
+        elif action == 'send':
+            order.send_order()
+        elif action == 'cancel':
+            order.return_order()
+
+        return redirect('admin_order_detail' ,pk=order.pk)
 

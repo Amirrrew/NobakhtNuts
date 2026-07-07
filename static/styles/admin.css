@@ -12,6 +12,8 @@ body {
     --deny-text: #731919;
     --blue-bg: #c3e1ff;
     --blue-fore: #3c6d95;
+    --warning-bg: #efefa1;
+    --warning-fore: #575730;
     --hover-bg: rgba(244, 244, 244, 0.51);
 }
 
@@ -268,7 +270,7 @@ body:has(#admin-searchbox input:focus) .overlay {
     padding: 12px;
 }
 
-.stat-profit ,.stat-loss ,.stat-static ,.stat-onwait ,.stat-denied{
+.stat-profit ,.stat-loss ,.stat-static ,.stat-onwait ,.stat-denied ,.stat-warning{
     padding: 3px 10px;
     background-color: var(--profit-bg);
     border-radius: 10px;
@@ -278,6 +280,11 @@ body:has(#admin-searchbox input:focus) .overlay {
     gap: 5px;
     margin-left: -4px;
     color: var(--profit-dot);
+}
+
+.stat-warning {
+    background-color: var(--warning-bg);
+    color: var(--warning-fore);
 }
 
 .stat-denied {
@@ -300,11 +307,15 @@ body:has(#admin-searchbox input:focus) .overlay {
     color: var(--color2);
 }
 
-.stat-dot-profit ,.stat-dot-loss ,.stat-dot-static ,.stat-onwait-dot ,.stat-dot-denied {
+.stat-dot-profit ,.stat-dot-loss ,.stat-dot-static ,.stat-onwait-dot ,.stat-dot-denied ,.stat-dot-warning{
     background-color: var(--profit-dot);
     padding: 4px;
     margin-top: 6px;
     border-radius: 20px;
+}
+
+.stat-dot-warning {
+    background-color: var(--warning-fore);
 }
 
 .stat-dot-denied {

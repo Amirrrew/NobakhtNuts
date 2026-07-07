@@ -1,6 +1,7 @@
 import json
-
+import os
 from django.contrib.auth.decorators import login_required
+from django.core.validators import validate_image_file_extension
 from django.urls import reverse
 from django.utils import timezone
 from itertools import product
@@ -20,7 +21,7 @@ from order_module.form import OrderForm
 from order_module.models import Order, OrderDetail, OrderStatus, PostingMethod, PaymentMethod
 from product_module.models import Product, PackageSize
 from userpanel_module.form import NewAddressForm
-from utils.my_decorators import permision_checker_decorator_factory
+from utils.my_decorators import permision_checker_decorator_factory, validate_image_extension
 
 
 def add_to_order(request: HttpRequest):
@@ -695,16 +696,20 @@ class Deposit(View):
         if not receipt:
             message_e = 'رسید واریزی را آپلود کنید!'
         else:
-            try:
-                status = OrderStatus.objects.filter(title__iexact='در انتظار تایید').first()
-                address = Address.objects.filter(id=current_order.address.id).first()
-                current_order.finalize_order(receipt ,status)
-                address.can_delete = False
-                address.save()
-                self.request.session['message'] = 'سفارش با موفقیت ثبت شد'
-                return redirect(current_order.get_absolute_url())
-            except:
-                message_e = 'در ثبت سفارش مشکلی پیش آمد!'
+            is_validate = validate_image_extension(receipt)
+            if is_validate:
+                try:
+                    status = OrderStatus.objects.filter(title__iexact='در انتظار تایید').first()
+                    address = Address.objects.filter(id=current_order.address.id).first()
+                    current_order.finalize_order(receipt ,status)
+                    address.can_delete = False
+                    address.save()
+                    self.request.session['message'] = 'سفارش با موفقیت ثبت شد'
+                    return redirect(current_order.get_absolute_url())
+                except:
+                    message_e = 'در ثبت سفارش مشکلی پیش آمد!'
+            else:
+                message_e = 'فقط فایل‌های jpg، png یا webp مجاز هستند'
 
 
         context = {
@@ -770,7 +775,6 @@ def request_online_payment(request):
 
 def verify_payment(request: HttpRequest):
     t_authority = request.GET.get('Authority')
-
     if request.GET.get('Status') == 'OK':
         try:
             current_order = Order.objects.get(user=request.user ,is_paid=False)
@@ -797,9 +801,12 @@ def verify_payment(request: HttpRequest):
 
         if len(response_json.get('errors' ,{})) == 0:
             t_status = response_json['data']['code']
+            ref_id = response_json["data"]["ref_id"]
             if t_status == 100:
                 status = OrderStatus.objects.filter(title__iexact='پرداخت شده').first()
                 current_order.finalize_order(None ,status)
+                current_order.payment_ref = ref_id
+                current_order.save()
                 context = {
                     'success': 'پرداخت موفق!',
                     'returning': 'در حال انتقال به صفحه سفارش های من',
@@ -811,7 +818,7 @@ def verify_payment(request: HttpRequest):
                 context = {
                     'success': 'پرداخت قبلا انجام شده!',
                     'returning': 'در حال انتقال به صفحه سفارش های من',
-                'redirect_url': reverse('my_orders_page'),
+                    'redirect_url': reverse('my_orders_page'),
                 }
                 return render(request ,'order_module/include/payment_verify.html' ,context)
 

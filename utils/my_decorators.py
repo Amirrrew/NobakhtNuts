@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.conf import settings
 import requests
 from django.db.models import Case, When, Value, IntegerField,Q
+import os
 
 from account_module.models import Notification ,User
 
@@ -28,6 +29,15 @@ def send_sms(phone):
     response = requests.post(settings.SMS_API_KEY, json=data)
     print(response.json())
     return response.json()
+
+
+def validate_image_extension(value):
+    ext = os.path.splitext(value.name)[1].lower()
+    valid_extensions = ['.jpg', '.jpeg', '.png', '.webp']
+    if ext not in valid_extensions:
+        return False
+    else:
+        return True
 
 
 def filter_products(request, queryset):

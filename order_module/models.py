@@ -89,6 +89,7 @@ class Order(models.Model):
     receipt = models.ImageField(upload_to='receipts' ,null=True ,blank=True ,verbose_name='رسید واریزی')
     finalized_price = models.IntegerField(null=True ,blank=True ,verbose_name='قیمت نهایی')
     postage_fee = models.IntegerField(null=True ,blank=True ,verbose_name='هزینه ارسال')
+    payment_ref = models.CharField(max_length=200 ,null=True ,blank=True ,verbose_name='شماره تراکنش')
 
     def __str__(self):
         return str(self.user)
@@ -171,6 +172,16 @@ class Order(models.Model):
 
     def reject_order(self):
         self.status = OrderStatus.objects.filter(title__iexact='رد شده').first()
+        self.save()
+
+    def return_order(self):
+        for o in self.orderdetails_set.all():
+            if o.product.is_byWeight:
+                o.product.q_back(o.count, o.pack_size.size)
+            else:
+                o.product.q_back(o.count, 1)
+        self.is_done = True
+        self.status = OrderStatus.objects.filter(title__iexact="مرجوع شده").first()
         self.save()
 
 

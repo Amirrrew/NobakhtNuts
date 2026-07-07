@@ -78,7 +78,7 @@
                                 <div class="text-[var(--color10)] relative" style="animation: load 800ms">اسکرین شاتی که از رسید خود گرفتید جهت تایید اینجا آپلود کنید.</div>
                                   <div class="w-[100%] flex mt-3 bg-[var(--color12)] p-3 rounded-xl items-start relative" style="animation: load3 800ms">
                                     <div id="upload-avatar" class="image-inputbox" style="{% if t.image %}background-image: url({{ t.image.url }});{% endif %} width: 140px; height: 140px;">
-                                        <input oninput="SetUploadedImage(event ,'upload-avatar')" name="receipt" type="file" class="cursor-pointer w-[100%] h-[100%] opacity-0" style="z-index: 100">
+                                        <input accept="image/png, image/jpeg, image/webp" oninput="SetUploadedImage(event ,'upload-avatar')" name="receipt" type="file" class="cursor-pointer w-[100%] h-[100%] opacity-0" style="z-index: 100">
                                         {% if not orders.image %}
                                             <div class="centerbox">
                                                 <svg style="z-index: -1" class="relative top-[-100px]" id="Upload" width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

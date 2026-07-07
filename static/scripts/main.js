@@ -336,18 +336,20 @@ let OpenDialog = (dialogtext ,dialogurl) => {
 // ست کردن عکس روی اینپوت آپلود عکس ها
 let SetUploadedImage = (event, parentElement) => {
     var parent = document.getElementById(`${parentElement}`)
-
     var file = event.target.files[0]
+
     if (file && file.type.startsWith('image/')) {
         var reader = new FileReader()
-
         reader.onload = (e) => {
             parent.style.backgroundImage = `url(${e.target.result})`
             parent.style.backgroundSize = 'cover'
         }
         reader.readAsDataURL(file)
     }
-
+    else {
+        Message('فقط عکس مجاز است!', true)
+        event.target.value = ''
+    }
 }
 
 htmladdress = `
