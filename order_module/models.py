@@ -161,6 +161,17 @@ class Order(models.Model):
             detail.save()
         self.save()
 
+    def approve_order(self):
+        self.status = OrderStatus.objects.filter(title__iexact='در حال آماده سازی').first()
+        self.save()
+
+    def send_order(self):
+        self.status = OrderStatus.objects.filter(title__iexact='ارسال شده').first()
+        self.save()
+
+    def reject_order(self):
+        self.status = OrderStatus.objects.filter(title__iexact='رد شده').first()
+        self.save()
 
 
 

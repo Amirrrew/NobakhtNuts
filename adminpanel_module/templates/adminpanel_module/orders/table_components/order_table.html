@@ -1,0 +1,48 @@
+{% load poll_extras %}
+    <div class="tablebox-default w-[100%] mt-2 relative" style="animation: load8 300ms">
+        {% if orders %}
+            <form method="post" id="form-order">
+            {% csrf_token %}
+                <table class="table-default" style="margin: 0">
+                    <thead class="sticky top-0">
+                        <tr>
+                            <td></td>
+                            <td>#شماره</td>
+                            <td>کاربر</td>
+                            <td>وضعیت</td>
+                            <td>تاریخ ثبت</td>
+                            <td>روش پرداخت</td>
+                            <td>مبلغ کل</td>
+                            <td class="text-center">عملگرها</td>
+                        </tr>
+                    </thead>
+                    <tbody id="order-table-partial">
+                        {% include 'adminpanel_module/orders/table_components/order_table_partial.html' %}
+                    </tbody>
+                </table>
+            {% else %}
+            <div>سفارشی ثبت نشده!</div>
+        {% endif %}
+        </form>
+    </div>
+    <script>
+        let checks = document.querySelectorAll('input[name="order"]')
+        let toolbar = document.getElementById('table-toolbar')
+        let toolbar_item = document.getElementById('table-toolbar-item')
+        checks.forEach(item => {
+            item.addEventListener('change' ,()=> {
+                let checks_checked = document.querySelectorAll('input[name="order"]:checked')
+                if (checks_checked.length > 0) {
+                    toolbar.classList.remove('disabled')
+                    toolbar_item.classList.remove('hidden')
+                    toolbar_item.innerHTML = `آیتم (${to_fanum(checks_checked.length)})`
+                }
+                else {
+                    toolbar.classList.add('disabled')
+                    toolbar_item.classList.add('hidden')
+                }
+            })
+        })
+    </script>
+
+

@@ -24,7 +24,12 @@ body {
     body .stat-order {
         display: none;
     }
+
+    body .toolbar-text {
+        display: none;
+    }
 }
+
 
 .overlay {
     position: fixed;
@@ -177,7 +182,7 @@ body {
     border: none;
 }
 
-body:has(.admin-searchbox input:focus) .overlay {
+body:has(#admin-searchbox input:focus) .overlay {
     visibility: visible;
 }
 
@@ -366,7 +371,6 @@ body:has(.admin-searchbox input:focus) .overlay {
     border-bottom: 1px solid var(--color11);
 }
 
-
 .table-default table {
   border-collapse: collapse;
 }
@@ -385,9 +389,6 @@ body:has(.admin-searchbox input:focus) .overlay {
     background-color: var(--hover-bg);
     cursor: default;
 }
-
-
-
 
 .new-dot {
     width: 10px;

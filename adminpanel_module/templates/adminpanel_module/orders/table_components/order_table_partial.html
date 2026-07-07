@@ -1,0 +1,48 @@
+{% load poll_extras %}
+
+
+                    {% for order in orders %}
+                        <tr class="{% if not forloop.last %} border-b border-[var(--color12)]{% endif %}" style="{% if order.is_done %}opacity: 0.5;{% endif %}">
+                            <td><label for="order{{ order.pk }}" class="relative text-[var(--color6)] text-lg cursor-pointer top-1"><input id="order{{ order.pk }}" type="checkbox" class="ui-checkbox" name="order" value="{{ order.pk }}"></label></td>
+                            <td><a href="">#{{ order.pk }}</a></td>
+                            <td><a href="">{{ order.user }}</a></td>
+                            <td><a class="{% if order.status.title == 'در انتظار تایید' %}stat-onwait text-white{% elif order.status.title == 'ارسال شده' %}stat-static{% elif order.status.title == 'پایان یافته' %}stat-loss{% else %}stat-profit{% endif %} w-fit flex"><div class=" {% if order.status.title == 'در انتظار تایید' %}stat-onwait-dot{% elif order.status.title == 'ارسال شده' %}stat-dot-static{% elif order.status.title == 'پایان یافته' %}stat-dot-loss{% else %}stat-dot-profit{% endif %}"></div>{{ order.status }} {% if order.status.title == 'در انتظار تایید' %}رسید{% endif %}</a></td>
+                            <td>{{ order.payment_date.time }} <span class="text-[var(--color10)] text-xl">|</span>  {{ order.payment_date|show_jalali_date|to_fanum }}</td>
+                            <td>{{ order.payment_method }}</td>
+                            <td class="font-semibold text-xl">{{ order.finalized_price|three_digits_currency }}</td>
+                            <td class="flex justify-end items-start gap-1">
+                                <a href="{% url 'admin_order_detail' order.pk %}" class="btn-defIconFlex2 w-[40px] h-[30px] text-sm gap-2 text-nowrap tooltip-parent relative" style="justify-content: center; padding-top: 7px; background-color: var(--color12)">
+                                    <svg id="Show" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                        <g id="Iconly/Bulk/Show" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                                            <g id="Show" transform="translate(2.000000, 4.000000)" fill="#674d45" fill-rule="nonzero">
+                                                <path d="M10,0 C12.0682927,0 14.0292683,0.717575758 15.7365854,2.04606061 C17.4439024,3.36387879 18.897561,5.29454545 19.9414634,7.70909091 C20.0195122,7.89236364 20.0195122,8.10666667 19.9414634,8.28121212 C17.8536585,13.110303 14.1365854,16 10,16 L10,16 L9.9902439,16 C5.86341463,16 2.14634146,13.110303 0.0585365854,8.28121212 C-0.0195121951,8.10666667 -0.0195121951,7.89236364 0.0585365854,7.70909091 C2.14634146,2.8790303 5.86341463,0 9.9902439,0 L9.9902439,0 Z M10,4.12121212 C7.84390244,4.12121212 6.09756098,5.8569697 6.09756098,8 C6.09756098,10.1333333 7.84390244,11.8690909 10,11.8690909 C12.1463415,11.8690909 13.8926829,10.1333333 13.8926829,8 C13.8926829,5.8569697 12.1463415,4.12121212 10,4.12121212 Z" id="Fill-1" opacity="0.400000006"></path>
+                                                <path d="M12.4309268,7.99689697 C12.4309268,9.32538182 11.3382439,10.4114424 10.0016585,10.4114424 C8.65531707,10.4114424 7.56263415,9.32538182 7.56263415,7.99689697 C7.56263415,7.83204848 7.58214634,7.67786667 7.61141463,7.52271515 L7.66019512,7.52271515 C8.74312195,7.52271515 9.62117073,6.66938182 9.66019512,5.60174545 C9.7675122,5.58332121 9.88458537,5.57265455 10.0016585,5.57265455 C11.3382439,5.57265455 12.4309268,6.65871515 12.4309268,7.99689697" id="Fill-4"></path>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                    <div class="tooltip" style="top: -40px; border: 1px solid var(--color9); padding: 5px 10px">مشاهده</div>
+                                </a>
+                                <a href="" class="btn-defIconFlex2 w-[40px] h-[30px] text-sm gap-2 text-nowrap tooltip-parent relative" style="justify-content: center; padding-top: 7px; background-color: var(--color12)">
+                                    <svg id="Edit" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M9.61691 8.34324C9.71636 8.21098 9.90412 8.18421 10.0366 8.28343L15.2165 12.1638C15.3492 12.2632 15.3761 12.4514 15.2766 12.584L10.4569 19.0039C9.29688 20.5539 7.54688 20.8639 6.33688 20.8639C5.58688 20.8639 5.04688 20.7439 4.98688 20.7339C4.85688 20.7039 4.73688 20.6139 4.66688 20.4939C4.59688 20.3639 2.87688 17.3039 4.79688 14.7539L9.61691 8.34324Z" fill="#674d45"></path>
+                                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M17.2065 10.0141L16.5365 10.9048C16.437 11.0371 16.2493 11.0638 16.1169 10.9646L10.9361 7.08358C10.8037 6.9844 10.7765 6.79677 10.8754 6.66415L11.5465 5.76412C12.2365 4.83412 13.3065 4.34412 14.3865 4.34412C15.1265 4.34412 15.8665 4.57412 16.5065 5.05412C17.2565 5.62412 17.7465 6.45412 17.8865 7.38412C18.0165 8.32412 17.7765 9.25412 17.2065 10.0141Z" fill="#674d45"></path>
+                                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M19.8584 19.3519H13.4814C13.0674 19.3519 12.7314 19.6879 12.7314 20.1019C12.7314 20.5159 13.0674 20.8519 13.4814 20.8519H19.8584C20.2724 20.8519 20.6084 20.5159 20.6084 20.1019C20.6084 19.6879 20.2724 19.3519 19.8584 19.3519Z" fill="#674d45"></path>
+                                    </svg>
+                                    <div class="tooltip" style="top: -40px; border: 1px solid var(--color9); padding: 5px 10px">ویرایش</div>
+                                </a>
+                                <div onclick="OpenDialog('آیا از حذف سفارش شماره #{{ order.pk|to_fanum }} مطمئن هستید؟',`{% url 'admin_order_delete' order.pk %}`)" class="btn-del centerbox text-sm gap-2 text-nowrap tooltip-parent relative" style="justify-content: center; padding-top: 7px; width: 40px; height: 40px">
+                                    <svg id="Delete" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                        <g id="Iconly/Bulk/Delete" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                                            <g id="Delete" transform="translate(3.000000, 2.000000)" fill="#8e1f1f" fill-rule="nonzero">
+                                                <path d="M16.6432894,7.4884379 C16.6432894,7.55643552 16.1103307,14.2971996 15.8059218,17.1341003 C15.6153015,18.8750394 14.492976,19.9310024 12.8094878,19.9610014 C11.5159931,19.9900003 10.2497298,20 9.00389021,20 C7.68121893,20 6.38772423,19.9900003 5.13215907,19.9610014 C3.50507888,19.9220027 2.38178085,18.8450404 2.2008861,17.1341003 C1.88772423,14.2871999 1.36449103,7.55643552 1.35476551,7.4884379 C1.34503998,7.28344508 1.41117355,7.0884519 1.54538578,6.93045743 C1.67765291,6.78446254 1.86827318,6.69646562 2.06861898,6.69646562 L15.9391614,6.69646562 C16.1385347,6.69646562 16.3194294,6.78446254 16.4623946,6.93045743 C16.5956343,7.0884519 16.6627404,7.28344508 16.6432894,7.4884379" id="Fill-1" opacity="0.400000006"></path>
+                                                <path d="M18,3.97686081 C18,3.56587519 17.67614,3.24388646 17.2871191,3.24388646 L14.371407,3.24388646 C13.77815,3.24388646 13.2626972,2.82190123 13.1304301,2.22692206 L12.9670413,1.49794757 C12.7384915,0.616978406 11.9497515,-1.50990331e-14 11.0647288,-1.50990331e-14 L6.93624379,-1.50990331e-14 C6.04149557,-1.50990331e-14 5.26053598,0.616978406 5.0232332,1.54594589 L4.87054247,2.22792202 C4.73730279,2.82190123 4.22185001,3.24388646 3.62956559,3.24388646 L0.713853469,3.24388646 C0.323859952,3.24388646 0,3.56587519 0,3.97686081 L0,4.35684751 C0,4.75783348 0.323859952,5.08982186 0.713853469,5.08982186 L17.2871191,5.08982186 C17.67614,5.08982186 18,4.75783348 18,4.35684751 L18,3.97686081 Z" id="Fill-4"></path>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                    <div class="tooltip" style="top: -40px; border: 1px solid var(--color9); padding: 5px 10px">حذف</div>
+                                </div>
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+

@@ -1,4 +1,4 @@
-
+let loader = document.getElementById('loader')
 let sidebar = document.querySelector('.sidebar-admin')
 // نمایش دکمه اسکرول تو تاپ سایدبار
 sidebar.addEventListener('scroll' ,()=> {
@@ -109,7 +109,6 @@ document.addEventListener("click", (e) => {
 //انجام سرچ پنل ادمین
 let AdminSearch = () => {
     const value = admin_search_input.value.trim().toLowerCase();
-
     const results = admin_options.filter(option =>
         option.title.toLowerCase().includes(value)
     );
@@ -127,5 +126,63 @@ let AdminSearch = () => {
         }
         results.length > 0 ? admin_search_result.innerHTML = rescontent : admin_search_result.innerHTML = `<div class="mt-1 mx-3">نتیجه ای پیدا نشد!</div>`
     }
+}
+
+
+let order_table_partial = document.getElementById('order-table-partial')
+let order_search = document.getElementById('search-orders')
+let search_orders = () => {
+    let q = order_search.value.trim()
+    loader.style = 'display: block'
+    fetch(`/adminpanel/orders/?q=${q}`).then(res => res.json()).then(
+        data => {
+            data.order_length > 0 ? order_table_partial.innerHTML = data.html : order_table_partial.innerHTML = `<div class="mt-5 text-center w-[100%] mb-3">سفارشی یافت نشد!</div>`
+        }
+    ).finally(() => {
+        ToolbarCheck()
+        loader.style = 'display: none'
+    })
+}
+
+let ToolbarCheck = () => {
+    let checks = document.querySelectorAll('input[name="order"]')
+    let toolbar = document.getElementById('table-toolbar')
+    let toolbar_item = document.getElementById('table-toolbar-item')
+    checks.forEach(item => {
+        item.addEventListener('change' ,()=> {
+            let checks_checked = document.querySelectorAll('input[name="order"]:checked')
+            if (checks_checked.length > 0) {
+                toolbar.classList.remove('disabled')
+                toolbar_item.classList.remove('hidden')
+                toolbar_item.innerHTML = `آیتم (${to_fanum(checks_checked.length)})`
+            }
+            else {
+                toolbar.classList.add('disabled')
+                toolbar_item.classList.add('hidden')
+            }
+        })
+    })
+}
+
+let ToolbarDisable = ()=> {
+    let checks = document.querySelectorAll('input[name="order"]')
+    let toolbar = document.getElementById('table-toolbar')
+    let toolbar_item = document.getElementById('table-toolbar-item')
+    checks.forEach(item => {
+        item.checked = false
+        toolbar.classList.add('disabled')
+        toolbar_item.classList.add('hidden')
+    })
+}
+
+let OrderSelectedAction = (action) => {
+    const form = document.getElementById("form-order");
+    const data = new FormData(form);
+    fetch(`/adminpanel/orders/action/?action=${action}` ,{method: "POST" ,body: data , headers: {"X-CSRFToken": data.get("csrfmiddlewaretoken")}}).then(res => res.json()).then(data => {
+        data.message ? Message(data.message ,false) : null
+        data.html ? order_table_partial.innerHTML = data.html : null
+        ToolbarDisable()
+        ToolbarCheck()
+    })
 }
 
