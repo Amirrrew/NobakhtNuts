@@ -8,6 +8,8 @@ body {
     --profit-bg: #e1f8e1;
     --loss-bg: #ed8787;
     --loss-dot: #731919;
+    --deny-bg: #ffac89;
+    --deny-text: #731919;
     --blue-bg: #c3e1ff;
     --blue-fore: #3c6d95;
     --hover-bg: rgba(244, 244, 244, 0.51);
@@ -141,6 +143,7 @@ body {
     overflow: hidden;
     height: calc(100vh - 40px);
     transition: 500ms;
+
 }
 
 .admin-inner-content {
@@ -265,7 +268,7 @@ body:has(#admin-searchbox input:focus) .overlay {
     padding: 12px;
 }
 
-.stat-profit ,.stat-loss ,.stat-static ,.stat-onwait{
+.stat-profit ,.stat-loss ,.stat-static ,.stat-onwait ,.stat-denied{
     padding: 3px 10px;
     background-color: var(--profit-bg);
     border-radius: 10px;
@@ -275,6 +278,11 @@ body:has(#admin-searchbox input:focus) .overlay {
     gap: 5px;
     margin-left: -4px;
     color: var(--profit-dot);
+}
+
+.stat-denied {
+    background-color: var(--deny-bg);
+    color: var(--deny-text);
 }
 
 .stat-loss {
@@ -292,11 +300,15 @@ body:has(#admin-searchbox input:focus) .overlay {
     color: var(--color2);
 }
 
-.stat-dot-profit ,.stat-dot-loss ,.stat-dot-static ,.stat-onwait-dot {
+.stat-dot-profit ,.stat-dot-loss ,.stat-dot-static ,.stat-onwait-dot ,.stat-dot-denied {
     background-color: var(--profit-dot);
     padding: 4px;
     margin-top: 6px;
     border-radius: 20px;
+}
+
+.stat-dot-denied {
+    background-color: var(--deny-text);
 }
 
 .stat-dot-loss {

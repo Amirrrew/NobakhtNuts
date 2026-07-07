@@ -16,36 +16,42 @@
                 </a>
             </div>
             <div class="mt-5">
-                {% for p in low_stock_products %}
-                    <a href="" class="flex p-1 gap-2 mt-2 transition-all rounded-2xl duration-300 hover:bg-gray-50">
-                        <div class="min-w-20 min-h-20 max-h-20 max-w-20 bg-[var(--color12)] rounded-3xl overflow-hidden">
-                            <img class="w-[100%] h-[100%]" loading="lazy" alt="{{ p.title }}" src="{{ p.product_image.first.image.url }}">
-                        </div>
-                        <div class="flex justify-between w-[100%]">
-                            <div>
-                                <h1 class="text-lg mt-2">{{ p.title|to_fanum }}</h1>
-                                <div class="text-[var(--color10)]">در دسته: {{ p.category }}</div>
+                {% if low_stock_products %}
+                    {% for p in low_stock_products %}
+                        <a href="" class="flex p-1 gap-2 mt-2 transition-all rounded-2xl duration-300 hover:bg-gray-50">
+                            <div class="min-w-20 min-h-20 max-h-20 max-w-20 bg-[var(--color12)] rounded-3xl overflow-hidden">
+                                <img class="w-[100%] h-[100%]" loading="lazy" alt="{{ p.title }}" src="{{ p.product_image.first.image.url }}">
                             </div>
-                            <div class="flex mt-5 gap-1 ml-2 text-[var(--color5)]">
-                                {% if p.is_byWeight %}
-                                    <div class="text-3xl">
-                                        {{ p.quantity|to_fanum }}
-                                    </div>
-                                    <div>
-                                        کیلو
-                                    </div>
-                                {% else %}
-                                    <div class="text-3xl">
-                                        {{ p.quantity|floatformat|to_fanum }}
-                                    </div>
-                                    <div>
-                                        عدد
-                                    </div>
-                                {% endif %}
+                            <div class="flex justify-between w-[100%]">
+                                <div>
+                                    <h1 class="text-lg mt-2">{{ p.title|to_fanum }}</h1>
+                                    <div class="text-[var(--color10)]">در دسته: {{ p.category }}</div>
+                                </div>
+                                <div class="flex mt-5 gap-1 ml-2 text-[var(--color5)]">
+                                    {% if p.is_byWeight %}
+                                        <div class="text-3xl">
+                                            {{ p.quantity|to_fanum }}
+                                        </div>
+                                        <div>
+                                            کیلو
+                                        </div>
+                                    {% else %}
+                                        <div class="text-3xl">
+                                            {{ p.quantity|floatformat|to_fanum }}
+                                        </div>
+                                        <div>
+                                            عدد
+                                        </div>
+                                    {% endif %}
+                                </div>
                             </div>
-                        </div>
-                    </a>
-                {% endfor %}
+                        </a>
+                    {% endfor %}
+                    {% else %}
+                    <div class="text-center mt-20">
+                        به نظر میاد همه چیز به اندازست!
+                    </div>
+                {% endif %}
             </div>
         </div>
         <div class="tablebox-default mt-2" style="width: 50%">

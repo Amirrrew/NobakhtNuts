@@ -1,0 +1,15 @@
+{% load static %}
+
+<div id="popup-parent" class="popup-parent-gallery relative text-[var(--color3)]">
+    <div class="p-2 w-[100%]">
+        <div class="flex justify-between w-[100%]">
+            <div class="gallery-title text-3xl p-3"></div>
+            <button onclick="PhotoGallery(true)" class="btn-closegallery"><i class="fa fa-close text-xl pt-1.5"></i></button>
+        </div>
+
+        <div class="centerbox" style="animation: load8 200ms">
+            <img id="receipt_img" src="{% if order.receipt %}{{ order.receipt.url }}{% endif %}" class="w-[300px] h-[550px] rounded-lg">
+        </div>
+
+    </div>
+</div>
