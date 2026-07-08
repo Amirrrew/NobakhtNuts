@@ -1,0 +1,85 @@
+{% extends 'adminpanel_module/shared/base-admin.html' %}
+{% load poll_extras %}
+{% load static %}
+
+{% block admin_title %}
+    محصولات
+{% endblock %}
+
+{% block admin_content %}
+    <div class="p-2 pt-6 sticky mt-[-10px] top-[-10px] z-10 bg-[var(--header-bg)] backdrop-filter-[blur(10px)] rounded-xl">
+        <div class="flex justify-between">
+            <div class="flex gap-1 items-start">
+                <svg class="mt-[-3px]" id="Bag 2" width="35" height="35" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M7.71924 7.1229C7.72523 4.62077 9.75766 2.5969 12.2607 2.60169C14.7624 2.60768 16.7865 4.64056 16.7812 7.14222V10.1737C16.7812 10.5879 16.4455 10.9237 16.0312 10.9237C15.617 10.9237 15.2812 10.5879 15.2812 10.1737V7.14169L15.2812 7.1399C15.2852 5.46626 13.9315 4.10589 12.2578 4.10169C10.5833 4.09868 9.2237 5.45228 9.21924 7.12564V10.1737C9.21924 10.5879 8.88345 10.9237 8.46924 10.9237C8.05502 10.9237 7.71924 10.5879 7.71924 10.1737L7.71924 7.1229Z" fill="#674d45"></path>
+                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M4.89578 9.00122C6.44852 7.78592 8.85701 7.35071 12.25 7.35071C15.6429 7.35071 18.0514 7.78592 19.6041 9.00122C21.1949 10.2463 21.769 12.2069 21.769 14.9097C21.769 17.6121 21.1949 19.5724 19.6041 20.8173C18.0514 22.0325 15.6429 22.4677 12.25 22.4677C8.857 22.4677 6.44853 22.0325 4.89581 20.8173C3.30504 19.5724 2.73096 17.6121 2.73096 14.9097C2.73096 12.2069 3.30502 10.2463 4.89578 9.00122Z" fill="#674d45"></path>
+                </svg>
+                <h1 class="text-4xl font-semibold">محصولات</h1>
+                <div class="admin-searchbox mr-2" style="margin-top: -8px; width: 400px">
+                    <div class="flex">
+                        <svg class="m-2.5" id="Search" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M11.5139 2.20227C6.51788 2.20227 2.45288 6.26727 2.45288 11.2643C2.45288 16.2603 6.51788 20.3243 11.5139 20.3243C16.5099 20.3243 20.5749 16.2603 20.5749 11.2643C20.5749 6.26727 16.5099 2.20227 11.5139 2.20227Z" fill="#674d45"></path>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M20.1373 17.9767C19.0833 17.9767 18.2253 18.8327 18.2253 19.8867C18.2253 20.9407 19.0833 21.7977 20.1373 21.7977C21.1903 21.7977 22.0473 20.9407 22.0473 19.8867C22.0473 18.8327 21.1903 17.9767 20.1373 17.9767Z" fill="#674d45"></path>
+                        </svg>
+                        <input oninput="search_tables('product-search','product-table-partial' ,`/adminpanel/products/` ,'product')" name="q" id="product-search" placeholder="جستجو با کد / عنوان / دسته بندی / شاخه اصلی / برند">
+                    </div>
+                </div>
+            </div>
+            <div class="flex gap-1">
+                    <div id="table-toolbar" class="flex gap-1 p-1 bg-[var(--color12)] transition-all relative rounded-xl disabled">
+                        <div id="table-toolbar-item" class="mt-1 mr-2 hidden">
+                            (0)
+                            آیتم
+                        </div>
+                        <button onclick="ProductSelectedAction('active')" class="flex gap-1 bg-[var(--color11)] cursor-pointer rounded-lg px-1.5 pt-1">
+                            <svg class="mt-0.5" id="Paper Upload" width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M17.26 8.674C15.614 8.674 14.27 7.34 14.27 5.694V3.652L19.552 8.674H17.26ZM20.955 8.85C20.955 8.81 20.955 8.78 20.945 8.74C20.915 8.56 20.885 8.38 20.855 8.21C20.835 8.1 20.785 8.01 20.705 7.93L15.035 2.53C14.965 2.46 14.865 2.41 14.765 2.4C14.595 2.38 14.415 2.36 14.235 2.34C14.205 2.33 14.165 2.33 14.135 2.33C13.555 2.28 12.915 2.25 12.245 2.25C5.68498 2.25 3.35498 4.8 3.35498 12C3.35498 19.19 5.68498 21.75 12.245 21.75C18.815 21.75 21.145 19.19 21.145 12C21.145 10.8 21.085 9.76 20.955 8.85Z" fill="#674d45"></path>
+                            <path d="M13.2397 13.584C13.4307 13.584 13.6227 13.511 13.7687 13.365C14.0617 13.073 14.0637 12.599 13.7707 12.305L11.4267 9.95003C11.2907 9.81303 11.1027 9.72803 10.8947 9.72803C10.6867 9.72803 10.4987 9.81303 10.3627 9.95003L8.01769 12.305C7.72569 12.599 7.72669 13.073 8.01969 13.365C8.31369 13.657 8.78869 13.657 9.08069 13.364L10.1447 12.294V16.519C10.1447 16.933 10.4807 17.269 10.8947 17.269C11.3087 17.269 11.6447 16.933 11.6447 16.519V12.295L12.7087 13.364C12.8547 13.511 13.0467 13.584 13.2397 13.584Z" fill="#674d45"></path>
+                            </svg>
+                            <div class="toolbar-text">
+                                فعال
+                            </div>
+                        </button>
+                        <button onclick="ProductSelectedAction('inactive')" class="flex gap-1 bg-[var(--color11)] cursor-pointer rounded-lg px-1.5 pt-1">
+                            <svg class="mt-0.5" id="Paper Download" width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M17.26 8.674C15.614 8.674 14.27 7.34 14.27 5.694V3.652L19.552 8.674H17.26ZM20.955 8.85C20.955 8.81 20.955 8.78 20.945 8.74C20.915 8.56 20.885 8.38 20.855 8.21C20.835 8.1 20.785 8.01 20.705 7.93L15.035 2.53C14.965 2.46 14.865 2.41 14.765 2.4C14.595 2.38 14.415 2.36 14.235 2.34C14.205 2.33 14.165 2.33 14.135 2.33C13.555 2.28 12.915 2.25 12.245 2.25C5.68498 2.25 3.35498 4.8 3.35498 12C3.35498 19.19 5.68498 21.75 12.245 21.75C18.815 21.75 21.145 19.19 21.145 12C21.145 10.8 21.085 9.76 20.955 8.85Z" fill="#674d45"></path>
+                            <path d="M11.4247 17.046L13.7697 14.693C14.0617 14.4 14.0617 13.924 13.7677 13.632C13.4737 13.34 12.9997 13.34 12.7077 13.634L11.6427 14.703V10.478C11.6427 10.064 11.3067 9.72803 10.8927 9.72803C10.4787 9.72803 10.1427 10.064 10.1427 10.478V14.702L9.07972 13.634C8.78772 13.34 8.31272 13.34 8.01872 13.632C7.72572 13.924 7.72472 14.399 8.01672 14.693L10.3607 17.046C10.4967 17.183 10.6847 17.269 10.8927 17.269C11.1007 17.269 11.2887 17.183 11.4247 17.046Z" fill="#674d45"></path>
+                            </svg>
+                            <div class="toolbar-text">
+                                غیر فعال
+                            </div>
+                        </button>
+                        <button onclick="ProductSelectedAction('delete')" class="btn-del" style="width: auto;display: flex; padding: 5px 6px; height: 100%">
+                            <svg id="Delete" class="mt-0.5" width="17px" height="17px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <g id="Iconly/Bulk/Delete" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                                    <g id="Delete" transform="translate(3.000000, 2.000000)" fill="#8e1f1f" fill-rule="nonzero">
+                                        <path d="M16.6432894,7.4884379 C16.6432894,7.55643552 16.1103307,14.2971996 15.8059218,17.1341003 C15.6153015,18.8750394 14.492976,19.9310024 12.8094878,19.9610014 C11.5159931,19.9900003 10.2497298,20 9.00389021,20 C7.68121893,20 6.38772423,19.9900003 5.13215907,19.9610014 C3.50507888,19.9220027 2.38178085,18.8450404 2.2008861,17.1341003 C1.88772423,14.2871999 1.36449103,7.55643552 1.35476551,7.4884379 C1.34503998,7.28344508 1.41117355,7.0884519 1.54538578,6.93045743 C1.67765291,6.78446254 1.86827318,6.69646562 2.06861898,6.69646562 L15.9391614,6.69646562 C16.1385347,6.69646562 16.3194294,6.78446254 16.4623946,6.93045743 C16.5956343,7.0884519 16.6627404,7.28344508 16.6432894,7.4884379" id="Fill-1" opacity="0.400000006"></path>
+                                        <path d="M18,3.97686081 C18,3.56587519 17.67614,3.24388646 17.2871191,3.24388646 L14.371407,3.24388646 C13.77815,3.24388646 13.2626972,2.82190123 13.1304301,2.22692206 L12.9670413,1.49794757 C12.7384915,0.616978406 11.9497515,-1.50990331e-14 11.0647288,-1.50990331e-14 L6.93624379,-1.50990331e-14 C6.04149557,-1.50990331e-14 5.26053598,0.616978406 5.0232332,1.54594589 L4.87054247,2.22792202 C4.73730279,2.82190123 4.22185001,3.24388646 3.62956559,3.24388646 L0.713853469,3.24388646 C0.323859952,3.24388646 0,3.56587519 0,3.97686081 L0,4.35684751 C0,4.75783348 0.323859952,5.08982186 0.713853469,5.08982186 L17.2871191,5.08982186 C17.67614,5.08982186 18,4.75783348 18,4.35684751 L18,3.97686081 Z" id="Fill-4"></path>
+                                    </g>
+                                </g>
+                            </svg>
+                        </button>
+                    </div>
+                    <div>
+                        <a href="{% url 'admin_product_add' %}" class="btn-defIconFlex gap-2">
+                            <i class="fa fa-add mt-1"></i>
+                            <div>افزودن محصول جدید</div>
+                        </a>
+                    </div>
+            </div>
+            </div>
+        </div>
+    {% include 'adminpanel_module/products/table_components/product_table.html' %}
+    {% if page_obj.has_other_pages %}
+        <ul class="centerbox gap-2 mt-10 flex-wrap">
+            {% if page_obj.has_previous %}<a href="?{% query_transform page=page_obj.previous_page_number %}"><button class="rounded-xl bg-[var(--color12)] w-8 h-8 m-1 cursor-pointer text-[var(--color6)]"><i class="fa fa-arrow-right text-sm mt-1"></i></button></a>{% endif %}
+            <div class="flex gap-2">
+                {% for page_index in paginator.page_range %}
+                    <a class="" href="?{% query_transform page=page_index %}"><li class="{% if page_index == page_obj.number %}bg-[var(--color6)] text-[var(--color3)]{% endif %} pt-2 cursor-pointer transition-all px-4 rounded-lg hover:bg-[var(--color12)] hover:text-[var(--color2)]">{{ page_index|to_fanum }}</li></a>
+                {% endfor %}
+            </div>
+            {% if page_obj.has_next %}<a href="?{% query_transform page=page_obj.next_page_number %}"><button class="rounded-xl bg-[var(--color12)] w-8 h-8 m-1 cursor-pointer text-[var(--color6)]"><i class="fa fa-arrow-left text-sm mt-1"></i></button></a>{% endif %}
+        </ul>
+    {% endif %}
+
+{% endblock %}

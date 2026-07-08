@@ -274,6 +274,5 @@ class Logout(View):
     def get(self, request):
         try:
             logout(request)
-            request.session['message'] = 'از حساب با موفقیت خارج شدید'
             return redirect(reverse('login_page'))
-        except: request.session['message'] = 'خروج از حساب با مشکل مواجه شد'
+        except: return redirect('home')

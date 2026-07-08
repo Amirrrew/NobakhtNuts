@@ -130,30 +130,31 @@ let AdminSearch = () => {
 
 
 let order_table_partial = document.getElementById('order-table-partial')
-let order_search = document.getElementById('search-orders')
-let search_tables = (table) => {
+
+let search_tables = (search ,table ,url ,name) => {
     let table_partial = document.getElementById(table)
+    let search_value = document.getElementById(search)
     loader.style = 'display: block'
     setTimeout(() => {
-        let q = order_search.value.trim()
-        fetch(`/adminpanel/orders/?q=${q}`).then(res => res.json()).then(
+        let q = search_value.value.trim()
+        fetch(url + `?q=${q}`).then(res => res.json()).then(
             data => {
-                data.data_length > 0 ? table_partial.innerHTML = data.html : table_partial.innerHTML = `<div class="mt-5 text-center w-[100%] mb-3">سفارشی یافت نشد!</div>`
+                data.data_length > 0 ? table_partial.innerHTML = data.html : table_partial.innerHTML = `<div class="mt-5 text-center w-[100%] mb-3">رکوردی یافت نشد!</div>`
             }
         ).finally(() => {
-            ToolbarCheck()
+            ToolbarCheck(name)
             loader.style = 'display: none'
         })
     } ,700)
 }
 
-let ToolbarCheck = () => {
-    let checks = document.querySelectorAll('input[name="order"]')
+let ToolbarCheck = (name) => {
+    let checks = document.querySelectorAll(`input[name='${name}']`)
     let toolbar = document.getElementById('table-toolbar')
     let toolbar_item = document.getElementById('table-toolbar-item')
     checks.forEach(item => {
         item.addEventListener('change' ,()=> {
-            let checks_checked = document.querySelectorAll('input[name="order"]:checked')
+            let checks_checked = document.querySelectorAll(`input[name='${name}']:checked`)
             if (checks_checked.length > 0) {
                 toolbar.classList.remove('disabled')
                 toolbar_item.classList.remove('hidden')
@@ -167,8 +168,8 @@ let ToolbarCheck = () => {
     })
 }
 
-let ToolbarDisable = ()=> {
-    let checks = document.querySelectorAll('input[name="order"]')
+let ToolbarDisable = (name)=> {
+    let checks = document.querySelectorAll(`input[name="${name}"]`)
     let toolbar = document.getElementById('table-toolbar')
     let toolbar_item = document.getElementById('table-toolbar-item')
     checks.forEach(item => {
@@ -185,8 +186,21 @@ let OrderSelectedAction = (action) => {
     fetch(`/adminpanel/orders/action/?action=${action}` ,{method: "POST" ,body: data , headers: {"X-CSRFToken": data.get("csrfmiddlewaretoken")}}).then(res => res.json()).then(data => {
         data.message ? Message(data.message ,false) : null
         data.html ? order_table_partial.innerHTML = data.html : null
-        ToolbarDisable()
-        ToolbarCheck()
+        ToolbarDisable('order')
+        ToolbarCheck('order')
     })
 }
+
+let product_table_partial = document.getElementById('product-table-partial')
+let ProductSelectedAction = (action) => {
+    const form = document.getElementById("form-product");
+    const data = new FormData(form);
+    fetch(`/adminpanel/products/action/?action=${action}` ,{method: "POST" ,body: data , headers: {"X-CSRFToken": data.get("csrfmiddlewaretoken")}}).then(res => res.json()).then(data => {
+        data.message ? Message(data.message ,false) : null
+        data.html ? product_table_partial.innerHTML = data.html : null
+        ToolbarDisable('order')
+        ToolbarCheck('order')
+    })
+}
+
 

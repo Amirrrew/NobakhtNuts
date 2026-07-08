@@ -421,3 +421,17 @@ body:has(#admin-searchbox input:focus) .overlay {
     position: relative;
 }
 
+.select-admin {
+    width: 150px;
+    height: 30px;
+    border: 1px solid var(--color11);
+    outline: none;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: 200ms;
+}
+
+.select-admin:hover {
+    background-color: var(--color12);
+}
+
