@@ -82,6 +82,7 @@ class ProductBrand(models.Model):
     slug = models.SlugField(max_length=1000 ,default='' ,null=True ,blank=True,unique=True,db_index=True ,verbose_name="عنوان در url")
     logo = models.ImageField(upload_to='brand_logo' ,blank=True,null=True ,verbose_name="لوگو برند")
     category = models.ManyToManyField(ProductSubCategory ,null=True ,blank=True ,verbose_name='برند در حوزه')
+    is_active = models.BooleanField(default=True ,verbose_name='فعال / غیر فعال')
 
     def __str__(self):
         return self.title
@@ -110,14 +111,14 @@ class PackageSize(models.Model):
 
 
 class Product(models.Model):
+    holoo_id = models.CharField(max_length=100 ,blank=True ,null=True ,verbose_name='بارکد هلو')
     title = models.CharField(max_length=300 ,blank=False ,null=True ,verbose_name="عنوان محصول")
     category = models.ForeignKey(ProductSubCategory,on_delete=models.CASCADE,null=False,blank=False ,verbose_name="دسته بندی")
     brand = models.ForeignKey(ProductBrand ,on_delete=models.CASCADE,null=True,blank=True ,verbose_name="برند")
     price = models.IntegerField(default=0 ,verbose_name="قیمت")
     is_byWeight = models.BooleanField(default=False ,verbose_name='کالای وزنی؟')
     quantity = models.FloatField(default=0 ,verbose_name="تعداد")
-    short_desc = models.TextField(max_length=500, null=True,blank=True ,verbose_name="توضیحات کوتاه")
-    long_desc = models.TextField(null=True ,blank=True ,verbose_name='توضیحات تکمیلی')
+    desc = models.TextField(max_length=20000, null=True ,blank=True ,verbose_name='توضیحات تکمیلی')
     user = models.ForeignKey(User ,null=True ,blank=True,on_delete=models.DO_NOTHING ,verbose_name="افزوده شده توسط کاربر")
     offer = models.IntegerField(default=0,db_index=True ,verbose_name="تخفیف")
     is_active = models.BooleanField(default=True,db_index=True ,verbose_name="فعال / غیر فعال")

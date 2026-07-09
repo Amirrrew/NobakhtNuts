@@ -6,12 +6,13 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView, DeleteView, CreateView
-
+from django.views.generic import ListView, DeleteView, CreateView, UpdateView
+import json
 from adminpanel_module.forms import ProductAddForm
 from order_module.context_processors import orders
 from order_module.models import Order, OrderStatus
-from product_module.models import Product, ProductCategory, ProductSubCategory
+from product_module.models import Product, ProductCategory, ProductSubCategory, ProductBrand, PackageSize, \
+    ProductFeature
 from utils.dashboard_decorators import get_sales_week, get_sales_week_growth, today, get_order_today, get_user_growth, \
     get_new_orders, get_lowstock_products, get_best_selling_products, get_new_tickets
 from utils.my_decorators import permision_checker_decorator_factory
@@ -314,5 +315,53 @@ class ProductAdd(CreateView):
         form.save_m2m()
         return super().form_valid(form)
 
+    def get_context_data(self,*args, **kwargs):
+        context = super(ProductAdd ,self).get_context_data(*args,**kwargs)
+        context['category_options_json'] = json.dumps([
+            {'value': c.pk, 'label': c.title, 'parent': c.main_category_id}
+            for c in ProductSubCategory.objects.filter(is_active=True)
+        ], ensure_ascii=False)
+
+        context['brand_options_json'] = json.dumps([
+            {'value': b.pk, 'label': b.title}
+            for b in ProductBrand.objects.all()
+        ], ensure_ascii=False)
+        context['packs'] = PackageSize.objects.all()
+        context['add_view'] = True
+        return context
+
+
+class ProductEdit(UpdateView):
+    model = Product
+    form_class = ProductAddForm
+    template_name = 'adminpanel_module/products/product_add_update.html'
+
+    def get_context_data(self,*args, **kwargs):
+        context = super(ProductEdit ,self).get_context_data(*args,**kwargs)
+
+        context['category_options_json'] = json.dumps([
+            {'value': c.pk, 'label': c.title, 'parent': c.main_category_id}
+            for c in ProductSubCategory.objects.filter()
+        ], ensure_ascii=False)
+
+        context['brand_options_json'] = json.dumps([
+            {'value': b.pk, 'label': b.title}
+            for b in ProductBrand.objects.all()
+        ], ensure_ascii=False)
+
+        context["product_features"] = json.dumps(
+            list(
+                self.object.features.values(
+                    "id",
+                    "title",
+                    "desc"
+                )
+            ),
+            ensure_ascii=False
+        )
+
+        context['packs'] = PackageSize.objects.all()
+        context['add_view'] = True
+        return context
 
 

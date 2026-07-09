@@ -61,7 +61,7 @@
                             {% for spec in product.features.all|slice:3 %}
                                 <div class="prd-feature overflow-hidden flex-nowrap w-[32.3%] h-14 rounded-xl p-2 bg-[var(--color12)] relative" style="animation: load3 {% widthratio forloop.counter 1 300 %}ms">
                                     <div class="text-[var(--color10)] px-1 text-sm">{{ spec.title }}</div>
-                                    <div class="text-m text-[var(--color6)] mt-[-3px] text-nowrap">{{ spec.desc|to_fanum }}</div>
+                                    <div class="text-m truncate text-[var(--color6)] mt-[-3px] text-nowrap">{{ spec.desc|to_fanum }}</div>
                                 </div>
                             {% endfor %}
                         </div>

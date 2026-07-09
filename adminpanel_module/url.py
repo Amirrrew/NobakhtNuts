@@ -11,4 +11,5 @@ urlpatterns = [
     path('products/action/', views.ProductSelectedAction, name='admin_product_action'),
     path('products/delete/<int:pk>' ,views.ProductDelete ,name='admin_product_delete'),
     path('products/add/' ,views.ProductAdd.as_view() ,name='admin_product_add'),
+    path('products/<int:pk>/edit', views.ProductEdit.as_view() ,name='admin_product_edit'),
 ]

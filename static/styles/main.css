@@ -2587,6 +2587,13 @@ input[type='radio']:checked + .pack-size {
     animation: check 300ms;
 }
 
+input[type='checkbox']:checked + .pack-size {
+    background-color: var(--color6);
+    color: var(--color3);
+    animation: check 300ms;
+}
+
+
 .like-input[type='checkbox']:checked +.like-btn i {
     color: var(--color2);
 }

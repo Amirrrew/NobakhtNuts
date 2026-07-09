@@ -7,45 +7,482 @@
 {% endblock %}
 
 {% block admin_content %}
-    <div id="order_details" class="flex justify-between p-2 pt-6 sticky mt-[-10px] top-[-10px] z-10 bg-[var(--header-bg)] backdrop-filter-[blur(10px)] rounded-xl">
-        <div class="flex gap-1 items-start">
-            <a href="{% url 'admin_product_list' %}"><button class="btn-prdcounter mt-1 text-sm pt-1 rounded-2xl"><i class="fa fa-angle-right"></i></button></a>
-            <svg class="mt-[-3px] mr-2" id="Bag 2" width="35" height="35" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M7.71924 7.1229C7.72523 4.62077 9.75766 2.5969 12.2607 2.60169C14.7624 2.60768 16.7865 4.64056 16.7812 7.14222V10.1737C16.7812 10.5879 16.4455 10.9237 16.0312 10.9237C15.617 10.9237 15.2812 10.5879 15.2812 10.1737V7.14169L15.2812 7.1399C15.2852 5.46626 13.9315 4.10589 12.2578 4.10169C10.5833 4.09868 9.2237 5.45228 9.21924 7.12564V10.1737C9.21924 10.5879 8.88345 10.9237 8.46924 10.9237C8.05502 10.9237 7.71924 10.5879 7.71924 10.1737L7.71924 7.1229Z" fill="#674d45"></path>
-                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M4.89578 9.00122C6.44852 7.78592 8.85701 7.35071 12.25 7.35071C15.6429 7.35071 18.0514 7.78592 19.6041 9.00122C21.1949 10.2463 21.769 12.2069 21.769 14.9097C21.769 17.6121 21.1949 19.5724 19.6041 20.8173C18.0514 22.0325 15.6429 22.4677 12.25 22.4677C8.857 22.4677 6.44853 22.0325 4.89581 20.8173C3.30504 19.5724 2.73096 17.6121 2.73096 14.9097C2.73096 12.2069 3.30502 10.2463 4.89578 9.00122Z" fill="#674d45"></path>
-            </svg>
-            <div class="flex gap-2 cursor-default">
-                <a href="{% url 'admin_order_list' %}" class="text-4xl font-semibold">محصولات</a>
-                <i class="fa fa-angle-left mt-2 text-[var(--color10)]"></i>
-                <h1 class="text-2xl text-[var(--color6)] font-semibold mt-0.5">افزودن محصول جدید</h1></div>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div id="" class="flex justify-between p-2 pt-6 sticky mt-[-10px] top-[-10px] z-10 bg-[var(--header-bg)] backdrop-filter-[blur(10px)] rounded-xl">
+            <div class="flex gap-1 items-start">
+                <a href="{% url 'admin_product_list' %}"><button type="button" class="btn-prdcounter mt-1 text-sm pt-1 rounded-2xl"><i class="fa fa-angle-right"></i></button></a>
+                <svg class="mt-[-3px] mr-2" id="Bag 2" width="35" height="35" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M7.71924 7.1229C7.72523 4.62077 9.75766 2.5969 12.2607 2.60169C14.7624 2.60768 16.7865 4.64056 16.7812 7.14222V10.1737C16.7812 10.5879 16.4455 10.9237 16.0312 10.9237C15.617 10.9237 15.2812 10.5879 15.2812 10.1737V7.14169L15.2812 7.1399C15.2852 5.46626 13.9315 4.10589 12.2578 4.10169C10.5833 4.09868 9.2237 5.45228 9.21924 7.12564V10.1737C9.21924 10.5879 8.88345 10.9237 8.46924 10.9237C8.05502 10.9237 7.71924 10.5879 7.71924 10.1737L7.71924 7.1229Z" fill="#674d45"></path>
+                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M4.89578 9.00122C6.44852 7.78592 8.85701 7.35071 12.25 7.35071C15.6429 7.35071 18.0514 7.78592 19.6041 9.00122C21.1949 10.2463 21.769 12.2069 21.769 14.9097C21.769 17.6121 21.1949 19.5724 19.6041 20.8173C18.0514 22.0325 15.6429 22.4677 12.25 22.4677C8.857 22.4677 6.44853 22.0325 4.89581 20.8173C3.30504 19.5724 2.73096 17.6121 2.73096 14.9097C2.73096 12.2069 3.30502 10.2463 4.89578 9.00122Z" fill="#674d45"></path>
+                </svg>
+                <div class="flex gap-2 cursor-default">
+                    <a href="{% url 'admin_order_list' %}" class="text-4xl font-semibold">محصولات</a>
+                    <i class="fa fa-angle-left mt-2 text-[var(--color10)]"></i>
+                    {% if not product.pk %}<h1 class="text-2xl text-[var(--color6)] font-semibold mt-0.5">افزودن محصول جدید</h1>{% else %}<h1 class="text-4xl text-[var(--color10)] font-semibold">{{ product.pk|to_fanum }}#</h1>{% endif %}
+                </div>
+            </div>
+            <div class="flex gap-1 m-[-5px] items-start">
+                <a href="{% url 'admin_product_list' %}" class="bg-[var(--loss-bg)] text-[var(--loss-dot)] h-[42px] rounded-xl p-2.5">انصراف</a>
+                <button class="btn-defIconFlex gap-1" type="submit">ذخیره و افزودن<i class="fa fa-add mt-1"></i></button>
+            </div>
         </div>
-    </div>
-    <div class="flex w-[100%] mt-2">
+        <div class="flex w-[100%] mt-2 gap-2">
 
-        <div class="w-[60%]">
+            <div class="w-[60%]">
 
-            <div class="tablebox-default w-[100%]">
-                <div class="flex gap-1">
-                    <svg id="Info Square" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.052 2.78467 2.5 5.33667 2.5 12.5347C2.5 19.7327 5.052 22.2847 12.25 22.2847C19.448 22.2847 22 19.7327 22 12.5347C22 5.33667 19.448 2.78467 12.25 2.78467Z" fill="#674d45"></path>
-                    <path d="M12.2461 9.78467H12.2551C12.6691 9.78467 13.0011 9.44867 13.0011 9.03467C13.0011 8.62067 12.6601 8.28467 12.2461 8.28467C11.8321 8.28467 11.4961 8.62067 11.4961 9.03467C11.4961 9.44867 11.8321 9.78467 12.2461 9.78467Z" fill="#674d45"></path>
-                    <path d="M12.2501 17.1797C12.6641 17.1797 13.0001 16.8437 13.0001 16.4297V12.5347C13.0001 12.1207 12.6641 11.7847 12.2501 11.7847C11.8361 11.7847 11.5001 12.1207 11.5001 12.5347V16.4297C11.5001 16.8437 11.8361 17.1797 12.2501 17.1797Z" fill="#674d45"></path>
-                    </svg>
-                    <h1 class="text-xl font-semibold">مشخصات ابتدایی</h1>
+                <div class="tablebox-default w-[100%]">
+                    <div class="flex gap-1">
+                        <svg class="mt-[-2px]" id="Info Square" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.052 2.78467 2.5 5.33667 2.5 12.5347C2.5 19.7327 5.052 22.2847 12.25 22.2847C19.448 22.2847 22 19.7327 22 12.5347C22 5.33667 19.448 2.78467 12.25 2.78467Z" fill="#674d45"></path>
+                        <path d="M12.2461 9.78467H12.2551C12.6691 9.78467 13.0011 9.44867 13.0011 9.03467C13.0011 8.62067 12.6601 8.28467 12.2461 8.28467C11.8321 8.28467 11.4961 8.62067 11.4961 9.03467C11.4961 9.44867 11.8321 9.78467 12.2461 9.78467Z" fill="#674d45"></path>
+                        <path d="M12.2501 17.1797C12.6641 17.1797 13.0001 16.8437 13.0001 16.4297V12.5347C13.0001 12.1207 12.6641 11.7847 12.2501 11.7847C11.8361 11.7847 11.5001 12.1207 11.5001 12.5347V16.4297C11.5001 16.8437 11.8361 17.1797 12.2501 17.1797Z" fill="#674d45"></path>
+                        </svg>
+                        <h1 class="text-xl font-semibold">مشخصات ابتدایی</h1>
+                    </div>
+
+                    <div class="editpanel-row mt-2 flex gap-2">
+                        <div class="w-[100%]">
+                            <div> عنوان<span class="text-[var(--loss-dot)]">*</span></div>
+                            <input value="{{ product.title }}" class="input-admin" name="title" id="title" placeholder="عنوانی برای محصول وارد کنید">
+                        </div>
+
+                        <div class="w-[100%]">
+                            <div>کد هلو</div>
+                            <input value="{% if product.holoo_id %}{{ product.holoo_id }}{% endif %}" class="input-admin" name="holoo_id" id="" placeholder="کد کالا در نرم افزار را وارد کنید">
+                        </div>
+                    </div>
+
+                    <div class="editpanel-row mt-2 flex gap-2">
+
+                        <div class="w-[100%]">
+                            <div> دسته بندی<span class="text-[var(--loss-dot)]">*</span></div>
+                            <div class="search-select" data-name="category" data-selected="{{ product.category.pk|default:'' }}" data-options='{{ category_options_json }}'>
+                                <div class="search-select-display">
+                                    <span data-role="display-text">انتخاب دسته بندی</span>
+                                    <i class="fa fa-angle-down arrow"></i>
+                                </div>
+                                <div class="search-select-panel">
+                                    <div class="search-select-search-wrap flex">
+
+                                        <input type="text" placeholder="جستجو..." data-role="search-input" autocomplete="off">
+                                    </div>
+                                    <div class="search-select-options" data-role="options-list"></div>
+                                </div>
+                            </div>
+                            <input type="hidden" name="category" data-role="hidden-input">
+                        </div>
+
+                        <div class="w-[100%]">
+                            <div>برند</div>
+                            <div class="search-select" data-name="brand" data-selected="{{ product.brand.pk|default:'' }}" data-options='{{ brand_options_json }}'>
+                                <div class="search-select-display">
+                                    <span data-role="display-text">انتخاب برند</span>
+                                    <i class="fa fa-angle-down arrow"></i>
+                                </div>
+                                <div class="search-select-panel">
+                                    <div class="search-select-search-wrap flex">
+                                        <input type="text" placeholder="جستجو..." data-role="search-input" autocomplete="off">
+                                    </div>
+                                    <div class="search-select-options" data-role="options-list"></div>
+                                </div>
+                                <input type="hidden" name="brand" data-role="hidden-input">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="editpanel-row mt-2 flex gap-2 ">
+                        <div class="w-[100%]">
+                            <div> قیمت<span class="text-[var(--loss-dot)]">*</span></div>
+                            <input value="{% if product.price %}{{ product.price|three_digits_currency_no_extension }}{% endif %}" class="input-admin" placeholder="قیمت را وارد کنید"  maxlength="15" type="text" name="" id="price-input">
+                        </div>
+
+                        <input name="price" type="hidden" id="price-input-real">
+
+                        <div class="w-[100%] tooltip-parent relative">
+                            <div> تخفیف به درصد</div>
+                            <input value="{{ product.offer }}" onblur="document.getElementById('tooltip-offer').style = 'visibility: hidden;'" class="input-admin" name="offer" maxlength="3" id="offer-input" placeholder="تخفیف را به درصد وارد کنید">
+                            <div class="tooltip" style="top: 70px; padding: 10px; font-size: 20px" id="tooltip-offer"></div>
+                        </div>
+                    </div>
+
+                    <div class="editpanel-row mt-2 flex gap-2 ">
+                        <div class="w-[100%]">
+                            <div> تعداد / وزن<span class="text-[var(--loss-dot)]">*</span></div>
+                            <input value="{% if product.is_byWeight %}{{ product.quantity }}{% else %}{{ product.quantity|floatformat }}{% endif %}" class="input-admin" placeholder="میزان موجودی کالا را به وزن یا عدد وارد کنید" maxlength="5" type="text" name="quantity" id="">
+                        </div>
+                    </div>
+
+                    <div class="mt-2 flex gap-2">
+                        <label for="is_byweight" class="relative text-[var(--color6)] text-lg cursor-pointer top-1"><input id="is_byweight" type="checkbox" class="ui-checkbox" name="is_byWeight" value=""></label>
+                        <div class="mt-1">کالای وزنی؟</div>
+                    </div>
+
+                    <div class="hidden relative" id="product-packs" style="animation: load8 300ms">
+                        <div class="text-[var(--color10)] mt-5">
+                            اندازه بسته بندی را انتخاب کنید
+                        </div>
+                        <div class="choose-weight-desktop flex flex-wrap gap-2 mt-1">
+                        {% for pack in packs %}
+                            <input type="checkbox" name="packs" id="pack{{ pack.pk }}" value="{{ pack.pk }}" class="peer" hidden>
+                            <label for="pack{{ pack.pk }}" class="pack-size-admin pack-size cursor-pointer bg-[var(--color12)] border border-[var(--color8)] py-1 px-2 rounded-xl text-sm text-[var(--color6)] peer-checked:bg-[var(--color6)]">{{ pack.title|to_fanum }}</label>
+                        {% endfor %}
+                        </div>
+                    </div>
                 </div>
 
-                <div class="editpanel-row mt-2">
-                    <div class="input-icon-def1" id="">
-                        <i class="fa fa-file-text text-[var(--color10)] m-4"></i>
-                        <input id="title" name="title" value="{% if product.title %}{{ product.title }}{% endif %}" placeholder="عنوانی برای محصول وارد کنید">
+                <div class="tablebox-default mt-2 w-[100%]">
+                    <div class="flex gap-1">
+                        <svg class="mt-[-2px]" id="More Circle" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.051 2.78467 2.5 5.33567 2.5 12.5347C2.5 19.7327 5.051 22.2847 12.25 22.2847C19.449 22.2847 22 19.7327 22 12.5347C22 5.33567 19.449 2.78467 12.25 2.78467Z" fill="#674d45"></path>
+                        <path d="M14.4592 14.4346C14.4592 14.9876 14.9112 15.4346 15.4632 15.4346C16.0152 15.4346 16.4632 14.9876 16.4632 14.4346C16.4632 13.8816 16.0152 13.4346 15.4632 13.4346H15.4542C14.9022 13.4346 14.4592 13.8816 14.4592 14.4346Z" fill="#674d45"></path>
+                        <path d="M11.4592 10.4346C11.4592 10.9876 11.9112 11.4346 12.4632 11.4346C13.0152 11.4346 13.4632 10.9876 13.4632 10.4346C13.4632 9.88157 13.0152 9.43457 12.4632 9.43457H12.4542C11.9022 9.43457 11.4592 9.88157 11.4592 10.4346Z" fill="#674d45"></path>
+                        <path d="M8.4502 14.4346C8.4502 14.9876 8.9032 15.4346 9.4552 15.4346C10.0072 15.4346 10.4552 14.9876 10.4552 14.4346C10.4552 13.8816 10.0072 13.4346 9.4552 13.4346H9.4462C8.8942 13.4346 8.4502 13.8816 8.4502 14.4346Z" fill="#674d45"></path>
+                        </svg>
+                        <h1 class="text-xl font-semibold">ویژگی ها و توضیحات</h1>
                     </div>
+
+
+                    <div class="editpanel-row mt-2 flex gap-2">
+                        <div class="w-[100%]">
+                            <div>ویژگی ها</div>
+                            <div class="flex flex-wrap mt-2 gap-2" id="product-added-features">
+
+                            </div>
+                            <div class="flex gap-2 w-[100%] mt-2">
+                                <div class="w-[30%]">
+                                    <input oninput="CheckLength('feature-title',20)" placeholder="عنوان ویژگی" id="feature-title" maxlength="20" class="input-admin" style="">
+                                    <div id="feature-title-remaining" class="mr-1">20/0</div>
+                                </div>
+                                <div class="w-[100%]">
+                                    <input oninput="CheckLength('feature-desc',100)" placeholder="توضیحات" id="feature-desc" maxlength="100" class="input-admin w-[100%]">
+                                    <div id="feature-desc-remaining" class="mr-1">100/0</div>
+                                </div>
+                                <button type="button" onclick="ProductAddFeature()" class="btn-defIconFlex gap-1" style="height: 50px; width: 60px; display: block"><i class="fa fa-add mt-1 text-[var(--color11)]"></i></button>
+                            </div>
+                            <div class="w-[100%] mt-7">
+                                <div>توضیحات تکمیلی</div>
+                                <textarea maxlength="20000" oninput="CheckLength('product-desc' ,20000)" id="product-desc" name="desc" class="w-[100%] input-admin pt-2" style="height: 300px"></textarea>
+                                <div id="product-desc-remaining" class="mr-1">20000/0</div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
+            <div class="w-[40%]">
+                <div class="tablebox-default">
+                    <div class="flex gap-1">
+                        <svg id="Image 2" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                            <g id="Iconly/Bulk/Image-2" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                                <g id="Image-2" transform="translate(2.000000, 2.000000)" fill="#674d45" fill-rule="nonzero">
+                                    <path d="M19.9998998,12.7023545 L19.9998998,14.0858894 C19.9998998,14.315476 19.9898798,14.5470678 19.9698397,14.7766544 C19.6892786,17.9357258 17.4948898,20 14.3285571,20 L5.67124248,20 C4.06803607,20 2.71533066,19.4796706 1.74338677,18.5362601 C1.36262525,18.1863662 1.04198397,17.7753159 0.791482966,17.304112 C1.12214429,16.9020848 1.49288577,16.4619603 1.85360721,16.0208332 C2.46482966,15.2889633 3.05601202,14.5661164 3.42675351,14.0959151 C3.97785571,13.4141732 5.43076152,11.619588 7.44478958,12.4617397 C7.85561122,12.6321752 8.21633267,12.87279 8.54699399,13.0833279 C9.35861723,13.6247111 9.6992986,13.785121 10.2704409,13.4743269 C10.9017034,13.133456 11.3125251,12.4617397 11.7433868,11.7599467 C11.9738477,11.3879963 12.2043086,11.0280767 12.4548096,10.6972314 C13.546994,9.27359403 15.2303607,8.89262065 16.6331663,9.73477234 C17.3345691,10.1558482 17.9357715,10.6872058 18.4968938,11.2275865 C18.6171343,11.3478939 18.7373747,11.4591782 18.8475952,11.56946 C18.9978958,11.7198442 19.4988978,12.221125 19.9998998,12.7023545" id="Fill-1"></path>
+                                    <path d="M14.3386774,7.10542736e-15 L5.67134269,7.10542736e-15 C2.2745491,7.10542736e-15 0,2.37607086 0,5.91411055 L0,14.0859897 C0,15.3181378 0.280561122,16.4119325 0.791583166,17.3042123 C1.12224449,16.9021851 1.49298597,16.4620606 1.85370741,16.0199309 C2.46492986,15.2890636 3.05611222,14.5662167 3.42685371,14.0960153 C3.97795591,13.4142735 5.43086172,11.6196883 7.44488978,12.46184 C7.85571142,12.6322755 8.21643287,12.8728902 8.54709419,13.0834282 C9.35871743,13.6248114 9.6993988,13.7852212 10.2705411,13.4734246 C10.9018036,13.1335562 11.3126253,12.46184 11.743487,11.7590444 C11.9739479,11.3880966 12.2044088,11.028177 12.4549098,10.6973317 C13.5470942,9.27369429 15.2304609,8.8927209 16.6332665,9.7348726 C17.3346693,10.1559484 17.9358717,10.6873061 18.496994,11.2276867 C18.6172345,11.3479941 18.7374749,11.4592785 18.8476954,11.5695602 C18.997996,11.7189419 19.498998,12.2202227 20,12.7024548 L20,5.91411055 C20,2.37607086 17.7254509,7.10542736e-15 14.3386774,7.10542736e-15" id="Fill-3" opacity="0.400000006"></path>
+                                    <path d="M9.45440882,6.79666548 C9.45440882,8.20526445 8.28106212,9.37826146 6.87324649,9.37826146 C5.46643287,9.37826146 4.29308617,8.20526445 4.29308617,6.79666548 C4.29308617,5.38906907 5.46643287,4.2150695 6.87324649,4.2150695 C8.28106212,4.2150695 9.45440882,5.38906907 9.45440882,6.79666548" id="Fill-5"></path>
+                                </g>
+                            </g>
+                        </svg>
+                        <h1 class="text-xl font-semibold">تصاویر</h1>
+                    </div>
+                    <div class="product-image-uploadbox overflow-hidden relative cursor-pointer bg-[var(--color12)] rounded-lg border-2 border-[var(--color11)] h-50 mt-2 hover:bg-[var(--color13)]">
+                        <input id="product-imgs-input" multiple class="z-10 opacity-0 absolute w-[100%] h-[100%] cursor-pointer" type="file" accept="image/png, image/jpeg, image/webp">
+                        <div class="centerbox">
+                            <svg class="mt-7" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24">
+                                <path d="M0 0h24v24H0z" fill="none" />
+                                <g fill="none" stroke="#d0c1bd" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                    <path d="M19 11V9a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" />
+                                    <path d="m13 13l9 3l-4 2l-2 4zM3 3v.01M7 3v.01M11 3v.01M15 3v.01M3 7v.01M3 11v.01M3 15v.01" />
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="centerbox">تصاویر محصول رو از اینجا آپلود کنید</div>
+                        <div class="text-center text-sm text-[var(--color10)]">jpg - png - jpeg - webp</div>
+                    </div>
+                    <div class="flex flex-wrap mt-2 gap-1" id="product-imgs-preview"></div>
+                </div>
+            </div>
         </div>
+    </form>
 
-        <div class="w-[40%]">
+    <script>
 
-        </div>
-    </div>
+        let product_imgs = []
+        let product_img_input = document.getElementById('product-imgs-input')
+        let product_imgs_preview = document.getElementById('product-imgs-preview')
+        addEventListener('change' ,() => {
+            [...product_img_input.files].forEach(file => {
+                product_imgs.push(file)
+            })
+
+            RenderImagesPreview()
+            UpdateInput()
+        })
+
+        let RenderImagesPreview = () => {
+            product_imgs_preview.innerHTML = ''
+            product_imgs.forEach((file ,index) => {
+
+                const url = URL.createObjectURL(file)
+
+                product_imgs_preview.innerHTML += `
+                    <div id="product-img-${index}" class="img-preview-box bg-cover">
+                        <img class="w-[100%] h-[100%]" src="${url}">
+                        <div class="absolute top-2 gap-1 left-1 flex">
+                            <button onclick='PreviewProductImage(${index})' class=" bg-[var(--color12)] w-5 h-5 cursor-pointer rounded border border-[var(--color10)] p-[-5px]"><i class="fa fa-expand text-xs text-[var(--color6)]"></i></button>
+                            <button onclick="RemoveImg(${index})" class=" bg-[var(--loss-bg)] w-5 h-5 cursor-pointer rounded"><i class="fa fa-trash text-xs text-[var(--color5)]"></i></button>
+                        <div>
+                    </div>
+                `
+            })
+        }
+
+        let RemoveImg = (index) => {
+            product_imgs.splice(index ,1)
+            RenderImagesPreview()
+            UpdateInput()
+        }
+
+        let UpdateInput = () =>{
+
+            const dt = new DataTransfer();
+
+            product_imgs.forEach(file=>{
+                dt.items.add(file);
+            });
+
+            product_img_input.files = dt.files;
+
+        }
+
+        let PreviewProductImage = (img) => {
+            let overlay = document.getElementById('overlay')
+            let image = document.getElementById(`product-img-${img}`)
+            overlay.style = 'visibility: visible; z-index: 1000;'
+            image.style = 'position: fixed; width: 35%; height: 80%; top: 10%; right: 32%; z-index: 2000; animation: load_preview 300ms'
+            document.addEventListener('click' ,(e) => {
+                if (!image.contains(e.target)) {
+                    overlay.style = 'visibility: hidden; z-index: 100;'
+                    image.style = 'position: relative; width: 90px; height: 90px; top: 0; right: 0; z-index: 1; animation: none'
+                    document.removeEventListener('click' , (e)=>{})
+                }
+            })
+        }
+
+        let CheckLength = (element , max) => {
+            const el = document.getElementById(element)
+            const indicator = document.getElementById(`${element}-remaining`)
+            const input = el.value
+            indicator.innerHTML = `${max}/${input.length}`
+        }
+
+        let price_input = document.getElementById('price-input')
+        let price_input_real = document.getElementById('price-input-real')
+        let offer_input = document.getElementById('offer-input')
+        let weight_check = document.getElementById('is_byweight')
+        let packs = document.getElementById('product-packs')
+
+        price_input.addEventListener('input' ,()=> {
+            price_input_real.value = price_input.value.replace(/،/g, '')
+            InputSetCurrency('price-input')
+        })
+
+        offer_input.addEventListener('input' , ()=> {
+            let price = Number(price_input_real.value)
+            let offer = Number(offer_input.value)
+            let discount_amount = Number((price * offer) / 100)
+            let final_price = price - discount_amount
+            document.getElementById('tooltip-offer').style = 'visibility: visible; top: 70px; padding: 10px; font-size: 20px'
+            document.getElementById('tooltip-offer').innerHTML = `${threeDigitsCurrency(final_price)} تومان`
+        })
+
+        weight_check.addEventListener('change' ,()=> {
+            if (weight_check.checked) {
+                packs.classList.remove('hidden')
+            } else {packs.classList.add('hidden')
+                let selected_packs = document.querySelectorAll('input[name="packs"]:checked')
+                selected_packs.forEach(item => {
+                    item.checked = false;
+                })
+            }
+        })
+
+        let RenderFeatures = () => {
+            htmlFeature = ''
+            for (let i = 0; i < product_features.length; i++) {
+                let fe = product_features[i]
+                htmlFeature += `
+                     <div class="prd-feature overflow-hidden flex-nowrap w-[32.3%] h-14 rounded-xl p-2 bg-[var(--color12)] relative">
+                           <div class="text-[var(--color10)] px-1 text-sm">${fe.title}</div>
+                           <div class="flex justify-between">
+                               <div class="text-m truncate text-[var(--color6)] mt-[-3px] text-nowrap">${fe.desc}</div>
+                               <button onclick="ProductRemoveFeature(${fe.id})" class="absolute bottom-2 left-2 bg-[var(--loss-bg)] w-5 h-5 cursor-pointer rounded"><i class="fa fa-trash text-xs text-[var(--color5)]"></i></button>
+                           </div>
+                     </div>
+                `
+            }
+            added_features.innerHTML = htmlFeature
+        }
+
+        let added_features = document.getElementById('product-added-features')
+        let feature_title = document.getElementById('feature-title')
+        let feature_desc = document.getElementById('feature-desc')
+        let htmlFeature = ''
+        let featureId = 0
+        let product_features = {% if product_features %}JSON.parse('{{ product_features|default:"[]"|escapejs }}'){% else %}[]{% endif %}
+        {% if product_features %}RenderFeatures(){% endif %}
+
+
+        let ProductAddFeature = () => {
+            if (feature_title.value.trim().length && feature_desc.value.trim().length) {
+                let title = feature_title.value
+                let desc = feature_desc.value
+
+                product_features.push({
+                    id: featureId++,
+                    title: title,
+                    desc: desc
+                })
+
+                RenderFeatures()
+
+                feature_title.value = ''
+                feature_desc.value = ''
+                feature_title.focus()
+                CheckLength(feature_title.id, 20)
+                CheckLength(feature_desc.id, 100)
+            } else {
+                Message('عنوان یا توضیحات نمیتوانند خالی باشند!', true)
+            }
+        }
+
+
+        let ProductRemoveFeature = (id) => {
+            product_features = product_features.filter(item => item.id !== id);
+            RenderFeatures()
+        }
+
+
+        document.addEventListener('keyup' ,(e) => {
+            if (e.key === 'Enter') {
+                ProductAddFeature()
+            }
+        })
+
+
+        class SearchableSelect {
+        constructor(el) {
+            this.el = el;
+            this.name = el.dataset.name;
+            this.options = JSON.parse(el.dataset.options || '[]');
+            this.filtered = this.options;
+            this.selectedValue = null;
+
+            this.display = el.querySelector('[data-role="display-text"]');
+            this.displayWrap = el.querySelector('.search-select-display');
+            this.searchInput = el.querySelector('[data-role="search-input"]');
+            this.optionsList = el.querySelector('[data-role="options-list"]');
+
+            this.hiddenInput = el.parentElement.querySelector(`[data-role="hidden-input"][name="${this.name}"]`)
+                || el.nextElementSibling;
+
+            this.renderOptions(this.options);
+            this.bindEvents();
+            const preSelected = el.dataset.selected;
+            if (preSelected) {
+                this.selectByValue(preSelected);
+            }
+        }
+
+        bindEvents() {
+            this.displayWrap.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.toggle();
+            });
+
+            this.searchInput.addEventListener('input', () => {
+                const q = this.searchInput.value.trim().toLowerCase();
+                this.filtered = this.options.filter(opt =>
+                    opt.label.toLowerCase().includes(q)
+                );
+                this.renderOptions(this.filtered);
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!this.el.contains(e.target)) {
+                    this.close();
+                }
+            });
+
+            this.el.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') this.close();
+            });
+        }
+
+        selectByValue(value) {
+            const opt = this.options.find(o => String(o.value) === String(value));
+            if (opt) {
+                this.select(opt);
+            }
+        }
+
+        renderOptions(list) {
+            this.optionsList.innerHTML = '';
+
+            if (list.length === 0) {
+                this.optionsList.innerHTML = `<div class="search-select-empty">نتیجه‌ای یافت نشد</div>`;
+                return;
+            }
+
+            list.forEach(opt => {
+                const item = document.createElement('div');
+                item.className = 'search-select-option';
+                item.textContent = opt.label;
+                item.dataset.value = opt.value;
+
+                if (this.selectedValue === opt.value) {
+                    item.classList.add('selected');
+                }
+
+                item.addEventListener('click', () => {
+                    this.select(opt);
+                });
+
+                this.optionsList.appendChild(item);
+            });
+        }
+
+        select(opt) {
+            this.selectedValue = opt.value;
+            this.display.textContent = opt.label;
+            this.displayWrap.classList.add('has-value');
+
+            if (this.hiddenInput) {
+                this.hiddenInput.value = opt.value;
+                this.hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+
+            this.close();
+        }
+
+        toggle() {
+            this.el.classList.contains('open') ? this.close() : this.open();
+        }
+
+        open() {
+            this.el.classList.add('open');
+            this.searchInput.value = '';
+            this.filtered = this.options;
+            this.renderOptions(this.options);
+            setTimeout(() => this.searchInput.focus(), 0);
+        }
+
+        close() {
+            this.el.classList.remove('open');
+        }
+    }
+    document.querySelectorAll('.search-select').forEach(el => new SearchableSelect(el));
+
+    </script>
 {% endblock %}
