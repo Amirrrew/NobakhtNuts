@@ -210,8 +210,11 @@ class OrderDetail(models.Model):
     @property
     def calculate_package_weight(self):
         weight = float(0)
-        if self.pack_size:
+        if self.product.is_byWeight:
             weight = self.pack_size.size * self.count
+        else:
+            if self.product.pack_weight:
+                weight = self.product.pack_weight * self.count
         return weight
 
 

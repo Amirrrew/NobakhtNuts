@@ -9,7 +9,7 @@
                             <td class="{% if not product.is_active %}flex items-start relative top-[-5px] gap-1{% endif %}"><div>{{ product.title|to_fanum }}</div>{% if not product.is_active %}<div class="stat-warning text-nowrap mt-[-3px] max-w-21">غیر فعال<div class="stat-dot-warning"></div></div>{% endif %}</td>
                             <td>{% if product.is_byWeight %}{{ product.quantity|to_fanum }} کیلو{% else %}{{ product.quantity|floatformat|to_fanum }} عدد{% endif %}</td>
                             <td><a href="">{{ product.category.title }}</a></td>
-                            <td class="font-semibold text-xl">{{ product.price|three_digits_currency }}</td>
+                            <td class="font-semibold text-xl">{% if product.price %}{{ product.price|three_digits_currency }}{% else %}-{% endif %}</td>
                             <td class="flex justify-end items-start gap-1">
                                 <a href="{% url 'admin_product_edit' product.pk %}" class="btn-defIconFlex2 w-[40px] h-[30px] text-sm gap-2 text-nowrap tooltip-parent relative" style="justify-content: center; padding-top: 7px; background-color: var(--color12)">
                                     <svg id="Edit" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

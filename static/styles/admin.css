@@ -7,6 +7,7 @@ body {
     --profit-dot: #689568;
     --profit-bg: #e1f8e1;
     --loss-bg: #ed8787;
+    --cancel-bg: #ffd2d2;
     --loss-dot: #731919;
     --deny-bg: #ffac89;
     --deny-text: #731919;
@@ -399,7 +400,7 @@ body:has(#admin-searchbox input:focus) .overlay {
 }
 
 .table-default td {
-  padding: 15px;
+  padding: 5px 15px;
 }
 
 .table-default tr {
@@ -571,4 +572,58 @@ body:has(#admin-searchbox input:focus) .overlay {
 @keyframes load_preview {
     9% {filter: blur(10px)}
     100% {filter: blur(0)}
+}
+
+.switch {
+  font-size: 17px;
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 25px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switch:active .slider:before {
+    width: 60%;
+}
+
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background: var(--color12);
+  border-radius: 50px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    direction: rtl;
+    border: 2px solid var(--color11);
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 50%;
+  inset: 0;
+  background-color: white;
+  border-radius: 50px;
+    border: 2px solid var(--color11);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.switch input:checked + .slider {
+  background: var(--color6);
+    border: 2px solid var(--color6);
+}
+
+.switch input:checked + .slider:before {
+  transform: translateX(-100%);
 }

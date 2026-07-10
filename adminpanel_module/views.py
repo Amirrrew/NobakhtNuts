@@ -12,7 +12,7 @@ from adminpanel_module.forms import ProductAddForm
 from order_module.context_processors import orders
 from order_module.models import Order, OrderStatus
 from product_module.models import Product, ProductCategory, ProductSubCategory, ProductBrand, PackageSize, \
-    ProductFeature
+    ProductFeature, ProductImage
 from utils.dashboard_decorators import get_sales_week, get_sales_week_growth, today, get_order_today, get_user_growth, \
     get_new_orders, get_lowstock_products, get_best_selling_products, get_new_tickets
 from utils.my_decorators import permision_checker_decorator_factory
@@ -273,9 +273,12 @@ def ProductSelectedAction(request):
                 message = 'کالا های انتخابی غیر فعال شدند'
         if action == 'active':
             for product in product_list:
-                product.is_active = True
-                product.save()
-                message = 'کالا های انتخابی فعال شدند'
+                if product.price:
+                    product.is_active = True
+                    product.save()
+                    message = 'کالا های انتخابی فعال شدند'
+                else:
+                    message = 'کالا ها برای فعال شدن باید دارای قیمت باشند'
         if action == 'delete':
             for product in product_list:
                 product.is_deleted = True
@@ -313,6 +316,34 @@ class ProductAdd(CreateView):
         self.object = form.save(commit=False)
         self.object.save()
         form.save_m2m()
+
+        product_features = json.loads(self.request.POST.get('features' ,'[]'))
+        for feature in product_features:
+            new_feature = ProductFeature(
+                title=feature['title'],
+                desc=feature['desc'],
+                product=self.object,
+            )
+            new_feature.save()
+
+        images = self.request.FILES.getlist('images')
+        for i, img in enumerate(images):
+            new_img = ProductImage(
+                product=self.object,
+                image=img,
+                is_Main=(i == 0)
+            )
+            new_img.save()
+
+        selected_packs = self.request.POST.getlist('packs')
+        self.object.packs.set(selected_packs)
+
+        product = self.object
+        if not product.price:
+            product.is_active = False
+            product.save()
+        product.user = self.request.user
+        product.save()
         return super().form_valid(form)
 
     def get_context_data(self,*args, **kwargs):
@@ -335,6 +366,58 @@ class ProductEdit(UpdateView):
     model = Product
     form_class = ProductAddForm
     template_name = 'adminpanel_module/products/product_add_update.html'
+    success_url = reverse_lazy('admin_product_list')
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        form.save()
+
+        previous_features = ProductFeature.objects.filter(product=self.object)
+        previous_features.delete()
+        product_features = json.loads(self.request.POST.get('features' ,'[]'))
+        for feature in product_features:
+            new_feature = ProductFeature(
+                title=feature['title'],
+                desc=feature['desc'],
+                product=self.object,
+            )
+            new_feature.save()
+
+
+
+
+        keep_images = json.loads(
+            self.request.POST.get("keep_images", "[]")
+        )
+        ProductImage.objects.filter(product=self.object).exclude(id__in=keep_images).delete()
+        images = self.request.FILES.getlist('images')
+        for i, img in enumerate(images):
+            new_img = ProductImage(
+                product=self.object,
+                image=img,
+                is_Main=(i == 0)
+            )
+            new_img.save()
+
+        if not ProductImage.objects.filter(
+                product=self.object,
+                is_Main=True
+        ).exists():
+
+            first_image = ProductImage.objects.filter(
+                product=self.object
+            ).first()
+
+            if first_image:
+                first_image.is_Main = True
+                first_image.save(update_fields=["is_Main"])
+
+        product = self.object
+        if not product.price:
+            product.is_active = False
+            product.save()
+        return super().form_valid(form)
 
     def get_context_data(self,*args, **kwargs):
         context = super(ProductEdit ,self).get_context_data(*args,**kwargs)
@@ -360,8 +443,21 @@ class ProductEdit(UpdateView):
             ensure_ascii=False
         )
 
+        context["product_images"] = [
+            {
+                "id": img.id,
+                "url": img.image.url,
+                "is_cover": img.is_Main,
+            }
+            for img in self.object.product_image.all()
+        ]
+
+        context['selected_packs'] = list(
+            self.object.packs.values_list('pk', flat=True)
+        )
+
         context['packs'] = PackageSize.objects.all()
-        context['add_view'] = True
+        context['edit_view'] = True
         return context
 
 

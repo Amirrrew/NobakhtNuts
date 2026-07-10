@@ -115,18 +115,19 @@ class Product(models.Model):
     title = models.CharField(max_length=300 ,blank=False ,null=True ,verbose_name="عنوان محصول")
     category = models.ForeignKey(ProductSubCategory,on_delete=models.CASCADE,null=False,blank=False ,verbose_name="دسته بندی")
     brand = models.ForeignKey(ProductBrand ,on_delete=models.CASCADE,null=True,blank=True ,verbose_name="برند")
-    price = models.IntegerField(default=0 ,verbose_name="قیمت")
+    price = models.IntegerField(default=0,blank=True ,null=True ,verbose_name="قیمت")
     is_byWeight = models.BooleanField(default=False ,verbose_name='کالای وزنی؟')
     quantity = models.FloatField(default=0 ,verbose_name="تعداد")
     desc = models.TextField(max_length=20000, null=True ,blank=True ,verbose_name='توضیحات تکمیلی')
     user = models.ForeignKey(User ,null=True ,blank=True,on_delete=models.DO_NOTHING ,verbose_name="افزوده شده توسط کاربر")
-    offer = models.IntegerField(default=0,db_index=True ,verbose_name="تخفیف")
+    offer = models.IntegerField(default=0,blank=True ,null=True,db_index=True ,verbose_name="تخفیف")
     is_active = models.BooleanField(default=True,db_index=True ,verbose_name="فعال / غیر فعال")
     is_deleted = models.BooleanField(default=False,db_index=True ,verbose_name="حذف شده / نشده")
     view = models.PositiveIntegerField(default=0 ,verbose_name= 'بازدید')
     created_at = models.DateTimeField(auto_now_add=True ,db_index=True,verbose_name="تاریخ ثبت")
     slug = models.SlugField(max_length=1000 ,default='' ,null=True ,blank=True,unique=True,db_index=True ,verbose_name="عنوان در url")
     packs = models.ManyToManyField(PackageSize ,null=True ,blank=True ,verbose_name='اندازه بسته بندی های محصول')
+    pack_weight = models.FloatField(null=True ,blank=True ,verbose_name='وزن بسته')
 
 
     def get_absolute_url(self):
