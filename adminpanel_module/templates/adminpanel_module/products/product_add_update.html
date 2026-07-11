@@ -106,7 +106,7 @@
 
                         <div class="w-[100%] tooltip-parent relative">
                             <div> تخفیف به درصد</div>
-                            <input value="{{ product.offer }}" onblur="document.getElementById('tooltip-offer').style = 'visibility: hidden;'" class="input-admin" name="offer" maxlength="3" id="offer-input" placeholder="تخفیف را به درصد وارد کنید">
+                            <input type="number" value="{% if product.offer %}{{ product.offer }}{% else %}0{% endif %}" onblur="document.getElementById('tooltip-offer').style = 'visibility: hidden;'" class="input-admin" name="offer" maxlength="3" id="offer-input" placeholder="تخفیف را به درصد وارد کنید">
                             <div class="tooltip" style="top: 70px; padding: 10px; font-size: 20px" id="tooltip-offer"></div>
                         </div>
                     </div>
@@ -123,7 +123,7 @@
                     <div class="editpanel-row mt-2 flex gap-2 ">
                         <div class="w-[100%]">
                             <div>وزن بسته بندی به کیلو(در صورت عددی بودن محصول)</div>
-                            <input value="{% if not product.is_byWeight %}{{ product.pack_weight }}{% endif %}" class="input-admin {% if product.is_byWeight %}disabled{% endif %}" placeholder="وزن بسته کالای عددی" maxlength="5" type="text" name="pack_weight" id="pack_weight">
+                            <input value="{% if not product.is_byWeight %}{{ product.pack_weight }}{% else %}{% if not product.pack_weight %}0{% endif %}{% endif %}" class="input-admin {% if product.is_byWeight %}disabled{% endif %}" placeholder="وزن بسته کالای عددی" maxlength="5" type="text" name="pack_weight" id="pack_weight">
                             <div class="mt-1 text-[var(--color10)]">این وزن در محاسبه هزینه ارسال و وزن محموله بکار میره و تاثیری در فروش یا آمار انبار نداره</div>
                             <div class="mt-1 text-[var(--color10)]">برای مثال: ترابیکا بسته -> وزن بسته 0.5 کیلو</div>
                         </div>

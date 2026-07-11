@@ -1,0 +1,48 @@
+{% extends 'adminpanel_module/shared/base-admin.html' %}
+{% load poll_extras %}
+
+{% block admin_title %}
+	برند ها
+{% endblock %}
+
+{% block admin_content %}
+    <div class="flex justify-between p-2 pt-6 sticky mt-[-10px] top-[-10px] z-10 bg-[var(--header-bg)] backdrop-filter-[blur(10px)] rounded-xl">
+        <div class="flex gap-2 items-start">
+            <svg id="Scan" width="35" height="35" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M1.5 12.6622V14.0722H3.28V21.5022H9.51V20.0022H4.78V14.0722H19.72V20.0022H15.02V21.5022H21.22V14.0722H23V12.6622H1.5Z" fill="#674d45"></path>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M19.7183 10.0623H21.2183V3.56734H15.0153V5.06734H19.7183V10.0623Z" fill="#674d45"></path>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M4.7812 5.06714H9.5132V3.56714H3.2812V10.0621H4.7812V5.06714Z" fill="#674d45"></path>
+            <rect opacity="0.4" x="6.71753" y="6.87427" width="11.2358" height="11.2358" fill="#674d45"></rect>
+            </svg>
+            <h1 class="text-4xl font-semibold">برند ها</h1>
+        </div>
+        <div>
+            <a href="{% url 'admin_brand_add' %}" class="btn-defIconFlex gap-2">
+                <div>برند جدید</div>
+                <i class="fa fa-add mt-1"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="mt-5 flex flex-wrap gap-2">
+        {% for b in brands %}
+            <div id="cat-{{ b.pk }}" class="cat-opt relative bg-[var(--color12)] rounded-xl p-2 transition-all hover:bg-[var(--color13)]" style="animation: load5 {% widthratio forloop.counter 1 20 %}ms">
+                <div class="flex justify-between gap-10">
+                    <div class="flex gap-2">
+                        <div class="text-center overflow-hidden w-10 h-10 rounded-lg bg-[var(--color13)] text-2xl">
+                            <img loading="lazy" alt="{{ b.title }}" class="w-[100%] h-[100%]" src="{% if b.logo %}{{ b.logo.url }}{% endif %}">
+                        </div>
+                        <div>
+                            <h1 class="text-xl mt-2 flex items-start gap-1">{{ b.title|to_fanum }} {% if not b.is_active %}<div class="stat-warning mt-[-3px]"><div class="stat-dot-warning"></div><div class="mt-0.5">غیرفعال</div></div>{% endif %}</h1>
+                        </div>
+                    </div>
+                    <div class="flex gap-1">
+                        <a href="{% url 'admin_brand_edit' b.pk %}"><button class="bg-[var(--color11)] text-[var(--color6)] w-5 h-5 rounded cursor-pointer"><i class="fa fa-pencil text-xs"></i></button></a>
+                        <button onclick="OpenDialog('آیا از حذف برند {{ b.title }} مطمئن هستید؟' ,'{% url 'admin_brand_delete' b.pk %}')" class="bg-[var(--cancel-bg)] text-[var(--loss-bg)] w-5 h-5 rounded cursor-pointer"><i class="fa fa-trash text-xs"></i></button>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

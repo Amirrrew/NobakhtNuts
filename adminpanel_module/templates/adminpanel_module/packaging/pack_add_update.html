@@ -1,0 +1,60 @@
+{% extends 'adminpanel_module/shared/base-admin.html' %}
+
+{% block admin_title %}
+    {% if add_view %}
+        بسته بندی جدید
+        {% else %}
+        ویرایش بسته {{ packagesize.title }}
+    {% endif %}
+{% endblock %}
+
+{% block admin_content %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="flex justify-between p-2 pt-6 sticky mt-[-10px] top-[-10px] z-10 bg-[var(--header-bg)] backdrop-filter-[blur(10px)] rounded-xl">
+            <div class="flex gap-2 items-start">
+                <a href="{% url 'admin_pack_list' %}"><button type="button" class="btn-prdcounter mt-1 text-sm pt-1 rounded-2xl"><i class="fa fa-angle-right"></i></button></a>
+                <svg id="Graph" width="35" height="35" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M15.3817 12.9724C13.9727 13.0184 12.3777 13.0684 11.6877 12.3784C10.9407 11.6304 10.8827 9.98136 10.8357 8.65536C10.7917 7.40336 10.7567 6.41336 10.2487 5.90636C9.65572 5.31336 8.66472 5.24336 7.53072 5.71136C5.17372 6.68836 2.66772 9.73336 2.66772 13.4514C2.66772 17.9724 6.34672 21.6514 10.8687 21.6514C15.2897 21.6514 17.8627 18.2854 18.6867 16.2974C19.2057 15.0454 19.2137 14.0374 18.7087 13.5344C18.0617 12.8864 16.8177 12.9284 15.3817 12.9724Z" fill="#674d45"></path>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M21.7684 7.74265C21.3314 5.65665 18.6694 3.09965 16.2894 2.48065C15.1224 2.17565 14.1384 2.40365 13.5184 3.11765C12.6574 4.10965 12.3724 9.55965 13.3764 10.5637C13.7864 10.9737 14.8214 11.1477 16.0134 11.1477C17.9034 11.1477 20.1854 10.7097 20.9944 10.0737C21.6934 9.52365 21.9684 8.69565 21.7684 7.74265Z" fill="#674d45"></path>
+                </svg>
+                </svg>
+                <div class="flex gap-2">
+                    <h1 class="text-4xl font-semibold">بسته بندی ها</h1>
+                    <i class="fa fa-angle-left mt-2 text-[var(--color10)]"></i>
+                    <div class="text-2xl font-semibold mt-1 text-[var(--color6)]">{% if add_view %}بسته بندی جدید{% else %}{{ packagesize.title }}{% endif %}</div>
+                </div>
+            </div>
+            <div class="flex gap-1 m-[-5px] items-start">
+                <a href="{% url 'admin_subcategory_list' %}" class="flex gap-1 bg-[var(--cancel-bg)] text-[var(--loss-dot)] h-[42px] rounded-xl p-2.5"><div>انصراف</div><i class="fa fa-trash text-xs mt-1"></i></a>
+                <button class="btn-defIconFlex gap-1 z-20" type="submit">ذخیره <i class="fa fa-add mt-1"></i></button>
+            </div>
+        </div>
+        <div class="flex gap-2">
+            <div class="tablebox-default mt-2 relative" style="width: 100%; animation: load 300ms">
+                <div class="flex gap-1">
+                    <svg class="mt-[-2px]" id="Info Square" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.052 2.78467 2.5 5.33667 2.5 12.5347C2.5 19.7327 5.052 22.2847 12.25 22.2847C19.448 22.2847 22 19.7327 22 12.5347C22 5.33667 19.448 2.78467 12.25 2.78467Z" fill="#674d45"></path>
+                        <path d="M12.2461 9.78467H12.2551C12.6691 9.78467 13.0011 9.44867 13.0011 9.03467C13.0011 8.62067 12.6601 8.28467 12.2461 8.28467C11.8321 8.28467 11.4961 8.62067 11.4961 9.03467C11.4961 9.44867 11.8321 9.78467 12.2461 9.78467Z" fill="#674d45"></path>
+                        <path d="M12.2501 17.1797C12.6641 17.1797 13.0001 16.8437 13.0001 16.4297V12.5347C13.0001 12.1207 12.6641 11.7847 12.2501 11.7847C11.8361 11.7847 11.5001 12.1207 11.5001 12.5347V16.4297C11.5001 16.8437 11.8361 17.1797 12.2501 17.1797Z" fill="#674d45"></path>
+                    </svg>
+                    <h1 class="text-xl font-semibold">مشخصات بسته بندی</h1>
+                </div>
+
+                <div class="editpanel-row mt-2 flex gap-2">
+                    <div class="w-[100%]">
+                        <div> عنوان<span class="text-[var(--loss-dot)]">*</span></div>
+                        <input value="{{ packagesize.title }}" class="input-admin" name="title" id="title" placeholder="عنوانی برای شاخه وارد کنید">
+                    </div>
+
+                    <div class="w-[100%]">
+                        <div> اندازه در مقیاس کیلوگرم<span class="text-[var(--loss-dot)]">*</span></div>
+                        <input value="{{ packagesize.size }}" class="input-admin" name="size" id="" placeholder="برای مثال 300 گرم => 0.3">
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </form>
+{% endblock %}

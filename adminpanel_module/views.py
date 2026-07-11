@@ -8,7 +8,10 @@ from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, DeleteView, CreateView, UpdateView
 import json
-from adminpanel_module.forms import ProductAddForm
+
+from unicodedata import category
+
+from adminpanel_module.forms import ProductAddForm, MainCategoryForm, SubCategoryForm, PackForm, BrandForm
 from order_module.context_processors import orders
 from order_module.models import Order, OrderStatus
 from product_module.models import Product, ProductCategory, ProductSubCategory, ProductBrand, PackageSize, \
@@ -16,7 +19,7 @@ from product_module.models import Product, ProductCategory, ProductSubCategory, 
 from utils.dashboard_decorators import get_sales_week, get_sales_week_growth, today, get_order_today, get_user_growth, \
     get_new_orders, get_lowstock_products, get_best_selling_products, get_new_tickets
 from utils.my_decorators import permision_checker_decorator_factory
-from django.db.models import Q
+from django.db.models import Q, Count
 
 
 @permision_checker_decorator_factory({'permission': 'admin_index'} ,)
@@ -85,7 +88,7 @@ class OrdersListView(ListView):
     model = Order
     template_name = 'adminpanel_module/orders/order_list.html'
     context_object_name = 'orders'
-    paginate_by = 20
+    paginate_by = 30
 
     def get_queryset(self):
         search = self.request.GET.get('q')
@@ -198,6 +201,7 @@ class ProductListView(ListView):
     model = Product
     template_name = 'adminpanel_module/products/product_list.html'
     context_object_name = 'products'
+    paginate_by = 20
 
     def get_queryset(self):
         search = self.request.GET.get('q')
@@ -461,3 +465,242 @@ class ProductEdit(UpdateView):
         return context
 
 
+class MainCategories(ListView):
+    model = ProductCategory
+    template_name = 'adminpanel_module/categories/categories_list.html'
+    context_object_name = 'categories'
+
+    def post(self ,request):
+        user = request.user
+        password = request.POST.get('password')
+        if password and user.check_password(password):
+            category = ProductCategory.objects.filter(pk=request.POST.get('cat_pk')).first()
+            category.delete()
+        return redirect('admin_maincategory_list')
+
+class MainCategoryAdd(CreateView):
+    model = ProductCategory
+    form_class = MainCategoryForm
+    template_name = 'adminpanel_module/categories/maincategory_add_update.html'
+    success_url = reverse_lazy('admin_maincategory_list')
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        form.save_m2m()
+
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        context["message_e"] = "فیلد هارا به درستی پر کنید"
+        return self.render_to_response(context)
+
+    def get_context_data(self, **kwargs):
+        context = super(MainCategoryAdd ,self).get_context_data()
+        context['add_view'] = True
+        return context
+
+class MainCategoryEdit(UpdateView):
+    model = ProductCategory
+    form_class = MainCategoryForm
+    template_name = 'adminpanel_module/categories/maincategory_add_update.html'
+    success_url = reverse_lazy('admin_maincategory_list')
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        form.save_m2m()
+
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        context["message_e"] = "فیلد هارا به درستی پر کنید"
+        return self.render_to_response(context)
+
+    def get_context_data(self, **kwargs):
+        context = super(MainCategoryEdit ,self).get_context_data()
+        context['edit_view'] = True
+        return context
+
+
+class SubCategories(ListView):
+    model = ProductSubCategory
+    template_name = 'adminpanel_module/categories/subcategories_list.html'
+    context_object_name = 'category'
+
+    def get_queryset(self):
+        return ProductCategory.objects.prefetch_related('subcategory').all()
+
+
+class SubCategoryAdd(CreateView):
+    model = ProductSubCategory
+    form_class = SubCategoryForm
+    template_name = 'adminpanel_module/categories/subcategories_add_update.html'
+    success_url = reverse_lazy('admin_subcategory_list')
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        form.save_m2m()
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        context["message_e"] = "فیلد هارا به درستی پر کنید"
+        return self.render_to_response(context)
+
+    def get_context_data(self, *args,**kwargs):
+        context = super(SubCategoryAdd ,self).get_context_data(*args ,**kwargs)
+        context['category'] = ProductCategory.objects.all()
+        context['add_view'] = True
+        return context
+
+
+class SubCategoryEdit(UpdateView):
+    model = ProductSubCategory
+    form_class = SubCategoryForm
+    template_name = 'adminpanel_module/categories/subcategories_add_update.html'
+    success_url = reverse_lazy('admin_subcategory_list')
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        form.save_m2m()
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        context["message_e"] = "فیلد هارا به درستی پر کنید"
+        return self.render_to_response(context)
+
+    def get_context_data(self, *args,**kwargs):
+        context = super(SubCategoryEdit ,self).get_context_data(*args ,**kwargs)
+        context['category'] = ProductCategory.objects.all()
+        context['edit_view'] = True
+        return context
+
+def SubCategoryDelete(request,pk):
+    subcat = get_object_or_404(ProductSubCategory,pk=pk)
+    if subcat:
+        subcat.delete()
+    return redirect('admin_subcategory_list')
+
+
+
+class PackList(ListView):
+    model = PackageSize
+    template_name = 'adminpanel_module/packaging/packs_list.html'
+    context_object_name = 'packs'
+
+    def get_queryset(self):
+        return PackageSize.objects.all().order_by('size')
+
+
+class PackAdd(CreateView):
+    model = PackageSize
+    template_name = 'adminpanel_module/packaging/pack_add_update.html'
+    form_class = PackForm
+    success_url = reverse_lazy('admin_pack_list')
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        form.save_m2m()
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        context["message_e"] = "فیلد هارا به درستی پر کنید"
+        return self.render_to_response(context)
+
+    def get_context_data(self, *args,**kwargs):
+        context = super(PackAdd ,self).get_context_data(*args ,**kwargs)
+        context['add_view'] = True
+        return context
+
+def PackDelete(request ,pk):
+    pack = get_object_or_404(PackageSize ,pk=pk)
+    if pack:
+        pack.delete()
+    return redirect('admin_pack_list')
+
+class PackEdit(UpdateView):
+    model = PackageSize
+    template_name = 'adminpanel_module/packaging/pack_add_update.html'
+    form_class = PackForm
+    success_url = reverse_lazy('admin_pack_list')
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        form.save_m2m()
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        context["message_e"] = "فیلد هارا به درستی پر کنید"
+        return self.render_to_response(context)
+
+    def get_context_data(self, *args,**kwargs):
+        context = super(PackEdit ,self).get_context_data(*args ,**kwargs)
+        context['edit_view'] = True
+        return context
+
+
+class BrandsList(ListView):
+    model = ProductBrand
+    template_name = 'adminpanel_module/brands/brands_list.html'
+    context_object_name = 'brands'
+
+def BrandDelete(request , pk):
+    brnd = get_object_or_404(ProductBrand,pk=pk)
+    if brnd:
+        brnd.delete()
+    return redirect('admin_brand_list')
+
+class BrandAdd(CreateView):
+    model = ProductBrand
+    template_name = 'adminpanel_module/brands/brand_add_update.html'
+    form_class = BrandForm
+    success_url = reverse_lazy('admin_brand_list')
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        form.save_m2m()
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        context["message_e"] = "فیلد هارا به درستی پر کنید"
+        return self.render_to_response(context)
+
+    def get_context_data(self, *args,**kwargs):
+        context = super(BrandAdd ,self).get_context_data(*args ,**kwargs)
+        context['add_view'] = True
+        return context
+
+
+class BrandEdit(UpdateView):
+    model = ProductBrand
+    template_name = 'adminpanel_module/brands/brand_add_update.html'
+    form_class = BrandForm
+    success_url = reverse_lazy('admin_brand_list')
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        form.save_m2m()
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        context["message_e"] = "فیلد هارا به درستی پر کنید"
+        return self.render_to_response(context)
+
+    def get_context_data(self, *args,**kwargs):
+        context = super(BrandEdit ,self).get_context_data(*args ,**kwargs)
+        context['edit_view'] = True
+        return context

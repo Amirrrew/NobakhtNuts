@@ -1,0 +1,56 @@
+{% extends 'adminpanel_module/shared/base-admin.html' %}
+{% load poll_extras %}
+
+{% block admin_title %}
+	زیر شاخه ها
+{% endblock %}
+
+{% block admin_content %}
+    <div class="flex justify-between p-2 pt-6 sticky mt-[-10px] top-[-10px] z-10 bg-[var(--header-bg)] backdrop-filter-[blur(10px)] rounded-xl">
+        <div class="flex gap-2 items-start">
+            <svg class="mt-[-3px]" id="Category" width="35" height="35" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.5388 6.64685C10.5388 8.65818 8.90831 10.2887 6.89697 10.2887C4.88564 10.2887 3.25513 8.65818 3.25513 6.64685C3.25513 4.63551 4.88564 3.005 6.89697 3.005C8.90831 3.005 10.5388 4.63551 10.5388 6.64685Z" fill="#674d45"></path>
+            <path d="M21.245 17.3531C21.245 19.3644 19.6145 20.9949 17.6032 20.9949C15.5918 20.9949 13.9613 19.3644 13.9613 17.3531C13.9613 15.3418 15.5918 13.7112 17.6032 13.7112C19.6145 13.7112 21.245 15.3418 21.245 17.3531Z" fill="#674d45"></path>
+            <g opacity="0.4">
+            <path d="M21.245 6.64685C21.245 8.65818 19.6145 10.2887 17.6032 10.2887C15.5918 10.2887 13.9613 8.65818 13.9613 6.64685C13.9613 4.63551 15.5918 3.005 17.6032 3.005C19.6145 3.005 21.245 4.63551 21.245 6.64685Z" fill="#674d45"></path>
+            <path d="M10.5388 17.3531C10.5388 19.3644 8.90831 20.9949 6.89697 20.9949C4.88564 20.9949 3.25513 19.3644 3.25513 17.3531C3.25513 15.3418 4.88564 13.7112 6.89697 13.7112C8.90831 13.7112 10.5388 15.3418 10.5388 17.3531Z" fill="#674d45"></path>
+            </g>
+            </svg>
+            <h1 class="text-4xl font-semibold">زیر شاخه ها</h1>
+        </div>
+        <div>
+            <a href="{% url 'admin_subcategory_add' %}" class="btn-defIconFlex gap-2">
+                <div>زیر شاخه جدید</div>
+                <i class="fa fa-add mt-1"></i>
+            </a>
+        </div>
+    </div>
+    {% for c in category %}
+        <div class="flex mt-10 gap-2 border-b border-[var(--color11)] pb-2">
+            <div class="text-center w-9 h-9 rounded-lg bg-[var(--color13)] text-lg pt-2">{{ c.emoji }}</div>
+            <div>
+                <h1 class="text-lg flex mt-1 gap-1">{{ c.title|to_fanum }} {% if not c.is_active %}<div class="stat-warning mt-[-3px]"><div class="stat-dot-warning"></div>غیرفعال</div>{% endif %}</h1>
+            </div>
+        </div>
+        <div class="flex flex-wrap w-[100%] gap-2 mt-3 items-start relative">
+        {% for sub in c.subcategory.all %}
+            <div id="sub-{{ sub.pk }}" class="cat-opt relative bg-[var(--color12)] w-[24.4%] rounded-xl p-2 transition-all hover:bg-[var(--color13)] h-20" style="animation: load5 {% widthratio forloop.counter 1 100 %}ms">
+                <div class="flex justify-between">
+                    <div class="flex gap-2">
+                        <div class="mr-2">
+                            <h1 class="text-xl mt-2 flex items-start gap-1">{{ sub.title|to_fanum }} {% if not sub.is_active %}<div class="stat-warning mt-0.5" style="padding: 5px"><div style="margin-top: 0" class="stat-dot-warning"></div></div>{% endif %}</h1>
+                            <div class="text-[var(--color10)] text-sm">شامل {{ sub.products.count|to_fanum }} محصول</div>
+                        </div>
+                    </div>
+                    <div class="flex gap-1">
+                        <a target="_blank" href="{{ sub.get_absolute_url }}"><button class="bg-[var(--color11)] text-[var(--color6)] w-5 h-5 rounded cursor-pointer"><i class="fa fa-external-link text-xs"></i></button></a>
+                        <a href="{% url 'admin_subcategory_edit' sub.pk %}"><button class="bg-[var(--color11)] text-[var(--color6)] w-5 h-5 rounded cursor-pointer"><i class="fa fa-pencil text-xs"></i></button></a>
+                        <button onclick="OpenDialog('در صورت حذف کل محصولات {{ sub.title }} حذف خواهند شد' ,'{% url 'admin_subcategory_delete' sub.pk %}')" class="bg-[var(--cancel-bg)] text-[var(--loss-bg)] w-5 h-5 rounded cursor-pointer"><i class="fa fa-trash text-xs"></i></button>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    {% endfor %}
+
+{% endblock %}

@@ -113,7 +113,7 @@ class PackageSize(models.Model):
 class Product(models.Model):
     holoo_id = models.CharField(max_length=100 ,blank=True ,null=True ,verbose_name='بارکد هلو')
     title = models.CharField(max_length=300 ,blank=False ,null=True ,verbose_name="عنوان محصول")
-    category = models.ForeignKey(ProductSubCategory,on_delete=models.CASCADE,null=False,blank=False ,verbose_name="دسته بندی")
+    category = models.ForeignKey(ProductSubCategory,on_delete=models.CASCADE,null=False,blank=False,related_name='products' ,verbose_name="دسته بندی")
     brand = models.ForeignKey(ProductBrand ,on_delete=models.CASCADE,null=True,blank=True ,verbose_name="برند")
     price = models.IntegerField(default=0,blank=True ,null=True ,verbose_name="قیمت")
     is_byWeight = models.BooleanField(default=False ,verbose_name='کالای وزنی؟')
@@ -161,9 +161,10 @@ class Product(models.Model):
 
     @property
     def final_price(self):
-        if self.offer > 0:
+        if self.offer and self.offer > 0:
             return self.price - (self.price * self.offer // 100)
-        return self.price
+        else:
+            return self.price
 
 
     def can_shop(self ,count ,size):

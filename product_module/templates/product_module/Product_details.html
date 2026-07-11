@@ -14,15 +14,15 @@
 
         <div class="product-detail w-[95%]">
 
-            <div class="product-titlebar">
-                <div class="flex text-[var(--color14)] gap-3">
+            <div class="product-titlebar relative">
+                <div class="flex text-[var(--color14)] gap-3 relative" style="animation: load8 150ms">
                     <div><button class="btn-prdcounter text-sm pt-1 rounded-2xl" onclick="history.back()"><i class="fa fa-angle-right"></i></button></div>
                     <a href="{{ product.category.main_category.get_absolute_url }}" class="">{{ product.category.main_category }}</a>
                     <i class="fa fa-angle-left mt-1.5 text-xs"></i>
                     <a href="{{ product.category.get_absolute_url }}" class="">{{ product.category }}</a>
                 </div>
 
-                <div class="product-titlebar flex gap-2 mt-2">
+                <div class="product-titlebar flex gap-2 mt-2 relative" style="animation: load8 200ms">
                     <div class="title-opener bg-[var(--color6)]" style="background-color: var(--color6)"></div>
                     <div class="product-title text-4xl">{{ product.title|to_fanum }}</div>
                 </div>
@@ -30,7 +30,7 @@
 
             <div class="flex justify-between items-start gap-2">
 
-                <div class="prd-section flex w-[75%] mt-5 gap-5 relative">
+                <div class="prd-section flex w-[75%] mt-5 gap-5 relative" style="animation: load8 400ms">
                     <div class="prd-photo-gallery">
                         <div onclick="PhotoGallery(false ,0)" class="pg-mainphoto">
                             <img loading="lazy" alt="{{ product.title }}" onclick="" src="{{ product.product_image.first.image.url }}">
@@ -59,13 +59,13 @@
                     {% endif %}
                         <div class="flex flex-wrap mt-2 gap-2">
                             {% for spec in product.features.all|slice:3 %}
-                                <div class="prd-feature overflow-hidden flex-nowrap w-[32.3%] h-14 rounded-xl p-2 bg-[var(--color12)] relative" style="animation: load3 {% widthratio forloop.counter 1 300 %}ms">
+                                <div class="prd-feature overflow-hidden flex-nowrap w-[32.3%] h-14 rounded-xl p-2 bg-[var(--color12)] relative" style="animation: load8 {% widthratio forloop.counter 1 200 %}ms">
                                     <div class="text-[var(--color10)] px-1 text-sm">{{ spec.title }}</div>
                                     <div class="text-m truncate text-[var(--color6)] mt-[-3px] text-nowrap">{{ spec.desc|to_fanum }}</div>
                                 </div>
                             {% endfor %}
                         </div>
-                        <div class="w-[100%] flex bg-[var(--color12)] gap-2 mt-2 rounded-xl text-[var(--color6)] p-2 cursor-pointer relative" style="animation: load3 500ms">
+                        <div class="w-[100%] flex bg-[var(--color12)] gap-2 mt-2 rounded-xl text-[var(--color6)] p-2 cursor-pointer relative" style="animation: load8 800ms">
                             <div class="bg-[var(--color15)] p-3 rounded-lg">
                                 <svg id="Chat" width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M19.6766 4.57605C17.6956 2.59505 15.0586 1.50305 12.2526 1.50305C9.44664 1.50305 6.80964 2.59505 4.82864 4.57605C1.72664 7.67905 0.880636 12.4411 2.70564 16.3751C2.73864 16.5371 2.64964 17.1961 2.58564 17.6781C2.34364 19.4841 2.21964 20.8101 2.83264 21.4241C3.44464 22.0371 4.76964 21.9131 6.57564 21.6701C7.05764 21.6061 7.72464 21.5201 7.82864 21.5311C9.23464 22.1821 10.7376 22.4971 12.2296 22.4971C14.9676 22.4971 17.6696 21.4351 19.6766 19.4271C23.7696 15.3321 23.7706 8.67005 19.6766 4.57605Z" fill="#674d45"></path>

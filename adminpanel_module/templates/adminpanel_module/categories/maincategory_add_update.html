@@ -1,0 +1,108 @@
+{% extends 'adminpanel_module/shared/base-admin.html' %}
+
+{% block admin_title %}
+        {% if add_view %}
+        شاخه اصلی جدید
+        {% else %}
+        ویرایش شاخه {{ productcategory.title }}
+    {% endif %}
+{% endblock %}
+
+{% block admin_content %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="flex justify-between p-2 pt-6 sticky mt-[-10px] top-[-10px] z-10 bg-[var(--header-bg)] backdrop-filter-[blur(10px)] rounded-xl">
+            <div class="flex gap-2 items-start">
+                <a href="{% url 'admin_maincategory_list' %}"><button type="button" class="btn-prdcounter mt-1 text-sm pt-1 rounded-2xl"><i class="fa fa-angle-right"></i></button></a>
+                <svg class="mt-[-2px]" id="Category" width="35" height="35" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <g id="Iconly/Bulk/Category" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                        <g id="Category" transform="translate(2.000000, 2.000000)" fill="#674d45" fill-rule="nonzero">
+                            <path d="M14.0755097,2.66453526e-15 L17.4614756,2.66453526e-15 C18.8637443,2.66453526e-15 20,1.1458518 20,2.55996321 L20,5.97452492 C20,7.38863633 18.8637443,8.53448813 17.4614756,8.53448813 L14.0755097,8.53448813 C12.673241,8.53448813 11.5369853,7.38863633 11.5369853,5.97452492 L11.5369853,2.55996321 C11.5369853,1.1458518 12.673241,2.66453526e-15 14.0755097,2.66453526e-15" id="Fill-1" opacity="0.400000006"></path>
+                            <path d="M5.9244903,11.4655119 C7.32675901,11.4655119 8.46301469,12.6113637 8.46301469,14.0254751 L8.46301469,17.4400368 C8.46301469,18.8531901 7.32675901,20 5.9244903,20 L2.53852439,20 C1.13625568,20 8.8817842e-16,18.8531901 8.8817842e-16,17.4400368 L8.8817842e-16,14.0254751 C8.8817842e-16,12.6113637 1.13625568,11.4655119 2.53852439,11.4655119 L5.9244903,11.4655119 Z M17.4614756,11.4655119 C18.8637443,11.4655119 20,12.6113637 20,14.0254751 L20,17.4400368 C20,18.8531901 18.8637443,20 17.4614756,20 L14.0755097,20 C12.673241,20 11.5369853,18.8531901 11.5369853,17.4400368 L11.5369853,14.0254751 C11.5369853,12.6113637 12.673241,11.4655119 14.0755097,11.4655119 L17.4614756,11.4655119 Z M5.9244903,7.99360578e-15 C7.32675901,7.99360578e-15 8.46301469,1.1458518 8.46301469,2.55996321 L8.46301469,5.97452492 C8.46301469,7.38863633 7.32675901,8.53448813 5.9244903,8.53448813 L2.53852439,8.53448813 C1.13625568,8.53448813 8.8817842e-16,7.38863633 8.8817842e-16,5.97452492 L8.8817842e-16,2.55996321 C8.8817842e-16,1.1458518 1.13625568,7.99360578e-15 2.53852439,7.99360578e-15 L5.9244903,7.99360578e-15 Z" id="Combined-Shape"></path>
+                        </g>
+                    </g>
+                </svg>
+                <div class="flex gap-2">
+                    <h1 class="text-4xl font-semibold">شاخه های اصلی</h1>
+                    <i class="fa fa-angle-left mt-2 text-[var(--color10)]"></i>
+                    <div class="text-2xl font-semibold mt-1 text-[var(--color6)]">{% if add_view %}شاخه اصلی جدید{% else %}{{ productcategory.title }}{% endif %}</div>
+                </div>
+            </div>
+            <div class="flex gap-1 m-[-5px] items-start">
+                <a href="{% url 'admin_maincategory_list' %}" class="flex gap-1 bg-[var(--cancel-bg)] text-[var(--loss-dot)] h-[42px] rounded-xl p-2.5"><div>انصراف</div><i class="fa fa-trash text-xs mt-1"></i></a>
+                <button class="btn-defIconFlex gap-1 z-20" type="submit">ذخیره <i class="fa fa-add mt-1"></i></button>
+            </div>
+        </div>
+        <div class="flex gap-2">
+            <div class="tablebox-default mt-2 relative" style="width: 65%; animation: load 300ms">
+                <div class="flex gap-1">
+                    <svg class="mt-[-2px]" id="Info Square" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.052 2.78467 2.5 5.33667 2.5 12.5347C2.5 19.7327 5.052 22.2847 12.25 22.2847C19.448 22.2847 22 19.7327 22 12.5347C22 5.33667 19.448 2.78467 12.25 2.78467Z" fill="#674d45"></path>
+                        <path d="M12.2461 9.78467H12.2551C12.6691 9.78467 13.0011 9.44867 13.0011 9.03467C13.0011 8.62067 12.6601 8.28467 12.2461 8.28467C11.8321 8.28467 11.4961 8.62067 11.4961 9.03467C11.4961 9.44867 11.8321 9.78467 12.2461 9.78467Z" fill="#674d45"></path>
+                        <path d="M12.2501 17.1797C12.6641 17.1797 13.0001 16.8437 13.0001 16.4297V12.5347C13.0001 12.1207 12.6641 11.7847 12.2501 11.7847C11.8361 11.7847 11.5001 12.1207 11.5001 12.5347V16.4297C11.5001 16.8437 11.8361 17.1797 12.2501 17.1797Z" fill="#674d45"></path>
+                    </svg>
+                    <h1 class="text-xl font-semibold">مشخصات شاخه اصلی</h1>
+                </div>
+
+                <div class="editpanel-row mt-2 flex gap-2">
+                    <div class="w-[100%]">
+                        <div> عنوان<span class="text-[var(--loss-dot)]">*</span></div>
+                        <input value="{{ productcategory.title }}" class="input-admin" name="title" id="title" placeholder="عنوانی برای شاخه وارد کنید">
+                    </div>
+
+                    <div class="w-[100%]">
+                        <div> عنوان در url<span class="text-[var(--loss-dot)]">*</span></div>
+                        <input value="{{ productcategory.slug }}" class="input-admin" name="slug" id="" placeholder="عنوانی به زبان انگلیسی برای url (اجباری)">
+                    </div>
+                </div>
+
+                <div class="editpanel-row mt-2 flex gap-2">
+
+                    <div class="w-[100%]">
+                        <div> ایموجی آیکون<span class="text-[var(--loss-dot)]">*</span></div>
+                        <input value="{{ productcategory.emoji }}" class="input-admin" name="emoji" id="" placeholder="یک ایموجی بعنوان آیکون وارد کنید">
+                    </div>
+                    <div class="w-[100%]">
+                        <div> ستون<span class="text-[var(--loss-dot)]">*</span></div>
+                        <select name="column" class="input-admin">
+                            <option value="1" {% if productcategory.column == 1 %}selected{% endif %}>1</option>
+                            <option value="2" {% if productcategory.column == 2 %}selected{% endif %}>2</option>
+                            <option value="3" {% if productcategory.column == 3 %}selected{% endif %}>3</option>
+                            <option value="4" {% if productcategory.column == 4 %}selected{% endif %}>4</option>
+                            <option value="5" {% if productcategory.column == 5 %}selected{% endif %}>5</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="tablebox-default mt-2 relative" style="animation: load8 500ms; width: 35%">
+                <div class="flex gap-1">
+                    <svg id="Setting" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <g id="Iconly/Bulk/Setting" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                            <g id="Setting" transform="translate(2.499897, 2.000100)" fill="#674d45" fill-rule="nonzero">
+                                <path d="M9.51207539,12.83 C7.9076023,12.83 6.60971643,11.58 6.60971643,10.01 C6.60971643,8.44 7.9076023,7.18 9.51207539,7.18 C11.1165485,7.18 12.3837756,8.44 12.3837756,10.01 C12.3837756,11.58 11.1165485,12.83 9.51207539,12.83" id="Path"></path>
+                                <path d="M18.730131,12.37 C18.5359591,12.07 18.2600306,11.77 17.9023455,11.58 C17.6161974,11.44 17.4322451,11.21 17.2687319,10.94 C16.7475337,10.08 17.0541209,8.95 17.9227847,8.44 C18.944742,7.87 19.2717684,6.6 18.6790331,5.61 L17.9943217,4.43 C17.411806,3.44 16.1343592,3.09 15.1226214,3.67 C14.2232989,4.15 13.0684871,3.83 12.5472888,2.98 C12.3837756,2.7 12.2917995,2.4 12.3122386,2.1 C12.3428973,1.71 12.2202625,1.34 12.0363101,1.04 C11.6581859,0.42 10.9734745,0 10.217226,0 L8.77626608,0 C8.03023719,0.02 7.34552574,0.42 6.96740151,1.04 C6.77322961,1.34 6.6608143,1.71 6.68125344,2.1 C6.70169259,2.4 6.60971643,2.7 6.44620325,2.98 C5.92500498,3.83 4.77019314,4.15 3.88109021,3.67 C2.85913283,3.09 1.59190568,3.44 0.999170395,4.43 L0.314458948,5.61 C-0.26805676,6.6 0.0589696023,7.87 1.07070741,8.44 C1.93937119,8.95 2.2459584,10.08 1.73497971,10.94 C1.56124696,11.21 1.37729463,11.44 1.09114656,11.58 C0.743681049,11.77 0.437093834,12.07 0.273580653,12.37 C-0.104543579,12.99 -0.0841044313,13.77 0.2940198,14.42 L0.999170395,15.62 C1.37729463,16.26 2.08244522,16.66 2.81825454,16.66 C3.16572005,16.66 3.574503,16.56 3.90152936,16.36 C4.15701871,16.19 4.46360592,16.13 4.80085186,16.13 C5.81258967,16.13 6.6608143,16.96 6.68125344,17.95 C6.68125344,19.1 7.62145424,20 8.8069248,20 L10.1967868,20 C11.3720378,20 12.3122386,19.1 12.3122386,17.95 C12.3428973,16.96 13.191122,16.13 14.2028598,16.13 C14.5298861,16.13 14.8364734,16.19 15.1021823,16.36 C15.4292086,16.56 15.827772,16.66 16.1854571,16.66 C16.9110468,16.66 17.6161974,16.26 17.9943217,15.62 L18.7096918,14.42 C19.0775965,13.75 19.1082552,12.99 18.730131,12.37" id="Path" opacity="0.400000006"></path>
+                            </g>
+                        </g>
+                    </svg>
+                    <h1 class="text-xl font-semibold">وضعیت و تنظیمات</h1>
+                </div>
+                <div class="flex justify-between mt-5">
+                    <h1 class="text-xl font-semibold">فعال / غیر فعال</h1>
+                    <label class="switch">
+                        <input type="checkbox" name="is_active" {% if add_view %}checked{% else %}
+                            {% if productcategory.is_active %}
+                               checked
+                            {% endif %}
+                        {% endif %}>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="mt-1 text-[var(--color10)]">
+                    در صورت فعال نبودن، هیچ کدوم از محصولات ،زیر شاخه ها و خود شاخه اصلی برای کاربران نمایش داده نمیشه و فقط برای خودتون قابل رویت هست
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

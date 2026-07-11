@@ -28,19 +28,26 @@ class ProductListView(ListView):
     def get_queryset(self):
         queryset = Product.objects.filter(
             is_active=True,
-            is_deleted=False
+            is_deleted=False,
+            category__is_active=True
         ).order_by('-quantity')
 
         category_slug = self.kwargs.get("category")
         subcategory_slug = self.kwargs.get("subcategory")
 
         if category_slug:
-            category = get_object_or_404(ProductCategory,slug=category_slug)
-            queryset = queryset.filter(category__main_category=category)
+            category = get_object_or_404(ProductCategory,slug=category_slug ,is_active=True)
+            if category:
+                queryset = queryset.filter(category__main_category=category ,category__is_active=True)
+            else:
+                return redirect('all_products')
 
         elif subcategory_slug:
-            subcategory = get_object_or_404(ProductSubCategory,slug=subcategory_slug)
-            queryset = queryset.filter(category=subcategory)
+            subcategory = get_object_or_404(ProductSubCategory,slug=subcategory_slug  ,is_active=True)
+            if subcategory:
+                queryset = queryset.filter(category=subcategory ,category__is_active=True)
+            else:
+                return redirect('all_products')
 
         return filter_products(
             self.request,
@@ -54,20 +61,21 @@ class ProductListView(ListView):
         subcategory_slug = self.kwargs.get("subcategory")
 
         if category_slug:
-            category = ProductCategory.objects.prefetch_related('subcategory').filter(slug=category_slug).first()
+            category = ProductCategory.objects.prefetch_related('subcategory').filter(slug=category_slug ,is_active=True).first()
             context["title_prd"] = category.title
             context["current_category"] = category
-            context['subcats'] = category.subcategory.all()
+            context['subcats'] = category.subcategory.filter(is_active=True)
 
         elif subcategory_slug:
             subcategory = get_object_or_404(
                 ProductSubCategory,
-                slug=subcategory_slug
+                slug=subcategory_slug,
+                is_active=True
             )
             context["title_prd"] = subcategory.title
             context["current_category"] = subcategory.main_category
             context["current_subcategory"] = subcategory
-            context['subcats'] = ProductSubCategory.objects.filter(main_category=subcategory.main_category)
+            context['subcats'] = ProductSubCategory.objects.filter(main_category=subcategory.main_category ,is_active=True)
         else:
             context["title_prd"] = "همه محصولات"
 
