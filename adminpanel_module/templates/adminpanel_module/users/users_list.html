@@ -1,0 +1,53 @@
+{% extends 'adminpanel_module/shared/base-admin.html' %}
+{% load poll_extras %}
+{% load static %}
+
+{% block admin_title %}
+    کاربران
+{% endblock %}
+
+{% block admin_content %}
+    <div class="p-2 pt-6 sticky mt-[-10px] top-[-10px] z-10 bg-[var(--header-bg)] backdrop-filter-[blur(10px)] rounded-xl">
+        <div class="flex justify-between">
+            <div class="flex gap-1 items-start">
+                <svg id="3 user" width="35" height="35" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M18.6948 10.8685H18.7148C20.8448 10.8685 22.5848 9.12855 22.5848 7.00855C22.5848 4.87855 20.8448 3.13855 18.7148 3.13855C18.2948 3.13855 17.8948 3.20855 17.5148 3.32855C18.2048 4.34855 18.6048 5.57855 18.6048 6.90855C18.6148 8.25855 18.1948 9.55855 17.4048 10.6385C17.8148 10.7885 18.2448 10.8685 18.6948 10.8685Z" fill="#674d45"></path>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M5.77479 10.8685H5.8048C6.2548 10.8685 6.68479 10.7885 7.09479 10.6385C6.33479 9.59855 5.8848 8.30855 5.8848 6.90855C5.8848 5.57855 6.28479 4.34855 6.97479 3.32855C6.59479 3.20855 6.19479 3.13855 5.77479 3.13855C3.64479 3.13855 1.91479 4.87855 1.91479 7.00855C1.91479 9.12855 3.64479 10.8685 5.77479 10.8685Z" fill="#674d45"></path>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12.2454 11.7746H12.2784C13.5734 11.7706 14.7894 11.2616 15.7014 10.3426C16.6144 9.42363 17.1144 8.20463 17.1094 6.91163C17.1094 4.22863 14.9284 2.04663 12.2454 2.04663C9.56339 2.04663 7.38239 4.22863 7.38239 6.91163C7.38239 9.59263 9.56339 11.7746 12.2454 11.7746Z" fill="#674d45"></path>
+                <g opacity="0.4">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M18.7249 12.3083C17.5849 12.3083 16.5149 12.5383 15.6149 12.9283C18.7649 13.8383 20.9949 16.0183 21.0549 18.5683C22.6949 18.3583 24.4649 17.7383 24.4649 16.0483C24.4649 14.0183 21.8349 12.3083 18.7249 12.3083Z" fill="#674d45"></path>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.87491 12.9183C7.97491 12.5383 6.90491 12.3083 5.77491 12.3083C2.66491 12.3083 0.0349121 14.0183 0.0349121 16.0483C0.0349121 17.7383 1.79491 18.3483 3.43491 18.5683C3.48491 16.0183 5.71491 13.8383 8.87491 12.9183Z" fill="#674d45"></path>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12.2445 13.9454C8.28352 13.9454 4.93652 16.1014 4.93652 18.6534C4.93652 21.9534 10.4365 21.9534 12.2445 21.9534C15.3825 21.9534 19.5545 21.6134 19.5545 18.6744C19.5545 16.1104 16.2065 13.9454 12.2445 13.9454Z" fill="#674d45"></path>
+                </g>
+                </svg>
+                <h1 class="text-4xl font-semibold">کاربران</h1>
+                <div class="admin-searchbox mr-2" style="margin-top: -8px; width: 400px">
+                    <div class="flex">
+                        <svg class="m-2.5" id="Search" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M11.5139 2.20227C6.51788 2.20227 2.45288 6.26727 2.45288 11.2643C2.45288 16.2603 6.51788 20.3243 11.5139 20.3243C16.5099 20.3243 20.5749 16.2603 20.5749 11.2643C20.5749 6.26727 16.5099 2.20227 11.5139 2.20227Z" fill="#674d45"></path>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M20.1373 17.9767C19.0833 17.9767 18.2253 18.8327 18.2253 19.8867C18.2253 20.9407 19.0833 21.7977 20.1373 21.7977C21.1903 21.7977 22.0473 20.9407 22.0473 19.8867C22.0473 18.8327 21.1903 17.9767 20.1373 17.9767Z" fill="#674d45"></path>
+                        </svg>
+                        <input oninput="search_tables('user-search','user-table-partial' ,`/adminpanel/users/` , '')" name="q" id="user-search" placeholder="جستجو با کد / نام و نام خانوادگی / شماره تلفن">
+                    </div>
+                </div>
+            </div>
+            <a href="{% url 'admin_user_add' %}" class="btn-defIconFlex gap-2">
+                <div>کاربر جدید</div>
+                <i class="fa fa-add mt-1"></i>
+            </a>
+        </div>
+    </div>
+    {% include 'adminpanel_module/users/table_components/users_table.html' %}
+    {% if page_obj.has_other_pages %}
+        <ul class="centerbox gap-2 mt-10 flex-wrap">
+            {% if page_obj.has_previous %}<a href="?{% query_transform page=page_obj.previous_page_number %}"><button class="rounded-xl bg-[var(--color12)] w-8 h-8 m-1 cursor-pointer text-[var(--color6)]"><i class="fa fa-arrow-right text-sm mt-1"></i></button></a>{% endif %}
+            <div class="flex gap-2">
+                {% for page_index in paginator.page_range %}
+                    <a class="" href="?{% query_transform page=page_index %}"><li class="{% if page_index == page_obj.number %}bg-[var(--color6)] text-[var(--color3)]{% endif %} pt-2 cursor-pointer transition-all px-4 rounded-lg hover:bg-[var(--color12)] hover:text-[var(--color2)]">{{ page_index|to_fanum }}</li></a>
+                {% endfor %}
+            </div>
+            {% if page_obj.has_next %}<a href="?{% query_transform page=page_obj.next_page_number %}"><button class="rounded-xl bg-[var(--color12)] w-8 h-8 m-1 cursor-pointer text-[var(--color6)]"><i class="fa fa-arrow-left text-sm mt-1"></i></button></a>{% endif %}
+        </ul>
+    {% endif %}
+
+{% endblock %}

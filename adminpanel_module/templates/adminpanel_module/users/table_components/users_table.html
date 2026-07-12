@@ -1,0 +1,26 @@
+{% load poll_extras %}
+    <div class="tablebox-default w-[100%] mt-2 relative" style="animation: load8 300ms">
+        {% if users %}
+            <form method="post" id="form-product">
+            {% csrf_token %}
+                <table class="table-default" style="margin: 0">
+                    <thead class="sticky top-0">
+                        <tr>
+                            <td class="" style="width: 1px">#کد</td>
+                            <td>نام کاربری</td>
+                            <td>نام و نام خانوادگی</td>
+                            <td>شماره تلفن</td>
+                            <td class="text-center">عملگرها</td>
+                        </tr>
+                    </thead>
+                    <tbody id="user-table-partial">
+                        {% include 'adminpanel_module/users/table_components/users_table_partial.html' %}
+                    </tbody>
+                </table>
+            {% else %}
+            <div>کاربری ثبت نشده!</div>
+        {% endif %}
+        </form>
+    </div>
+
+

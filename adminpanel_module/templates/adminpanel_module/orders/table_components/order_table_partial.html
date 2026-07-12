@@ -4,7 +4,7 @@
                     {% for order in orders %}
                         <tr class="{% if not forloop.last %} border-b border-[var(--color12)]{% endif %}" style="{% if order.is_done %}opacity: 0.5;{% endif %}">
                             <td><label for="order{{ order.pk }}" class="relative text-[var(--color6)] text-lg cursor-pointer top-1"><input id="order{{ order.pk }}" type="checkbox" class="ui-checkbox" name="order" value="{{ order.pk }}"></label></td>
-                            <td><a href="">#{{ order.pk }}</a></td>
+                            <td><a href="{% url 'admin_order_detail' order.pk %}">#{{ order.pk }}</a></td>
                             <td><a href="">{{ order.user }}</a></td>
                             <td class="mr-2"><div class="{% if order.status.title == 'در انتظار تایید' %}stat-onwait text-white{% elif order.status.title == 'ارسال شده' %}stat-static{% elif order.status.title == 'پایان یافته' %}stat-loss{% elif order.status.title == 'رد شده' %}stat-denied{% elif order.status.title == 'مرجوع شده' %}stat-warning{% else %}stat-profit{% endif %} w-fit flex"><div class=" {% if order.status.title == 'در انتظار تایید' %}stat-onwait-dot{% elif order.status.title == 'ارسال شده' %}stat-dot-static{% elif order.status.title == 'پایان یافته' %}stat-dot-loss{% elif order.status.title == 'رد شده' %}stat-dot-denied{% elif order.status.title == 'مرجوع شده' %}stat-dot-warning{% else %}stat-dot-profit{% endif %}"></div>{{ order.status }}{% if order.status.title == 'در انتظار تایید' %}رسید{% endif %}</div></td>
                             <td>{{ order.payment_date.time }} <span class="text-[var(--color10)] text-xl">|</span>  {{ order.payment_date|show_jalali_date|to_fanum }}</td>

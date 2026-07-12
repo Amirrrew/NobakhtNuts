@@ -27,4 +27,10 @@ urlpatterns = [
     path('brands/add' ,views.BrandAdd.as_view(),name='admin_brand_add'),
     path('brands/<int:pk>/edit' ,views.BrandEdit.as_view() ,name='admin_brand_edit'),
     path('brands/<int:pk>/delete/' ,views.BrandDelete ,name='admin_brand_delete'),
+    path('comments/' ,views.CommentList.as_view() ,name='admin_comment_list'),
+    path('comments/<int:pk>/delete' ,views.CommentDelete ,name='admin_comment_delete'),
+    path('users/' ,views.UsersList.as_view() ,name='admin_user_list'),
+    path('users/add' ,views.UserAdd.as_view() ,name='admin_user_add'),
+    path('users/<int:pk>/delete' ,views.UserDelete ,name='admin_user_delete'),
+    path('users/<int:pk>/edit' ,views.UserEdit.as_view() ,name='admin_user_edit'),
 ]

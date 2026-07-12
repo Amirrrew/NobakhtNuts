@@ -10,12 +10,14 @@ from django.views.generic import ListView, DeleteView, CreateView, UpdateView
 import json
 
 from unicodedata import category
+from urllib3 import request
 
-from adminpanel_module.forms import ProductAddForm, MainCategoryForm, SubCategoryForm, PackForm, BrandForm
+from account_module.models import User
+from adminpanel_module.forms import ProductAddForm, MainCategoryForm, SubCategoryForm, PackForm, BrandForm, UserForm
 from order_module.context_processors import orders
 from order_module.models import Order, OrderStatus
 from product_module.models import Product, ProductCategory, ProductSubCategory, ProductBrand, PackageSize, \
-    ProductFeature, ProductImage
+    ProductFeature, ProductImage, ProductComment
 from utils.dashboard_decorators import get_sales_week, get_sales_week_growth, today, get_order_today, get_user_growth, \
     get_new_orders, get_lowstock_products, get_best_selling_products, get_new_tickets
 from utils.my_decorators import permision_checker_decorator_factory
@@ -704,3 +706,142 @@ class BrandEdit(UpdateView):
         context = super(BrandEdit ,self).get_context_data(*args ,**kwargs)
         context['edit_view'] = True
         return context
+
+
+class CommentList(ListView):
+    model = ProductComment
+    template_name = 'adminpanel_module/comments/comment_list.html'
+    context_object_name = 'comments'
+    paginate_by = 20
+
+    def get_queryset(self):
+        return ProductComment.objects.all().order_by('-created_at')
+def CommentDelete(request , pk):
+    comment = get_object_or_404(ProductComment,pk=pk)
+    if comment:
+        comment.delete()
+    return redirect('admin_comment_list')
+
+
+class UsersList(ListView):
+    model = User
+    template_name = 'adminpanel_module/users/users_list.html'
+    context_object_name = 'users'
+    paginate_by = 30
+
+    def get_queryset(self):
+        queryset = User.objects.all().order_by('-is_superuser','-created_at')
+
+        search = self.request.GET.get('q')
+
+        if search:
+            if search.isdigit():
+                queryset = queryset.filter(
+                    Q(pk__icontains=int(search)) |
+                    Q(phone__icontains=search) |
+                    Q(username__icontains=search) |
+                    Q(first_name__icontains=search) |
+                    Q(last_name__icontains=search)
+                )
+            else:
+                queryset = queryset.filter(
+                    Q(phone__icontains=search) |
+                    Q(username__icontains=search) |
+                    Q(first_name__icontains=search) |
+                    Q(last_name__icontains=search)
+                )
+
+        return queryset
+
+
+    def get(self ,request , *args , **kwargs):
+        response = super().get(request, *args , **kwargs)
+        if request.GET.get('q') is not None:
+            html = render_to_string(
+                'adminpanel_module/users/table_components/users_table_partial.html',
+                {'users': self.object_list},
+                request=request
+            )
+
+            return JsonResponse({
+                'html': html,
+                'data_length': self.object_list.count() if hasattr(self.object_list, 'count') else len(self.object_list)
+            })
+
+        return response
+
+
+class UserAdd(CreateView):
+    model = User
+    form_class = UserForm
+    template_name = 'adminpanel_module/users/user_add_update.html'
+    success_url = reverse_lazy('admin_user_list')
+    context_object_name = 'admin_user'
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        form.save_m2m()
+        password = self.request.POST.get('password')
+        avatar = self.request.FILES.get('avatar')
+        if password:
+            self.object.set_password(password)
+            self.object.save()
+        if avatar:
+            self.object.avatar = avatar
+            self.object.save()
+
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        context["message_e"] = "فیلد هارا به درستی پر کنید"
+        return self.render_to_response(context)
+
+    def get_context_data(self, *args,**kwargs):
+        context = super(UserAdd ,self).get_context_data(*args ,**kwargs)
+        context['add_view'] = True
+        return context
+
+def UserDelete(request ,pk):
+    admin_user = get_object_or_404(User ,pk=pk)
+    if admin_user:
+        admin_user.delete()
+    return redirect('admin_user_list')
+
+class UserEdit(UpdateView):
+    model = User
+    form_class = UserForm
+    template_name = 'adminpanel_module/users/user_add_update.html'
+    success_url = reverse_lazy('admin_user_list')
+    context_object_name = 'admin_user'
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        form.save_m2m()
+        password = self.request.POST.get('password')
+        avatar = self.request.FILES.get('avatar')
+        if password:
+            self.object.set_password(password)
+            self.object.save()
+        if avatar:
+            self.object.avatar = avatar
+            self.object.save()
+
+
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        context["message_e"] = "فیلد هارا به درستی پر کنید"
+        return self.render_to_response(context)
+
+    def get_context_data(self, *args,**kwargs):
+        context = super(UserEdit ,self).get_context_data(*args ,**kwargs)
+        context['edit_view'] = True
+        context['products_added'] = Product.objects.filter(user=self.object)
+        context['orders_commited'] = Order.objects.filter(is_paid=True ,user=self.object)
+        context['comments_sent'] = ProductComment.objects.filter(user=self.object)
+        return context
+

@@ -188,7 +188,7 @@ def like_comment(request: HttpRequest):
         'product_module/product_comment_section.html',
         {
             'product': comment.product,
-            'comment': comment,
+            'comments': comment,
         },
         request=request
     )

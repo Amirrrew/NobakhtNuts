@@ -118,7 +118,7 @@ body {
 }
 
 .sidebar-admin-option:hover {
-    background-color: var(--color13);
+    background-color: var(--color12);
     border: 1px solid #faf7f7;
 }
 

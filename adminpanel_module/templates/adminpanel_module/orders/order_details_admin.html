@@ -124,7 +124,7 @@
                         {% for o in order.orderdetails_set.all %}
                             <tr class="{% if not forloop.last %}border-b border-[var(--color11)]{% endif %}">
                                 <td class="text-center">{{ o.product.pk|to_fanum }}</td>
-                                <td class=""><a href="">{{ o.product.title|to_fanum }}</a></td>
+                                <td class=""><a target="_blank" href="{% url 'admin_product_edit' o.product.pk %}">{{ o.product.title|to_fanum }}</a></td>
                                 <td class="text-center">{% if o.pack_size %}{{ o.pack_size|to_fanum }}{% else %}-{% endif %}</td>
                                 <td class="text-center">{{ o.count|to_fanum }}</td>
                                 <td class="text-center">{{ o.product.final_price|three_digits_currency_no_extension }}</td>
@@ -146,7 +146,7 @@
         </div>
 
         <div class="w-[35%] mt-2">
-            <a href="" class="w-[100%] flex justify-between tablebox-default relative" style="animation: load8 500ms; padding: 10px">
+            <a href="{% url 'admin_user_edit' user.pk %}" class="w-[100%] flex justify-between tablebox-default relative" style="animation: load8 500ms; padding: 10px">
                 <div class="flex gap-2">
                     <div class="centerbox w-20 h-20 rounded-xl border-2 border-[var(--color10)] overflow-hidden">
                         {% if order.user.avatar %}

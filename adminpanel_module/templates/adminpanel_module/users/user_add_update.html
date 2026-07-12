@@ -1,0 +1,273 @@
+{% extends 'adminpanel_module/shared/base-admin.html' %}
+{% load poll_extras %}
+{% block admin_title %}
+        {% if add_view %}
+        کاربر جدید
+        {% else %}
+        ویرایش کاربر {{ admin_user.username }}
+    {% endif %}
+{% endblock %}
+
+{% block admin_content %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="flex justify-between p-2 pt-6 sticky mt-[-10px] top-[-10px] z-10 bg-[var(--header-bg)] backdrop-filter-[blur(10px)] rounded-xl">
+            <div class="flex gap-2 items-start">
+                <a href="{% url 'admin_user_list' %}"><button type="button" class="btn-prdcounter mt-1 text-sm pt-1 rounded-2xl"><i class="fa fa-angle-right"></i></button></a>
+                <svg id="3 user" width="35" height="35" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M18.6948 10.8685H18.7148C20.8448 10.8685 22.5848 9.12855 22.5848 7.00855C22.5848 4.87855 20.8448 3.13855 18.7148 3.13855C18.2948 3.13855 17.8948 3.20855 17.5148 3.32855C18.2048 4.34855 18.6048 5.57855 18.6048 6.90855C18.6148 8.25855 18.1948 9.55855 17.4048 10.6385C17.8148 10.7885 18.2448 10.8685 18.6948 10.8685Z" fill="#674d45"></path>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M5.77479 10.8685H5.8048C6.2548 10.8685 6.68479 10.7885 7.09479 10.6385C6.33479 9.59855 5.8848 8.30855 5.8848 6.90855C5.8848 5.57855 6.28479 4.34855 6.97479 3.32855C6.59479 3.20855 6.19479 3.13855 5.77479 3.13855C3.64479 3.13855 1.91479 4.87855 1.91479 7.00855C1.91479 9.12855 3.64479 10.8685 5.77479 10.8685Z" fill="#674d45"></path>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12.2454 11.7746H12.2784C13.5734 11.7706 14.7894 11.2616 15.7014 10.3426C16.6144 9.42363 17.1144 8.20463 17.1094 6.91163C17.1094 4.22863 14.9284 2.04663 12.2454 2.04663C9.56339 2.04663 7.38239 4.22863 7.38239 6.91163C7.38239 9.59263 9.56339 11.7746 12.2454 11.7746Z" fill="#674d45"></path>
+                <g opacity="0.4">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M18.7249 12.3083C17.5849 12.3083 16.5149 12.5383 15.6149 12.9283C18.7649 13.8383 20.9949 16.0183 21.0549 18.5683C22.6949 18.3583 24.4649 17.7383 24.4649 16.0483C24.4649 14.0183 21.8349 12.3083 18.7249 12.3083Z" fill="#674d45"></path>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.87491 12.9183C7.97491 12.5383 6.90491 12.3083 5.77491 12.3083C2.66491 12.3083 0.0349121 14.0183 0.0349121 16.0483C0.0349121 17.7383 1.79491 18.3483 3.43491 18.5683C3.48491 16.0183 5.71491 13.8383 8.87491 12.9183Z" fill="#674d45"></path>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12.2445 13.9454C8.28352 13.9454 4.93652 16.1014 4.93652 18.6534C4.93652 21.9534 10.4365 21.9534 12.2445 21.9534C15.3825 21.9534 19.5545 21.6134 19.5545 18.6744C19.5545 16.1104 16.2065 13.9454 12.2445 13.9454Z" fill="#674d45"></path>
+                </g>
+                </svg>
+                <div class="flex gap-2">
+                    <h1 class="text-4xl font-semibold">کاربران</h1>
+                    <i class="fa fa-angle-left mt-2 text-[var(--color10)]"></i>
+                    <div class="text-2xl font-semibold mt-1 text-[var(--color6)]">{% if add_view %}کاربر جدید{% else %}{{ admin_user.username }}{% endif %}</div>
+                </div>
+            </div>
+            <div class="flex gap-1 m-[-5px] items-start">
+                <a href="{% url 'admin_user_list' %}" class="flex gap-1 bg-[var(--cancel-bg)] text-[var(--loss-dot)] h-[42px] rounded-xl p-2.5"><div>انصراف</div><i class="fa fa-trash text-xs mt-1"></i></a>
+                <button class="btn-defIconFlex gap-1 z-20" type="submit">ذخیره <i class="fa fa-add mt-1"></i></button>
+            </div>
+        </div>
+        <div class="flex gap-2 items-start">
+            <div class="tablebox-default mt-2 relative" style="width: 65%; animation: load 300ms">
+                <div class="flex gap-1">
+                    <svg class="mt-[-2px]" id="Info Square" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.052 2.78467 2.5 5.33667 2.5 12.5347C2.5 19.7327 5.052 22.2847 12.25 22.2847C19.448 22.2847 22 19.7327 22 12.5347C22 5.33667 19.448 2.78467 12.25 2.78467Z" fill="#674d45"></path>
+                        <path d="M12.2461 9.78467H12.2551C12.6691 9.78467 13.0011 9.44867 13.0011 9.03467C13.0011 8.62067 12.6601 8.28467 12.2461 8.28467C11.8321 8.28467 11.4961 8.62067 11.4961 9.03467C11.4961 9.44867 11.8321 9.78467 12.2461 9.78467Z" fill="#674d45"></path>
+                        <path d="M12.2501 17.1797C12.6641 17.1797 13.0001 16.8437 13.0001 16.4297V12.5347C13.0001 12.1207 12.6641 11.7847 12.2501 11.7847C11.8361 11.7847 11.5001 12.1207 11.5001 12.5347V16.4297C11.5001 16.8437 11.8361 17.1797 12.2501 17.1797Z" fill="#674d45"></path>
+                    </svg>
+                    <h1 class="text-xl font-semibold">مشخصات کاربری</h1>
+                </div>
+
+                <div class="editpanel-row mt-2 flex gap-2">
+                    <div class="w-[100%]">
+                        <div> شماره تلفن<span class="text-[var(--loss-dot)]">*</span></div>
+                        <input value="{{ admin_user.phone }}" class="input-admin" name="phone" id="title" placeholder="شماره تلفنی برای کاربر وارد کنید">
+                    </div>
+
+                    <div class="w-[100%]">
+                        <div> پسورد</div>
+                        <input value="" class="input-admin" name="password" id="" placeholder="پسوردی برای کاربر تعیین کنید">
+                    </div>
+                </div>
+
+                <div class="editpanel-row mt-2 flex gap-2">
+                    <div class="w-[100%]">
+                        <div>نام</div>
+                        <input value="{{ admin_user.first_name }}" class="input-admin" name="first_name" id="title" placeholder="نام وارد کنید">
+                    </div>
+
+                    <div class="w-[100%]">
+                        <div> نام خانوادگی</div>
+                        <input value="{{ admin_user.last_name }}" class="input-admin" name="last_name" id="" placeholder="نام خانوادگی وارد کنید">
+                    </div>
+                </div>
+
+                <div class="editpanel-row mt-2 flex gap-2">
+                    <div class="w-[100%]">
+                        <div>ایمیل</div>
+                        <input value="{{ admin_user.email }}" class="input-admin" name="email" id="title" placeholder="ایمیل برای کاربر وارد کنید">
+                    </div>
+
+                    <div class="w-[100%]">
+                        <div> نام کاربری</div>
+                        <input value="{{ admin_user.username }}" class="input-admin" name="username" id="" placeholder="نام کاربری برای کاربر وارد کنید">
+                    </div>
+                </div>
+
+                <div class="mt-3">
+                    <div>درباره کاربر</div>
+                    <textarea placeholder="درباره کاربر چند خط بنویسید" name="about_me" class="input-admin" style="height: 300px; padding: 10px">{% if admin_user.about_me %}{{ admin_user.about_me }}{% endif %}</textarea>
+                </div>
+
+            </div>
+
+            <div class="tablebox-default mt-2 relative" style="animation: load8 500ms; width: 35%">
+                <div class="flex gap-1">
+                    <svg id="Setting" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <g id="Iconly/Bulk/Setting" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                            <g id="Setting" transform="translate(2.499897, 2.000100)" fill="#674d45" fill-rule="nonzero">
+                                <path d="M9.51207539,12.83 C7.9076023,12.83 6.60971643,11.58 6.60971643,10.01 C6.60971643,8.44 7.9076023,7.18 9.51207539,7.18 C11.1165485,7.18 12.3837756,8.44 12.3837756,10.01 C12.3837756,11.58 11.1165485,12.83 9.51207539,12.83" id="Path"></path>
+                                <path d="M18.730131,12.37 C18.5359591,12.07 18.2600306,11.77 17.9023455,11.58 C17.6161974,11.44 17.4322451,11.21 17.2687319,10.94 C16.7475337,10.08 17.0541209,8.95 17.9227847,8.44 C18.944742,7.87 19.2717684,6.6 18.6790331,5.61 L17.9943217,4.43 C17.411806,3.44 16.1343592,3.09 15.1226214,3.67 C14.2232989,4.15 13.0684871,3.83 12.5472888,2.98 C12.3837756,2.7 12.2917995,2.4 12.3122386,2.1 C12.3428973,1.71 12.2202625,1.34 12.0363101,1.04 C11.6581859,0.42 10.9734745,0 10.217226,0 L8.77626608,0 C8.03023719,0.02 7.34552574,0.42 6.96740151,1.04 C6.77322961,1.34 6.6608143,1.71 6.68125344,2.1 C6.70169259,2.4 6.60971643,2.7 6.44620325,2.98 C5.92500498,3.83 4.77019314,4.15 3.88109021,3.67 C2.85913283,3.09 1.59190568,3.44 0.999170395,4.43 L0.314458948,5.61 C-0.26805676,6.6 0.0589696023,7.87 1.07070741,8.44 C1.93937119,8.95 2.2459584,10.08 1.73497971,10.94 C1.56124696,11.21 1.37729463,11.44 1.09114656,11.58 C0.743681049,11.77 0.437093834,12.07 0.273580653,12.37 C-0.104543579,12.99 -0.0841044313,13.77 0.2940198,14.42 L0.999170395,15.62 C1.37729463,16.26 2.08244522,16.66 2.81825454,16.66 C3.16572005,16.66 3.574503,16.56 3.90152936,16.36 C4.15701871,16.19 4.46360592,16.13 4.80085186,16.13 C5.81258967,16.13 6.6608143,16.96 6.68125344,17.95 C6.68125344,19.1 7.62145424,20 8.8069248,20 L10.1967868,20 C11.3720378,20 12.3122386,19.1 12.3122386,17.95 C12.3428973,16.96 13.191122,16.13 14.2028598,16.13 C14.5298861,16.13 14.8364734,16.19 15.1021823,16.36 C15.4292086,16.56 15.827772,16.66 16.1854571,16.66 C16.9110468,16.66 17.6161974,16.26 17.9943217,15.62 L18.7096918,14.42 C19.0775965,13.75 19.1082552,12.99 18.730131,12.37" id="Path" opacity="0.400000006"></path>
+                            </g>
+                        </g>
+                    </svg>
+                    <h1 class="text-xl font-semibold">تنظیمات و سطح دسترسی</h1>
+                </div>
+                <div class="flex justify-between mt-5">
+                    <h1 class="text-xl font-semibold">سوپر یوزر</h1>
+                    <label class="switch">
+                        <input type="checkbox" name="is_active"
+                            {% if admin_user.is_superuser %}
+                               checked
+                            {% endif %}>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="mt-1 text-[var(--color10)]">
+                    در صورت سوپر یوزر کردن کاربر، کاربر به همه بخش های سایت دسترسی نامحدود دارد و میتواند همه جیزی را تغییر دهد.
+                </div>
+
+                <div class="flex mt-3 w-[100%] bg-[var(--color12)] p-3 rounded-xl">
+                    <div id="upload-avatar" class="image-inputbox" style="{% if admin_user.avatar %}background-image: url({{ admin_user.avatar.url }});{% endif %} min-width: 140px; min-height: 140px">
+                        <input oninput="SetUploadedImage(event ,'upload-avatar')" name="avatar" type="file" class="cursor-pointer w-[100%] h-[100%] opacity-0" style="z-index: 100">
+                        {% if not t.image %}
+                            <div class="centerbox">
+                                <svg style="z-index: -1" class="relative top-[-100px]" id="Upload" width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M16.65 7.28717C15.53 7.20717 14.3499 7.16735 13.1199 7.15735H11.6199C10.4099 7.16735 9.15 7.21717 7.85 7.28717H7.83C3.8 7.65717 2.5 9.48717 2.5 14.7872C2.5 22.3872 5.35 22.3872 12.25 22.3872C19.15 22.3872 22 22.3872 22 14.7872C22 9.48717 20.7 7.65717 16.65 7.28717Z" fill="#674d45"></path>
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12.9998 4.16917L14.6388 5.81217C14.7848 5.95917 14.9778 6.03316 15.1698 6.03316C15.3608 6.03316 15.5528 5.95917 15.6988 5.81417C15.9928 5.52117 15.9928 5.04617 15.7008 4.75317L12.7808 1.82517C12.4998 1.54217 11.9998 1.54217 11.7188 1.82517L8.79883 4.75317C8.50683 5.04617 8.50683 5.52117 8.80083 5.81417C9.09483 6.10617 9.56883 6.10617 9.86083 5.81217L11.4998 4.16917V14.406C11.4998 14.8177 11.8454 15.1483 12.257 15.1483C12.6689 15.1483 12.9998 14.8173 12.9998 14.4054V4.16917Z" fill="#674d45"></path>
+                                </svg>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="mx-3 mt-3">
+                        {% if admin_user.avatar %}
+                            <div class="profile-info">
+                                <div class="text-xl">
+                                    تصویر پروفایل
+                                </div>
+                            </div>
+                            <div>
+                                <a class="mt-2" href="{% url 'delete_avatar_page' %}">
+                                    <button type="button" class="btn-defIconFlex btn-delete-upload gap-2" style="z-index: 1; background-color: var(--cancel-bg)">
+                                        <div style="color: var(--loss-dot)">
+                                            حذف عکس
+                                        </div>
+                                    </button>
+                                </a>
+                            </div>
+                        {% else %}
+                            <div class="profile-info">
+                                <div class="text-xl">
+                                    تصویر پروفایل
+                                </div>
+                                <div class="text-sm" style="color: var(--color5)">
+                                    فرمت عکس باید png - jpg - jpeg - webp
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    {% if edit_view %}
+        <div class="tablebox-default mt-2">
+            <div class="flex gap-1 pb-2">
+                <svg class="mt-[-2px]" id="Activity" width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M21.6201 8.80959C21.0901 9.05959 20.4901 9.19959 19.8701 9.19959C17.5301 9.19959 15.6201 7.28959 15.6201 4.94959C15.6201 4.30959 15.7601 3.70959 16.0201 3.16959C14.9201 2.93959 13.6401 2.82959 12.1601 2.82959C4.95014 2.82959 2.39014 5.37959 2.39014 12.5996C2.39014 19.8196 4.95014 22.3696 12.1601 22.3696C19.3801 22.3696 21.9401 19.8196 21.9401 12.5996C21.9401 11.1496 21.8401 9.88959 21.6201 8.80959Z" fill="#674d45"></path>
+                <path d="M13.5899 14.9798L16.5199 11.1998C16.7699 10.8698 16.7099 10.3998 16.3899 10.1498C16.0599 9.88975 15.5899 9.94975 15.3299 10.2798L12.8699 13.4598L10.0499 11.2498C9.88988 11.1298 9.68988 11.0698 9.48988 11.0998C9.28988 11.1198 9.10988 11.2198 8.98988 11.3798L5.98988 15.2698C5.73988 15.5998 5.79988 16.0698 6.12988 16.3198C6.26988 16.4298 6.42988 16.4798 6.58988 16.4798C6.80988 16.4798 7.03988 16.3798 7.17988 16.1898L9.70988 12.8998L12.5299 15.1098C12.6899 15.2298 12.8899 15.2898 13.0899 15.2598C13.2899 15.2398 13.4699 15.1398 13.5899 14.9798Z" fill="#674d45"></path>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M19.8696 7.19971C20.2896 7.19971 20.6896 7.07971 21.0196 6.87971C21.6696 6.48971 22.1096 5.76971 22.1096 4.94971C22.1096 3.70971 21.1096 2.69971 19.8696 2.69971C19.0596 2.69971 18.3496 3.12971 17.9496 3.77971C17.7396 4.11971 17.6196 4.51971 17.6196 4.94971C17.6196 6.18971 18.6296 7.19971 19.8696 7.19971Z" fill="#674d45"></path>
+                </svg>
+                <h1 class="text-3xl mt-0.5 font-semibold">فعالیت های کاربر</h1>
+            </div>
+
+            {% if products_added %}
+                <div class="border-b border-[var(--color11)] pb-2 mt-3">
+                    <h1 class="text-lg text-[var(--color10)]">محصولات اضافه شده</h1>
+                </div>
+                <div class="flex flex-wrap gap-2 mt-2">
+                {% for product in products_added %}
+                    <a target="_blank" href="{% url 'admin_product_edit' product.pk %}" class="flex gap-2 bg-[var(--color12)] p-2 rounded-xl w-[32.5%]">
+                        <div class="min-w-15 min-h-15 max-w-15 max-h-15 bg-[var(--color13)] rounded-lg overflow-hidden">
+                            <img class="" src="{{ product.product_image.first.image.url }}" alt="{{ product.title }}" loading="lazy">
+                        </div>
+                        <div class="mt-1">
+                            <h1>{{ product.title|to_fanum }}</h1>
+                            <h1 class="text-[var(--color10)]">{{ product.category }}</h1>
+                        </div>
+                    </a>
+                {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if orders_commited %}
+                <div class="border-b border-[var(--color11)] pb-2 mt-7">
+                    <h1 class="text-lg text-[var(--color10)]">سفارشات ثبت شده</h1>
+                </div>
+                <table class="table-default">
+                    <thead>
+                        <tr>
+                            <td>#شماره سفارش</td>
+                            <td>وضعیت</td>
+                            <td>تاریخ ثبت</td>
+                            <td>روش پرداخت</td>
+                            <td>مبلغ کل</td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders_commited %}
+                            <tr class="{% if not forloop.last %} border-b border-[var(--color12)]{% endif %}">
+                                <td><a href="{% url 'admin_order_detail' order.pk %}">#{{ order.pk }}</a></td>
+                                <td><div class="{% if order.status.title == 'در انتظار تایید' %}stat-onwait text-white{% elif order.status.title == 'ارسال شده' %}stat-static{% elif order.status.title == 'پایان یافته' %}stat-loss{% elif order.status.title == 'رد شده' %}stat-denied{% else %}stat-profit{% endif %} w-fit flex"><div class=" {% if order.status.title == 'در انتظار تایید' %}stat-onwait-dot{% elif order.status.title == 'ارسال شده' %}stat-dot-static{% elif order.status.title == 'پایان یافته' %}stat-dot-loss{% elif order.status.title == 'رد شده' %}stat-dot-denied{% else %}stat-dot-profit{% endif %}"></div>{{ order.status }}{% if order.status.title == 'در انتظار تایید' %}رسید{% endif %}</div></td>
+                                <td>{{ order.payment_date.time }} <span class="text-[var(--color10)] text-xl">|</span>  {{ order.payment_date|show_jalali_date|to_fanum }}</td>
+                                <td>{{ order.payment_method }}</td>
+                                <td class="font-semibold text-xl">{{ order.finalized_price|three_digits_currency }}</td>
+                                <td>
+                                    <a href="{% url 'admin_order_detail' order.pk %}" class="btn-defIconFlex2 w-[100%] text-sm gap-2 text-nowrap" style="justify-content: center; padding: 10px; background-color: var(--color12)"> مشاهده سفارش</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+
+            {% if comments_sent %}
+                <div class="border-b border-[var(--color11)] pb-2 mt-7">
+                    <h1 class="text-lg text-[var(--color10)]">کامنت های ارسالی</h1>
+                </div>
+                <div class="mt-2 flex flex-wrap gap-2">
+                    {% for c in comments_sent %}
+                        <div class="w-[49%] p-2 rounded-xl bg-[var(--color1)] border border-[var(--color11)] relative" style="{% if forloop.counter <= 10 %}animation: load8 {% widthratio forloop.counter 1 100 %}ms{% endif %}">
+                            <div class="flex justify-between">
+                                <div>
+                                    <div class="flex gap-2">
+                                        <div class="w-8 h-8 overflow-hidden bg-[var(--color11)] rounded border border-[var(--color11)]">
+                                            <img class="w-[100%] h-[100%]" loading="lazy" src="{{ c.product.product_image.first.image.url }}">
+                                        </div>
+                                        <a target="_blank" href="{{ c.product.get_absolute_url }}" class="mt-1">{{ c.product.title|to_fanum }}</a>
+                                    </div>
+                                </div>
+                                <div class="flex gap-1">
+                                    <button onclick="OpenDialog('آیا از حذف این کامنت مطمئن هستید؟' ,'{% url 'admin_comment_delete' c.pk %}')" class="bg-[var(--cancel-bg)] text-[var(--loss-bg)] w-5 h-5 rounded cursor-pointer"><i class="fa fa-trash text-xs"></i></button>
+                                </div>
+                            </div>
+                            <div class="flex justify-between w-[100%] mt-2 relative">
+                                <div class="flex gap-2">
+                                    <div class="w-8 h-8 overflow-hidden bg-[var(--color11)] rounded border border-[var(--color11)]">
+                                        {% if c.user.avatar %}<img class="w-[100%] h-[100%]" loading="lazy" src="{{ c.user.avatar.url }}">{% else %}
+                                            <svg class="m-1" id="Profile" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M12.2115 11.6423H12.2425C14.9375 11.6423 17.1295 9.45026 17.1295 6.75526C17.1295 4.06126 14.9375 1.86926 12.2425 1.86926C9.5475 1.86926 7.3555 4.06126 7.3555 6.75326C7.3465 9.43926 9.5235 11.6323 12.2115 11.6423Z" fill="#674d45"></path>
+                                                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.2503 13.8307C8.33727 13.8307 4.90527 16.1327 4.90527 18.7557C4.90527 22.1307 10.4343 22.1307 12.2503 22.1307C14.0663 22.1307 19.5943 22.1307 19.5943 18.7337C19.5943 16.1217 16.1623 13.8307 12.2503 13.8307Z" fill="#674d45"></path>
+                                            </svg>
+                                        {% endif %}
+                                    </div>
+                                    <div>
+                                        <div class="text-xs text-[var(--color10)]">توسط</div>
+                                        <a href="{% url 'admin_product_edit' c.product.pk %}" class="mt-[-3px]">{{ c.user }}</a>
+                                    </div>
+                                </div>
+                                <div class="absolute left-1 bottom-1 flex gap-1">
+                                    <div class="bg-[var(--color12)] text-[var(--color6)] rounded-lg text-sm px-2">{{ c.created_at|show_jalali_date|to_fanum }} - {{ c.created_at.time }}</div>
+                                    <div class="flex gap-0.5 bg-[var(--color12)] text-[var(--color6)] rounded-lg text-sm px-2"><div>{{ c.rating|to_fanum }}</div><i class="fa fa-star text-[var(--color7)] text-xs mt-0.5"></i></div>
+                                    <div class="flex gap-0.5 bg-[var(--color12)] text-[var(--color6)] rounded-lg text-sm px-2"><div>{{ c.like.count|to_fanum }}</div><i class="fa fa-heart text-[var(--color7)] text-xs mt-0.5"></i></div>
+                                </div>
+                            </div>
+                            <div class="border-t border-[var(--color11)] mt-1 pt-2 ">
+                                <div class="text-[var(--color10)]">{{ c.text|to_fanum }}</div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}

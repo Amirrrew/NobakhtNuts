@@ -965,7 +965,7 @@ jQuery.extend({
 	},
 
 	attr: function( elem, name, value ) {
-		// don't set attributes on text and comment nodes
+		// don't set attributes on text and comments nodes
 		if (!elem || elem.nodeType == 3 || elem.nodeType == 8)
 			return undefined;
 
@@ -1097,7 +1097,7 @@ jQuery.extend({
 		// expando of getElementsByTagName
 		var i = 0, elem, pos = first.length;
 		// Also, we need to make sure that the correct elements are being returned
-		// (IE returns comment nodes in a '*' query)
+		// (IE returns comments nodes in a '*' query)
 		if ( !jQuery.support.getAll ) {
 			while ( (elem = second[ i++ ]) != null )
 				if ( elem.nodeType != 8 )
@@ -2519,7 +2519,7 @@ jQuery.event = {
 
 	// Detach an event or set of events from an element
 	remove: function(elem, types, handler) {
-		// don't do events on text and comment nodes
+		// don't do events on text and comments nodes
 		if ( elem.nodeType == 3 || elem.nodeType == 8 )
 			return;
 
@@ -2620,7 +2620,7 @@ jQuery.event = {
 
 			// Handle triggering a single element
 
-			// don't do events on text and comment nodes
+			// don't do events on text and comments nodes
 			if ( !elem || elem.nodeType == 3 || elem.nodeType == 8 )
 				return undefined;
 			
