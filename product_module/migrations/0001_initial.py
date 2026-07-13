@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=100, verbose_name='عنوان دسته بندی')),
                 ('image', models.ImageField(blank=True, null=True, upload_to='category_imgs/', verbose_name='عکس دسته بندی')),
-                ('slug', models.SlugField(blank=True, null=True, verbose_name='عنوان در url')),
+                ('slug', models.SlugField(max_length=1000 ,blank=True, null=True, verbose_name='عنوان در url')),
             ],
             options={
                 'verbose_name': 'شاخه اصلی',
@@ -46,7 +46,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=100, verbose_name='عنوان زیرشاخه')),
                 ('image', models.ImageField(blank=True, null=True, upload_to='subcategory_imgs/', verbose_name='عکس زیر شاخه')),
-                ('slug', models.SlugField(blank=True, null=True, verbose_name='عنوان در url')),
+                ('slug', models.SlugField(max_length=1000 ,blank=True, null=True, verbose_name='عنوان در url')),
                 ('main_category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='product_module.productcategory', verbose_name='شاخه اصلی')),
             ],
             options={
@@ -61,8 +61,8 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(max_length=300, null=True, verbose_name='عنوان محصول')),
                 ('price', models.IntegerField(default=0, verbose_name='قیمت')),
                 ('quantity', models.IntegerField(default=0, verbose_name='تعداد')),
-                ('short_desc', models.CharField(blank=True, null=True, verbose_name='توضیحات')),
-                ('offer', models.CharField(db_index=True, default=0, verbose_name='تخفیف')),
+                ('short_desc', models.CharField(max_length=10000 ,blank=True, null=True, verbose_name='توضیحات')),
+                ('offer', models.CharField(max_length= 20 ,db_index=True, default=0, verbose_name='تخفیف')),
                 ('is_active', models.BooleanField(db_index=True, default=True, verbose_name='فعال / غیر فعال')),
                 ('is_deleted', models.BooleanField(db_index=True, default=False, verbose_name='حذف شده / نشده')),
                 ('created_at', models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='تاریخ ثبت')),
