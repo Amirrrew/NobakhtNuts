@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=100, verbose_name='عنوان دسته بندی')),
                 ('image', models.ImageField(blank=True, null=True, upload_to='category_imgs/', verbose_name='عکس دسته بندی')),
-                ('slug', models.SlugField(max_length=1000 ,blank=True, null=True, verbose_name='عنوان در url')),
+                ('slug', models.SlugField(blank=True, null=True, verbose_name='عنوان در url')),
             ],
             options={
                 'verbose_name': 'شاخه اصلی',
@@ -46,7 +46,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=100, verbose_name='عنوان زیرشاخه')),
                 ('image', models.ImageField(blank=True, null=True, upload_to='subcategory_imgs/', verbose_name='عکس زیر شاخه')),
-                ('slug', models.SlugField(max_length=1000 ,blank=True, null=True, verbose_name='عنوان در url')),
+                ('slug', models.SlugField(blank=True, null=True, verbose_name='عنوان در url')),
                 ('main_category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='product_module.productcategory', verbose_name='شاخه اصلی')),
             ],
             options={
