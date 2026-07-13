@@ -21,7 +21,7 @@ class PostingMethod(models.Model):
     time = models.CharField(max_length=200,null=True ,blank=True ,verbose_name='زمان ارسال')
     desc = models.TextField(max_length=1000,null=True ,blank=True ,verbose_name='توضیحات')
     order_type = models.PositiveIntegerField(null=True ,blank=True ,verbose_name='ترتیب')
-    icon = models.CharField(null=True ,blank=True ,verbose_name='آیکون')
+    icon = models.CharField(max_length= 1000,null=True ,blank=True ,verbose_name='آیکون')
 
     def __str__(self):
         return self.title
@@ -66,7 +66,7 @@ class PaymentMethod(models.Model):
     card = models.ForeignKey(Cards,null=True ,blank=True ,on_delete=models.DO_NOTHING ,verbose_name='کارت')
     desc = models.TextField(max_length=500 ,null=True ,blank=True ,verbose_name='توضیحات')
     steps = models.ManyToManyField(OrderStatus ,null=True ,blank=True ,verbose_name='مراحل')
-    merchant_id = models.CharField(null=True ,blank=True ,verbose_name='مرچنت آیدی')
+    merchant_id = models.CharField(max_length= 2000,null=True ,blank=True ,verbose_name='مرچنت آیدی')
     is_active = models.BooleanField(default=True ,verbose_name='فعال / غیر فعال')
 
     def __str__(self):

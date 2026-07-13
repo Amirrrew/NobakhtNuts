@@ -23,8 +23,8 @@ class User(AbstractUser):
 class Address(models.Model):
     user = models.ForeignKey(User ,on_delete=models.CASCADE ,verbose_name='کاربر')
     title = models.CharField(max_length=200 ,null=True ,blank=True,verbose_name='عنوان آدرس')
-    province = models.CharField(null=True ,blank=True ,verbose_name='استان')
-    city = models.CharField(null=True ,blank=True ,verbose_name='شهر')
+    province = models.CharField(max_length= 1000 ,null=True ,blank=True ,verbose_name='استان')
+    city = models.CharField(max_length=1000 ,null=True ,blank=True ,verbose_name='شهر')
     postal_code = models.CharField(max_length=10 ,null=True ,blank=True ,db_index=True ,verbose_name='کد پستی 10 رقمی')
     number_plate = models.CharField(max_length=8 ,default=0 ,null=True ,blank=True ,verbose_name='پلاک')
     details = models.CharField(max_length=1000 ,null=True ,blank=True ,verbose_name='جزئیات آدرس')
