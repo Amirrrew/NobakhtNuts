@@ -17,11 +17,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='address',
             name='city',
-            field=models.CharField(max_length=10000,blank=True, null=True, verbose_name='شهر'),
+            field=models.CharField(max_length=1000,blank=True, null=True, verbose_name='شهر'),
         ),
         migrations.AddField(
             model_name='address',
             name='province',
-            field=models.CharField(max_length=10000 ,blank=True, null=True, verbose_name='استان'),
+            field=models.CharField(max_length=1000 ,blank=True, null=True, verbose_name='استان'),
         ),
     ]
