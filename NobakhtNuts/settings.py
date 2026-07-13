@@ -91,6 +91,7 @@ else:
             'PASSWORD': config('DB_PASSWORD'),
             "OPTIONS": {
                 "unix_socket": "/tmp/mysql.sock",
+                "charset": "utf8mb4",
             },
         }
     }
