@@ -1,17 +1,18 @@
 from pathlib import Path
 import os
+from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-SECRET_KEY = 'django-insecure-a(rbz%ol#r48a3axv6ludycfre26(5ha#sn+p(b8%sw7na(7w#'
+SECRET_KEY = config('SECRET_KEY')
 
-DEBUG = True
+DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = [
-    '*'
-]
-
+ALLOWED_HOSTS = config(
+    "ALLOWED_HOSTS",
+    default="127.0.0.1,localhost"
+).split(",")
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -72,13 +73,26 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'NobakhtNuts.wsgi.application'
 
+DB_ENGINE = config('DB_ENGINE' ,default="django.db.backends.sqlite3")
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if DB_ENGINE == 'django.db.backends.sqlite3':
+    DATABASES = {
+        'default': {
+            'ENGINE': DB_ENGINE,
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': DB_ENGINE,
+            'NAME': config('DB_NAME'),
+            'USER': config('DB_USER'),
+            'PASSWORD': config('DB_PASSWORD'),
+            'HOST': config('DB_HOST'),
+            'PORT': config('DB_PORT'),
+        }
+    }
 
 AUTH_PASSWORD_VALIDATORS = [
     {
