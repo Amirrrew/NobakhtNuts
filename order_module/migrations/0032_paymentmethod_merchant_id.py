@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='paymentmethod',
             name='merchant_id',
-            field=models.CharField(blank=True, null=True, verbose_name='مرچنت آیدی'),
+            field=models.CharField(max_length=1000 ,blank=True, null=True, verbose_name='مرچنت آیدی'),
         ),
     ]
