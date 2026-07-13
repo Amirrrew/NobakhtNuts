@@ -17,9 +17,9 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(max_length=100, verbose_name='عنوان')),
                 ('desc', models.TextField(blank=True, max_length=200, null=True, verbose_name='توضیحات')),
                 ('icon', models.CharField(verbose_name='آیکون')),
-                ('opt1', models.CharField(blank=True, null=True, verbose_name='گزینه 1')),
-                ('opt2', models.CharField(blank=True, null=True, verbose_name='گزینه 1')),
-                ('opt3', models.CharField(blank=True, null=True, verbose_name='گزینه 1')),
+                ('opt1', models.CharField(max_length=1000 ,blank=True, null=True, verbose_name='گزینه 1')),
+                ('opt2', models.CharField(max_length=1000 ,blank=True, null=True, verbose_name='گزینه 1')),
+                ('opt3', models.CharField(max_length=1000 ,blank=True, null=True, verbose_name='گزینه 1')),
             ],
             options={
                 'verbose_name': 'راه ارتباطی',
