@@ -15,23 +15,38 @@
                 <button type="button" class="btn-prdnavbar rounded-lg bg-[var(--color9)] w-6 pt-1 h-6 text-xs cursor-pointer"><i id="btn-navicon" class="fa fa-angle-down"></i></button>
             </div>
 
-            <div id="payment-item" class="relative btn-prdnavbar flex justify-between w-[100%] p-2 items-start border-b border-dashed border-[var(--color10)]">
-                <div class="flex gap-2">
-                    <svg id="Wallet" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M17.5207 15.1719C15.6937 15.1719 14.2077 13.6859 14.2077 11.8599C14.2077 10.0329 15.6937 8.54594 17.5207 8.54594H21.7307C20.8527 4.49194 18.0597 2.96094 12.2507 2.96094C5.01471 2.96094 2.44971 5.32694 2.44971 11.9999C2.44971 18.6739 5.01471 21.0389 12.2507 21.0389C18.1927 21.0389 20.9807 19.4389 21.7887 15.1719H17.5207Z" fill="#674d45"></path>
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M11.9017 8.64099H7.84167C7.42767 8.64099 7.09167 8.30499 7.09167 7.89099C7.09167 7.47699 7.42767 7.14099 7.84167 7.14099H11.9017C12.3157 7.14099 12.6517 7.47699 12.6517 7.89099C12.6517 8.30499 12.3157 8.64099 11.9017 8.64099Z" fill="#674d45"></path>
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M17.5205 13.6719C16.5215 13.6719 15.7075 12.8589 15.7075 11.8599C15.7075 10.8599 16.5215 10.0459 17.5205 10.0459H21.9565C22.0155 10.6549 22.0505 11.2979 22.0505 11.9999C22.0505 12.5949 22.0225 13.1439 21.9805 13.6719H17.5205ZM18.4106 11.7998C18.4106 12.2138 18.0746 12.5498 17.6606 12.5498C17.2466 12.5498 16.9106 12.2138 16.9106 11.7998C16.9106 11.3858 17.2466 11.0498 17.6606 11.0498C18.0746 11.0498 18.4106 11.3858 18.4106 11.7998Z" fill="#674d45"></path>
-                    </svg>
-                    <div class="">{{ card.owner }}</div>
-                </div>
-                <div class="flex gap-1">
-                    <div>{{ card.card_code|format_card_number }}</div>
-                    <div>
-                        <i onclick="CopyToClipboard('clipboard-card-m' ,'check-card-m' ,'{{ card.card_code }}')" class="fa fa-copy cursor-pointer text-[var(--color10)] mt-0.5 relative" id="clipboard-card-m"></i>
-                        <i class="fa fa-check text-[var(--color10)] mt-0.5" style="display: none; animation: load3 200ms; position: relative" id="check-card-m"></i>
+            <div class="w-[100%] btn-prdnavbar relative payment-item p-2 border-b border-dashed border-[var(--color10)]">
+                <div id="" class="relative btn-prdnavbar flex justify-between w-[100%] items-start">
+                    <div class="flex gap-2">
+                        <svg id="Wallet" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M17.5207 15.1719C15.6937 15.1719 14.2077 13.6859 14.2077 11.8599C14.2077 10.0329 15.6937 8.54594 17.5207 8.54594H21.7307C20.8527 4.49194 18.0597 2.96094 12.2507 2.96094C5.01471 2.96094 2.44971 5.32694 2.44971 11.9999C2.44971 18.6739 5.01471 21.0389 12.2507 21.0389C18.1927 21.0389 20.9807 19.4389 21.7887 15.1719H17.5207Z" fill="#674d45"></path>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M11.9017 8.64099H7.84167C7.42767 8.64099 7.09167 8.30499 7.09167 7.89099C7.09167 7.47699 7.42767 7.14099 7.84167 7.14099H11.9017C12.3157 7.14099 12.6517 7.47699 12.6517 7.89099C12.6517 8.30499 12.3157 8.64099 11.9017 8.64099Z" fill="#674d45"></path>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M17.5205 13.6719C16.5215 13.6719 15.7075 12.8589 15.7075 11.8599C15.7075 10.8599 16.5215 10.0459 17.5205 10.0459H21.9565C22.0155 10.6549 22.0505 11.2979 22.0505 11.9999C22.0505 12.5949 22.0225 13.1439 21.9805 13.6719H17.5205ZM18.4106 11.7998C18.4106 12.2138 18.0746 12.5498 17.6606 12.5498C17.2466 12.5498 16.9106 12.2138 16.9106 11.7998C16.9106 11.3858 17.2466 11.0498 17.6606 11.0498C18.0746 11.0498 18.4106 11.3858 18.4106 11.7998Z" fill="#674d45"></path>
+                        </svg>
+                        <div class="">{{ card.owner }}</div>
+                    </div>
+                    <div class="flex gap-1">
+                        <div>{{ card.card_code|format_card_number }}</div>
+                        <div>
+                            <i onclick="CopyToClipboard('clipboard-card-m' ,'check-card-m' ,'{{ card.card_code }}')" class="fa fa-copy cursor-pointer text-[var(--color10)] mt-0.5 relative" id="clipboard-card-m"></i>
+                            <i class="fa fa-check text-[var(--color10)] mt-0.5" style="display: none; animation: load3 200ms; position: relative" id="check-card-m"></i>
+                        </div>
                     </div>
                 </div>
+                <div class="mt-2 payment-item">
+                    {% if card.shaba %}
+                        <div class="flex w-[100%] justify-end gap-2">
+                            <div><span class="text-[var(--color10)]">IR </span>{{ card.shaba|to_fanum }}</div>
+                            <div class="">
+                                <i onclick="CopyToClipboard('clipboard-shaba-m' ,'check-shaba-m' ,'{{ card.shaba }}')" class="fa fa-copy cursor-pointer text-[var(--color10)] mt-0.5 relative" id="clipboard-shaba-m"></i>
+                                <i class="fa fa-check text-[var(--color10)] mt-0.5" style="display: none; animation: load3 200ms; position: relative" id="check-shaba-m"></i>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
             </div>
+
+
 
             <div class="flex justify-between pt-2">
                 <div class="text-[var(--color6)] mt-0.5">مجموع به ریال:</div>

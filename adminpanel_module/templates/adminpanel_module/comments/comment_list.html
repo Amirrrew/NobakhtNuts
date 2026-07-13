@@ -50,7 +50,7 @@
                         </div>
                     </div>
                     <div class="absolute left-1 bottom-1 flex gap-1">
-                        <div class="bg-[var(--color12)] text-[var(--color6)] rounded-lg text-sm px-2">{{ c.created_at|show_jalali_date|to_fanum }} - {{ c.created_at.time }}</div>
+                        <div class="bg-[var(--color12)] text-[var(--color6)] rounded-lg text-sm px-2">{{ c.created_at|show_jalali_date|to_fanum }} - {{ c.created_at|date:"H:i"|to_fanum  }}</div>
                         <div class="flex gap-0.5 bg-[var(--color12)] text-[var(--color6)] rounded-lg text-sm px-2"><div>{{ c.rating|to_fanum }}</div><i class="fa fa-star text-[var(--color7)] text-xs mt-0.5"></i></div>
                         <div class="flex gap-0.5 bg-[var(--color12)] text-[var(--color6)] rounded-lg text-sm px-2"><div>{{ c.like.count|to_fanum }}</div><i class="fa fa-heart text-[var(--color7)] text-xs mt-0.5"></i></div>
                     </div>

@@ -1,5 +1,6 @@
 from itertools import count
-
+from django.utils import timezone
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
@@ -13,11 +14,14 @@ from unicodedata import category
 from urllib3 import request
 
 from account_module.models import User
-from adminpanel_module.forms import ProductAddForm, MainCategoryForm, SubCategoryForm, PackForm, BrandForm, UserForm
+from adminpanel_module.forms import ProductAddForm, MainCategoryForm, SubCategoryForm, PackForm, BrandForm, UserForm, \
+    SupportWayForm, SiteSettingForm, FooterLinkForm, PaymentForm
 from order_module.context_processors import orders
-from order_module.models import Order, OrderStatus
+from order_module.models import Order, OrderStatus, PaymentMethod, Cards
 from product_module.models import Product, ProductCategory, ProductSubCategory, ProductBrand, PackageSize, \
     ProductFeature, ProductImage, ProductComment
+from site_settings.models import SiteSettings, FooterLinkBox, FooterLink
+from support_module.models import Ticket, SupportWays
 from utils.dashboard_decorators import get_sales_week, get_sales_week_growth, today, get_order_today, get_user_growth, \
     get_new_orders, get_lowstock_products, get_best_selling_products, get_new_tickets
 from utils.my_decorators import permision_checker_decorator_factory
@@ -311,7 +315,7 @@ def ProductDelete(request ,pk):
         product.save()
     return redirect('admin_product_list')
 
-
+@method_decorator(permision_checker_decorator_factory(), name='dispatch')
 class ProductAdd(CreateView):
     model = Product
     form_class = ProductAddForm
@@ -352,6 +356,11 @@ class ProductAdd(CreateView):
         product.save()
         return super().form_valid(form)
 
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        context["message_e"] = "فیلد هارا به درستی پر کنید"
+        return self.render_to_response(context)
+
     def get_context_data(self,*args, **kwargs):
         context = super(ProductAdd ,self).get_context_data(*args,**kwargs)
         context['category_options_json'] = json.dumps([
@@ -368,6 +377,7 @@ class ProductAdd(CreateView):
         return context
 
 
+@method_decorator(permision_checker_decorator_factory(), name='dispatch')
 class ProductEdit(UpdateView):
     model = Product
     form_class = ProductAddForm
@@ -425,6 +435,11 @@ class ProductEdit(UpdateView):
             product.save()
         return super().form_valid(form)
 
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        context["message_e"] = "فیلد هارا به درستی پر کنید"
+        return self.render_to_response(context)
+
     def get_context_data(self,*args, **kwargs):
         context = super(ProductEdit ,self).get_context_data(*args,**kwargs)
 
@@ -467,6 +482,7 @@ class ProductEdit(UpdateView):
         return context
 
 
+@method_decorator(permision_checker_decorator_factory(), name='dispatch')
 class MainCategories(ListView):
     model = ProductCategory
     template_name = 'adminpanel_module/categories/categories_list.html'
@@ -480,6 +496,7 @@ class MainCategories(ListView):
             category.delete()
         return redirect('admin_maincategory_list')
 
+@method_decorator(permision_checker_decorator_factory(), name='dispatch')
 class MainCategoryAdd(CreateView):
     model = ProductCategory
     form_class = MainCategoryForm
@@ -503,6 +520,7 @@ class MainCategoryAdd(CreateView):
         context['add_view'] = True
         return context
 
+@method_decorator(permision_checker_decorator_factory(), name='dispatch')
 class MainCategoryEdit(UpdateView):
     model = ProductCategory
     form_class = MainCategoryForm
@@ -527,6 +545,7 @@ class MainCategoryEdit(UpdateView):
         return context
 
 
+@method_decorator(permision_checker_decorator_factory(), name='dispatch')
 class SubCategories(ListView):
     model = ProductSubCategory
     template_name = 'adminpanel_module/categories/subcategories_list.html'
@@ -536,6 +555,7 @@ class SubCategories(ListView):
         return ProductCategory.objects.prefetch_related('subcategory').all()
 
 
+@method_decorator(permision_checker_decorator_factory(), name='dispatch')
 class SubCategoryAdd(CreateView):
     model = ProductSubCategory
     form_class = SubCategoryForm
@@ -560,6 +580,8 @@ class SubCategoryAdd(CreateView):
         return context
 
 
+
+@method_decorator(permision_checker_decorator_factory(), name='dispatch')
 class SubCategoryEdit(UpdateView):
     model = ProductSubCategory
     form_class = SubCategoryForm
@@ -583,6 +605,7 @@ class SubCategoryEdit(UpdateView):
         context['edit_view'] = True
         return context
 
+@permision_checker_decorator_factory({'permission': 'admin_index'})
 def SubCategoryDelete(request,pk):
     subcat = get_object_or_404(ProductSubCategory,pk=pk)
     if subcat:
@@ -590,7 +613,7 @@ def SubCategoryDelete(request,pk):
     return redirect('admin_subcategory_list')
 
 
-
+@method_decorator(permision_checker_decorator_factory(), name='dispatch')
 class PackList(ListView):
     model = PackageSize
     template_name = 'adminpanel_module/packaging/packs_list.html'
@@ -599,7 +622,7 @@ class PackList(ListView):
     def get_queryset(self):
         return PackageSize.objects.all().order_by('size')
 
-
+@method_decorator(permision_checker_decorator_factory(), name='dispatch')
 class PackAdd(CreateView):
     model = PackageSize
     template_name = 'adminpanel_module/packaging/pack_add_update.html'
@@ -622,12 +645,15 @@ class PackAdd(CreateView):
         context['add_view'] = True
         return context
 
+@permision_checker_decorator_factory({'permission': 'admin_index'} ,)
 def PackDelete(request ,pk):
     pack = get_object_or_404(PackageSize ,pk=pk)
     if pack:
         pack.delete()
     return redirect('admin_pack_list')
 
+
+@method_decorator(permision_checker_decorator_factory(), name='dispatch')
 class PackEdit(UpdateView):
     model = PackageSize
     template_name = 'adminpanel_module/packaging/pack_add_update.html'
@@ -650,7 +676,7 @@ class PackEdit(UpdateView):
         context['edit_view'] = True
         return context
 
-
+@method_decorator(permision_checker_decorator_factory(), name='dispatch')
 class BrandsList(ListView):
     model = ProductBrand
     template_name = 'adminpanel_module/brands/brands_list.html'
@@ -662,6 +688,7 @@ def BrandDelete(request , pk):
         brnd.delete()
     return redirect('admin_brand_list')
 
+@method_decorator(permision_checker_decorator_factory(), name='dispatch')
 class BrandAdd(CreateView):
     model = ProductBrand
     template_name = 'adminpanel_module/brands/brand_add_update.html'
@@ -684,7 +711,7 @@ class BrandAdd(CreateView):
         context['add_view'] = True
         return context
 
-
+@method_decorator(permision_checker_decorator_factory(), name='dispatch')
 class BrandEdit(UpdateView):
     model = ProductBrand
     template_name = 'adminpanel_module/brands/brand_add_update.html'
@@ -707,7 +734,7 @@ class BrandEdit(UpdateView):
         context['edit_view'] = True
         return context
 
-
+@method_decorator(permision_checker_decorator_factory(), name='dispatch')
 class CommentList(ListView):
     model = ProductComment
     template_name = 'adminpanel_module/comments/comment_list.html'
@@ -716,13 +743,15 @@ class CommentList(ListView):
 
     def get_queryset(self):
         return ProductComment.objects.all().order_by('-created_at')
+
+@permision_checker_decorator_factory({'permission': 'admin_index'})
 def CommentDelete(request , pk):
     comment = get_object_or_404(ProductComment,pk=pk)
     if comment:
         comment.delete()
     return redirect('admin_comment_list')
 
-
+@method_decorator(permision_checker_decorator_factory(), name='dispatch')
 class UsersList(ListView):
     model = User
     template_name = 'adminpanel_module/users/users_list.html'
@@ -770,7 +799,7 @@ class UsersList(ListView):
 
         return response
 
-
+@method_decorator(permision_checker_decorator_factory(), name='dispatch')
 class UserAdd(CreateView):
     model = User
     form_class = UserForm
@@ -803,12 +832,14 @@ class UserAdd(CreateView):
         context['add_view'] = True
         return context
 
+@permision_checker_decorator_factory({'permission': 'admin_index'} ,)
 def UserDelete(request ,pk):
     admin_user = get_object_or_404(User ,pk=pk)
     if admin_user:
         admin_user.delete()
     return redirect('admin_user_list')
 
+@method_decorator(permision_checker_decorator_factory(), name='dispatch')
 class UserEdit(UpdateView):
     model = User
     form_class = UserForm
@@ -845,3 +876,321 @@ class UserEdit(UpdateView):
         context['comments_sent'] = ProductComment.objects.filter(user=self.object)
         return context
 
+@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+class TicketList(ListView):
+    model = Ticket
+    template_name = 'adminpanel_module/tickets/ticket_list.html'
+    context_object_name = 'tickets'
+
+
+    def get_queryset(self):
+        queryset = Ticket.objects.all().order_by('-created_at' ,'status')
+        print(settings.TIME_ZONE)
+        print(settings.USE_TZ)
+        print(timezone.now())
+        print(timezone.localtime())
+
+        search = self.request.GET.get('q')
+
+        if search:
+            if search.isdigit():
+                queryset = queryset.filter(
+                    Q(pk__icontains=int(search)) |
+                    Q(user__phone__icontains=search) |
+                    Q(user__username__icontains=search) |
+                    Q(user__first_name__icontains=search) |
+                    Q(user__last_name__icontains=search)
+                )
+            else:
+                queryset = queryset.filter(
+                    Q(user__phone__icontains=search) |
+                    Q(user__username__icontains=search) |
+                    Q(user__first_name__icontains=search) |
+                    Q(user__last_name__icontains=search)
+                )
+
+        return queryset
+
+
+    def get(self ,request , *args , **kwargs):
+        response = super().get(request, *args , **kwargs)
+        if request.GET.get('q') is not None:
+            html = render_to_string(
+                'adminpanel_module/tickets/table_components/ticket_table_partial.html',
+                {'tickets': self.object_list},
+                request=request
+            )
+
+            return JsonResponse({
+                'html': html,
+                'data_length': self.object_list.count() if hasattr(self.object_list, 'count') else len(self.object_list)
+            })
+
+        return response
+
+@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+class SupportWays_list(ListView):
+    model = SupportWays
+    template_name = 'adminpanel_module/support_ways/supportways_list.html'
+    context_object_name = 'supportways'
+
+@permision_checker_decorator_factory({'permission': 'admin_index'} ,)
+def SupportWayDelete(request ,pk):
+    sw = get_object_or_404(SupportWays,pk=pk)
+    if sw:
+        sw.delete()
+    return redirect('admin_supportways_list')
+
+@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+class SupportWayAdd(CreateView):
+    model = SupportWays
+    template_name = 'adminpanel_module/support_ways/supportway_add_update.html'
+    form_class = SupportWayForm
+    success_url = reverse_lazy('admin_supportways_list')
+    context_object_name = 'supportway'
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        form.save_m2m()
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        context["message_e"] = "فیلد هارا به درستی پر کنید"
+        return self.render_to_response(context)
+
+    def get_context_data(self, *args,**kwargs):
+        context = super(SupportWayAdd ,self).get_context_data(*args ,**kwargs)
+        context['add_view'] = True
+        return context
+
+
+@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+class SupportWayEdit(UpdateView):
+    model = SupportWays
+    template_name = 'adminpanel_module/support_ways/supportway_add_update.html'
+    form_class = SupportWayForm
+    success_url = reverse_lazy('admin_supportways_list')
+    context_object_name = 'supportway'
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        form.save_m2m()
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        context["message_e"] = "فیلد هارا به درستی پر کنید"
+        return self.render_to_response(context)
+
+    def get_context_data(self, *args,**kwargs):
+        context = super(SupportWayEdit ,self).get_context_data(*args ,**kwargs)
+        context['edit_view'] = True
+        return context
+
+@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+class SiteSettingsList(ListView):
+    model = SiteSettings
+    template_name = 'adminpanel_module/settings/settings_list.html'
+    context_object_name = 'sitesettings'
+
+@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+class SiteSettingsAdd(CreateView):
+    model = SiteSettings
+    form_class = SiteSettingForm
+    template_name = 'adminpanel_module/settings/settings_add_update.html'
+    success_url = reverse_lazy('admin_sitesettings_list')
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        form.save_m2m()
+
+        is_default = self.request.POST.get('is_default')
+        if is_default:
+            all_settings = SiteSettings.objects.filter(is_default=True)
+            for s in all_settings:
+                s.is_default = False
+            self.object.is_default = True
+            self.object.save()
+
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        context["message_e"] = "فیلد هارا به درستی پر کنید"
+        return self.render_to_response(context)
+
+    def get_context_data(self, *args,**kwargs):
+        context = super(SiteSettingsAdd ,self).get_context_data(*args ,**kwargs)
+        context['add_view'] = True
+        return context
+
+@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+class SiteSettingsEdit(UpdateView):
+    model = SiteSettings
+    form_class = SiteSettingForm
+    template_name = 'adminpanel_module/settings/settings_add_update.html'
+    success_url = reverse_lazy('admin_sitesettings_list')
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        form.save_m2m()
+
+        is_default = self.request.POST.get('is_default')
+        if is_default:
+            all_settings = SiteSettings.objects.all()
+            for s in all_settings:
+                s.is_default = False
+            self.object.is_default = True
+            self.object.save()
+
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        context["message_e"] = "فیلد هارا به درستی پر کنید"
+        return self.render_to_response(context)
+
+    def get_context_data(self, *args,**kwargs):
+        context = super(SiteSettingsEdit ,self).get_context_data(*args ,**kwargs)
+        context['edit_view'] = True
+        return context
+
+
+@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+class FooterLinkList(ListView):
+    model = FooterLinkBox
+    template_name = 'adminpanel_module/footerlinks/footerlink_list.html'
+    context_object_name = 'footerlinks'
+
+    def get_queryset(self):
+        return FooterLinkBox.objects.prefetch_related('links').all()
+
+    def get(self,request ,*args, **kwargs):
+        response = super().get(request, *args , **kwargs)
+        title = request.GET.get('title')
+        if title:
+            new_footer_box = FooterLinkBox(
+                title=title,
+            )
+            new_footer_box.save()
+            all_footers = FooterLinkBox.objects.prefetch_related('links').all()
+            html = render_to_string(
+                'adminpanel_module/footerlinks/footerlink_partial.html',
+                {'footerlinks': all_footers},
+                request=request,
+            )
+            return JsonResponse({
+                'html': html
+            })
+        return response
+
+@permision_checker_decorator_factory({'permission': 'admin_index'} ,)
+def FooterBoxDelete(request ,pk):
+    fb = get_object_or_404(FooterLinkBox ,pk=pk)
+    if fb:
+        fb.delete()
+    return redirect('admin_footerlinks_list')
+
+@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+class FooterLinkAdd(CreateView):
+    model = FooterLink
+    template_name = 'adminpanel_module/footerlinks/footerlink_add_update.html'
+    form_class = FooterLinkForm
+    success_url = reverse_lazy('admin_footerlinks_list')
+    context_object_name = 'footerlink'
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        form.save_m2m()
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        context["message_e"] = "فیلد هارا به درستی پر کنید"
+        return self.render_to_response(context)
+
+    def get_context_data(self, *args,**kwargs):
+        context = super(FooterLinkAdd ,self).get_context_data(*args ,**kwargs)
+        context['footerboxes'] = FooterLinkBox.objects.all()
+        context['categories'] = ProductCategory.objects.filter(is_active=True)
+        context['add_view'] = True
+        return context
+
+@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+class FooterLinkEdit(UpdateView):
+    model = FooterLink
+    template_name = 'adminpanel_module/footerlinks/footerlink_add_update.html'
+    form_class = FooterLinkForm
+    success_url = reverse_lazy('admin_footerlinks_list')
+    context_object_name = 'footerlink'
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        form.save_m2m()
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        context["message_e"] = "فیلد هارا به درستی پر کنید"
+        return self.render_to_response(context)
+
+    def get_context_data(self, *args,**kwargs):
+        context = super(FooterLinkEdit ,self).get_context_data(*args ,**kwargs)
+        context['footerboxes'] = FooterLinkBox.objects.all()
+        context['categories'] = ProductCategory.objects.filter(is_active=True)
+        context['edit_view'] = True
+        return context
+
+
+@permision_checker_decorator_factory({'permission': 'admin_index'} ,)
+def FooterLinkDelete(request ,pk):
+    fl = get_object_or_404(FooterLink ,pk=pk)
+    if fl:
+        fl.delete()
+    return redirect('admin_footerlinks_list')
+
+
+@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+class PaymentList(ListView):
+    model = PaymentMethod
+    template_name = 'adminpanel_module/payment_settings/payment_list.html'
+    context_object_name = 'payment_settings'
+
+@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+class PaymentEdit(UpdateView):
+    model = PaymentMethod
+    form_class = PaymentForm
+    template_name = 'adminpanel_module/payment_settings/payment_update.html'
+    context_object_name = 'payment_settings'
+    success_url = reverse_lazy('admin_payment_list')
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        form.save_m2m()
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        context["message_e"] = "فیلد هارا به درستی پر کنید"
+        return self.render_to_response(context)
+
+    def get_context_data(self, *args,**kwargs):
+        context = super(PaymentEdit ,self).get_context_data(*args ,**kwargs)
+        context['cards'] = Cards.objects.all()
+        return context
+
+
+
+@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+class CardsList(ListView):
+    model = Cards
+    template_name = 'adminpanel_module/my_cards/cards_list.html'
+    context_object_name = 'cards'

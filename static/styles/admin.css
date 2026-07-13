@@ -638,3 +638,7 @@ body:has(#admin-searchbox input:focus) .overlay {
 .switch input:checked + .slider:before {
   transform: translateX(-100%);
 }
+
+.footerlink:hover .footerlink-actions {
+    display: flex;
+}

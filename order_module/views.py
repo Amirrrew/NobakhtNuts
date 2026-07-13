@@ -726,13 +726,11 @@ class Deposit(View):
 # ZP_API_REQUEST = 'https://api.zarinpal.com/pg/v4/payment/request.json'
 # ZP_API_VERIFY = 'https://api.zarinpal.com/pg/v4/payment/verify.json'
 # ZP_API_STARTPAY = 'https://api.zarinpal.com/pg/StartPay/'
-#
-CallbackURL = "http://127.0.0.1:8000/orders/verify-payment/"
 
+CallbackURL = "http://127.0.0.1:8000/orders/verify-payment/"
 ZP_API_REQUEST = 'https://sandbox.zarinpal.com/pg/v4/payment/request.json'
 ZP_API_VERIFY = 'https://sandbox.zarinpal.com/pg/v4/payment/verify.json'
 ZP_API_STARTPAY = 'https://sandbox.zarinpal.com/pg/StartPay/'
-
 # CallbackURL = "https://nobakhtnuts.ir/orders/verify-payment/"
 
 @login_required
@@ -740,13 +738,14 @@ def request_online_payment(request):
     errors = None
     e_code = None
     e_message = None
+    online_pay_merchant = PaymentMethod.objects.filter(id=2).first()
     try:
         current_order ,created = Order.objects.get_or_create(is_paid=False ,is_done=False ,user=request.user)
         total = current_order.include_postage_fee()
         total_to_irrial = total * 10
 
         req_data = {
-            'merchant_id': settings.MERCHANT,
+            'merchant_id': online_pay_merchant.merchant_id,
             'amount': total_to_irrial,
             'callback_url': CallbackURL,
             'description': f'برنج و خشکبار نوبخت\n پرداخت سفارش شماره {current_order.pk}',
@@ -775,6 +774,7 @@ def request_online_payment(request):
 
 def verify_payment(request: HttpRequest):
     t_authority = request.GET.get('Authority')
+    online_pay_merchant = PaymentMethod.objects.filter(id=2).first()
     if request.GET.get('Status') == 'OK':
         try:
             current_order = Order.objects.get(user=request.user ,is_paid=False)
@@ -791,7 +791,7 @@ def verify_payment(request: HttpRequest):
 
         req_header = {'accept': 'application/json', 'content-type': 'application/json'}
         req_data = {
-            'merchant_id': settings.MERCHANT,
+            'merchant_id': online_pay_merchant.merchant_id,
             'amount': total_to_irrial,
             'authority': t_authority,
         }

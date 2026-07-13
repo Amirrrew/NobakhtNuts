@@ -66,6 +66,7 @@ class PaymentMethod(models.Model):
     card = models.ForeignKey(Cards,null=True ,blank=True ,on_delete=models.DO_NOTHING ,verbose_name='کارت')
     desc = models.TextField(max_length=500 ,null=True ,blank=True ,verbose_name='توضیحات')
     steps = models.ManyToManyField(OrderStatus ,null=True ,blank=True ,verbose_name='مراحل')
+    merchant_id = models.CharField(null=True ,blank=True ,verbose_name='مرچنت آیدی')
     is_active = models.BooleanField(default=True ,verbose_name='فعال / غیر فعال')
 
     def __str__(self):

@@ -1,0 +1,47 @@
+{% extends 'adminpanel_module/shared/base-admin.html' %}
+{% load poll_extras %}
+
+{% block admin_title %}
+	کارت های بانکی من
+{% endblock %}
+
+{% block admin_content %}
+    <div class="flex justify-between p-2 pt-6 sticky mt-[-10px] top-[-10px] z-10 bg-[var(--header-bg)] backdrop-filter-[blur(10px)] rounded-xl">
+        <div class="flex gap-2 items-start">
+            <svg id="Bank Card" width="34" height="35" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M2.5 19.6686H22V10.6716H2.5V19.6686Z" fill="#674d45"></path>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M2.5 9.17164H22V4.60864H2.5V9.17164Z" fill="#674d45"></path>
+            <path d="M19.327 16.2307H14.352V14.7307H19.327V16.2307Z" fill="#674d45"></path>
+            <path d="M12.374 16.2307H10.126V14.7307H12.374V16.2307Z" fill="#674d45"></path>
+            </svg>
+            <h1 class="text-4xl font-semibold">کارت های بانکی من</h1>
+        </div>
+        <div>
+            <a href="{% url 'admin_sitesettings_add' %}" class="btn-defIconFlex gap-2">
+                <div>کارت جدید</div>
+                <i class="fa fa-add mt-1"></i>
+            </a>
+        </div>
+    </div>
+    <div class="w-[100%] mt-3">
+        {% for card in cards %}
+            <a href="" class="flex mt-2 justify-between p-2 bg-[var(--color12)] rounded-xl relative" style="animation: load8 {% widthratio forloop.counter 1 100 %}ms">
+                <div class="flex gap-2">
+                    <div class="bg-[var(--color13)] rounded-lg p-4">
+                        <svg id="Bank Card" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M2.5 19.6686H22V10.6716H2.5V19.6686Z" fill="#674d45"></path>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M2.5 9.17164H22V4.60864H2.5V9.17164Z" fill="#674d45"></path>
+                        <path d="M19.327 16.2307H14.352V14.7307H19.327V16.2307Z" fill="#674d45"></path>
+                        <path d="M12.374 16.2307H10.126V14.7307H12.374V16.2307Z" fill="#674d45"></path>
+                        </svg>
+                    </div>
+                    <div class="mt-1">
+                        <div class="flex gap-2 items-start"><h1 class="text-2xl font-semibold">{{ card.title }}</h1>{% if setting.is_default %}<div class="bg-[var(--color6)] text-white px-2 py-1 rounded-lg text-sm">تنظیمات پیشفرض</div>{% endif %}</div>
+                        <h1 class="text-[var(--color10)]">{{ card.card_code|format_card_number }}</h1>
+                    </div>
+                </div>
+                <i class="fa fa-angle-left text-xl mt-5 ml-2 text-[var(--color10)]"></i>
+            </a>
+        {% endfor %}
+    </div>
+{% endblock %}

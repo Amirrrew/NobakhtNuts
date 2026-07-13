@@ -1,0 +1,85 @@
+{% extends 'adminpanel_module/shared/base-admin.html' %}
+
+{% block admin_title %}
+    {% if add_view %}
+        فوترلینک جدید
+        {% else %}
+        ویرایش {{ footerlink.Ftitle }}
+    {% endif %}
+{% endblock %}
+
+{% block admin_content %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="flex justify-between p-2 pt-6 sticky mt-[-10px] top-[-10px] z-10 bg-[var(--header-bg)] backdrop-filter-[blur(10px)] rounded-xl">
+            <div class="flex gap-2 items-start">
+                <a href="{% url 'admin_footerlinks_list' %}"><button type="button" class="btn-prdcounter mt-1 text-sm pt-1 rounded-2xl"><i class="fa fa-angle-right"></i></button></a>
+                <svg id="Paper" width="35px" height="35px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <g id="Iconly/Bulk/Paper" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                        <g id="Paper" transform="translate(3.500000, 2.000000)" fill="#674d45" fill-rule="nonzero">
+                            <path d="M15.3088124,7.021 C14.8573009,7.021 14.2592463,7.011 13.5146485,7.011 C11.6987011,7.011 10.2055449,5.508 10.2055449,3.675 L10.2055449,0.459 C10.2055449,0.206 10.0035529,0 9.75304328,0 L4.4636263,0 C1.99516571,0 0,2.026 0,4.509 L0,15.284 C0,17.889 2.09022075,20 4.66957889,20 L12.5462753,20 C15.0058245,20 17,17.987 17,15.502 L17,7.471 C17,7.217 16.7989982,7.012 16.5474984,7.013 C16.1247015,7.016 15.6177413,7.021 15.3088124,7.021" id="Fill-3" opacity="0.400000006"></path>
+                            <path d="M12.584,0.5673 C12.285,0.2563 11.763,0.4703 11.763,0.9013 L11.763,3.5383 C11.763,4.6443 12.674,5.5543 13.78,5.5543 C14.477,5.5623 15.445,5.5643 16.267,5.5623 C16.688,5.5613 16.902,5.0583 16.61,4.7543 C15.555,3.6573 13.666,1.6913 12.584,0.5673" id="Fill-1" opacity="0.400000006"></path>
+                            <path d="M10.918,12.8928 C11.329,12.8928 11.663,13.2268 11.663,13.6378 C11.663,14.0488 11.329,14.3818 10.918,14.3818 L5.474,14.3818 C5.063,14.3818 4.73,14.0488 4.73,13.6378 C4.73,13.2268 5.063,12.8928 5.474,12.8928 L10.918,12.8928 Z M8.8589,7.8986 C9.2699,7.8986 9.6039,8.2326 9.6039,8.6436 C9.6039,9.0546 9.2699,9.3876 8.8589,9.3876 L5.4739,9.3876 C5.0629,9.3876 4.7299,9.0546 4.7299,8.6436 C4.7299,8.2326 5.0629,7.8986 5.4739,7.8986 L8.8589,7.8986 Z" id="Combined-Shape"></path>
+                        </g>
+                    </g>
+                </svg>
+                <div class="flex gap-2">
+                    <h1 class="text-4xl font-semibold">فوترلینک ها</h1>
+                    <i class="fa fa-angle-left mt-2 text-[var(--color10)]"></i>
+                    <div class="text-2xl font-semibold mt-1 text-[var(--color6)]">{% if add_view %}فوترلینک جدید{% else %}{{ footerlink.Ftitle }}{% endif %}</div>
+                </div>
+            </div>
+            <div class="flex gap-1 m-[-5px] items-start">
+                <a href="{% url 'admin_footerlinks_list' %}" class="flex gap-1 bg-[var(--cancel-bg)] text-[var(--loss-dot)] h-[42px] rounded-xl p-2.5"><div>انصراف</div><i class="fa fa-trash text-xs mt-1"></i></a>
+                <button class="btn-defIconFlex gap-1 z-20" type="submit">ذخیره <i class="fa fa-add mt-1"></i></button>
+            </div>
+        </div>
+        <div class="flex gap-2">
+            <div class="tablebox-default mt-2 relative" style="width: 100%; animation: load 300ms">
+                <div class="flex gap-1">
+                    <svg class="mt-[-2px]" id="Info Square" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.052 2.78467 2.5 5.33667 2.5 12.5347C2.5 19.7327 5.052 22.2847 12.25 22.2847C19.448 22.2847 22 19.7327 22 12.5347C22 5.33667 19.448 2.78467 12.25 2.78467Z" fill="#674d45"></path>
+                        <path d="M12.2461 9.78467H12.2551C12.6691 9.78467 13.0011 9.44867 13.0011 9.03467C13.0011 8.62067 12.6601 8.28467 12.2461 8.28467C11.8321 8.28467 11.4961 8.62067 11.4961 9.03467C11.4961 9.44867 11.8321 9.78467 12.2461 9.78467Z" fill="#674d45"></path>
+                        <path d="M12.2501 17.1797C12.6641 17.1797 13.0001 16.8437 13.0001 16.4297V12.5347C13.0001 12.1207 12.6641 11.7847 12.2501 11.7847C11.8361 11.7847 11.5001 12.1207 11.5001 12.5347V16.4297C11.5001 16.8437 11.8361 17.1797 12.2501 17.1797Z" fill="#674d45"></path>
+                    </svg>
+                    <h1 class="text-xl font-semibold">اطلاعات فوترلینک</h1>
+                </div>
+
+                <div class="editpanel-row mt-2 flex gap-2">
+                    <div class="w-[100%]">
+                        <div> عنوان<span class="text-[var(--loss-dot)]">*</span></div>
+                        <input value="{{ footerlink.Ftitle }}" class="input-admin" name="Ftitle" id="title" placeholder="عنوانی برای لینک انتخاب کنید">
+                    </div>
+
+                    <div class="w-[100%]">
+                        <div> آدرس url<span class="text-[var(--loss-dot)]">*</span></div>
+                        <input value="{% if footerlink.url %}{{ footerlink.url }}{% endif %}" class="input-admin" name="url" id="title" placeholder="url در صورتی که با دسته ای مرتبط نیست">
+                    </div>
+                </div>
+
+                <div class="editpanel-row mt-2 flex gap-2">
+                    <div class="w-[100%]">
+                        <div> لینک باکس<span class="text-[var(--loss-dot)]">*</span></div>
+                        <select class="input-admin" name="footer_link_box">
+                            {% for box in footerboxes %}
+                            <option {% if footerlink.footer_link_box.pk == box.pk %}selected{% endif %} value="{{ box.pk }}">{{ box.title }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="w-[100%]">
+                        <div> مرتبط با دسته<span class="text-[var(--loss-dot)]">*</span></div>
+                        <select class="input-admin" name="product_category_url">
+                            <option {% if not footerlink.product_category_url.pk == cat.pk %}selected{% endif %} value="">-</option>
+                            {% for cat in categories %}
+                            <option {% if footerlink.product_category_url.pk == cat.pk %}selected{% endif %} value="{{ cat.pk }}">{{ cat.title }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </form>
+{% endblock %}

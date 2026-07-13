@@ -96,12 +96,10 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LANGUAGE_CODE = 'fa-ir'
-
-TIME_ZONE = 'UTC'
-
+TIME_ZONE = 'Asia/Tehran'
 USE_I18N = True
-USE_L10N = True
 USE_TZ = True
+USE_L10N = True
 
 
 STATIC_URL = 'static/'
@@ -114,8 +112,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AUTH_USER_MODEL = 'account_module.User'
 
-MERCHANT = '5b3eda13-235e-4673-bfb7-46cae5a8f3ba'
 SANDBOX = True
 
 
 SMS_API_KEY = "https://console.melipayamak.com/api/send/otp/410281e7a9a74a2283fd51b6b8653654"
+
+

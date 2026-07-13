@@ -714,21 +714,21 @@ let ApplyPostageFee = (type) => {
 let payopen = true
 let PayNav = (force) => {
     let btnnav = document.getElementById('btn-navicon')
-    let prditems = document.getElementById('payment-item')
+    let prditems = document.querySelectorAll('.payment-item')
 
     if (force) {
-        prditems.style = 'display: flex; animation: load 300ms;'
+        prditems.forEach(item => {item.style = 'display: block; animation: load 300ms;'})
         btnnav.style = 'transform: none'
         payopen = true
     }
     else {
         if (payopen) {
-            prditems.style = 'display: none'
+            prditems.forEach(item => {item.style = 'display: none'})
             btnnav.style = 'transform: rotate(180deg)'
             payopen = false
         }
         else {
-            prditems.style = 'display: flex; animation: load 300ms;'
+            prditems.forEach(item => {item.style = 'display: block; animation: load 300ms;'})
             btnnav.style = 'transform: none'
             payopen = true
         }

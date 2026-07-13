@@ -323,6 +323,10 @@ input[type="number"] {
     body .basket-titlebox {
         display: none;
     }
+
+    body .deposit-desc {
+        display: none;
+    }
 }
 
 @media screen and (max-width: 890px) {

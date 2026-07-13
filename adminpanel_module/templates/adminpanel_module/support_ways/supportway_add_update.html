@@ -1,0 +1,87 @@
+{% extends 'adminpanel_module/shared/base-admin.html' %}
+
+{% block admin_title %}
+    {% if add_view %}
+        راه ارتباطی جدید
+        {% else %}
+        ویرایش {{ supportway.title }}
+    {% endif %}
+{% endblock %}
+
+{% block admin_content %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="flex justify-between p-2 pt-6 sticky mt-[-10px] top-[-10px] z-10 bg-[var(--header-bg)] backdrop-filter-[blur(10px)] rounded-xl">
+            <div class="flex gap-2 items-start">
+                <a href="{% url 'admin_supportways_list' %}"><button type="button" class="btn-prdcounter mt-1 text-sm pt-1 rounded-2xl"><i class="fa fa-angle-right"></i></button></a>
+                <svg id="Call" width="35" height="35" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M21.4974 16.4125C18.8594 13.2125 17.5444 13.4995 16.0984 14.2025C15.0974 14.6885 14.2334 15.1105 11.9874 12.8635C9.74141 10.6165 10.1624 9.75354 10.6484 8.75454C11.3534 7.30754 11.6394 5.98954 8.43641 3.35254C7.67341 2.72754 6.84141 2.48754 5.97541 2.65554C4.14241 2.99854 2.84741 5.03854 2.84941 5.03854C2.03741 6.17454 0.925409 9.59054 8.09241 16.7585C12.8064 21.4735 15.8974 22.6045 17.7734 22.6045C18.7504 22.6045 19.3964 22.2985 19.7704 22.0295C19.7914 22.0175 21.8494 20.7425 22.1964 18.8735C22.3584 18.0045 22.1234 17.1775 21.4974 16.4125Z" fill="#674d45"></path>
+                </svg>
+                </svg>
+                <div class="flex gap-2">
+                    <h1 class="text-4xl font-semibold">راه های ارتباطی</h1>
+                    <i class="fa fa-angle-left mt-2 text-[var(--color10)]"></i>
+                    <div class="text-2xl font-semibold mt-1 text-[var(--color6)]">{% if add_view %}راه ارتباطی جدید{% else %}{{ supportway.title }}{% endif %}</div>
+                </div>
+            </div>
+            <div class="flex gap-1 m-[-5px] items-start">
+                <a href="{% url 'admin_supportways_list' %}" class="flex gap-1 bg-[var(--cancel-bg)] text-[var(--loss-dot)] h-[42px] rounded-xl p-2.5"><div>انصراف</div><i class="fa fa-trash text-xs mt-1"></i></a>
+                <button class="btn-defIconFlex gap-1 z-20" type="submit">ذخیره <i class="fa fa-add mt-1"></i></button>
+            </div>
+        </div>
+        <div class="flex gap-2">
+            <div class="tablebox-default mt-2 relative" style="width: 100%; animation: load 300ms">
+                <div class="flex gap-1">
+                    <svg class="mt-[-2px]" id="Info Square" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.052 2.78467 2.5 5.33667 2.5 12.5347C2.5 19.7327 5.052 22.2847 12.25 22.2847C19.448 22.2847 22 19.7327 22 12.5347C22 5.33667 19.448 2.78467 12.25 2.78467Z" fill="#674d45"></path>
+                        <path d="M12.2461 9.78467H12.2551C12.6691 9.78467 13.0011 9.44867 13.0011 9.03467C13.0011 8.62067 12.6601 8.28467 12.2461 8.28467C11.8321 8.28467 11.4961 8.62067 11.4961 9.03467C11.4961 9.44867 11.8321 9.78467 12.2461 9.78467Z" fill="#674d45"></path>
+                        <path d="M12.2501 17.1797C12.6641 17.1797 13.0001 16.8437 13.0001 16.4297V12.5347C13.0001 12.1207 12.6641 11.7847 12.2501 11.7847C11.8361 11.7847 11.5001 12.1207 11.5001 12.5347V16.4297C11.5001 16.8437 11.8361 17.1797 12.2501 17.1797Z" fill="#674d45"></path>
+                    </svg>
+                    <h1 class="text-xl font-semibold">اطلاعات راه ارتباطی</h1>
+                </div>
+
+                <div class="editpanel-row mt-2 flex gap-2">
+                    <div class="w-[100%]">
+                        <div> عنوان<span class="text-[var(--loss-dot)]">*</span></div>
+                        <input value="{{ supportway.title }}" class="input-admin" name="title" id="title" placeholder="عنوانی برای راه ارتباطی انتخاب کنید">
+                    </div>
+
+                    <div class="w-[100%]">
+                        <div>نام در باکس<span class="text-[var(--loss-dot)]">*</span></div>
+                        <input value="{{ supportway.name }}" class="input-admin" name="name" id="" placeholder="برای مثال => راه پنجم">
+                    </div>
+
+                    <div class="w-[100%]">
+                        <div>آیکون ( از font awesome )<span class="text-[var(--loss-dot)]">*</span></div>
+                        <input value="{{ supportway.icon }}" class="input-admin" name="icon" id="" placeholder="برای مثال => fa fa-instagram">
+                    </div>
+                </div>
+                <div class="editpanel-row mt-2 flex gap-2">
+                    <div class="w-[100%]">
+                        <div>توضیحات<span class="text-[var(--loss-dot)]">*</span></div>
+                        <input value="{{ supportway.desc }}" class="input-admin" name="desc" id="" placeholder="یک یا دو جمله توضیحات">
+                    </div>
+                </div>
+
+                <div class="editpanel-row mt-2 flex gap-2">
+                    <div class="w-[100%]">
+                        <div> آپشن 1<span class="text-[var(--loss-dot)]">*</span></div>
+                        <input value="{% if supportway.opt1 %}{{ supportway.opt1 }}{% endif %}" class="input-admin" name="opt1" id="title" placeholder="گزینه اول (اجباری)">
+                    </div>
+
+                    <div class="w-[100%]">
+                        <div>آپشن 2</div>
+                        <input value="{% if supportway.opt2 %}{{ supportway.opt2 }}{% endif %}" class="input-admin" name="opt2" id="" placeholder="گزینه دوم">
+                    </div>
+
+                    <div class="w-[100%]">
+                        <div>آپشن 3</div>
+                        <input value="{% if supportway.opt3 %}{{ supportway.opt3 }}{% endif %}" class="input-admin" name="opt2" id="" placeholder="گزینه سوم">
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </form>
+{% endblock %}

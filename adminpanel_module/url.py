@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .views import FooterBoxDelete
 
 urlpatterns = [
     path('' , views.index, name='admin_home'),
@@ -33,4 +34,20 @@ urlpatterns = [
     path('users/add' ,views.UserAdd.as_view() ,name='admin_user_add'),
     path('users/<int:pk>/delete' ,views.UserDelete ,name='admin_user_delete'),
     path('users/<int:pk>/edit' ,views.UserEdit.as_view() ,name='admin_user_edit'),
+    # path('tickets/' ,views.TicketList.as_view() ,name='admin_ticket_list')
+    path('support-ways/' ,views.SupportWays_list.as_view() ,name='admin_supportways_list'),
+    path('support-ways/add' ,views.SupportWayAdd.as_view() ,name='admin_supportways_add'),
+    path('support-ways/<int:pk>/edit' ,views.SupportWayEdit.as_view() ,name='admin_supportways_edit'),
+    path('support-ways/<int:pk>/delete', views.SupportWayDelete, name='admin_supportways_delete'),
+    path('sitesettings/' ,views.SiteSettingsList.as_view() ,name='admin_sitesettings_list'),
+    path('sitesettings/add' ,views.SiteSettingsAdd.as_view() ,name='admin_sitesettings_add'),
+    path('sitesettings/<int:pk>/edit', views.SiteSettingsEdit.as_view(), name='admin_sitesettings_edit'),
+    path('footerlinks/' ,views.FooterLinkList.as_view() ,name='admin_footerlinks_list'),
+    path('footerlinks/<int:pk>/delete' ,FooterBoxDelete ,name='admin_footerbox_delete'),
+    path('footerlinks/add' ,views.FooterLinkAdd.as_view() ,name='admin_footerlink_add'),
+    path('footerlinks/<int:pk>/edit' ,views.FooterLinkEdit.as_view() ,name='admin_footerlink_edit'),
+    path('footerlinks/<int:pk>/link/delete' ,views.FooterLinkDelete ,name='admin_footerlink_delete'),
+    path('payment-settings/' ,views.PaymentList.as_view() ,name='admin_payment_list'),
+    path('payment-settings/<int:pk>' ,views.PaymentEdit.as_view() ,name='admin_payment_edit'),
+    path('cards/' ,views.CardsList.as_view() ,name='admin_cards_list'),
 ]

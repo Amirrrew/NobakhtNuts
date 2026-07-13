@@ -1,7 +1,11 @@
 from django import forms
+from django.template.base import kwarg_re
 
+from order_module.models import PaymentMethod
 from product_module.models import Product, ProductCategory, ProductSubCategory, PackageSize, ProductBrand
 from account_module.models import User
+from site_settings.models import SiteSettings, FooterLink
+from support_module.models import SupportWays
 
 
 class ProductAddForm(forms.ModelForm):
@@ -57,3 +61,44 @@ class UserForm(forms.ModelForm):
         self.fields['first_name'].required = False
         self.fields['email'].required = False
         self.fields['username'].required = False
+
+
+class SupportWayForm(forms.ModelForm):
+    class Meta:
+        model = SupportWays
+        fields = ['title' ,'name' ,'desc' ,'icon' ,'opt1' ,'opt2' ,'opt3']
+
+    def __init__(self ,*args ,**kwargs ):
+        super().__init__(*args ,**kwargs )
+
+        self.fields['opt2'].required = False
+        self.fields['opt3'].required = False
+
+
+class SiteSettingForm(forms.ModelForm):
+    class Meta:
+        model = SiteSettings
+        fields = ['title' ,'email' ,'phone' ,'domain' ,'version' ,'tel' ,'is_default']
+
+class FooterLinkForm(forms.ModelForm):
+    class Meta:
+        model = FooterLink
+        fields = '__all__'
+
+    def __init__(self ,*args ,**kwargs ):
+        super().__init__(*args ,**kwargs )
+
+        self.fields['product_category_url'].required = False
+        self.fields['url'].required = False
+
+
+class PaymentForm(forms.ModelForm):
+    class Meta:
+        model = PaymentMethod
+        fields = ['title' ,'merchant_id' ,'desc' ,'is_active' ,'card']
+
+    def __init__(self ,*args ,**kwargs ):
+        super().__init__(*args ,**kwargs )
+
+        self.fields['merchant_id'].required = False
+        self.fields['card'].required = False

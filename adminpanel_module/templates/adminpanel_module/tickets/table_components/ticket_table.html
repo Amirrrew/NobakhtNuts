@@ -1,0 +1,25 @@
+{% load poll_extras %}
+
+<div class="tablebox-default w-[100%] mt-2 relative" style="animation: load8 300ms">
+
+        {% if tickets %}
+            <table class="table-default" style="margin-top: 0">
+                <thead style="">
+                    <tr>
+                        <td>#شماره</td>
+                        <td>کاربر</td>
+                        <td>عنوان</td>
+                        <td>وضعیت</td>
+                        <td>دلیل</td>
+                        <td>تاریخ ثبت</td>
+                        <td>عملگر ها</td>
+                    </tr>
+                </thead>
+                <tbody id="ticket-table-partial">
+                    {% include 'adminpanel_module/tickets/table_components/ticket_table_partial.html' %}
+                </tbody>
+            </table>
+            {% else %}
+            <div>سفارش جدیدی ثبت نشده!</div>
+        {% endif %}
+    </div>

@@ -1,0 +1,21 @@
+{% load poll_extras %}
+        {% for footerbox in footerlinks %}
+            <div class="w-[24.3%]">
+                <div class="bg-[var(--color12)] p-4 text-lg rounded-lg flex justify-between"><div>{{ footerbox.title }}</div>
+                    <div class="flex gap-2">
+                        <button onclick="OpenDialog('آیا از حذف این ردیف مطمئن هستید؟' ,'{% url 'admin_footerbox_delete' footerbox.pk %}')" class="bg-[var(--cancel-bg)] text-[var(--loss-bg)] mt-0.5 w-5 h-5 rounded cursor-pointer "><i class="fa fa-trash text-xs relative top-[-2px]"></i></button>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    {% for link in footerbox.links.all %}
+                        <div class="footerlink flex py-2 px-2 justify-between rounded-lg transition-all hover:bg-[var(--color12)]">
+                            <a class="">{{ link.Ftitle }}</a>
+                            <div class="footerlink-actions flex gap-1 hidden">
+                                <a href="{% url 'admin_footerlink_edit' link.pk %}"><button class="bg-[var(--color11)] text-[var(--color6)] w-5 h-5 rounded cursor-pointer"><i class="fa fa-pencil text-xs"></i></button></a>
+                                <button onclick="OpenDialog('آیا از حذف این لینک مطمئن هستید؟' ,'{% url 'admin_footerlink_delete' link.pk %}')" class="bg-[var(--cancel-bg)] text-[var(--loss-bg)] w-5 h-5 rounded cursor-pointer "><i class="fa fa-trash text-xs"></i></button>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}

@@ -1,17 +1,15 @@
 {% load poll_extras %}
 
-
-                    {% for order in orders %}
-                        <tr class="{% if not forloop.last %} border-b border-[var(--color12)]{% endif %}" style="{% if order.is_done %}opacity: 0.5;{% endif %}">
-                            <td><label for="order{{ order.pk }}" class="relative text-[var(--color6)] text-lg cursor-pointer top-1"><input id="order{{ order.pk }}" type="checkbox" class="ui-checkbox" name="order" value="{{ order.pk }}"></label></td>
-                            <td><a href="{% url 'admin_order_detail' order.pk %}">#{{ order.pk }}</a></td>
-                            <td><a href="">{{ order.user }}</a></td>
-                            <td class="mr-2"><div class="{% if order.status.title == 'در انتظار تایید' %}stat-onwait text-white{% elif order.status.title == 'ارسال شده' %}stat-static{% elif order.status.title == 'پایان یافته' %}stat-loss{% elif order.status.title == 'رد شده' %}stat-denied{% elif order.status.title == 'مرجوع شده' %}stat-warning{% else %}stat-profit{% endif %} w-fit flex"><div class=" {% if order.status.title == 'در انتظار تایید' %}stat-onwait-dot{% elif order.status.title == 'ارسال شده' %}stat-dot-static{% elif order.status.title == 'پایان یافته' %}stat-dot-loss{% elif order.status.title == 'رد شده' %}stat-dot-denied{% elif order.status.title == 'مرجوع شده' %}stat-dot-warning{% else %}stat-dot-profit{% endif %}"></div>{{ order.status }}{% if order.status.title == 'در انتظار تایید' %}رسید{% endif %}</div></td>
-                            <td>{{ order.payment_date|date:"H:i"|to_fanum  }} <span class="text-[var(--color10)] text-xl">|</span>  {{ order.payment_date|show_jalali_date|to_fanum }}</td>
-                            <td>{{ order.payment_method }}</td>
-                            <td class="font-semibold text-xl">{{ order.finalized_price|three_digits_currency }}</td>
-                            <td class="flex justify-end items-start gap-1">
-                                <a href="{% url 'admin_order_detail' order.pk %}" class="btn-defIconFlex2 w-[40px] h-[30px] text-sm gap-2 text-nowrap tooltip-parent relative" style="justify-content: center; padding-top: 7px; background-color: var(--color12)">
+                    {% for ticket in tickets %}
+                        <tr class="{% if not forloop.last %} border-b border-[var(--color12)]{% endif %}">
+                            <td><a href="">{{ ticket.pk }}#</a></td>
+                            <td><a href="{% url 'admin_user_edit' ticket.user.pk %}">{{ ticket.user }}</a></td>
+                            <td class="truncate">{{ ticket.title }}</td>
+                            <td>{{ ticket.status }}</td>
+                            <td>{{ ticket.reason }}</td>
+                            <td>{{ ticket.created_at|date:"H:i"|to_fanum }} <span class="text-[var(--color10)] text-xl">|</span>  {{ ticket.created_at|show_jalali_date|to_fanum }}</td>
+                            <td class="flex items-start gap-1">
+                                <a href="" class="btn-defIconFlex2 w-[40px] h-[30px] text-sm gap-2 text-nowrap tooltip-parent relative" style="justify-content: center; padding-top: 7px; background-color: var(--color12)">
                                     <svg id="Show" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                         <g id="Iconly/Bulk/Show" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
                                             <g id="Show" transform="translate(2.000000, 4.000000)" fill="#674d45" fill-rule="nonzero">
@@ -22,7 +20,7 @@
                                     </svg>
                                     <div class="tooltip" style="top: -40px; border: 1px solid var(--color9); padding: 5px 10px">مشاهده</div>
                                 </a>
-                                <div onclick="OpenDialog('آیا از حذف سفارش شماره #{{ order.pk|to_fanum }} مطمئن هستید؟',`{% url 'admin_order_delete' order.pk %}`)" class="btn-del centerbox text-sm gap-2 text-nowrap tooltip-parent relative" style="justify-content: center; padding-top: 7px; width: 40px; height: 40px">
+                                <div onclick="OpenDialog('آیا از حذف تیکت شماره #{{ ticket.pk|to_fanum }} مطمئن هستید؟',``)" class="btn-del centerbox text-sm gap-2 text-nowrap tooltip-parent relative" style="justify-content: center; padding-top: 7px; width: 40px; height: 40px">
                                     <svg id="Delete" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                         <g id="Iconly/Bulk/Delete" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
                                             <g id="Delete" transform="translate(3.000000, 2.000000)" fill="#8e1f1f" fill-rule="nonzero">
@@ -35,6 +33,4 @@
                                 </div>
                             </td>
                         </tr>
-
                     {% endfor %}
-

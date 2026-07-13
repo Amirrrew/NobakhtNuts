@@ -27,7 +27,7 @@
                 </div>
             </div>
             <div class="flex gap-1 m-[-5px] items-start">
-                {% if edit_view %}<a target="_blank" href="https://www.google.com/search?q=nigga&rlz=1C1GCEA_enIR1184IR1184&oq=nigga&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIGCAEQRRg7MgcIAhAAGI8CMgcIAxAAGI8CMgYIBBBFGDzSAQc5NThqMGo3qAIAsAIA&sourceid=chrome&ie=UTF-8" class="btn-defIconFlex2 gap-1">مشاهده در وبسایت<i class="fa fa-external-link text-xs mt-1"></i></a>{% endif %}
+                {% if edit_view %}<a target="_blank" href="{{ product.get_absolute_url }}" class="btn-defIconFlex2 gap-1">مشاهده در وبسایت<i class="fa fa-external-link text-xs mt-1"></i></a>{% endif %}
                 <a href="{% url 'admin_product_list' %}" class="flex gap-1 bg-[var(--cancel-bg)] text-[var(--loss-dot)] h-[42px] rounded-xl p-2.5"><div>انصراف</div><i class="fa fa-trash text-xs mt-1"></i></a>
                 <button class="btn-defIconFlex gap-1 z-20" type="submit">ذخیره <i class="fa fa-add mt-1"></i></button>
             </div>
@@ -124,7 +124,7 @@
                     <div class="editpanel-row mt-2 flex gap-2 ">
                         <div class="w-[100%]">
                             <div>وزن بسته بندی به کیلو(در صورت عددی بودن محصول)</div>
-                            <input value="{% if not product.is_byWeight %}{{ product.pack_weight }}{% else %}{% if not product.pack_weight %}0{% endif %}{% endif %}" class="input-admin {% if product.is_byWeight %}disabled{% endif %}" placeholder="وزن بسته کالای عددی" maxlength="5" type="text" name="pack_weight" id="pack_weight">
+                            <input value="{% if not product.is_byWeight and product.pack_weight %}{{ product.pack_weight }}{% else %}{% if not product.pack_weight %}0{% endif %}{% endif %}" class="input-admin {% if product.is_byWeight %}disabled{% endif %}" placeholder="وزن بسته کالای عددی" maxlength="5" type="text" name="pack_weight" id="pack_weight">
                             <div class="mt-1 text-[var(--color10)]">این وزن در محاسبه هزینه ارسال و وزن محموله بکار میره و تاثیری در فروش یا آمار انبار نداره</div>
                             <div class="mt-1 text-[var(--color10)]">برای مثال: ترابیکا بسته -> وزن بسته 0.5 کیلو</div>
                         </div>
@@ -265,9 +265,13 @@
                         <div class="flex justify-between mt-3">
                             <h1 class="text-xl font-semibold">تاریخ ثبت</h1>
                             <div class="flex gap-1">
-                                <svg id="Show" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                    <div class="text-xl">{{ product.created_at|show_jalali_date|to_fanum }}</div>
-                                </svg>
+                                <div class="text-xl">{{ product.created_at|show_jalali_date|to_fanum }}</div>
+                            </div>
+                        </div>
+                        <div class="flex justify-between mt-3">
+                            <h1 class="text-xl font-semibold">توسط کاربر</h1>
+                            <div class="flex gap-1">
+                                <a href="{% url 'admin_user_edit' product.user.pk %}" class="text-xl">{{ product.user }}</a>
                             </div>
                         </div>
                     {% endif %}

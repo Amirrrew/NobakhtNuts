@@ -14,8 +14,17 @@
     <div class="text-[var(--color10)]">
         به نام {{ card.owner }}
     </div>
-    <div class="text-3xl">
-        <div>{{ card.card_code|format_card_number }}</div>
+    <div>
+        <div class="text-3xl">{{ card.card_code|format_card_number }}</div>
+        {% if card.shaba %}
+            <div class="flex w-[100%] justify-between">
+                <div><span class="text-[var(--color10)]">IR </span>{{ card.shaba|to_fanum }}</div>
+                <div class="ml-2">
+                    <i onclick="CopyToClipboard('clipboard-shaba' ,'check-shaba' ,'{{ card.shaba }}')" class="fa fa-copy cursor-pointer text-[var(--color10)] mt-0.5 relative" id="clipboard-shaba"></i>
+                    <i class="fa fa-check text-[var(--color10)] mt-0.5" style="display: none; animation: load3 200ms; position: relative" id="check-shaba"></i>
+                </div>
+            </div>
+        {% endif %}
     </div>
     <div class="flex justify-between mt-1 border-t border-[var(--color10)] border-dashed pt-2 text-[var(--color10)]">
         <div>مبلغ پرداخت به ریال</div>

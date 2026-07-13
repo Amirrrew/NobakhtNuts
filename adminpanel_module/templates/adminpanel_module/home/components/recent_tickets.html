@@ -39,7 +39,7 @@
                             <td><a href="">{{ ticket.user }}</a></td>
                             <td>{{ ticket.status }}</td>
                             <td>{{ ticket.reason }}</td>
-                            <td>{{ ticket.created_at.time }} <span class="text-[var(--color10)] text-xl">|</span>  {{ ticket.created_at|show_jalali_date|to_fanum }}</td>
+                            <td>{{ ticket.created_at|date:"H:i"|to_fanum  }} <span class="text-[var(--color10)] text-xl">|</span>  {{ ticket.created_at|show_jalali_date|to_fanum }}</td>
                             <td>
                                 <a href="" class="btn-defIconFlex2 w-[100%] text-sm gap-2 text-nowrap" style="justify-content: center; padding: 10px; background-color: var(--color12)">بررسی تیکت</a>
                             </td>
