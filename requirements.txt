@@ -6,7 +6,6 @@ django-cachalot==2.9.0
 django-ckeditor==6.7.3
 django-iranian-cities==2.0.0
 django-jalali==7.4.0
-django-js-asset==4.0.1
 django-render-partial==0.4
 idna==3.18
 jalali_core==1.0.0
