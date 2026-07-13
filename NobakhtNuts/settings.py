@@ -89,9 +89,8 @@ else:
             'NAME': config('DB_NAME'),
             'USER': config('DB_USER'),
             'PASSWORD': config('DB_PASSWORD'),
-            "OPTIONS": {
-                "unix_socket": "/var/lib/mysql/mysql.sock",
-            },
+            'HOST': config('DB_HOST'),
+            'PORT': config('DB_PORT'),
         }
     }
 
