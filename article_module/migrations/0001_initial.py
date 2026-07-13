@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
             name='Article',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(verbose_name='عنوان مقاله')),
+                ('title', models.CharField(max_length=200 ,verbose_name='عنوان مقاله')),
                 ('banner', models.ImageField(null=True, upload_to='article_banners', verbose_name='بنر مقاله')),
                 ('view', models.PositiveIntegerField(default=0, verbose_name='بازدید')),
                 ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='تاریخ آپلود')),
