@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='postingmethod',
             name='icon',
-            field=models.CharField(blank=True, null=True, verbose_name='آیکون'),
+            field=models.CharField(max_length=1000 ,blank=True, null=True, verbose_name='آیکون'),
         ),
     ]
