@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
                 ('verify_code', models.CharField(blank=True, max_length=6, null=True, verbose_name='کد فعالسازی')),
                 ('phone', models.CharField(blank=True, max_length=11, null=True, verbose_name='شماره موبایل')),
                 ('about_me', models.TextField(blank=True, null=True, verbose_name='درباره من')),
-                ('address', models.CharField(blank=True, db_index=True, null=True, verbose_name='نشانی')),
+                ('address', models.CharField(max_length=1000 ,blank=True, db_index=True, null=True, verbose_name='نشانی')),
                 ('groups', models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='auth.group', verbose_name='groups')),
                 ('user_permissions', models.ManyToManyField(blank=True, help_text='Specific permissions for this user.', related_name='user_set', related_query_name='user', to='auth.permission', verbose_name='user permissions')),
             ],
