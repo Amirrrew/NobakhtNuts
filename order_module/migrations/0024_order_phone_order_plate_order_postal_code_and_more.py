@@ -13,21 +13,21 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='order',
             name='phone',
-            field=models.CharField(blank=True, max_length=11, null=True, verbose_name='شماره تلفن دریافت کننده'),
+            field=models.CharField(max_length=11 ,blank=True, null=True, verbose_name='شماره تلفن دریافت کننده'),
         ),
         migrations.AddField(
             model_name='order',
             name='plate',
-            field=models.CharField(blank=True, null=True, verbose_name='پلاک'),
+            field=models.CharField(max_length=20 ,blank=True, null=True, verbose_name='پلاک'),
         ),
         migrations.AddField(
             model_name='order',
             name='postal_code',
-            field=models.CharField(blank=True, null=True, verbose_name='کد پستی'),
+            field=models.CharField(max_length=1000,blank=True, null=True, verbose_name='کد پستی'),
         ),
         migrations.AlterField(
             model_name='order',
             name='address',
-            field=models.TextField(blank=True, max_length=2000, null=True, verbose_name='آدرس'),
+            field=models.TextField(max_length=2000,blank=True, null=True, verbose_name='آدرس'),
         ),
     ]
