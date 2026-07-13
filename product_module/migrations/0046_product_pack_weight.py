@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='product',
             name='pack_weight',
-            field=models.CharField(blank=True, null=True, verbose_name='وزن بسته'),
+            field=models.CharField(max_length=100 ,blank=True, null=True, verbose_name='وزن بسته'),
         ),
     ]
