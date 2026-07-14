@@ -17,7 +17,7 @@
             <h1 class="text-4xl font-semibold">کارت های بانکی من</h1>
         </div>
         <div>
-            <a href="{% url 'admin_sitesettings_add' %}" class="btn-defIconFlex gap-2">
+            <a href="{% url 'admin_cards_add' %}" class="btn-defIconFlex gap-2">
                 <div>کارت جدید</div>
                 <i class="fa fa-add mt-1"></i>
             </a>
@@ -25,7 +25,7 @@
     </div>
     <div class="w-[100%] mt-3">
         {% for card in cards %}
-            <a href="" class="flex mt-2 justify-between p-2 bg-[var(--color12)] rounded-xl relative" style="animation: load8 {% widthratio forloop.counter 1 100 %}ms">
+            <a href="{% url 'admin_cards_edit' card.pk %}" class="flex mt-2 justify-between p-2 bg-[var(--color12)] rounded-xl relative" style="animation: load8 {% widthratio forloop.counter 1 200 %}ms">
                 <div class="flex gap-2">
                     <div class="bg-[var(--color13)] rounded-lg p-4">
                         <svg id="Bank Card" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

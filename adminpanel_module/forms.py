@@ -1,12 +1,26 @@
 from django import forms
+from django.contrib.auth.forms import AuthenticationForm
+from django.core.exceptions import ValidationError
 from django.template.base import kwarg_re
-
-from order_module.models import PaymentMethod
+from django.core import validators
+from order_module.models import PaymentMethod, Cards, PostingMethod
 from product_module.models import Product, ProductCategory, ProductSubCategory, PackageSize, ProductBrand
 from account_module.models import User
 from site_settings.models import SiteSettings, FooterLink
 from support_module.models import SupportWays
 
+class LoginAdmin(AuthenticationForm):
+    username = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+    )
+
+    password = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+    )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        return cleaned_data
 
 class ProductAddForm(forms.ModelForm):
     class Meta:
@@ -102,3 +116,19 @@ class PaymentForm(forms.ModelForm):
 
         self.fields['merchant_id'].required = False
         self.fields['card'].required = False
+
+class CardForm(forms.ModelForm):
+    class Meta:
+        model = Cards
+        fields= ['title' ,'card_code' ,'owner' ,'shaba']
+
+    def __init__(self ,*args ,**kwargs ):
+        super().__init__(*args ,**kwargs )
+
+        self.fields['shaba'].required = False
+
+
+class PostingForm(forms.ModelForm):
+    class Meta:
+        model = PostingMethod
+        fields = '__all__'

@@ -1,0 +1,42 @@
+{% extends 'adminpanel_module/shared/base-admin.html' %}
+{% load poll_extras %}
+
+{% block admin_title %}
+	کارت های بانکی من
+{% endblock %}
+
+{% block admin_content %}
+    <div class="flex justify-between p-2 pt-6 sticky mt-[-10px] top-[-10px] z-10 bg-[var(--header-bg)] backdrop-filter-[blur(10px)] rounded-xl">
+        <div class="flex gap-2 items-start">
+            <svg class="mt-[-2px]" id="Location" width="35" height="35" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.5C7.839 2.5 4.25 6.133 4.25 10.599C4.25 16.007 8.904 21.5 12.25 21.5C15.595 21.5 20.25 16.007 20.25 10.599C20.25 6.133 16.661 2.5 12.25 2.5Z" fill="#674d45"></path>
+            <path d="M9.39697 10.7102C9.39697 12.2892 10.681 13.5732 12.26 13.5732C13.839 13.5732 15.124 12.2892 15.124 10.7102C15.124 9.13117 13.839 7.84717 12.26 7.84717C10.681 7.84717 9.39697 9.13117 9.39697 10.7102Z" fill="#674d45"></path>
+            </svg>
+            <h1 class="text-4xl font-semibold">نرخ و روش های ارسال</h1>
+        </div>
+        <div>
+            <a href="{% url 'admin_posting_add' %}" class="btn-defIconFlex gap-2">
+                <div>روش ارسال جدید</div>
+                <i class="fa fa-add mt-1"></i>
+            </a>
+        </div>
+    </div>
+    <div class="w-[100%] mt-3">
+        {% for pst in posting %}
+            <a href="{% url 'admin_posting_edit' pst.pk %}" class="flex mt-2 justify-between p-2 bg-[var(--color12)] rounded-xl relative" style="animation: load8 {% widthratio forloop.counter 1 200 %}ms">
+                <div class="flex gap-2">
+                    <div class="bg-[var(--color13)] rounded-lg p-2">
+                    <svg id="Location" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.5C7.839 2.5 4.25 6.133 4.25 10.599C4.25 16.007 8.904 21.5 12.25 21.5C15.595 21.5 20.25 16.007 20.25 10.599C20.25 6.133 16.661 2.5 12.25 2.5Z" fill="#674d45"></path>
+                    <path d="M9.39697 10.7102C9.39697 12.2892 10.681 13.5732 12.26 13.5732C13.839 13.5732 15.124 12.2892 15.124 10.7102C15.124 9.13117 13.839 7.84717 12.26 7.84717C10.681 7.84717 9.39697 9.13117 9.39697 10.7102Z" fill="#674d45"></path>
+                    </svg>
+                    </div>
+                    <div class="mt-1">
+                        <div class="flex gap-2 items-start"><h1 class="text-2xl font-semibold">{{ pst.title }}</h1></div>
+                    </div>
+                </div>
+                <i class="fa fa-angle-left text-xl mt-2 ml-2 text-[var(--color10)]"></i>
+            </a>
+        {% endfor %}
+    </div>
+{% endblock %}

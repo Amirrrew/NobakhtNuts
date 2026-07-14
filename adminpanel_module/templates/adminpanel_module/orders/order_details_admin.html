@@ -223,7 +223,7 @@
                 </div>
                 <div class="flex justify-between w-[100%] mt-2"><div class="text-[var(--color10)]">روش پرداخت</div><div>{{ order.payment_method }}</div></div>
                 {% if order.payment_ref %}<div class="flex justify-between w-[100%]"><div class="text-[var(--color10)]">شماره تراکنش</div><div>{{ order.payment_ref|to_fanum }}</div></div>{% endif %}
-                <div class="flex justify-between w-[100%]"><div class="text-[var(--color10)]">تاریخ پرداخت</div><div>{{ order.payment_date|show_jalali_date|to_fanum }} - {{ order.payment_date.time }}</div></div>
+                <div class="flex justify-between w-[100%]"><div class="text-[var(--color10)]">تاریخ پرداخت</div><div>{{ order.payment_date|show_jalali_date|to_fanum }} - {{ order.payment_date|date:"H:i"|to_fanum }}</div></div>
             </div>
         </div>
 

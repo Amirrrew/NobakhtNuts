@@ -3,6 +3,7 @@ from . import views
 from .views import FooterBoxDelete
 
 urlpatterns = [
+    path('login/' ,views.AdminLogin.as_view() , name='admin_login'),
     path('' , views.index, name='admin_home'),
     path('orders/' ,views.OrdersListView.as_view() ,name='admin_order_list'),
     path('orders/delete/<int:pk>' ,views.OrderDelete ,name='admin_order_delete'),
@@ -50,4 +51,9 @@ urlpatterns = [
     path('payment-settings/' ,views.PaymentList.as_view() ,name='admin_payment_list'),
     path('payment-settings/<int:pk>' ,views.PaymentEdit.as_view() ,name='admin_payment_edit'),
     path('cards/' ,views.CardsList.as_view() ,name='admin_cards_list'),
+    path('cards/add' ,views.CardAdd.as_view() ,name='admin_cards_add'),
+    path('cards/<int:pk>/edit', views.CardEdit.as_view(), name='admin_cards_edit'),
+    path('posting-fees/' ,views.PostingList.as_view() ,name='admin_posting_list'),
+    path('posting-fees/add' ,views.PostingAdd.as_view() ,name='admin_posting_add'),
+    path('posting-fees/<int:pk>/edit', views.PostingEdit.as_view(), name='admin_posting_edit'),
 ]

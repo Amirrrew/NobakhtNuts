@@ -1,4 +1,7 @@
 from itertools import count
+
+from django.contrib.auth import login, logout
+from django.contrib.auth.views import LoginView
 from django.utils import timezone
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -7,17 +10,18 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView, DeleteView, CreateView, UpdateView
+from django.views.generic import View , ListView, DeleteView, CreateView, UpdateView
 import json
 
 from unicodedata import category
 from urllib3 import request
 
+from account_module.form import LoginForm
 from account_module.models import User
 from adminpanel_module.forms import ProductAddForm, MainCategoryForm, SubCategoryForm, PackForm, BrandForm, UserForm, \
-    SupportWayForm, SiteSettingForm, FooterLinkForm, PaymentForm
+    SupportWayForm, SiteSettingForm, FooterLinkForm, PaymentForm, CardForm, PostingForm, LoginAdmin
 from order_module.context_processors import orders
-from order_module.models import Order, OrderStatus, PaymentMethod, Cards
+from order_module.models import Order, OrderStatus, PaymentMethod, Cards, PostingMethod
 from product_module.models import Product, ProductCategory, ProductSubCategory, ProductBrand, PackageSize, \
     ProductFeature, ProductImage, ProductComment
 from site_settings.models import SiteSettings, FooterLinkBox, FooterLink
@@ -27,6 +31,38 @@ from utils.dashboard_decorators import get_sales_week, get_sales_week_growth, to
 from utils.my_decorators import permision_checker_decorator_factory
 from django.db.models import Q, Count
 
+
+class AdminLogin(View):
+    def get(self ,request):
+        login_form = LoginAdmin()
+        message_e = None
+        return render(request ,'adminpanel_module/auth/admin_login.html' ,{'login_form': login_form ,'message_e': message_e})
+
+    def post(self ,request):
+        login_form = LoginAdmin(request.POST)
+        message_e = None
+        if login_form.is_valid():
+            username = login_form.cleaned_data.get('username')
+            password = login_form.cleaned_data.get('password')
+            user: User = User.objects.filter(username=username).first()
+
+            if user.is_superuser:
+                is_auth = user.check_password(password)
+                if is_auth:
+                    login(request, user)
+                    return redirect('admin_home')
+                else:
+                    message_e = 'رمز عبور یا نام کاربری اشتباه'
+            else:
+                message_e = 'شما به این بخش دسترسی ندارید'
+        else:
+            message_e  ='nigga'
+
+        context = {
+            'message_e': message_e,
+            'login_form': login_form
+        }
+        return render(request ,'adminpanel_module/auth/admin_login.html' ,context)
 
 @permision_checker_decorator_factory({'permission': 'admin_index'} ,)
 def index(request: HttpRequest):
@@ -1194,3 +1230,110 @@ class CardsList(ListView):
     model = Cards
     template_name = 'adminpanel_module/my_cards/cards_list.html'
     context_object_name = 'cards'
+
+@method_decorator(permision_checker_decorator_factory() ,name='dispatch')
+class CardAdd(CreateView):
+    model = Cards
+    template_name = 'adminpanel_module/my_cards/card_add_update.html'
+    context_object_name = 'card'
+    success_url = reverse_lazy('admin_cards_list')
+    form_class = CardForm
+
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        form.save_m2m()
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        context["message_e"] = "فیلد هارا به درستی پر کنید"
+        return self.render_to_response(context)
+
+    def get_context_data(self, *args,**kwargs):
+        context = super(CardAdd ,self).get_context_data(*args ,**kwargs)
+        context['add_view'] = True
+        return context
+
+
+@method_decorator(permision_checker_decorator_factory() ,name='dispatch')
+class CardEdit(UpdateView):
+    model = Cards
+    template_name = 'adminpanel_module/my_cards/card_add_update.html'
+    context_object_name = 'card'
+    success_url = reverse_lazy('admin_cards_list')
+    form_class = CardForm
+
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        form.save_m2m()
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        context["message_e"] = "فیلد هارا به درستی پر کنید"
+        return self.render_to_response(context)
+
+    def get_context_data(self, *args,**kwargs):
+        context = super(CardEdit ,self).get_context_data(*args ,**kwargs)
+        context['edit_view'] = True
+        return context
+
+@method_decorator(permision_checker_decorator_factory() ,name='dispatch')
+class PostingList(ListView):
+    model = PostingMethod
+    template_name = 'adminpanel_module/posting_fees/postings_list.html'
+    context_object_name = 'posting'
+
+
+@method_decorator(permision_checker_decorator_factory() ,name='dispatch')
+class PostingAdd(CreateView):
+    model = PostingMethod
+    template_name = 'adminpanel_module/posting_fees/posting_add_update.html'
+    context_object_name = 'posting'
+    success_url = reverse_lazy('admin_posting_list')
+    form_class = PostingForm
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        form.save_m2m()
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        context["message_e"] = "فیلد هارا به درستی پر کنید"
+        return self.render_to_response(context)
+
+    def get_context_data(self, *args,**kwargs):
+        context = super(PostingAdd ,self).get_context_data(*args ,**kwargs)
+        context['add_view'] = True
+        return context
+
+
+@method_decorator(permision_checker_decorator_factory() ,name='dispatch')
+class PostingEdit(UpdateView):
+    model = PostingMethod
+    template_name = 'adminpanel_module/posting_fees/posting_add_update.html'
+    context_object_name = 'posting'
+    success_url = reverse_lazy('admin_posting_list')
+    form_class = PostingForm
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        form.save_m2m()
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        context["message_e"] = "فیلد هارا به درستی پر کنید"
+        return self.render_to_response(context)
+
+    def get_context_data(self, *args,**kwargs):
+        context = super(PostingEdit ,self).get_context_data(*args ,**kwargs)
+        context['edit_view'] = True
+        return context

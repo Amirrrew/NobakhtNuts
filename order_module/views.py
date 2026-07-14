@@ -477,7 +477,7 @@ class BasketCheckout(View):
         my_address = Address.objects.filter(user=request.user)
         total_amount = current_order.calculate_total_price()
         total_items = current_order.total_items()
-        posting_methods = PostingMethod.objects.all().order_by('order_type')
+        posting_methods = PostingMethod.objects.filter(is_active=True).order_by('order_type')
 
         msg = request.session.get('message')
         if msg:
@@ -514,7 +514,7 @@ class BasketCheckout(View):
         my_address = Address.objects.filter(user=request.user)
         total_amount = current_order.calculate_total_price()
         total_items = current_order.total_items()
-        posting_methods = PostingMethod.objects.all().order_by('order_type')
+        posting_methods = PostingMethod.objects.filter(is_active=True).order_by('order_type')
 
         form_type = request.POST.get('form_type')
 
@@ -723,14 +723,14 @@ class Deposit(View):
 
 
 
-# ZP_API_REQUEST = 'https://api.zarinpal.com/pg/v4/payment/request.json'
-# ZP_API_VERIFY = 'https://api.zarinpal.com/pg/v4/payment/verify.json'
-# ZP_API_STARTPAY = 'https://api.zarinpal.com/pg/StartPay/'
+ZP_API_REQUEST = 'https://api.zarinpal.com/pg/v4/payment/request.json'
+ZP_API_VERIFY = 'https://api.zarinpal.com/pg/v4/payment/verify.json'
+ZP_API_STARTPAY = 'https://api.zarinpal.com/pg/StartPay/'
 
-CallbackURL = "http://127.0.0.1:8000/orders/verify-payment/"
-ZP_API_REQUEST = 'https://sandbox.zarinpal.com/pg/v4/payment/request.json'
-ZP_API_VERIFY = 'https://sandbox.zarinpal.com/pg/v4/payment/verify.json'
-ZP_API_STARTPAY = 'https://sandbox.zarinpal.com/pg/StartPay/'
+CallbackURL = "https://nobakhtnuts.ir/orders/verify-payment/"
+# ZP_API_REQUEST = 'https://sandbox.zarinpal.com/pg/v4/payment/request.json'
+# ZP_API_VERIFY = 'https://sandbox.zarinpal.com/pg/v4/payment/verify.json'
+# ZP_API_STARTPAY = 'https://sandbox.zarinpal.com/pg/StartPay/'
 # CallbackURL = "https://nobakhtnuts.ir/orders/verify-payment/"
 
 @login_required
