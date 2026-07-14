@@ -723,9 +723,9 @@ class Deposit(View):
 
 
 
-ZP_API_REQUEST = 'https://api.zarinpal.com/pg/v4/payment/request.json'
-ZP_API_VERIFY = 'https://api.zarinpal.com/pg/v4/payment/verify.json'
-ZP_API_STARTPAY = 'https://api.zarinpal.com/pg/StartPay/'
+ZP_API_REQUEST = 'https://payment.zarinpal.com/pg/v4/payment/request.json'
+ZP_API_VERIFY = 'https://payment.zarinpal.com/pg/v4/payment/verify.json'
+ZP_API_STARTPAY = 'https://payment.zarinpal.com/pg/StartPay/'
 
 CallbackURL = "https://nobakhtnuts.ir/orders/verify-payment/"
 # ZP_API_REQUEST = 'https://sandbox.zarinpal.com/pg/v4/payment/request.json'
