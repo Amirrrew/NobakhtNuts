@@ -135,7 +135,7 @@ class ProductDetailView(DetailView):
             if request.user.is_authenticated:
                 comment.user = request.user
                 comment.save()
-                message = 'نظر شما با موفقیت ارسال شد!'
+                message = 'نظر شما بعد از تایید مدیر نمایش داده میشود'
                 popup_open = False
             else:
                 message_e = 'برای ارسال نظر باید وارد شوید'

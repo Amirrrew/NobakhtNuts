@@ -205,5 +205,16 @@ let ProductSelectedAction = (action) => {
     })
 }
 
+let comments_approved_partial = document.getElementById('comments-approved-partial')
+let comments_notapproved_partial = document.getElementById('comments-notapproved-partial')
+let ApproveComment = (comment_pk) => {
+    let com_pk = comment_pk
+    Showloader(1000)
+    fetch(`/adminpanel/comments/?comment=${com_pk}`).then(res => res.json()).then(data => {
+        comments_approved_partial.innerHTML = data.html_a
+        comments_notapproved_partial.innerHTML = data.html_na
+    })
+}
+
 
 

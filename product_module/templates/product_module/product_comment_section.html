@@ -22,70 +22,141 @@
                     <div class="comment-box w-[60%]">
                         {% if product.comment_set.all %}
                             {% for comment in product.comment_set.all|dictsortreversed:"created_at" %}
-                                <div id="comment-{{ comment.id }}" class="border-b border-[var(--color9)] w-[100%] p-2">
-                                    <div class="flex justify-between">
-                                        <div class="flex gap-2">
-                                                {% if comment.user.avatar %}
-                                                    <div class="w-10 h-10 p-0.5 rounded-xl text-[var(--color10)] bg-[var(--color2)]">
-                                                        <img alt="{{ comment.user }} avatar" class="w-[100%] rounded-lg" src="{{ comment.user.avatar.url }}">
+                                {% if comment.is_approved %}
+                                    <div id="comment-{{ comment.id }}" class="border-b border-[var(--color9)] w-[100%] p-2">
+                                        <div class="flex justify-between">
+                                            <div class="flex gap-2">
+                                                    {% if comment.user.avatar %}
+                                                        <div class="w-10 h-10 p-0.5 rounded-xl text-[var(--color10)] bg-[var(--color2)]">
+                                                            <img alt="{{ comment.user }} avatar" class="w-[100%] rounded-lg" src="{{ comment.user.avatar.url }}">
+                                                        </div>
+                                                        {% else %}
+                                                        <div class="w-10 h-10 p-3 pr-3.5 rounded-xl text-[var(--color10)] bg-[var(--color2)]">
+                                                            <i class="fa fa-user"></i>
+                                                        </div>
+                                                    {% endif %}
+
+
+                                                {% if comment.user.first_name and comment.user.last_name %}
+                                                    <div>
+                                                        <div class="text-lg flex gap-2">
+                                                            <div>{{ comment.user }}</div>
+                                                            <div class="h-fit bg-[var(--color12)] mt-0.5 text-sm py-0.5 px-1 px-1 rounded-lg"><i class="fa fa-star text-[var(--color10)] text-xs ml-1"></i>{{ comment.rating|floatformat|to_fanum }}</div>
+                                                        </div>
+                                                        <div class="text-[var(--color10)] mt-[-7px]">{{ comment.user.username }}</div>
                                                     </div>
                                                     {% else %}
-                                                    <div class="w-10 h-10 p-3 pr-3.5 rounded-xl text-[var(--color10)] bg-[var(--color2)]">
-                                                        <i class="fa fa-user"></i>
+                                                        <div class="text-lg mt-1.5 flex gap-2">
+                                                            <div>{{ comment.user }}</div>
+                                                            <div class="h-fit bg-[var(--color12)] mt-0.5 text-sm py-0.5 px-1 px-1 rounded-lg"><i class="fa fa-star text-[var(--color10)] text-xs ml-1"></i>{{ comment.rating|floatformat|to_fanum }}</div>
+                                                        </div>
+                                                {% endif %}
+                                            </div>
+                                            <div class="flex gap-1 p-1">
+                                                <svg class="mt-[1px]" id="Time Square" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.25C5.051 2.25 2.5 4.801 2.5 12C2.5 19.198 5.051 21.75 12.25 21.75C19.449 21.75 22 19.198 22 12C22 4.801 19.449 2.25 12.25 2.25Z" fill="#674d45"></path>
+                                                <path d="M15.639 14.7668C15.895 14.7668 16.144 14.6358 16.284 14.4008C16.496 14.0458 16.38 13.5858 16.024 13.3728L12.999 11.5688V7.63281C12.999 7.21881 12.663 6.88281 12.249 6.88281C11.835 6.88281 11.499 7.21881 11.499 7.63281V11.9948C11.499 12.2578 11.638 12.5038 11.865 12.6388L15.256 14.6618C15.376 14.7328 15.509 14.7668 15.639 14.7668Z" fill="#674d45"></path>
+                                                </svg>
+                                                <div>
+                                                    {{ comment.passed_time|to_fanum }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mt-2 text-[var(--color6)]">
+                                            {{ comment|to_fanum }}
+                                        </div>
+                                        <div class=" flex gap-1 mt-2 mb-1">
+                                            {% if comment.user == request.user %}
+                                                <div class="bg-red-100 p-2 rounded-lg cursor-pointer" onclick="OpenDialog('آیا از حذف نظر خود مطمئن هستید؟' ,'/products/details/{{ comment.id }}/delete')">
+                                                    <svg id="Delete" width="20px" height="20px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                        <g id="Iconly/Bulk/Delete" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                                                            <g id="Delete" transform="translate(3.000000, 2.000000)" fill="#f97e7e" fill-rule="nonzero">
+                                                                <path d="M16.6432894,7.4884379 C16.6432894,7.55643552 16.1103307,14.2971996 15.8059218,17.1341003 C15.6153015,18.8750394 14.492976,19.9310024 12.8094878,19.9610014 C11.5159931,19.9900003 10.2497298,20 9.00389021,20 C7.68121893,20 6.38772423,19.9900003 5.13215907,19.9610014 C3.50507888,19.9220027 2.38178085,18.8450404 2.2008861,17.1341003 C1.88772423,14.2871999 1.36449103,7.55643552 1.35476551,7.4884379 C1.34503998,7.28344508 1.41117355,7.0884519 1.54538578,6.93045743 C1.67765291,6.78446254 1.86827318,6.69646562 2.06861898,6.69646562 L15.9391614,6.69646562 C16.1385347,6.69646562 16.3194294,6.78446254 16.4623946,6.93045743 C16.5956343,7.0884519 16.6627404,7.28344508 16.6432894,7.4884379" id="Fill-1" opacity="0.400000006"></path>
+                                                                <path d="M18,3.97686081 C18,3.56587519 17.67614,3.24388646 17.2871191,3.24388646 L14.371407,3.24388646 C13.77815,3.24388646 13.2626972,2.82190123 13.1304301,2.22692206 L12.9670413,1.49794757 C12.7384915,0.616978406 11.9497515,-1.50990331e-14 11.0647288,-1.50990331e-14 L6.93624379,-1.50990331e-14 C6.04149557,-1.50990331e-14 5.26053598,0.616978406 5.0232332,1.54594589 L4.87054247,2.22792202 C4.73730279,2.82190123 4.22185001,3.24388646 3.62956559,3.24388646 L0.713853469,3.24388646 C0.323859952,3.24388646 0,3.56587519 0,3.97686081 L0,4.35684751 C0,4.75783348 0.323859952,5.08982186 0.713853469,5.08982186 L17.2871191,5.08982186 C17.67614,5.08982186 18,4.75783348 18,4.35684751 L18,3.97686081 Z" id="Fill-4"></path>
+                                                            </g>
+                                                        </g>
+                                                    </svg>
+                                                </div>
+                                            {% endif %}
+                                            <input hidden onchange="LikeAction({{ comment.id}})" id="check-like{{ comment.id }}" name="check-like" class="like-input" type="checkbox" {% if comment|is_liked:request.user %}checked{% endif %}>
+                                            <label for="check-like{{ comment.id }}" class="like-btn flex gap-1 px-2 bg-[var(--color12)] p-1.5 rounded-lg cursor-pointer">
+                                                <div>
+                                                    <i class="fa fa-heart mt-1 text-[var(--color10)] like-btn"></i>
+                                                </div>
+                                                {{ comment.like.count|to_fanum }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                    {% else %}
+                                        {% if comment.user == request.user %}
+                                            <div id="comment-{{ comment.id }}" class="border-b border-[var(--color9)] w-[100%] p-2">
+                                            <div class="flex justify-between">
+                                                <div class="flex gap-2">
+                                                        {% if comment.user.avatar %}
+                                                            <div class="w-10 h-10 p-0.5 rounded-xl text-[var(--color10)] bg-[var(--color2)]">
+                                                                <img alt="{{ comment.user }} avatar" class="w-[100%] rounded-lg" src="{{ comment.user.avatar.url }}">
+                                                            </div>
+                                                            {% else %}
+                                                            <div class="w-10 h-10 p-3 pr-3.5 rounded-xl text-[var(--color10)] bg-[var(--color2)]">
+                                                                <i class="fa fa-user"></i>
+                                                            </div>
+                                                        {% endif %}
+
+
+                                                    {% if comment.user.first_name and comment.user.last_name %}
+                                                        <div>
+                                                            <div class="text-lg flex gap-2">
+                                                                <div>{{ comment.user }}</div>
+                                                                <div class="h-fit bg-[var(--color12)] mt-0.5 text-sm py-0.5 px-1 px-1 rounded-lg"><i class="fa fa-star text-[var(--color10)] text-xs ml-1"></i>{{ comment.rating|floatformat|to_fanum }}</div>
+                                                            </div>
+                                                            <div class="text-[var(--color10)] mt-[-7px]">{{ comment.user.username }}</div>
+                                                        </div>
+                                                        {% else %}
+                                                            <div class="text-lg mt-1.5 flex gap-2">
+                                                                <div>{{ comment.user }}</div>
+                                                                <div class="h-fit bg-[var(--color12)] mt-0.5 text-sm py-0.5 px-1 px-1 rounded-lg"><i class="fa fa-star text-[var(--color10)] text-xs ml-1"></i>{{ comment.rating|floatformat|to_fanum }}</div>
+                                                            </div>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="flex gap-1 p-1">
+                                                    <svg class="mt-[1px]" id="Time Square" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.25C5.051 2.25 2.5 4.801 2.5 12C2.5 19.198 5.051 21.75 12.25 21.75C19.449 21.75 22 19.198 22 12C22 4.801 19.449 2.25 12.25 2.25Z" fill="#674d45"></path>
+                                                    <path d="M15.639 14.7668C15.895 14.7668 16.144 14.6358 16.284 14.4008C16.496 14.0458 16.38 13.5858 16.024 13.3728L12.999 11.5688V7.63281C12.999 7.21881 12.663 6.88281 12.249 6.88281C11.835 6.88281 11.499 7.21881 11.499 7.63281V11.9948C11.499 12.2578 11.638 12.5038 11.865 12.6388L15.256 14.6618C15.376 14.7328 15.509 14.7668 15.639 14.7668Z" fill="#674d45"></path>
+                                                    </svg>
+                                                    <div>
+                                                        {{ comment.passed_time|to_fanum }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                <div class="h-fit px-2 w-fit bg-[var(--color6)] text-[var(--color12)] mt-0.5 text-sm py-0.5 px-1 px-1 rounded-lg"><i class="fa fa-check text-[var(--color10)] text-xs ml-1"></i>در انتظار تایید مدیر</div>
+                                            <div class="mt-2 text-[var(--color6)]">
+                                                {{ comment|to_fanum }}
+                                            </div>
+
+                                            <div class=" flex gap-1 mt-2 mb-1">
+                                                {% if comment.user == request.user %}
+                                                    <div class="bg-red-100 p-2 rounded-lg cursor-pointer" onclick="OpenDialog('آیا از حذف نظر خود مطمئن هستید؟' ,'/products/details/{{ comment.id }}/delete')">
+                                                        <svg id="Delete" width="20px" height="20px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                            <g id="Iconly/Bulk/Delete" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                                                                <g id="Delete" transform="translate(3.000000, 2.000000)" fill="#f97e7e" fill-rule="nonzero">
+                                                                    <path d="M16.6432894,7.4884379 C16.6432894,7.55643552 16.1103307,14.2971996 15.8059218,17.1341003 C15.6153015,18.8750394 14.492976,19.9310024 12.8094878,19.9610014 C11.5159931,19.9900003 10.2497298,20 9.00389021,20 C7.68121893,20 6.38772423,19.9900003 5.13215907,19.9610014 C3.50507888,19.9220027 2.38178085,18.8450404 2.2008861,17.1341003 C1.88772423,14.2871999 1.36449103,7.55643552 1.35476551,7.4884379 C1.34503998,7.28344508 1.41117355,7.0884519 1.54538578,6.93045743 C1.67765291,6.78446254 1.86827318,6.69646562 2.06861898,6.69646562 L15.9391614,6.69646562 C16.1385347,6.69646562 16.3194294,6.78446254 16.4623946,6.93045743 C16.5956343,7.0884519 16.6627404,7.28344508 16.6432894,7.4884379" id="Fill-1" opacity="0.400000006"></path>
+                                                                    <path d="M18,3.97686081 C18,3.56587519 17.67614,3.24388646 17.2871191,3.24388646 L14.371407,3.24388646 C13.77815,3.24388646 13.2626972,2.82190123 13.1304301,2.22692206 L12.9670413,1.49794757 C12.7384915,0.616978406 11.9497515,-1.50990331e-14 11.0647288,-1.50990331e-14 L6.93624379,-1.50990331e-14 C6.04149557,-1.50990331e-14 5.26053598,0.616978406 5.0232332,1.54594589 L4.87054247,2.22792202 C4.73730279,2.82190123 4.22185001,3.24388646 3.62956559,3.24388646 L0.713853469,3.24388646 C0.323859952,3.24388646 0,3.56587519 0,3.97686081 L0,4.35684751 C0,4.75783348 0.323859952,5.08982186 0.713853469,5.08982186 L17.2871191,5.08982186 C17.67614,5.08982186 18,4.75783348 18,4.35684751 L18,3.97686081 Z" id="Fill-4"></path>
+                                                                </g>
+                                                            </g>
+                                                        </svg>
                                                     </div>
                                                 {% endif %}
-
-
-                                            {% if comment.user.first_name and comment.user.last_name %}
-                                                <div>
-                                                    <div class="text-lg flex gap-2">
-                                                        <div>{{ comment.user }}</div>
-                                                        <div class="h-fit bg-[var(--color12)] mt-0.5 text-sm py-0.5 px-1 px-1 rounded-lg"><i class="fa fa-star text-[var(--color10)] text-xs ml-1"></i>{{ comment.rating|floatformat|to_fanum }}</div>
+                                                <input hidden onchange="LikeAction({{ comment.id}})" id="check-like{{ comment.id }}" name="check-like" class="like-input" type="checkbox" {% if comment|is_liked:request.user %}checked{% endif %}>
+                                                <label for="check-like{{ comment.id }}" class="like-btn flex gap-1 px-2 bg-[var(--color12)] p-1.5 rounded-lg cursor-pointer">
+                                                    <div>
+                                                        <i class="fa fa-heart mt-1 text-[var(--color10)] like-btn"></i>
                                                     </div>
-                                                    <div class="text-[var(--color10)] mt-[-7px]">{{ comment.user.username }}</div>
-                                                </div>
-                                                {% else %}
-                                                    <div class="text-lg mt-1.5 flex gap-2">
-                                                        <div>{{ comment.user }}</div>
-                                                        <div class="h-fit bg-[var(--color12)] mt-0.5 text-sm py-0.5 px-1 px-1 rounded-lg"><i class="fa fa-star text-[var(--color10)] text-xs ml-1"></i>{{ comment.rating|floatformat|to_fanum }}</div>
-                                                    </div>
-                                            {% endif %}
-                                        </div>
-                                        <div class="flex gap-1 p-1">
-                                            <svg class="mt-[1px]" id="Time Square" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.25C5.051 2.25 2.5 4.801 2.5 12C2.5 19.198 5.051 21.75 12.25 21.75C19.449 21.75 22 19.198 22 12C22 4.801 19.449 2.25 12.25 2.25Z" fill="#674d45"></path>
-                                            <path d="M15.639 14.7668C15.895 14.7668 16.144 14.6358 16.284 14.4008C16.496 14.0458 16.38 13.5858 16.024 13.3728L12.999 11.5688V7.63281C12.999 7.21881 12.663 6.88281 12.249 6.88281C11.835 6.88281 11.499 7.21881 11.499 7.63281V11.9948C11.499 12.2578 11.638 12.5038 11.865 12.6388L15.256 14.6618C15.376 14.7328 15.509 14.7668 15.639 14.7668Z" fill="#674d45"></path>
-                                            </svg>
-                                            <div>
-                                                {{ comment.passed_time|to_fanum }}
+                                                    {{ comment.like.count|to_fanum }}
+                                                </label>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="mt-2 text-[var(--color6)]">
-                                        {{ comment|to_fanum }}
-                                    </div>
-                                    <div class=" flex gap-1 mt-2 mb-1">
-                                        {% if comment.user == request.user %}
-                                            <div class="bg-red-100 p-2 rounded-lg cursor-pointer" onclick="OpenDialog('آیا از حذف نظر خود مطمئن هستید؟' ,'/products/details/{{ comment.id }}/delete')">
-                                                <svg id="Delete" width="20px" height="20px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                                    <g id="Iconly/Bulk/Delete" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
-                                                        <g id="Delete" transform="translate(3.000000, 2.000000)" fill="#f97e7e" fill-rule="nonzero">
-                                                            <path d="M16.6432894,7.4884379 C16.6432894,7.55643552 16.1103307,14.2971996 15.8059218,17.1341003 C15.6153015,18.8750394 14.492976,19.9310024 12.8094878,19.9610014 C11.5159931,19.9900003 10.2497298,20 9.00389021,20 C7.68121893,20 6.38772423,19.9900003 5.13215907,19.9610014 C3.50507888,19.9220027 2.38178085,18.8450404 2.2008861,17.1341003 C1.88772423,14.2871999 1.36449103,7.55643552 1.35476551,7.4884379 C1.34503998,7.28344508 1.41117355,7.0884519 1.54538578,6.93045743 C1.67765291,6.78446254 1.86827318,6.69646562 2.06861898,6.69646562 L15.9391614,6.69646562 C16.1385347,6.69646562 16.3194294,6.78446254 16.4623946,6.93045743 C16.5956343,7.0884519 16.6627404,7.28344508 16.6432894,7.4884379" id="Fill-1" opacity="0.400000006"></path>
-                                                            <path d="M18,3.97686081 C18,3.56587519 17.67614,3.24388646 17.2871191,3.24388646 L14.371407,3.24388646 C13.77815,3.24388646 13.2626972,2.82190123 13.1304301,2.22692206 L12.9670413,1.49794757 C12.7384915,0.616978406 11.9497515,-1.50990331e-14 11.0647288,-1.50990331e-14 L6.93624379,-1.50990331e-14 C6.04149557,-1.50990331e-14 5.26053598,0.616978406 5.0232332,1.54594589 L4.87054247,2.22792202 C4.73730279,2.82190123 4.22185001,3.24388646 3.62956559,3.24388646 L0.713853469,3.24388646 C0.323859952,3.24388646 0,3.56587519 0,3.97686081 L0,4.35684751 C0,4.75783348 0.323859952,5.08982186 0.713853469,5.08982186 L17.2871191,5.08982186 C17.67614,5.08982186 18,4.75783348 18,4.35684751 L18,3.97686081 Z" id="Fill-4"></path>
-                                                        </g>
-                                                    </g>
-                                                </svg>
-                                            </div>
                                         {% endif %}
-                                        <input hidden onchange="LikeAction({{ comment.id}})" id="check-like{{ comment.id }}" name="check-like" class="like-input" type="checkbox" {% if comment|is_liked:request.user %}checked{% endif %}>
-                                        <label for="check-like{{ comment.id }}" class="like-btn flex gap-1 px-2 bg-[var(--color12)] p-1.5 rounded-lg cursor-pointer">
-                                            <div>
-                                                <i class="fa fa-heart mt-1 text-[var(--color10)] like-btn"></i>
-                                            </div>
-                                            {{ comment.like.count|to_fanum }}
-                                        </label>
-                                    </div>
-                                </div>
+                                {% endif %}
                             {% endfor %}
                             {% else %}
                                 <div class="text-2xl mt-10 text-center">تا کنون نظری ثبت نشده!</div>

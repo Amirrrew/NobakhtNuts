@@ -1,0 +1,6 @@
+        {% if approval_needed_comments %}
+            <div class="border-b border-[var(--color11)] pb-2 mt-2"><i class="fa fa-clock mx-2 text-[var(--color10)]"></i>کامنت های در انتظار تایید</div>
+            <div class="mt-2 relative flex flex-wrap gap-2" id="comments-notapproved-partial" style="animation: load8 300ms">
+                {% include 'adminpanel_module/comments/table_components/comments_notapproved_partial.html' %}
+            </div>
+        {% endif %}

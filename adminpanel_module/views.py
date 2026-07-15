@@ -789,7 +789,40 @@ class CommentList(ListView):
     paginate_by = 20
 
     def get_queryset(self):
-        return ProductComment.objects.all().order_by('-created_at')
+        return ProductComment.objects.filter(is_approved=True).order_by('-created_at')
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(CommentList ,self).get_context_data(*args ,**kwargs)
+        context['approval_needed_comments'] = ProductComment.objects.filter(is_approved=False).order_by('-created_at')
+        return context
+
+    def get(self,request ,*args, **kwargs):
+        comment_pk = request.GET.get('comment')
+        comment = ProductComment.objects.filter(pk=comment_pk).first()
+        if comment:
+            comment.is_approved = True
+            comment.save()
+
+            comments = ProductComment.objects.filter(is_approved=True)
+            comments_notapproved = ProductComment.objects.filter(is_approved=False)
+
+            html_approved = render_to_string(
+                'adminpanel_module/comments/table_components/comments_approved_partial.html',
+                {'comments': comments},
+                request=request,
+            )
+
+            html_notapproved = render_to_string(
+                'adminpanel_module/comments/table_components/comments_notapproved_partial.html',
+                {'approval_needed_comments': comments_notapproved},
+                request=request,
+            )
+            return JsonResponse({
+                'html_a': html_approved,
+                'html_na': html_notapproved
+            })
+
+        return super().get(request, *args , **kwargs)
 
 @permision_checker_decorator_factory({'permission': 'admin_index'})
 def CommentDelete(request , pk):

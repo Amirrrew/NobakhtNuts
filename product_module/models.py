@@ -231,6 +231,7 @@ class ProductComment(models.Model):
     product = models.ForeignKey(Product ,on_delete=models.CASCADE ,related_name='comment_set' ,verbose_name='برای محصول')
     text = models.TextField(max_length=2000 ,verbose_name='متن نظر')
     rating = models.FloatField(default=0 ,verbose_name='امتیاز')
+    is_approved = models.BooleanField(default=False ,verbose_name='تایید شده؟')
     created_at = models.DateTimeField(auto_now_add=True ,verbose_name='تاریخ')
     like = models.ManyToManyField(User ,blank=True,null=True,related_name='likes' ,verbose_name= 'لایک')
 

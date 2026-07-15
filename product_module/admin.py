@@ -24,7 +24,8 @@ class ProductSubCategoryAdmin(admin.ModelAdmin):
     list_filter = ['main_category' ,]
 
 class ProductCommentAdmin(admin.ModelAdmin):
-    list_display = ['user' ,'product' ,'created_at']
+    list_display = ['user' ,'product' ,'created_at' ,'is_approved']
+    list_editable = ['is_approved']
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(ProductCategory)
