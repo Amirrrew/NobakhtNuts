@@ -12,7 +12,7 @@ from pyexpat.errors import messages
 from random import SystemRandom
 
 from polls.templatetags.poll_extras import register
-from utils.my_decorators import send_sms
+from utils.my_decorators import send_sms, check_phone_blacklisted
 from .models import User
 from account_module.form import LoginForm, VerifySignupForm
 from django.utils import timezone
@@ -43,15 +43,17 @@ class LoginView(View):
         try:
             if login_form.is_valid():
                 phone = login_form.cleaned_data.get('phone')
-
-                verify_sms = send_sms(phone)
-                sleep(1)
-                if verify_sms.get('status') == 'عملیات موفق':
-                    request.session['phone'] = phone
-                    request.session['verify_expiry'] = (timezone.now() + timedelta(seconds=120)).isoformat()
-                    request.session['verify_expiry_front'] = (timezone.now() + timedelta(seconds=120)).timestamp()
-                    request.session['verify_code'] = verify_sms.get('code')
-                    return redirect(reverse('verify_page'))
+                is_blacklisted = check_phone_blacklisted(phone)
+                if not is_blacklisted:
+                    verify_sms = send_sms(phone)
+                    if verify_sms.get('status') == 'عملیات موفق':
+                        request.session['phone'] = phone
+                        request.session['verify_expiry'] = (timezone.now() + timedelta(seconds=120)).isoformat()
+                        request.session['verify_expiry_front'] = (timezone.now() + timedelta(seconds=120)).timestamp()
+                        request.session['verify_code'] = verify_sms.get('code')
+                        return redirect(reverse('verify_page'))
+                    else:
+                        message_e = 'شماره تلفن اشتباه است!'
                 else:
                     message_e = 'شماره تلفن اشتباه است!'
             else:

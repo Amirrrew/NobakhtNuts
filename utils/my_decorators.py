@@ -7,8 +7,7 @@ import requests
 from django.db.models import Case, When, Value, IntegerField,Q
 import os
 
-from account_module.models import Notification ,User
-
+from account_module.models import Notification, User, BlackList_phones
 
 
 def permision_checker_decorator_factory(data = None):
@@ -29,6 +28,13 @@ def send_sms(phone):
     response = requests.post(settings.SMS_API_KEY, json=data)
     print(response.json())
     return response.json()
+
+
+def check_phone_blacklisted(phone):
+    blacklisted = BlackList_phones.objects.filter(phone=phone).exists()
+    if blacklisted:
+        return True
+    else: return False
 
 
 def validate_image_extension(value):
