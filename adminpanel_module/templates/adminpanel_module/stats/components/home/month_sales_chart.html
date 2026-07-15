@@ -1,0 +1,41 @@
+{% load poll_extras %}
+
+<div class="admin-widget-medium relative" style="width: 100%; animation: load8 200ms">
+            <div class="flex justify-between w-[100%] items-start">
+                <div class="flex gap-2">
+                    <div class="dot"></div>
+                    <h1 class="mt-[-4px]">فروش ماهانه</h1>
+                </div>
+                {% if monthsale_growth > 0 %}
+                    <div class="stat-profit mt-[-5px]">
+                        <div class="stat-dot-profit"></div>
+                        <div>+ {{ monthsale_growth|to_fanum }} %</div>
+                    </div>
+                {% else %}
+                    <div class="stat-loss mt-[-5px]">
+                        <div class="stat-dot-loss"></div>
+                        <div>{{ monthsale_growth|to_fanum }} %</div>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="text-7xl font-semibold flex mt-3">
+                {{ current_month_sale|three_digits_currency_no_extension }} <span class="text-sm mr-2 relative top-8">تومان</span>
+            </div>
+            <div class="admin-widget-medium-chart mt-3" style="height: 170px">
+                {% for month in monthsale %}
+                    <div class="tooltip-parent-chart mt-auto w-[100%]" style="height:{% if not month.sale == 0 %}{% widthratio month.sale all_months_sale 100 %}{% else %}5{% endif %}%; ">
+                        <div class="admin-small-bar-chart" style="height: 100%; opacity: {% if not month.sale == 0 %}{% widthratio month.sale all_months_sale 100 %}{% else %}10{% endif %}%;"></div>
+                        <div class="tooltip" style="padding: 5px 10px;">
+                            <div>{{ month.day|show_jalali_date|to_fanum }}</div>
+                            <div>{{ month.day|jalali_weekday }}</div>
+                            <div class="font-semibold">{{ month.sale|three_digits_currency }}</div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            {% if monthsale_growth > 0 %}
+                <div class="flex gap-2 items-start relative top-2"><span class="stat-dot-profit" style="margin-top: 13px"></span><div class="mt-2 text-[var(--profit-dot)]">فروش نسبت به ماه قبل حدود {{ monthsale_growth|to_fanum }} درصد افزایش داشته!!!</div></div>
+            {% else %}
+                <div class="flex gap-2 items-start relative top-2"><span class="stat-dot-loss" style="margin-top: 13px"></span><div class="mt-2 text-[var(--loss-bg)]">فروش نسبت به ماه قبل حدود {{ monthsale_growth|to_fanum }} درصد کاهش داشته!!!</div></div>
+            {% endif %}
+        </div>

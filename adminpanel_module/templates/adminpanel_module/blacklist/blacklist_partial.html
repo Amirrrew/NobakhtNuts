@@ -1,0 +1,18 @@
+{% load poll_extras %}
+            {% if not blacklist %}
+                <div class="text-center"> لیست سیاه خالی است</div>
+                {% else %}
+                {% for phone in blacklist %}
+                    <div id="cat-{{ phone.pk }}" class="cat-opt relative bg-[var(--color12)] rounded-xl p-2 transition-all hover:bg-[var(--color13)]" style="animation: load8 {% widthratio forloop.counter 1 100 %}ms">
+                        <div class="flex gap-3">
+                            <div class="text-xl">
+                                {{ phone.phone|to_fanum }}
+                            </div>
+                            <div class="flex gap-1 mt-0.5">
+                                <button onclick="OpenDialog('آیا از حذف این شماره از لیست سیاه مطمئن هستید؟' ,'{% url 'admin_blacklist_delete' phone.pk %}')" class="bg-[var(--cancel-bg)] text-[var(--loss-bg)] w-5 h-5 rounded cursor-pointer"><i class="fa fa-trash text-xs"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                {% endfor %}
+        {% endif %}

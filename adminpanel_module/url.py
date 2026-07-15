@@ -4,7 +4,10 @@ from .views import FooterBoxDelete
 
 urlpatterns = [
     path('login/' ,views.AdminLogin.as_view() , name='admin_login'),
+    path('logout/' ,views.logoutPanel , name='admin_logout'),
     path('' , views.index, name='admin_home'),
+    path('stats/', views.StatsHome, name='admin_stats'),
+    path('stats/product-stats/' ,views.Products_Stats ,name='admin_stats_products'),
     path('orders/' ,views.OrdersListView.as_view() ,name='admin_order_list'),
     path('orders/delete/<int:pk>' ,views.OrderDelete ,name='admin_order_delete'),
     path('orders/action/' ,views.OrderSelectedAction ,name='admin_order_action'),
@@ -56,4 +59,6 @@ urlpatterns = [
     path('posting-fees/' ,views.PostingList.as_view() ,name='admin_posting_list'),
     path('posting-fees/add' ,views.PostingAdd.as_view() ,name='admin_posting_add'),
     path('posting-fees/<int:pk>/edit', views.PostingEdit.as_view(), name='admin_posting_edit'),
+    path('blacklist/' ,views.BlackList_list.as_view() ,name='admin_blacklist'),
+    path('blacklist/<int:pk>/delete', views.BlackList_delete, name='admin_blacklist_delete'),
 ]

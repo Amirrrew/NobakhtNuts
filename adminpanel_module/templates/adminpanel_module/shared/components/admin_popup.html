@@ -28,7 +28,7 @@
         </div>
 
         <div class="px-5">
-            <a href="" class="rounded-2xl flex justify-between p-3" style="background-color: #e6dfdf">
+            <a href="{% url 'admin_user_edit' request.user.pk %}" class="rounded-2xl flex justify-between p-3" style="background-color: #e6dfdf">
                 <div class="flex gap-3">
                     <div class="w-18 h-18 min-h-18 min-w-18 rounded-xl overflow-hidden">
                         {% if not user.avatar %}
@@ -56,7 +56,7 @@
             </a>
 
             <div class="mt-3 border-t border-[var(--color17)] pt-1">
-                <a href="" class="w-[100%] h-[50px] flex justify-between p-3 rounded-xl cursor-pointer pt-2.5 transition-all hover:bg-[#e6dfdf]">
+                <a href="{% url 'admin_user_edit' request.user.pk %}" class="w-[100%] h-[50px] flex justify-between p-3 rounded-xl cursor-pointer pt-2.5 transition-all hover:bg-[#e6dfdf]">
                     <div class="flex gap-2">
                         <svg id="Info Square" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.052 2.78467 2.5 5.33667 2.5 12.5347C2.5 19.7327 5.052 22.2847 12.25 22.2847C19.448 22.2847 22 19.7327 22 12.5347C22 5.33667 19.448 2.78467 12.25 2.78467Z" fill="#674d45"></path>
@@ -67,7 +67,7 @@
                     </div>
                     <i class="fa fa-angle-left mt-1.5 text-[var(--color7)]"></i>
                 </a>
-                <a href="" class="w-[100%] h-[50px] flex justify-between p-3 rounded-xl cursor-pointer pt-2.5 transition-all hover:bg-[#e6dfdf]">
+                <a href="{% url 'admin_user_edit' request.user.pk %}" class="w-[100%] h-[50px] flex justify-between p-3 rounded-xl cursor-pointer pt-2.5 transition-all hover:bg-[#e6dfdf]">
                     <div class="flex gap-2">
                         <svg id="Lock" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path opacity="0.4" d="M9.18664 9.20312C9.2273 9.19717 9.26805 9.19162 9.30888 9.18649C9.45426 9.16821 9.64701 9.14235 9.87923 9.11013C10.5921 9.03177 11.3806 8.99463 12.2501 8.99463C18.2741 8.99463 20.4101 10.7666 20.4101 15.7656C20.4101 20.7656 18.2741 22.5376 12.2501 22.5376C6.22609 22.5376 4.09009 20.7656 4.09009 15.7656C4.09009 13.0651 4.7166 11.3089 6.23942 10.2636C6.63855 10.0183 7.65058 9.5105 8.79749 9.27221C8.92429 9.24745 9.05399 9.22443 9.18664 9.20312Z" fill="#674d45"></path>
@@ -78,21 +78,7 @@
                     </div>
                     <i class="fa fa-angle-left mt-1.5 text-[var(--color7)]"></i>
                 </a>
-                <a href="" class="w-[100%] h-[50px] flex justify-between p-3 rounded-xl cursor-pointer pt-2.5 transition-all hover:bg-[#e6dfdf]">
-                    <div class="flex gap-2">
-                        <svg id="Message" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                            <g id="Iconly/Bulk/Message" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
-                                <g id="Group" transform="translate(1.999900, 2.999600)" fill="#674d45" fill-rule="nonzero">
-                                    <path d="M20,12.9406 C20,15.7306 17.76,17.9906 14.97,18.0006 L14.96,18.0006 L5.05,18.0006 C2.27,18.0006 0,15.7506 0,12.9606 L0,12.9506 C0,12.9506 0.006,8.5246 0.014,6.2986 C0.015,5.8806 0.495,5.6466 0.822,5.9066 C3.198,7.7916 7.447,11.2286 7.5,11.2736 C8.21,11.8426 9.11,12.1636 10.03,12.1636 C10.95,12.1636 11.85,11.8426 12.56,11.2626 C12.613,11.2276 16.767,7.8936 19.179,5.9776 C19.507,5.7166 19.989,5.9506 19.99,6.3676 C20,8.5766 20,12.9406 20,12.9406" id="Fill-1" opacity="0.400000006"></path>
-                                    <path d="M19.4761,2.674 C18.6101,1.042 16.9061,3.55271368e-15 15.0301,3.55271368e-15 L5.0501,3.55271368e-15 C3.1741,3.55271368e-15 1.4701,1.042 0.6041,2.674 C0.4101,3.039 0.5021,3.494 0.8251,3.752 L8.2501,9.691 C8.7701,10.111 9.4001,10.32 10.0301,10.32 C10.0341,10.32 10.0371,10.32 10.0401,10.32 C10.0431,10.32 10.0471,10.32 10.0501,10.32 C10.6801,10.32 11.3101,10.111 11.8301,9.691 L19.2551,3.752 C19.5781,3.494 19.6701,3.039 19.4761,2.674" id="Fill-4"></path>
-                                </g>
-                            </g>
-                        </svg>
-                        <h1 class="mt-[1px] text-xl">پیام ها</h1>
-                    </div>
-                    <i class="fa fa-angle-left mt-1.5 text-[var(--color7)]"></i>
-                </a>
-                <a href="" class="w-[100%] h-[50px] flex justify-between p-3 rounded-xl cursor-pointer pt-2.5 transition-all text-[var(--color5)] hover:bg-[#e6dfdf]">
+                <a href="{% url 'admin_logout' %}" class="w-[100%] h-[50px] flex justify-between p-3 rounded-xl cursor-pointer pt-2.5 transition-all text-[var(--color5)] hover:bg-[#e6dfdf]">
                     <div class="flex gap-2">
                         <svg id="Logout" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M1.99993 7.7106C1.91993 8.8306 1.88012 10.0107 1.87012 11.2407L1.87012 12.7407C1.88012 13.9507 1.92993 15.2106 1.99993 16.5106L1.99993 16.5306C2.36993 20.5606 4.19993 21.8606 9.49993 21.8606C17.0999 21.8606 17.0999 19.0106 17.0999 12.1106C17.0999 5.21059 17.0999 2.3606 9.49993 2.3606C4.19993 2.3606 2.36993 3.6606 1.99993 7.7106Z" fill="#f97e7e"></path>

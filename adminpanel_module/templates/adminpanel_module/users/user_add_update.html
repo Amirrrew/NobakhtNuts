@@ -155,6 +155,10 @@
                         {% endif %}
                     </div>
                 </div>
+
+                <div class="tablebox-default mt-4" style="border-radius: 10px">
+                    <div class="flex justify-between w-[100%] text-xl"><div class="">زمان ثبت نام</div><div>{{ admin_user.created_at|show_jalali_date|to_fanum }} - {{ admin_user.created_at|date:"H:i"|to_fanum }}</div></div>
+                </div>
             </div>
         </div>
     </form>

@@ -17,9 +17,9 @@ from unicodedata import category
 from urllib3 import request
 
 from account_module.form import LoginForm
-from account_module.models import User
+from account_module.models import User , BlackList_phones
 from adminpanel_module.forms import ProductAddForm, MainCategoryForm, SubCategoryForm, PackForm, BrandForm, UserForm, \
-    SupportWayForm, SiteSettingForm, FooterLinkForm, PaymentForm, CardForm, PostingForm, LoginAdmin
+    SupportWayForm, SiteSettingForm, FooterLinkForm, PaymentForm, CardForm, PostingForm, AdminLoginForm
 from order_module.context_processors import orders
 from order_module.models import Order, OrderStatus, PaymentMethod, Cards, PostingMethod
 from product_module.models import Product, ProductCategory, ProductSubCategory, ProductBrand, PackageSize, \
@@ -27,42 +27,36 @@ from product_module.models import Product, ProductCategory, ProductSubCategory, 
 from site_settings.models import SiteSettings, FooterLinkBox, FooterLink
 from support_module.models import Ticket, SupportWays
 from utils.dashboard_decorators import get_sales_week, get_sales_week_growth, today, get_order_today, get_user_growth, \
-    get_new_orders, get_lowstock_products, get_best_selling_products, get_new_tickets
+    get_new_orders, get_lowstock_products, get_best_selling_products, get_new_tickets, get_sales_month
 from utils.my_decorators import permision_checker_decorator_factory
 from django.db.models import Q, Count
 
 
-class AdminLogin(View):
-    def get(self ,request):
-        login_form = LoginAdmin()
-        message_e = None
-        return render(request ,'adminpanel_module/auth/admin_login.html' ,{'login_form': login_form ,'message_e': message_e})
+class AdminLogin(LoginView):
+    template_name = 'adminpanel_module/auth/admin_login.html'
+    authentication_form = AdminLoginForm
 
-    def post(self ,request):
-        login_form = LoginAdmin(request.POST)
-        message_e = None
-        if login_form.is_valid():
-            username = login_form.cleaned_data.get('username')
-            password = login_form.cleaned_data.get('password')
-            user: User = User.objects.filter(username=username).first()
+    def form_valid(self, form):
+        user = form.get_user()
 
-            if user.is_superuser:
-                is_auth = user.check_password(password)
-                if is_auth:
-                    login(request, user)
-                    return redirect('admin_home')
-                else:
-                    message_e = 'رمز عبور یا نام کاربری اشتباه'
-            else:
-                message_e = 'شما به این بخش دسترسی ندارید'
-        else:
-            message_e  ='nigga'
+        if not user.is_superuser:
+            context = self.get_context_data(form=form)
+            context["message_e"] = "شما دسترسی لازم را ندارید"
+            return self.render_to_response(context)
 
-        context = {
-            'message_e': message_e,
-            'login_form': login_form
-        }
-        return render(request ,'adminpanel_module/auth/admin_login.html' ,context)
+        login(self.request, user)
+        return redirect('admin_home')
+
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        context["message_e"] = "نام کاربری یا رمز عبور اشتباه است"
+        return self.render_to_response(context)
+
+@permision_checker_decorator_factory({'permission': 'admin_index'})
+def logoutPanel(request):
+    logout(request)
+    return redirect('home')
+
 
 @permision_checker_decorator_factory({'permission': 'admin_index'} ,)
 def index(request: HttpRequest):
@@ -124,6 +118,23 @@ def admin_popup_notif_component(request):
         'user': request.user,
     }
     return render(request, 'adminpanel_module/shared/components/admin_popup_notif_component.html', context)
+
+@permision_checker_decorator_factory({'permission': 'admin_index'} ,)
+def StatsHome(request):
+    month_data = get_sales_month()
+    context = {
+        "monthsale": month_data["days"],
+        "all_months_sale": month_data["max_sale"],
+        "current_month_sale": month_data["total_month_sale"],
+        "monthsale_growth": month_data["monthsale_growth"],
+    }
+    return render(request, 'adminpanel_module/stats/stats_home.html', context)
+
+def Products_Stats(request):
+    context = {
+        'all_products_count': Product.objects.count
+    }
+    return render(request ,'adminpanel_module/stats/products_stats/products_stats.html' ,context)
 
 @method_decorator(permision_checker_decorator_factory(), name='dispatch')
 class OrdersListView(ListView):
@@ -1337,3 +1348,39 @@ class PostingEdit(UpdateView):
         context = super(PostingEdit ,self).get_context_data(*args ,**kwargs)
         context['edit_view'] = True
         return context
+
+
+@method_decorator(permision_checker_decorator_factory() ,name='dispatch')
+class BlackList_list(ListView):
+    model = BlackList_phones
+    template_name = 'adminpanel_module/blacklist/blacklist.html'
+    context_object_name = 'blacklist'
+
+    def get_queryset(self):
+        return BlackList_phones.objects.all()
+
+    def get(self,request ,*args, **kwargs):
+        phone = request.GET.get('phone')
+        if phone:
+            new_banned_number = BlackList_phones(
+                phone=phone,
+            )
+            new_banned_number.save()
+            blacklist = BlackList_phones.objects.all()
+            html = render_to_string(
+                'adminpanel_module/blacklist/blacklist_partial.html',
+                {'blacklist': blacklist},
+                request=request,
+            )
+            return JsonResponse({
+                'html': html
+            })
+
+        return super().get(request, *args , **kwargs)
+
+@permision_checker_decorator_factory({'permission': 'admin_index'})
+def BlackList_delete(request ,pk):
+    phone = get_object_or_404(BlackList_phones ,pk=pk)
+    if phone:
+        phone.delete()
+    return redirect('admin_blacklist')

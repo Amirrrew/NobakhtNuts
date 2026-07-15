@@ -5,6 +5,16 @@ from django.urls import reverse
 from django.utils import timezone
 
 
+class BlackList_phones(models.Model):
+    phone = models.CharField(max_length=1000,db_index=True ,null=True ,blank=True ,verbose_name='شماره بن شده')
+
+    def __str__(self):
+        return self.phone
+
+    class Meta:
+        verbose_name = 'شماره بن شده'
+        verbose_name_plural = 'لیست سیاه'
+
 class User(AbstractUser):
     avatar = models.ImageField(upload_to='avatars' , null=True, blank=True ,verbose_name="تصویر پروفایل")
     phone = models.CharField(max_length=11 ,blank=True,null=True,verbose_name="شماره موبایل")

@@ -723,16 +723,9 @@ class Deposit(View):
 
 
 
-ZP_API_REQUEST = 'https://payment.zarinpal.com/pg/v4/payment/request.json'
-ZP_API_VERIFY = 'https://payment.zarinpal.com/pg/v4/payment/verify.json'
-ZP_API_STARTPAY = 'https://payment.zarinpal.com/pg/StartPay/'
+
 
 CallbackURL = "https://nobakhtnuts.ir/orders/verify-payment/"
-# ZP_API_REQUEST = 'https://sandbox.zarinpal.com/pg/v4/payment/request.json'
-# ZP_API_VERIFY = 'https://sandbox.zarinpal.com/pg/v4/payment/verify.json'
-# ZP_API_STARTPAY = 'https://sandbox.zarinpal.com/pg/StartPay/'
-# CallbackURL = "https://nobakhtnuts.ir/orders/verify-payment/"
-
 @login_required
 def request_online_payment(request):
     errors = None
@@ -755,13 +748,13 @@ def request_online_payment(request):
         }
 
         req_header = {'accept': 'application/json' ,'content-type': 'application/json'}
-        response = requests.post(ZP_API_REQUEST ,data=json.dumps(req_data), headers=req_header)
+        response = requests.post(settings.ZP_API_REQUEST ,data=json.dumps(req_data), headers=req_header)
         response_data = response.json()
 
         if response.status_code == 200 and 'data' in response_data:
             authority = response_data['data'].get('authority')
             if authority:
-                return redirect(f'{ZP_API_STARTPAY}{authority}')
+                return redirect(f'{settings.ZP_API_STARTPAY}{authority}')
 
             errors = response_data.get('errors', {})
             e_code = errors.get('code', 'Unknown Error')
@@ -796,7 +789,7 @@ def verify_payment(request: HttpRequest):
             'authority': t_authority,
         }
 
-        response = requests.post(url=ZP_API_VERIFY, data=json.dumps(req_data), headers=req_header)
+        response = requests.post(url=settings.ZP_API_VERIFY, data=json.dumps(req_data), headers=req_header)
         response_json = response.json()
 
         if len(response_json.get('errors' ,{})) == 0:

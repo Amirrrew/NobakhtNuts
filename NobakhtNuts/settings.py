@@ -130,7 +130,12 @@ AUTH_USER_MODEL = 'account_module.User'
 
 SANDBOX = True
 
-
 SMS_API_KEY = "https://console.melipayamak.com/api/send/otp/410281e7a9a74a2283fd51b6b8653654"
 
 
+ZP_API_REQUEST = 'https://payment.zarinpal.com/pg/v4/payment/request.json'
+ZP_API_VERIFY = 'https://payment.zarinpal.com/pg/v4/payment/verify.json'
+ZP_API_STARTPAY = 'https://payment.zarinpal.com/pg/StartPay/'
+# ZP_API_REQUEST = 'https://sandbox.zarinpal.com/pg/v4/payment/request.json'
+# ZP_API_VERIFY = 'https://sandbox.zarinpal.com/pg/v4/payment/verify.json'
+# ZP_API_STARTPAY = 'https://sandbox.zarinpal.com/pg/StartPay/'

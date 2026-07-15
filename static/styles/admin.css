@@ -129,7 +129,7 @@ body {
 
 .popup-form-admin {
     width: 500px;
-    height: 430px;
+    height: 380px;
     position: relative;
     /*top: 50px;*/
     background-color: #eae4e4;
@@ -641,4 +641,39 @@ body:has(#admin-searchbox input:focus) .overlay {
 
 .footerlink:hover .footerlink-actions {
     display: flex;
+}
+
+.sales-stats-option {
+    height: 85px;
+    border: 1px solid var(--color12);
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    overflow: hidden;
+    transition: 300ms;
+}
+
+.sales-stats-option:hover {
+    transform: scale(0.98);
+    border: 1px solid var(--color11);
+}
+
+.sales-stats-option-iconbox {
+    width: 70px;
+    height: auto;
+    border-radius: 10px;
+    background-color: var(--color6);
+    box-shadow: 2px 2px 200px var(--color10);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    color: var(--color7);
+    transition: 300ms;
+    border: 2px solid var(--color6);
+}
+
+.sales-stats-option:hover .sales-stats-option-iconbox {
+    box-shadow: 2px 2px 80px var(--color10);
 }

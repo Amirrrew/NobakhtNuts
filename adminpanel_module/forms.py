@@ -9,18 +9,11 @@ from account_module.models import User
 from site_settings.models import SiteSettings, FooterLink
 from support_module.models import SupportWays
 
-class LoginAdmin(AuthenticationForm):
-    username = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control'}),
-    )
+class AdminLoginForm(AuthenticationForm):
+    class Meta:
+        model = User
+        fields = ['username' ,'password']
 
-    password = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control'}),
-    )
-
-    def clean(self):
-        cleaned_data = super().clean()
-        return cleaned_data
 
 class ProductAddForm(forms.ModelForm):
     class Meta:
