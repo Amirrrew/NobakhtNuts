@@ -27,9 +27,10 @@ from product_module.models import Product, ProductCategory, ProductSubCategory, 
 from site_settings.models import SiteSettings, FooterLinkBox, FooterLink
 from support_module.models import Ticket, SupportWays
 from utils.dashboard_decorators import get_sales_week, get_sales_week_growth, today, get_order_today, get_user_growth, \
-    get_new_orders, get_lowstock_products, get_best_selling_products, get_new_tickets, get_sales_month
+    get_new_orders, get_lowstock_products, get_best_selling_products, get_new_tickets, get_sales_month, \
+    get_category_chart, get_orders_status_chart, get_orders_month_count
 from utils.my_decorators import permision_checker_decorator_factory
-from django.db.models import Q, Count
+from django.db.models import Q, Count ,Sum,Avg
 
 
 class AdminLogin(LoginView):
@@ -77,9 +78,9 @@ def index(request: HttpRequest):
         'new_orders': get_new_orders(),
         'all_users': users['all_users'],
         'new_users': users['new_users'],
-        'low_stock_products': get_lowstock_products(),
-        'best_selling_products': get_best_selling_products(),
-        'new_tickets': get_new_tickets(),
+        'low_stock_products': get_lowstock_products(10),
+        'best_selling_products': get_best_selling_products(10),
+        # 'new_tickets': get_new_tickets(),
     }
     return render(request, 'adminpanel_module/home/admin_home.html', context)
 
@@ -129,13 +130,38 @@ def StatsHome(request):
         "monthsale_growth": month_data["monthsale_growth"],
     }
     return render(request, 'adminpanel_module/stats/stats_home.html', context)
-
+@permision_checker_decorator_factory({'permission': 'admin_index'} ,)
 def Products_Stats(request):
+    category_data = get_category_chart()
     context = {
-        'all_products_count': Product.objects.count
+        'all_products_count': Product.objects.count,
+        'all_available_products': Product.objects.filter(quantity__gte=0).count(),
+        'all_unavailable_products': Product.objects.filter(quantity=0).count(),
+        'low_stock_products': get_lowstock_products(10),
+        'best_selling_products': get_best_selling_products(10),
+        'stats_view': True,
+        'avarage_price_products': round(Product.objects.aggregate(avg_price=Avg("price"))["avg_price"] or 0),
+        'category_data': category_data['categories'],
+        'category_max': category_data['max_count']
     }
     return render(request ,'adminpanel_module/stats/products_stats/products_stats.html' ,context)
 
+@permision_checker_decorator_factory({'permission': 'admin_index'} ,)
+def Orders_Stats(request):
+    order_status_data = get_orders_status_chart()
+    orders_data = get_orders_month_count()
+    context = {
+        'all_orders': Order.objects.count,
+        'status_data': order_status_data['statuses'],
+        'status_max': order_status_data['max_count'],
+        'avarage_order': int(round((Order.objects.aggregate(avg_price=Avg("finalized_price"))["avg_price"] or 0) ,-3)),
+        'attention_needed_orders': Order.objects.filter(Q(status__title='در انتظار تایید') |Q(status__title='پرداخت شده')).count(),
+        'month_orders': orders_data['days'],
+        'month_orders_max': orders_data['max_orders'],
+        'month_total_orders': orders_data['total_orders'],
+        'month_orders_growth': orders_data['orders_growth'],
+    }
+    return render(request ,'adminpanel_module/stats/orders_stats/orders_stats.html' ,context)
 @method_decorator(permision_checker_decorator_factory(), name='dispatch')
 class OrdersListView(ListView):
     model = Order
@@ -918,6 +944,14 @@ def UserDelete(request ,pk):
     if admin_user:
         admin_user.delete()
     return redirect('admin_user_list')
+
+@permision_checker_decorator_factory({'permission': 'admin_index'} ,)
+def UserAvatarDelete(request ,pk):
+    admin_user = get_object_or_404(User ,pk=pk)
+    if admin_user:
+        admin_user.avatar.delete()
+        admin_user.save()
+    return redirect('admin_user_edit' ,pk=pk)
 
 @method_decorator(permision_checker_decorator_factory(), name='dispatch')
 class UserEdit(UpdateView):

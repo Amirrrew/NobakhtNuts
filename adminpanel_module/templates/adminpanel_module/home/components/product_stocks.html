@@ -10,15 +10,17 @@
                     </svg>
                     <h1 class="text-3xl font-semibold">محصولات رو به اتمام</h1>
                 </div>
-                <a href="{% url 'admin_product_list' %}" class="btn-defIconFlex gap-2">
-                    <div>محصولات</div>
-                    <i class="fa fa-angle-left mt-[3px] text-[var(--color7)]"></i>
-                </a>
+                {% if not stats_view %}
+                    <a href="{% url 'admin_stats_products' %}" class="btn-defIconFlex gap-2">
+                        <div>آمار بیشتر</div>
+                        <i class="fa fa-angle-left mt-[3px] text-[var(--color7)]"></i>
+                    </a>
+                {% endif %}
             </div>
             <div class="mt-5">
                 {% if low_stock_products %}
                     {% for p in low_stock_products %}
-                        <a href="" class="flex p-1 gap-2 mt-2 transition-all rounded-2xl duration-300 hover:bg-gray-50">
+                        <a href="{% url 'admin_product_edit' p.pk %}" class="flex p-1 gap-2 mt-2 transition-all rounded-2xl duration-300 hover:bg-gray-50">
                             <div class="min-w-20 min-h-20 max-h-20 max-w-20 bg-[var(--color12)] rounded-3xl overflow-hidden">
                                 <img class="w-[100%] h-[100%]" loading="lazy" alt="{{ p.title }}" src="{{ p.product_image.first.image.url }}">
                             </div>
@@ -63,14 +65,16 @@
                     </svg>
                     <h1 class="text-3xl font-semibold">پرفروشترین محصولات</h1>
                 </div>
-                <a href="{% url 'admin_product_list' %}" class="btn-defIconFlex gap-2">
-                    <div>محصولات</div>
-                    <i class="fa fa-angle-left mt-[3px] text-[var(--color7)]"></i>
-                </a>
+                {% if not stats_view %}
+                    <a href="{% url 'admin_stats_products' %}" class="btn-defIconFlex gap-2">
+                        <div>آمار بیشتر</div>
+                        <i class="fa fa-angle-left mt-[3px] text-[var(--color7)]"></i>
+                    </a>
+                {% endif %}
             </div>
             <div class="mt-5">
                 {% for p in best_selling_products %}
-                    <a href="" class="flex p-1 gap-2 mt-2 transition-all rounded-2xl duration-300 hover:bg-gray-50">
+                    <a href="{% url 'admin_product_edit' p.pk %}" class="flex p-1 gap-2 mt-2 transition-all rounded-2xl duration-300 hover:bg-gray-50">
                         <div class="min-w-20 min-h-20 max-h-20 max-w-20 bg-[var(--color12)] rounded-3xl overflow-hidden">
                             <img class="w-[100%] h-[100%]" loading="lazy" alt="{{ p.product_title }}" src="{{ p.product_image.first.image.url }}">
                         </div>

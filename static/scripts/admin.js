@@ -132,7 +132,7 @@ let AdminSearch = () => {
 
 
 let order_table_partial = document.getElementById('order-table-partial')
-
+//جستجو در رکورد های جدول
 let search_tables = (search ,table ,url ,name) => {
     let table_partial = document.getElementById(table)
     let search_value = document.getElementById(search)
@@ -149,7 +149,7 @@ let search_tables = (search ,table ,url ,name) => {
         })
     } ,700)
 }
-
+//نوار تنظیمات
 let ToolbarCheck = (name) => {
     let checks = document.querySelectorAll(`input[name='${name}']`)
     let toolbar = document.getElementById('table-toolbar')
@@ -169,7 +169,7 @@ let ToolbarCheck = (name) => {
         })
     })
 }
-
+// غیرفعال کردن نوار تنظیمات
 let ToolbarDisable = (name)=> {
     let checks = document.querySelectorAll(`input[name="${name}"]`)
     let toolbar = document.getElementById('table-toolbar')
@@ -181,7 +181,7 @@ let ToolbarDisable = (name)=> {
     })
 }
 
-
+//اکشن روی سفارشات انتخاب شده
 let OrderSelectedAction = (action) => {
     const form = document.getElementById("form-order");
     const data = new FormData(form);
@@ -192,7 +192,7 @@ let OrderSelectedAction = (action) => {
         ToolbarCheck('order')
     })
 }
-
+//اکشن روی کالا های انتخاب شده
 let product_table_partial = document.getElementById('product-table-partial')
 let ProductSelectedAction = (action) => {
     const form = document.getElementById("form-product");
@@ -205,6 +205,7 @@ let ProductSelectedAction = (action) => {
     })
 }
 
+//تایید کامنت توسط مدیر
 let comments_approved_partial = document.getElementById('comments-approved-partial')
 let comments_notapproved_partial = document.getElementById('comments-notapproved-partial')
 let ApproveComment = (comment_pk) => {

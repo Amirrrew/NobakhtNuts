@@ -1,0 +1,29 @@
+{% load poll_extras %}
+
+<div class="admin-widget-medium relative mt-2" style="width: 100%; animation: load8 200ms">
+            <div class="flex justify-between w-[100%] items-start">
+                <div class="flex gap-2">
+                    <div class="dot mt-1"></div>
+                    <h1 class="text-2xl font-semibold mt-[-4px]">توزیع محصولات بر اساس دسته بندی</h1>
+                </div>
+            </div>
+            <div class="text-7xl font-semibold flex mt-3">
+            </div>
+            <div class="admin-widget-medium-chart mt-3" style="height: 240px">
+                {% for cat in category_data %}
+                    <div class="tooltip-parent-chart mt-auto w-[100%]" style="height:{% if not cat.products_count == 0 %}{% widthratio cat.products_count category_max 100 %}{% else %}5{% endif %}%; ">
+                        <div class="absolute mt-[-20px] mr-1 text-center">{{ cat.products_count|to_fanum }}</div>
+                        <div class="admin-small-bar-chart" style="height: 100%; opacity: {% if not cat.products_count == 0 %}{% widthratio cat.products_count category_max 100 %}{% else %}10{% endif %}%;"></div>
+                        <div class="tooltip" style="padding: 5px 10px;">
+                            <div>{{ cat.title }}</div>
+                            <div class="font-semibold">{{ cat.products_count|to_fanum }} محصول </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="flex justify-between w-[100%] mt-3">
+                {% for cat in category_data %}
+                    <div class="text-center w-[100%] mr-[-2px]">{{ cat.title }}</div>
+                {% endfor %}
+            </div>
+        </div>

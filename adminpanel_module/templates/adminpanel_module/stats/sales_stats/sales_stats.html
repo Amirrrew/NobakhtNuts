@@ -3,7 +3,7 @@
 {% load poll_extras %}
 
 {% block admin_title %}
-    آمار محصولات
+    آمار فروش
 {% endblock %}
 
 {% block admin_content %}
@@ -39,7 +39,7 @@
     </div>
 
     {% include 'adminpanel_module/stats/products_stats/widgets/widget_category_data_chart.html' %}
-    
+
     <script src="{% static 'scripts/counterup.js' %}"></script>
     <script>
         SetNumberCounter('product-count-counter' ,{{ all_products_count }})

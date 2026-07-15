@@ -55,7 +55,7 @@
                     </div>
                 </a>
 
-                <a href="#" class="swiper-slide sales-stats-option">
+                <a href="{% url 'admin_stats_orders' %}" class="swiper-slide sales-stats-option">
                     <div class="mt-1.5">
                         <h1 class="text-xl">آمار سفارشات</h1>
                         <div class="text-sm text-[var(--color10)]">سفارشات روزانه ،میانگین قیمت و ...</div>
@@ -68,7 +68,7 @@
                 <a href="#" class="swiper-slide sales-stats-option">
                     <div class="mt-1.5">
                         <h1 class="text-xl">نمودار فروش</h1>
-                        <div class="text-sm text-[var(--color10)]">سفارشات روزانه ،میانگین قیمت و ...</div>
+                        <div class="text-sm text-[var(--color10)]">نمودار فروش روزانه ، هفتگی و ...</div>
                     </div>
                     <div class="sales-stats-option-iconbox">
                         <i class="fa fa-line-chart"></i>
@@ -78,7 +78,7 @@
                 <a href="#" class="swiper-slide sales-stats-option">
                     <div class="mt-1.5">
                         <h1 class="text-xl">فعالیت کاربران</h1>
-                        <div class="text-sm text-[var(--color10)]">سفارشات روزانه ،میانگین قیمت و ...</div>
+                        <div class="text-sm text-[var(--color10)]">بازدید صفحات، کاربران و ...</div>
                     </div>
                     <div class="sales-stats-option-iconbox">
                         <i class="fa fa-sign-language"></i>
@@ -96,7 +96,7 @@
     <script>
         const swiper = new Swiper(".swiper-category", {
         slidesPerView: 3.5,
-        spaceBetween: 3.5,
+        spaceBetween: 7,
 
         navigation: {
             nextEl: "#swiper-button-next",

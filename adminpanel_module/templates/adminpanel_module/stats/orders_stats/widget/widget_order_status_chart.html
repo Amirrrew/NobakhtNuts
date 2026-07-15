@@ -1,0 +1,30 @@
+{% load poll_extras %}
+
+<div class="admin-widget-medium" style="padding: 15px; animation: load8 300ms; height: auto">
+    <div class="flex justify-between w-[100%] items-start">
+        <div class="flex gap-2">
+            <div class="dot mt-1"></div>
+            <h1>توزیع سفارشات بر اساس وضعیت</h1>
+        </div>
+    </div>
+    <div class="admin-widget-medium-chart mt-3" style="display: block; height: auto">
+        {% for status in status_data %}
+            <div class="flex gap-2 justify-between mt-1">
+                <div class="tooltip-parent-chart relative w-[100%]"
+                     style="animation: none;height: 26px;width:{% if status.orders_count %}{% widthratio status.orders_count status_max 100 %}{% else %}5{% endif %}%">
+
+                    <div class="admin-small-bar-chart"
+                         style="animation: open_chart_vertical 1000ms;height:100%;
+                                opacity:{% if status.orders_count %}{% widthratio status.orders_count status_max 100 %}{% else %}10{% endif %}%">
+                    </div>
+
+                    <div class="tooltip" style="top:-20px; padding: 10px">
+                        <div class="text-nowrap">{{ status.title }}</div>
+                        <div class="font-semibold">{{ status.orders_count|to_fanum }} سفارش</div>
+                    </div>
+                </div>
+                <div class="text-xs mt-1.5 w-fit text-nowrap">{{ status.title }} ({{ status.orders_count|to_fanum }})</div>
+            </div>
+        {% endfor %}
+    </div>
+</div>

@@ -258,6 +258,11 @@ body:has(#admin-searchbox input:focus) .overlay {
     100% {transform: translateY(0)}
 }
 
+@keyframes open_chart_vertical {
+    0% {transform: translateX(200%)}
+    100% {transform: translateX(0)}
+}
+
 .admin-widget-medium-chart .admin-small-bar-chart {
     width: 100%;
     height: 0;

@@ -3,7 +3,7 @@
 {% load poll_extras %}
 
 {% block admin_title %}
-    آمار محصولات
+    آمار سفارشات
 {% endblock %}
 
 {% block admin_content %}
@@ -16,32 +16,26 @@
         </svg>
         <h1 class="text-4xl font-semibold">آمار و نمودار ها</h1>
         <i class="fa fa-angle-left text-[var(--color10)] mt-2"></i>
-        <div class="text-3xl font-semibold text-[var(--color6)] mt-0.5">آمار محصولات</div>
+        <div class="text-3xl font-semibold text-[var(--color6)] mt-0.5">آمار سفارشات</div>
     </div>
 
-    <div class="text-center">
-        <div class="text-8xl mt-10 font-semibold relative" style="animation: load 500ms" id="product-count-counter">
-            {{ all_products_count }}
+
+    <div class="flex gap-2">
+        {% include 'adminpanel_module/stats/orders_stats/widget/widget_order_status_chart.html' %}
+        <div class="w-[50%]">
+            {% include 'adminpanel_module/stats/orders_stats/widget/widget_order_avarage.html' %}
+            <div class="flex gap-2 mt-2">
+                {% include 'adminpanel_module/stats/orders_stats/widget/widget_all_orders.html' %}
+                {% include 'adminpanel_module/stats/orders_stats/widget/widget_attention_order.html' %}
+            </div>
         </div>
-        <h1 class="text-4xl font-semibold relative" style="animation: load8 600ms">محصول</h1>
-        <div class="text-[var(--color10)] relative" style="animation: load8 900ms"> {{ all_products_count|to_fanum }} محصول تا به الان در فروشگاه ثبت شده</div>
     </div>
 
-    <div class="flex gap-2 mt-5">
-        {% include 'adminpanel_module/stats/products_stats/widgets/widget_available_products.html' %}
-        {% include 'adminpanel_module/stats/products_stats/widgets/widget_lowstock_products.html' %}
-        {% include 'adminpanel_module/stats/products_stats/widgets/widget_unavailable_products.html' %}
-        {% include 'adminpanel_module/stats/products_stats/widgets/widget_avarage_product_price.html' %}
-    </div>
+    {% include 'adminpanel_module/stats/orders_stats/widget/widget_month_orders_chart.html' %}
 
-    <div class="relative" style="animation: load8 500ms">
-        {% include 'adminpanel_module/home/components/product_stocks.html' %}
-    </div>
-
-    {% include 'adminpanel_module/stats/products_stats/widgets/widget_category_data_chart.html' %}
     
     <script src="{% static 'scripts/counterup.js' %}"></script>
     <script>
-        SetNumberCounter('product-count-counter' ,{{ all_products_count }})
+        SetNumberCounter('order-count-counter' ,{{ all_orders }})
     </script>
 {% endblock %}

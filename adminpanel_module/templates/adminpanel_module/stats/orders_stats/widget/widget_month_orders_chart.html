@@ -1,0 +1,35 @@
+{% load poll_extras %}
+
+<div class="admin-widget-medium relative mt-2" style="width: 100%; animation: load8 200ms">
+            <div class="flex justify-between w-[100%] items-start">
+                <div class="flex gap-2">
+                    <div class="dot mt-1"></div>
+                    <h1 class="text-2xl font-semibold mt-[-4px]">نمودار تعداد سفارش در روز های ماه</h1>
+                </div>
+            </div>
+            <div class="text-7xl font-semibold flex mt-3">
+            </div>
+            <div class="admin-widget-medium-chart mt-3" style="height: 240px">
+                {% for day in month_orders %}
+                <div class="tooltip-parent-chart mt-auto w-[100%]"
+                     style="height:{% if day.orders %}{% widthratio day.orders month_orders_max 100 %}{% else %}2{% endif %}%">
+
+                    <div class="admin-small-bar-chart"
+                         style="height:100%;
+                                opacity:{% if day.orders %}{% widthratio day.orders month_orders_max 100 %}{% else %}10{% endif %}%">
+                    </div>
+
+                    <div class="tooltip" style="padding: 10px">
+                        <div class="text-xs">{{ day.day|jalali_weekday }}</div>
+                        <div class="text-sm">{{ day.day|show_jalali_date|to_fanum }}</div>
+                        <h1 class="font-semibold">{{ day.orders|to_fanum }} سفارش</h1>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="flex justify-between mt-2">
+                {% for day in month_orders %}
+                    <div class="w-[100%] text-center text-sm">{{ day.day|jalali_weekday|slice:"1" }}</div>
+                {% endfor %}
+            </div>
+        </div>

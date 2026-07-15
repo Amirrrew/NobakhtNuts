@@ -5,9 +5,9 @@ function SetNumberCounter(elementId, endNumber, options = {}) {
         return;
     }
 
-    const duration = options.duration || 1500; // مدت زمان انیمیشن (میلی‌ثانیه)
+    const duration = options.duration || 1500;
     const startNumber = options.start || 0;
-    const useFarsiDigits = options.farsiDigits !== false; // پیش‌فرض: فارسی
+    const useFarsiDigits = options.farsiDigits !== false;
 
     const farsiDigitsMap = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
 

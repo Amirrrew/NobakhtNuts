@@ -17,8 +17,8 @@ from django.db.models.functions import Coalesce
 from django.utils import timezone
 import calendar
 from account_module.models import User
-from order_module.models import Order
-from product_module.models import Product
+from order_module.models import Order, OrderStatus
+from product_module.models import Product, ProductCategory
 from support_module.models import Ticket
 
 today = timezone.localdate()
@@ -183,17 +183,17 @@ def get_user_growth():
         ).count(),
     }
 
-def get_lowstock_products():
+def get_lowstock_products(count):
     return (
         Product.objects.filter(
             quantity__gt=0,
             quantity__lte=10,
         )
-        .order_by("quantity")[:10]
+        .order_by("quantity")[:count]
     )
 
 
-def get_best_selling_products():
+def get_best_selling_products(count):
     return (
         Product.objects.prefetch_related("product_image")
         .annotate(
@@ -219,7 +219,7 @@ def get_best_selling_products():
                 output_field=DecimalField(max_digits=20, decimal_places=2),
             )
         )
-        .order_by("-sort_value")[:10]
+        .order_by("-sort_value")[:count]
     )
 
 
@@ -297,4 +297,114 @@ def get_sales_month():
         "max_sale": max_sale,
         "total_month_sale": total_month_sale,
         "monthsale_growth": monthsale_growth,
+    }
+
+
+def get_category_chart():
+    categories = (
+        ProductCategory.objects
+        .annotate(
+            products_count=Count("subcategory__products")
+        )
+        .order_by("-products_count")
+    )
+
+    max_count = max(
+        [c.products_count for c in categories],
+        default=1
+    )
+
+    return {
+        "categories": categories,
+        "max_count": max_count,
+    }
+
+
+def get_orders_status_chart():
+    statuses = (
+        OrderStatus.objects
+        .annotate(
+            orders_count=Count(
+                "order",
+                filter=Q(order__is_paid=True)
+            )
+        )
+        .order_by("id")
+    )
+
+    max_count = max(
+        [s.orders_count for s in statuses],
+        default=1
+    )
+
+    return {
+        "statuses": statuses,
+        "max_count": max_count,
+    }
+
+
+def get_orders_month_count():
+    today = timezone.localdate()
+
+    j_today = jdatetime.date.fromgregorian(date=today)
+    first_jalali = jdatetime.date(j_today.year, j_today.month, 1)
+
+    first_day = first_jalali.togregorian()
+
+    if j_today.month == 12:
+        next_month = jdatetime.date(j_today.year + 1, 1, 1)
+    else:
+        next_month = jdatetime.date(j_today.year, j_today.month + 1, 1)
+
+    last_day = next_month.togregorian() - timedelta(days=1)
+
+    days = []
+    max_orders = 1
+    total_orders = 0
+
+    current = first_day
+    while current <= last_day:
+        orders = Order.objects.filter(
+            is_paid=True,
+            payment_date__date=current
+        ).count()
+
+        total_orders += orders
+        max_orders = max(max_orders, orders)
+
+        days.append({
+            "day": current,
+            "orders": orders,
+        })
+
+        current += timedelta(days=1)
+
+    # درصد رشد نسبت به ماه قبل
+    if first_jalali.month == 1:
+        prev_month = jdatetime.date(first_jalali.year - 1, 12, 1)
+    else:
+        prev_month = jdatetime.date(first_jalali.year, first_jalali.month - 1, 1)
+
+    prev_first = prev_month.togregorian()
+    prev_last = first_day - timedelta(days=1)
+
+    previous_total = Order.objects.filter(
+        is_paid=True,
+        payment_date__date__gte=prev_first,
+        payment_date__date__lte=prev_last,
+    ).count()
+
+    if previous_total == 0:
+        growth = 100 if total_orders else 0
+    else:
+        growth = round(
+            ((total_orders - previous_total) / previous_total) * 100,
+            1
+        )
+
+    return {
+        "days": days,
+        "max_orders": max_orders,
+        "total_orders": total_orders,
+        "orders_growth": growth,
     }
