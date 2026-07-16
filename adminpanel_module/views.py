@@ -173,7 +173,8 @@ def Sales_Stats(request):
     elif period == 'month':
         data = get_sales_week()
     elif period == 'year':
-        data = get_sales_year
+        # data = get_sales_year
+        pass
     context = {}
     return render(request ,'adminpanel_module/stats/sales_stats/sales_stats.html' ,context)
 
