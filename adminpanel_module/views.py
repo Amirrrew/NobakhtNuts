@@ -28,8 +28,8 @@ from site_settings.models import SiteSettings, FooterLinkBox, FooterLink
 from support_module.models import Ticket, SupportWays
 from utils.dashboard_decorators import get_sales_week, get_sales_week_growth, today, get_order_today, get_user_growth, \
     get_new_orders, get_lowstock_products, get_best_selling_products, get_new_tickets, get_sales_month, \
-    get_category_chart, get_orders_status_chart, get_orders_month_count
-from utils.my_decorators import permision_checker_decorator_factory
+    get_category_chart, get_orders_status_chart, get_orders_month_count, get_sales_year, get_sales_chart
+from utils.my_decorators import permission_checker_decorator_factory
 from django.db.models import Q, Count ,Sum,Avg
 
 
@@ -53,13 +53,13 @@ class AdminLogin(LoginView):
         context["message_e"] = "نام کاربری یا رمز عبور اشتباه است"
         return self.render_to_response(context)
 
-@permision_checker_decorator_factory({'permission': 'admin_index'})
+@permission_checker_decorator_factory({'permission': 'admin_index'})
 def logoutPanel(request):
     logout(request)
     return redirect('home')
 
 
-@permision_checker_decorator_factory({'permission': 'admin_index'} ,)
+@permission_checker_decorator_factory({'permission': 'admin_index'} ,)
 def index(request: HttpRequest):
     weeksale = get_sales_week()
     weeksale_growth = get_sales_week_growth()
@@ -120,7 +120,7 @@ def admin_popup_notif_component(request):
     }
     return render(request, 'adminpanel_module/shared/components/admin_popup_notif_component.html', context)
 
-@permision_checker_decorator_factory({'permission': 'admin_index'} ,)
+@permission_checker_decorator_factory({'permission': 'admin_index'} ,)
 def StatsHome(request):
     month_data = get_sales_month()
     context = {
@@ -130,7 +130,7 @@ def StatsHome(request):
         "monthsale_growth": month_data["monthsale_growth"],
     }
     return render(request, 'adminpanel_module/stats/stats_home.html', context)
-@permision_checker_decorator_factory({'permission': 'admin_index'} ,)
+@permission_checker_decorator_factory({'permission': 'admin_index'} ,)
 def Products_Stats(request):
     category_data = get_category_chart()
     context = {
@@ -146,7 +146,7 @@ def Products_Stats(request):
     }
     return render(request ,'adminpanel_module/stats/products_stats/products_stats.html' ,context)
 
-@permision_checker_decorator_factory({'permission': 'admin_index'} ,)
+@permission_checker_decorator_factory({'permission': 'admin_index'} ,)
 def Orders_Stats(request):
     order_status_data = get_orders_status_chart()
     orders_data = get_orders_month_count()
@@ -163,23 +163,47 @@ def Orders_Stats(request):
     return render(request ,'adminpanel_module/stats/orders_stats/orders_stats.html' ,context)
 
 
-@permision_checker_decorator_factory({'permission': 'admin_index'} ,)
+@permission_checker_decorator_factory({'permission': 'admin_index'} ,)
 def Sales_Stats(request):
-    period = request.GET.get('period')
-
-    if period == 'week':
-        data = get_sales_week()
-    elif period == 'month':
-        data = get_sales_week()
-    elif period == 'year':
-        # data = get_sales_year
-        pass
-    context = {}
+    data = get_sales_chart('week')
+    context = {
+        'period': 'week',
+        'period_fa': 'هفتگی',
+        'sales_data': data['data'],
+        'max_sale': data['max_sale'],
+        'total_sale': data['total_sale']
+    }
     return render(request ,'adminpanel_module/stats/sales_stats/sales_stats.html' ,context)
 
+@permission_checker_decorator_factory({'permission': 'admin_index'} ,)
+def Sales_Stats_change(request):
+    period = request.GET.get('period')
+    data = get_sales_chart(period)
 
+    if period == 'week':
+        period_fa = 'هفتگی'
+    elif period == 'month':
+        period_fa = 'ماهانه'
+    else:
+        period_fa = 'سالانه'
 
-@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+    html = render_to_string(
+        'adminpanel_module/stats/sales_stats/widgets/widget_sales_partial.html',
+{
+        'period': period,
+        'period_fa': period_fa,
+        'sales_data': data['data'],
+        'max_sale': data['max_sale'],
+        'total_sale': data['total_sale']
+        },
+        request=request
+    )
+
+    return JsonResponse({
+        'html': html
+    })
+
+@method_decorator(permission_checker_decorator_factory(), name='dispatch')
 class OrdersListView(ListView):
     model = Order
     template_name = 'adminpanel_module/orders/order_list.html'
@@ -228,14 +252,14 @@ class OrdersListView(ListView):
 
         return response
 
-@permision_checker_decorator_factory({'permission': 'admin_index'} ,)
+@permission_checker_decorator_factory({'permission': 'admin_index'} ,)
 def OrderDelete(request ,pk):
     order = get_object_or_404(Order, pk=pk)
     if order:
         order.delete()
     return redirect('admin_order_list')
 
-@permision_checker_decorator_factory({'permission': 'admin_index'} ,)
+@permission_checker_decorator_factory({'permission': 'admin_index'} ,)
 def OrderSelectedAction(request):
     action = request.GET.get('action')
     orders_ids = request.POST.getlist('order')
@@ -270,7 +294,7 @@ def OrderSelectedAction(request):
         'message': message
     })
 
-@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+@method_decorator(permission_checker_decorator_factory(), name='dispatch')
 class OrderDetailView(DeleteView):
     model = Order
     template_name = 'adminpanel_module/orders/order_details_admin.html'
@@ -292,7 +316,7 @@ class OrderDetailView(DeleteView):
 
 
 
-@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+@method_decorator(permission_checker_decorator_factory(), name='dispatch')
 class ProductListView(ListView):
     model = Product
     template_name = 'adminpanel_module/products/product_list.html'
@@ -306,12 +330,32 @@ class ProductListView(ListView):
 
         main_category = self.request.GET.get("main_category")
         sub_category = self.request.GET.get("sub_category")
+        sort_by = self.request.GET.get('sort')
 
         if main_category:
             queryset = queryset.filter(category__main_category_id=main_category)
 
         if sub_category:
             queryset = queryset.filter(category_id=sub_category)
+
+        if sort_by == '-view':
+            queryset = queryset.order_by('-view')
+        elif sort_by == 'view':
+            queryset = queryset.order_by('view')
+        elif sort_by == '-created_at':
+            queryset = queryset.order_by('-created_at')
+        elif sort_by == 'created_at':
+            queryset = queryset.order_by('created_at')
+        elif sort_by == 'quantity':
+            queryset = queryset.filter(quantity__gt=0).order_by('quantity')
+        elif sort_by == '-quantity':
+            queryset = queryset.order_by('-quantity')
+        elif sort_by == 'price':
+            queryset = queryset.order_by('price')
+        elif sort_by == '-price':
+            queryset = queryset.order_by('-price')
+        elif sort_by == 'na':
+            queryset = queryset.filter(quantity=0).order_by('-created_at')
 
         if search:
             if search.isdigit():
@@ -344,7 +388,7 @@ class ProductListView(ListView):
 
     def get(self ,request , *args , **kwargs):
         response = super().get(request, *args , **kwargs)
-        if request.GET.get('q') is not None:
+        if request.GET.get('q') is not None or request.GET.get('sort') is not None:
             html = render_to_string(
                 'adminpanel_module/products/table_components/product_table_partial.html',
                 {'products': self.object_list},
@@ -355,11 +399,10 @@ class ProductListView(ListView):
                 'html': html,
                 'data_length': self.object_list.count() if hasattr(self.object_list, 'count') else len(self.object_list)
             })
-
         return response
 
 
-@permision_checker_decorator_factory({'permission': 'admin_index'} ,)
+@permission_checker_decorator_factory({'permission': 'admin_index'} ,)
 def ProductSelectedAction(request):
     action = request.GET.get('action')
     product_ids = request.POST.getlist('product')
@@ -397,7 +440,7 @@ def ProductSelectedAction(request):
         'message': message
     })
 
-@permision_checker_decorator_factory({'permission': 'admin_index'} ,)
+@permission_checker_decorator_factory({'permission': 'admin_index'} ,)
 def ProductDelete(request ,pk):
     product = get_object_or_404(Product, pk=pk)
     if product:
@@ -405,7 +448,7 @@ def ProductDelete(request ,pk):
         product.save()
     return redirect('admin_product_list')
 
-@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+@method_decorator(permission_checker_decorator_factory(), name='dispatch')
 class ProductAdd(CreateView):
     model = Product
     form_class = ProductAddForm
@@ -467,7 +510,7 @@ class ProductAdd(CreateView):
         return context
 
 
-@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+@method_decorator(permission_checker_decorator_factory(), name='dispatch')
 class ProductEdit(UpdateView):
     model = Product
     form_class = ProductAddForm
@@ -572,7 +615,7 @@ class ProductEdit(UpdateView):
         return context
 
 
-@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+@method_decorator(permission_checker_decorator_factory(), name='dispatch')
 class MainCategories(ListView):
     model = ProductCategory
     template_name = 'adminpanel_module/categories/categories_list.html'
@@ -586,7 +629,7 @@ class MainCategories(ListView):
             category.delete()
         return redirect('admin_maincategory_list')
 
-@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+@method_decorator(permission_checker_decorator_factory(), name='dispatch')
 class MainCategoryAdd(CreateView):
     model = ProductCategory
     form_class = MainCategoryForm
@@ -610,7 +653,7 @@ class MainCategoryAdd(CreateView):
         context['add_view'] = True
         return context
 
-@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+@method_decorator(permission_checker_decorator_factory(), name='dispatch')
 class MainCategoryEdit(UpdateView):
     model = ProductCategory
     form_class = MainCategoryForm
@@ -635,7 +678,7 @@ class MainCategoryEdit(UpdateView):
         return context
 
 
-@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+@method_decorator(permission_checker_decorator_factory(), name='dispatch')
 class SubCategories(ListView):
     model = ProductSubCategory
     template_name = 'adminpanel_module/categories/subcategories_list.html'
@@ -645,7 +688,7 @@ class SubCategories(ListView):
         return ProductCategory.objects.prefetch_related('subcategory').all()
 
 
-@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+@method_decorator(permission_checker_decorator_factory(), name='dispatch')
 class SubCategoryAdd(CreateView):
     model = ProductSubCategory
     form_class = SubCategoryForm
@@ -671,7 +714,7 @@ class SubCategoryAdd(CreateView):
 
 
 
-@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+@method_decorator(permission_checker_decorator_factory(), name='dispatch')
 class SubCategoryEdit(UpdateView):
     model = ProductSubCategory
     form_class = SubCategoryForm
@@ -695,7 +738,7 @@ class SubCategoryEdit(UpdateView):
         context['edit_view'] = True
         return context
 
-@permision_checker_decorator_factory({'permission': 'admin_index'})
+@permission_checker_decorator_factory({'permission': 'admin_index'})
 def SubCategoryDelete(request,pk):
     subcat = get_object_or_404(ProductSubCategory,pk=pk)
     if subcat:
@@ -703,7 +746,7 @@ def SubCategoryDelete(request,pk):
     return redirect('admin_subcategory_list')
 
 
-@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+@method_decorator(permission_checker_decorator_factory(), name='dispatch')
 class PackList(ListView):
     model = PackageSize
     template_name = 'adminpanel_module/packaging/packs_list.html'
@@ -712,7 +755,7 @@ class PackList(ListView):
     def get_queryset(self):
         return PackageSize.objects.all().order_by('size')
 
-@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+@method_decorator(permission_checker_decorator_factory(), name='dispatch')
 class PackAdd(CreateView):
     model = PackageSize
     template_name = 'adminpanel_module/packaging/pack_add_update.html'
@@ -735,7 +778,7 @@ class PackAdd(CreateView):
         context['add_view'] = True
         return context
 
-@permision_checker_decorator_factory({'permission': 'admin_index'} ,)
+@permission_checker_decorator_factory({'permission': 'admin_index'} ,)
 def PackDelete(request ,pk):
     pack = get_object_or_404(PackageSize ,pk=pk)
     if pack:
@@ -743,7 +786,7 @@ def PackDelete(request ,pk):
     return redirect('admin_pack_list')
 
 
-@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+@method_decorator(permission_checker_decorator_factory(), name='dispatch')
 class PackEdit(UpdateView):
     model = PackageSize
     template_name = 'adminpanel_module/packaging/pack_add_update.html'
@@ -766,7 +809,7 @@ class PackEdit(UpdateView):
         context['edit_view'] = True
         return context
 
-@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+@method_decorator(permission_checker_decorator_factory(), name='dispatch')
 class BrandsList(ListView):
     model = ProductBrand
     template_name = 'adminpanel_module/brands/brands_list.html'
@@ -778,7 +821,7 @@ def BrandDelete(request , pk):
         brnd.delete()
     return redirect('admin_brand_list')
 
-@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+@method_decorator(permission_checker_decorator_factory(), name='dispatch')
 class BrandAdd(CreateView):
     model = ProductBrand
     template_name = 'adminpanel_module/brands/brand_add_update.html'
@@ -801,7 +844,7 @@ class BrandAdd(CreateView):
         context['add_view'] = True
         return context
 
-@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+@method_decorator(permission_checker_decorator_factory(), name='dispatch')
 class BrandEdit(UpdateView):
     model = ProductBrand
     template_name = 'adminpanel_module/brands/brand_add_update.html'
@@ -824,7 +867,7 @@ class BrandEdit(UpdateView):
         context['edit_view'] = True
         return context
 
-@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+@method_decorator(permission_checker_decorator_factory(), name='dispatch')
 class CommentList(ListView):
     model = ProductComment
     template_name = 'adminpanel_module/comments/comment_list.html'
@@ -867,14 +910,14 @@ class CommentList(ListView):
 
         return super().get(request, *args , **kwargs)
 
-@permision_checker_decorator_factory({'permission': 'admin_index'})
+@permission_checker_decorator_factory({'permission': 'admin_index'})
 def CommentDelete(request , pk):
     comment = get_object_or_404(ProductComment,pk=pk)
     if comment:
         comment.delete()
     return redirect('admin_comment_list')
 
-@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+@method_decorator(permission_checker_decorator_factory(), name='dispatch')
 class UsersList(ListView):
     model = User
     template_name = 'adminpanel_module/users/users_list.html'
@@ -922,7 +965,7 @@ class UsersList(ListView):
 
         return response
 
-@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+@method_decorator(permission_checker_decorator_factory(), name='dispatch')
 class UserAdd(CreateView):
     model = User
     form_class = UserForm
@@ -955,14 +998,14 @@ class UserAdd(CreateView):
         context['add_view'] = True
         return context
 
-@permision_checker_decorator_factory({'permission': 'admin_index'} ,)
+@permission_checker_decorator_factory({'permission': 'admin_index'} ,)
 def UserDelete(request ,pk):
     admin_user = get_object_or_404(User ,pk=pk)
     if admin_user:
         admin_user.delete()
     return redirect('admin_user_list')
 
-@permision_checker_decorator_factory({'permission': 'admin_index'} ,)
+@permission_checker_decorator_factory({'permission': 'admin_index'} ,)
 def UserAvatarDelete(request ,pk):
     admin_user = get_object_or_404(User ,pk=pk)
     if admin_user:
@@ -970,7 +1013,7 @@ def UserAvatarDelete(request ,pk):
         admin_user.save()
     return redirect('admin_user_edit' ,pk=pk)
 
-@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+@method_decorator(permission_checker_decorator_factory(), name='dispatch')
 class UserEdit(UpdateView):
     model = User
     form_class = UserForm
@@ -1007,7 +1050,7 @@ class UserEdit(UpdateView):
         context['comments_sent'] = ProductComment.objects.filter(user=self.object)
         return context
 
-@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+@method_decorator(permission_checker_decorator_factory(), name='dispatch')
 class TicketList(ListView):
     model = Ticket
     template_name = 'adminpanel_module/tickets/ticket_list.html'
@@ -1059,20 +1102,20 @@ class TicketList(ListView):
 
         return response
 
-@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+@method_decorator(permission_checker_decorator_factory(), name='dispatch')
 class SupportWays_list(ListView):
     model = SupportWays
     template_name = 'adminpanel_module/support_ways/supportways_list.html'
     context_object_name = 'supportways'
 
-@permision_checker_decorator_factory({'permission': 'admin_index'} ,)
+@permission_checker_decorator_factory({'permission': 'admin_index'} ,)
 def SupportWayDelete(request ,pk):
     sw = get_object_or_404(SupportWays,pk=pk)
     if sw:
         sw.delete()
     return redirect('admin_supportways_list')
 
-@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+@method_decorator(permission_checker_decorator_factory(), name='dispatch')
 class SupportWayAdd(CreateView):
     model = SupportWays
     template_name = 'adminpanel_module/support_ways/supportway_add_update.html'
@@ -1097,7 +1140,7 @@ class SupportWayAdd(CreateView):
         return context
 
 
-@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+@method_decorator(permission_checker_decorator_factory(), name='dispatch')
 class SupportWayEdit(UpdateView):
     model = SupportWays
     template_name = 'adminpanel_module/support_ways/supportway_add_update.html'
@@ -1121,13 +1164,13 @@ class SupportWayEdit(UpdateView):
         context['edit_view'] = True
         return context
 
-@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+@method_decorator(permission_checker_decorator_factory(), name='dispatch')
 class SiteSettingsList(ListView):
     model = SiteSettings
     template_name = 'adminpanel_module/settings/settings_list.html'
     context_object_name = 'sitesettings'
 
-@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+@method_decorator(permission_checker_decorator_factory(), name='dispatch')
 class SiteSettingsAdd(CreateView):
     model = SiteSettings
     form_class = SiteSettingForm
@@ -1159,7 +1202,7 @@ class SiteSettingsAdd(CreateView):
         context['add_view'] = True
         return context
 
-@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+@method_decorator(permission_checker_decorator_factory(), name='dispatch')
 class SiteSettingsEdit(UpdateView):
     model = SiteSettings
     form_class = SiteSettingForm
@@ -1192,7 +1235,7 @@ class SiteSettingsEdit(UpdateView):
         return context
 
 
-@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+@method_decorator(permission_checker_decorator_factory(), name='dispatch')
 class FooterLinkList(ListView):
     model = FooterLinkBox
     template_name = 'adminpanel_module/footerlinks/footerlink_list.html'
@@ -1220,14 +1263,14 @@ class FooterLinkList(ListView):
             })
         return response
 
-@permision_checker_decorator_factory({'permission': 'admin_index'} ,)
+@permission_checker_decorator_factory({'permission': 'admin_index'} ,)
 def FooterBoxDelete(request ,pk):
     fb = get_object_or_404(FooterLinkBox ,pk=pk)
     if fb:
         fb.delete()
     return redirect('admin_footerlinks_list')
 
-@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+@method_decorator(permission_checker_decorator_factory(), name='dispatch')
 class FooterLinkAdd(CreateView):
     model = FooterLink
     template_name = 'adminpanel_module/footerlinks/footerlink_add_update.html'
@@ -1253,7 +1296,7 @@ class FooterLinkAdd(CreateView):
         context['add_view'] = True
         return context
 
-@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+@method_decorator(permission_checker_decorator_factory(), name='dispatch')
 class FooterLinkEdit(UpdateView):
     model = FooterLink
     template_name = 'adminpanel_module/footerlinks/footerlink_add_update.html'
@@ -1280,7 +1323,7 @@ class FooterLinkEdit(UpdateView):
         return context
 
 
-@permision_checker_decorator_factory({'permission': 'admin_index'} ,)
+@permission_checker_decorator_factory({'permission': 'admin_index'} ,)
 def FooterLinkDelete(request ,pk):
     fl = get_object_or_404(FooterLink ,pk=pk)
     if fl:
@@ -1288,13 +1331,13 @@ def FooterLinkDelete(request ,pk):
     return redirect('admin_footerlinks_list')
 
 
-@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+@method_decorator(permission_checker_decorator_factory(), name='dispatch')
 class PaymentList(ListView):
     model = PaymentMethod
     template_name = 'adminpanel_module/payment_settings/payment_list.html'
     context_object_name = 'payment_settings'
 
-@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+@method_decorator(permission_checker_decorator_factory(), name='dispatch')
 class PaymentEdit(UpdateView):
     model = PaymentMethod
     form_class = PaymentForm
@@ -1320,13 +1363,13 @@ class PaymentEdit(UpdateView):
 
 
 
-@method_decorator(permision_checker_decorator_factory(), name='dispatch')
+@method_decorator(permission_checker_decorator_factory(), name='dispatch')
 class CardsList(ListView):
     model = Cards
     template_name = 'adminpanel_module/my_cards/cards_list.html'
     context_object_name = 'cards'
 
-@method_decorator(permision_checker_decorator_factory() ,name='dispatch')
+@method_decorator(permission_checker_decorator_factory() ,name='dispatch')
 class CardAdd(CreateView):
     model = Cards
     template_name = 'adminpanel_module/my_cards/card_add_update.html'
@@ -1352,7 +1395,7 @@ class CardAdd(CreateView):
         return context
 
 
-@method_decorator(permision_checker_decorator_factory() ,name='dispatch')
+@method_decorator(permission_checker_decorator_factory() ,name='dispatch')
 class CardEdit(UpdateView):
     model = Cards
     template_name = 'adminpanel_module/my_cards/card_add_update.html'
@@ -1377,14 +1420,14 @@ class CardEdit(UpdateView):
         context['edit_view'] = True
         return context
 
-@method_decorator(permision_checker_decorator_factory() ,name='dispatch')
+@method_decorator(permission_checker_decorator_factory() ,name='dispatch')
 class PostingList(ListView):
     model = PostingMethod
     template_name = 'adminpanel_module/posting_fees/postings_list.html'
     context_object_name = 'posting'
 
 
-@method_decorator(permision_checker_decorator_factory() ,name='dispatch')
+@method_decorator(permission_checker_decorator_factory() ,name='dispatch')
 class PostingAdd(CreateView):
     model = PostingMethod
     template_name = 'adminpanel_module/posting_fees/posting_add_update.html'
@@ -1409,7 +1452,7 @@ class PostingAdd(CreateView):
         return context
 
 
-@method_decorator(permision_checker_decorator_factory() ,name='dispatch')
+@method_decorator(permission_checker_decorator_factory() ,name='dispatch')
 class PostingEdit(UpdateView):
     model = PostingMethod
     template_name = 'adminpanel_module/posting_fees/posting_add_update.html'
@@ -1434,7 +1477,7 @@ class PostingEdit(UpdateView):
         return context
 
 
-@method_decorator(permision_checker_decorator_factory() ,name='dispatch')
+@method_decorator(permission_checker_decorator_factory() ,name='dispatch')
 class BlackList_list(ListView):
     model = BlackList_phones
     template_name = 'adminpanel_module/blacklist/blacklist.html'
@@ -1462,7 +1505,7 @@ class BlackList_list(ListView):
 
         return super().get(request, *args , **kwargs)
 
-@permision_checker_decorator_factory({'permission': 'admin_index'})
+@permission_checker_decorator_factory({'permission': 'admin_index'})
 def BlackList_delete(request ,pk):
     phone = get_object_or_404(BlackList_phones ,pk=pk)
     if phone:

@@ -467,3 +467,185 @@ def get_orders_month_count():
         "max_orders": max_orders,
         "total_orders": total_orders,
     }
+
+
+def get_sales_year():
+    today = timezone.localdate()
+
+    j_today = jdatetime.date.fromgregorian(date=today)
+    j_year = j_today.year
+
+    months = []
+    max_sale = 0
+    total_year_sale = 0
+
+
+    for month in range(1, 13):
+
+        start_j = jdatetime.date(
+            j_year,
+            month,
+            1
+        )
+
+        if month == 12:
+            end_j = jdatetime.date(
+                j_year + 1,
+                1,
+                1
+            )
+        else:
+            end_j = jdatetime.date(
+                j_year,
+                month + 1,
+                1
+            )
+
+
+        start_g = start_j.togregorian()
+        end_g = end_j.togregorian()
+
+
+        start = timezone.make_aware(
+            datetime.combine(start_g, time.min)
+        )
+
+        end = timezone.make_aware(
+            datetime.combine(end_g, time.min)
+        )
+
+
+        sale = (
+            Order.objects.filter(
+                is_paid=True,
+                payment_date__gte=start,
+                payment_date__lt=end,
+            )
+            .aggregate(
+                total=Coalesce(
+                    Sum("finalized_price"),
+                    0
+                )
+            )["total"]
+        )
+
+
+        total_year_sale += sale
+        max_sale = max(max_sale, sale)
+
+
+        months.append({
+            "month": month,
+            "sale": sale,
+        })
+
+
+    return {
+        "months": months,
+        "max_sale": max_sale,
+        "total_year_sale": total_year_sale,
+    }
+
+
+def get_sales_chart(period="week"):
+    today = timezone.localdate()
+
+    data = []
+    max_sale = 1
+    total_sale = 0
+
+    if period == "week":
+        start_day = today - timedelta(days=today.weekday())
+        end_day = start_day + timedelta(days=6)
+
+        current = start_day
+        while current <= end_day:
+            start = timezone.make_aware(datetime.combine(current, time.min))
+            end = timezone.make_aware(datetime.combine(current, time.max))
+
+            sale = Order.objects.filter(
+                is_paid=True,
+                payment_date__range=(start, end)
+            ).aggregate(
+                total=Coalesce(Sum("finalized_price"), 0)
+            )["total"]
+
+            total_sale += sale
+            max_sale = max(max_sale, sale)
+
+            data.append({
+                "label": current,
+                "sale": sale,
+            })
+
+            current += timedelta(days=1)
+
+    elif period == "month":
+        j_today = jdatetime.date.fromgregorian(date=today)
+
+        first_j = jdatetime.date(j_today.year, j_today.month, 1)
+
+        if j_today.month == 12:
+            next_j = jdatetime.date(j_today.year + 1, 1, 1)
+        else:
+            next_j = jdatetime.date(j_today.year, j_today.month + 1, 1)
+
+        current = first_j.togregorian()
+        last = next_j.togregorian()
+
+        while current < last:
+            start = timezone.make_aware(datetime.combine(current, time.min))
+            end = timezone.make_aware(datetime.combine(current, time.max))
+
+            sale = Order.objects.filter(
+                is_paid=True,
+                payment_date__range=(start, end)
+            ).aggregate(
+                total=Coalesce(Sum("finalized_price"), 0)
+            )["total"]
+
+            total_sale += sale
+            max_sale = max(max_sale, sale)
+
+            data.append({
+                "label": current,
+                "sale": sale,
+            })
+
+            current += timedelta(days=1)
+
+    elif period == "year":
+        j_now = jdatetime.datetime.fromgregorian(datetime=timezone.now())
+
+        for month in range(1, 13):
+            start_j = jdatetime.datetime(j_now.year, month, 1)
+
+            if month == 12:
+                end_j = jdatetime.datetime(j_now.year + 1, 1, 1)
+            else:
+                end_j = jdatetime.datetime(j_now.year, month + 1, 1)
+
+            start = timezone.make_aware(start_j.togregorian())
+            end = timezone.make_aware(end_j.togregorian())
+
+            sale = Order.objects.filter(
+                is_paid=True,
+                payment_date__gte=start,
+                payment_date__lt=end
+            ).aggregate(
+                total=Coalesce(Sum("finalized_price"), 0)
+            )["total"]
+
+            total_sale += sale
+            max_sale = max(max_sale, sale)
+
+            data.append({
+                "label": month,
+                "sale": sale,
+            })
+
+    return {
+        "data": data,
+        "max_sale": max_sale,
+        "total_sale": total_sale,
+    }

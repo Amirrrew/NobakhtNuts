@@ -10,6 +10,7 @@ urlpatterns = [
     path('stats/product-stats/' ,views.Products_Stats ,name='admin_stats_products'),
     path('stats/orders-stats/' ,views.Orders_Stats ,name='admin_stats_orders'),
     path('stats/sales-stats/' ,views.Sales_Stats ,name='admin_stats_sales'),
+    path('stats/sales-stats/change/' ,views.Sales_Stats_change ,name='admin_stats_saleschange'),
     path('orders/' ,views.OrdersListView.as_view() ,name='admin_order_list'),
     path('orders/delete/<int:pk>' ,views.OrderDelete ,name='admin_order_delete'),
     path('orders/action/' ,views.OrderSelectedAction ,name='admin_order_action'),

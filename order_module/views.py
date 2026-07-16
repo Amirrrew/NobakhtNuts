@@ -21,7 +21,7 @@ from order_module.form import OrderForm
 from order_module.models import Order, OrderDetail, OrderStatus, PostingMethod, PaymentMethod
 from product_module.models import Product, PackageSize
 from userpanel_module.form import NewAddressForm
-from utils.my_decorators import permision_checker_decorator_factory, validate_image_extension
+from utils.my_decorators import permission_checker_decorator_factory, validate_image_extension
 
 
 def add_to_order(request: HttpRequest):

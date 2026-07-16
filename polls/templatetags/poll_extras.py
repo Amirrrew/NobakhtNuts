@@ -111,3 +111,26 @@ WEEKDAYS = [
 @register.filter(name='jalali_weekday')
 def weekday_fa(value):
     return WEEKDAYS[value.weekday()]
+
+MONTHS = [
+    'فروردین',
+    'اردیبهشت',
+    'خرداد',
+    'تیر',
+    'مرداد',
+    'شهریور',
+    'مهر',
+    'آبان',
+    'آذر',
+    'دی',
+    'بهمن',
+    'اسفند',
+]
+
+@register.filter(name='jalali_month')
+def month_fa(value):
+    if isinstance(value, int):
+        month_number = value
+    else:
+        month_number = value.month
+    return MONTHS[month_number - 1]

@@ -205,6 +205,18 @@ let ProductSelectedAction = (action) => {
     })
 }
 
+//سورت کردن محصولات
+let product_select_sort = document.getElementById('product-select-sort')
+let ProductsSort = () => {
+    let sort_type = product_select_sort.value
+    document.getElementById('loader').style = 'display: block'
+    fetch(`/adminpanel/products/?sort=${sort_type}`).then(res => res.json()).then(data => {
+        data.data_length > 0 ? product_table_partial.innerHTML = data.html : product_table_partial.innerHTML = `<div class="mt-5 text-center w-[100%] mb-3">رکوردی یافت نشد!</div>`
+    }).finally(()=> {
+        document.getElementById('loader').style = 'display: none'
+    })
+}
+
 //تایید کامنت توسط مدیر
 let comments_approved_partial = document.getElementById('comments-approved-partial')
 let comments_notapproved_partial = document.getElementById('comments-notapproved-partial')
@@ -217,5 +229,16 @@ let ApproveComment = (comment_pk) => {
     })
 }
 
+let sales_chart_partial = document.getElementById('sales-chart-partial')
+let sales_option = document.getElementById('sales-select')
+let SalesChartDataChange = () => {
+    document.getElementById('loader').style = 'display: block;'
+    let sales_data = sales_option.value
+    fetch(`/adminpanel/stats/sales-stats/change/?period=${sales_data}`).then(res => res.json()).then(data => {
+        sales_chart_partial.innerHTML = data.html
+    }).finally(()=> {
+        document.getElementById('loader').style = 'display: none'
+    })
+}
 
 

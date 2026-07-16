@@ -16,6 +16,7 @@ urlpatterns = [
     path('orders/' ,include('order_module.url')),
     path('docs/' ,include('documents_module.url')),
     path('articles/' ,include('article_module.url')),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
 ]
 
 urlpatterns += [

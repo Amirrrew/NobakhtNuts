@@ -1,3 +1,4 @@
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.db import models
 from django.urls import reverse
 
@@ -13,7 +14,7 @@ class Article(models.Model):
     author = models.ForeignKey(User,on_delete=models.CASCADE ,verbose_name='نویسنده')
     desc = models.TextField(null=True ,blank=True ,verbose_name='توضیحات کوتاه')
     time_to_read = models.IntegerField(default=0 ,verbose_name='زمان برای خواندن')
-    content = RichTextField()
+    content = RichTextUploadingField()
     is_active = models.BooleanField(default=True)
     slug = models.SlugField(null=True ,blank=False ,unique=True ,verbose_name='عنوان در url')
 

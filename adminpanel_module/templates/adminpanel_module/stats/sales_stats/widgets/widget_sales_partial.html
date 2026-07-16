@@ -1,0 +1,28 @@
+{% load poll_extras %}
+
+            <div class="flex justify-between w-[100%] items-start">
+                <div class="flex gap-2">
+                    <div class="dot mt-1"></div>
+                    <h1 class="text-3xl mt-[-4px]">نمودار فروش {{ period_fa }} </h1>
+                </div>
+            </div>
+            <div class="text-7xl font-semibold flex mt-10">
+                {{ total_sale|three_digits_currency_no_extension }} <span class="text-sm mr-2 relative top-8">تومان</span>
+            </div>
+            <div class="admin-widget-medium-chart mt-3" style="height:calc(100vh - 420px);">
+                {% for item in sales_data %}
+                    <div class="tooltip-parent-chart mt-auto w-[100%]" style="height:{% if not item.sale == 0 %}{% widthratio item.sale max_sale 100 %}{% else %}5{% endif %}%; ">
+                        <div class="admin-small-bar-chart" style="height: 100%; opacity: {% if not item.sale == 0 %}{% widthratio item.sale max_sale 100 %}{% else %}10{% endif %}%;"></div>
+                        <div class="tooltip" style="padding: 5px 10px;">
+                            <div>{% if not period == 'year' %}{{ item.label|show_jalali_date|to_fanum }}{% else %}{{ item.label|jalali_month }}{% endif %}</div>
+                            {% if not period == 'year' %}<div>{{ item.label|jalali_weekday }}</div>{% endif %}
+                            <div class="font-semibold">{{ item.sale|three_digits_currency }}</div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="flex justify-between mt-2">
+                {% for date in sales_data %}
+                	<div class="text-center text-sm w-[100%]">{% if period == 'year' %}{{ date.label|jalali_month }}{% elif period == 'month' %}{{ date.label|jalali_weekday|slice:"1" }}{% else %}{{ date.label|jalali_weekday }}{% endif %}</div>
+                {% endfor %}
+            </div>

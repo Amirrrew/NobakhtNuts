@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'cachalot',
     'ckeditor',
+    'ckeditor_uploader',
     'iranian_cities',
     'django_jalali',
     'account_module',
@@ -132,6 +133,18 @@ SANDBOX = True
 
 SMS_API_KEY = "https://console.melipayamak.com/api/send/otp/410281e7a9a74a2283fd51b6b8653654"
 
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 300,
+        'width': '100%',
+        'filebrowserUploadUrl': "/ckeditor/upload/",
+        'filebrowserBrowseUrl': "/ckeditor/browse/",
+    },
+}
 
 ZP_API_REQUEST = 'https://payment.zarinpal.com/pg/v4/payment/request.json'
 ZP_API_VERIFY = 'https://payment.zarinpal.com/pg/v4/payment/verify.json'
