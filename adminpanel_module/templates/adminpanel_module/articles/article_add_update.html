@@ -1,0 +1,182 @@
+{% extends 'adminpanel_module/shared/base-admin.html' %}
+{% load poll_extras %}
+
+
+{% block admin_title %}
+    {% if add_view %}
+        افزودن مقاله جدید
+    {% elif edit_view %}
+        ویرایش {{ article.title }}
+    {% endif %}
+{% endblock %}
+
+{% block admin_content %}
+    <form id="product-form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div id="" class="flex justify-between p-2 pt-6 sticky mt-[-10px] top-[-10px] z-10 bg-[var(--header-bg)] backdrop-filter-[blur(10px)] rounded-xl">
+            <div class="flex gap-1 items-start">
+                <button onclick="history.back()" type="button" class="btn-prdcounter mt-1 text-sm pt-1 rounded-2xl"><i class="fa fa-angle-right"></i></button>
+                <svg class="mt-[-3px] mr-2" id="Folder" width="35" height="35" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M20.5419 7.25362C19.4449 6.07162 18.0459 6.09962 16.8129 6.12162C16.0399 6.13562 15.3089 6.15062 14.7869 5.85262C14.1419 5.48562 13.9189 5.06962 13.6599 4.58662C13.3739 4.05262 13.0499 3.44762 12.1689 2.97162C10.5429 2.09562 8.63389 1.92462 6.16189 2.43462C3.71889 2.93462 2.13989 5.09962 2.13989 7.94962V14.0156C2.13989 21.2876 6.33089 21.8506 12.2499 21.8506C17.9779 21.8506 22.3599 21.2736 22.3599 13.9886C22.3599 12.2036 22.3599 9.21562 20.5419 7.25362Z" fill="#674d45"></path>
+                <path d="M7.44556 15.4756H17.0386C17.4526 15.4756 17.7886 15.1396 17.7886 14.7256C17.7886 14.3116 17.4526 13.9756 17.0386 13.9756H7.44556C7.03156 13.9756 6.69556 14.3116 6.69556 14.7256C6.69556 15.1396 7.03156 15.4756 7.44556 15.4756Z" fill="#674d45"></path>
+                </svg>
+                <div class="flex gap-2 cursor-default">
+                    <a href="{% url 'admin_order_list' %}" class="text-4xl font-semibold">مقالات</a>
+                    <i class="fa fa-angle-left mt-2 text-[var(--color10)]"></i>
+                    {% if add_view %}<h1 class="text-2xl text-[var(--color6)] font-semibold mt-0.5">افزودن مقاله جدید</h1>{% else %}<h1 class="text-4xl text-[var(--color10)] font-semibold">{{ article.pk|to_fanum }}#</h1>{% endif %}
+                </div>
+            </div>
+            <div class="flex gap-1 m-[-5px] items-start">
+                {% if edit_view %}<a target="_blank" href="{{ article.get_absolute_url }}" class="btn-defIconFlex2 gap-1">مشاهده در وبسایت<i class="fa fa-external-link text-xs mt-1"></i></a>{% endif %}
+                <a href="{% url 'admin_product_list' %}" class="flex gap-1 bg-[var(--cancel-bg)] text-[var(--loss-dot)] h-[42px] rounded-xl p-2.5"><div>انصراف</div><i class="fa fa-trash text-xs mt-1"></i></a>
+                <button class="btn-defIconFlex gap-1 z-20" type="submit">ذخیره <i class="fa fa-add mt-1"></i></button>
+            </div>
+        </div>
+        <div class="flex w-[100%] mt-2 gap-2">
+
+            <div class="w-[70%]">
+
+                <div class="tablebox-default w-[100%] relative" style="animation: load8 300ms">
+                    <div class="flex gap-1">
+                        <svg class="mt-[-2px]" id="Info Square" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.052 2.78467 2.5 5.33667 2.5 12.5347C2.5 19.7327 5.052 22.2847 12.25 22.2847C19.448 22.2847 22 19.7327 22 12.5347C22 5.33667 19.448 2.78467 12.25 2.78467Z" fill="#674d45"></path>
+                        <path d="M12.2461 9.78467H12.2551C12.6691 9.78467 13.0011 9.44867 13.0011 9.03467C13.0011 8.62067 12.6601 8.28467 12.2461 8.28467C11.8321 8.28467 11.4961 8.62067 11.4961 9.03467C11.4961 9.44867 11.8321 9.78467 12.2461 9.78467Z" fill="#674d45"></path>
+                        <path d="M12.2501 17.1797C12.6641 17.1797 13.0001 16.8437 13.0001 16.4297V12.5347C13.0001 12.1207 12.6641 11.7847 12.2501 11.7847C11.8361 11.7847 11.5001 12.1207 11.5001 12.5347V16.4297C11.5001 16.8437 11.8361 17.1797 12.2501 17.1797Z" fill="#674d45"></path>
+                        </svg>
+                        <h1 class="text-xl font-semibold">مشخصات مقاله</h1>
+                    </div>
+
+                    <div class="editpanel-row mt-2 flex gap-2">
+                        <div class="w-[100%]">
+                            <div> عنوان<span class="text-[var(--loss-dot)]">*</span></div>
+                            <input value="{{ article.title }}" class="input-admin" name="title" id="title" placeholder="عنوانی برای مقاله وارد کنید">
+                        </div>
+
+                        <div class="w-[100%]">
+                            <div> نویسنده<span class="text-[var(--loss-dot)]">*</span></div>
+                            <select name="author" class="input-admin">
+                                {% for author in author_users %}
+                                    <option value="{{ author.pk }}">{{ author }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="editpanel-row mt-2 flex gap-2">
+                        <div class="w-[100%]">
+                            <div> عنوان در url به انگلیسی<span class="text-[var(--loss-dot)]">*</span></div>
+                            <input value="{{ article.slug }}" class="input-admin" name="slug" id="title" placeholder="عنوانی برای مقاله به انگلیسی برای slug وارد کنید">
+                        </div>
+
+                        <div class="w-[100%]">
+                            <div>زمان مورد نیاز برای خواندن<span class="text-[var(--loss-dot)]">*</span></div>
+                            <input value="{{ article.time_to_read }}" class="input-admin" name="time_to_read" id="title" placeholder="مثلا 2 دقیقه">
+                        </div>
+                    </div>
+
+                    <div class="editpanel-row mt-2 gap-2">
+                        <div>توضیحات<span class="text-[var(--loss-dot)]">*</span></div>
+                        <textarea style="height: 150px; padding: 10px" class="input-admin" name="desc" placeholder="چند خط توضیحات برای مقاله بنویسید">{{ article.desc|default_if_none:"" }}</textarea>
+                    </div>
+                </div>
+
+                <div class="tablebox-default mt-2 w-[100%] relative" style="animation: load8 600ms">
+                    <div class="flex gap-1">
+                        <svg class="mt-[-2px]" id="More Circle" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.051 2.78467 2.5 5.33567 2.5 12.5347C2.5 19.7327 5.051 22.2847 12.25 22.2847C19.449 22.2847 22 19.7327 22 12.5347C22 5.33567 19.449 2.78467 12.25 2.78467Z" fill="#674d45"></path>
+                            <path d="M14.4592 14.4346C14.4592 14.9876 14.9112 15.4346 15.4632 15.4346C16.0152 15.4346 16.4632 14.9876 16.4632 14.4346C16.4632 13.8816 16.0152 13.4346 15.4632 13.4346H15.4542C14.9022 13.4346 14.4592 13.8816 14.4592 14.4346Z" fill="#674d45"></path>
+                            <path d="M11.4592 10.4346C11.4592 10.9876 11.9112 11.4346 12.4632 11.4346C13.0152 11.4346 13.4632 10.9876 13.4632 10.4346C13.4632 9.88157 13.0152 9.43457 12.4632 9.43457H12.4542C11.9022 9.43457 11.4592 9.88157 11.4592 10.4346Z" fill="#674d45"></path>
+                            <path d="M8.4502 14.4346C8.4502 14.9876 8.9032 15.4346 9.4552 15.4346C10.0072 15.4346 10.4552 14.9876 10.4552 14.4346C10.4552 13.8816 10.0072 13.4346 9.4552 13.4346H9.4462C8.8942 13.4346 8.4502 13.8816 8.4502 14.4346Z" fill="#674d45"></path>
+                        </svg>
+                        <h1 class="text-xl font-semibold">محتوای مقاله</h1>
+                    </div>
+
+                    <div>
+                        {{ form.content }}
+                    </div>
+                 </div>
+            </div>
+
+            <div class="w-[40%]">
+                <div class="tablebox-default relative" style="animation: load8 500ms">
+                    <div class="flex gap-1">
+                        <svg id="Image 2" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                            <g id="Iconly/Bulk/Image-2" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                                <g id="Image-2" transform="translate(2.000000, 2.000000)" fill="#674d45" fill-rule="nonzero">
+                                    <path d="M19.9998998,12.7023545 L19.9998998,14.0858894 C19.9998998,14.315476 19.9898798,14.5470678 19.9698397,14.7766544 C19.6892786,17.9357258 17.4948898,20 14.3285571,20 L5.67124248,20 C4.06803607,20 2.71533066,19.4796706 1.74338677,18.5362601 C1.36262525,18.1863662 1.04198397,17.7753159 0.791482966,17.304112 C1.12214429,16.9020848 1.49288577,16.4619603 1.85360721,16.0208332 C2.46482966,15.2889633 3.05601202,14.5661164 3.42675351,14.0959151 C3.97785571,13.4141732 5.43076152,11.619588 7.44478958,12.4617397 C7.85561122,12.6321752 8.21633267,12.87279 8.54699399,13.0833279 C9.35861723,13.6247111 9.6992986,13.785121 10.2704409,13.4743269 C10.9017034,13.133456 11.3125251,12.4617397 11.7433868,11.7599467 C11.9738477,11.3879963 12.2043086,11.0280767 12.4548096,10.6972314 C13.546994,9.27359403 15.2303607,8.89262065 16.6331663,9.73477234 C17.3345691,10.1558482 17.9357715,10.6872058 18.4968938,11.2275865 C18.6171343,11.3478939 18.7373747,11.4591782 18.8475952,11.56946 C18.9978958,11.7198442 19.4988978,12.221125 19.9998998,12.7023545" id="Fill-1"></path>
+                                    <path d="M14.3386774,7.10542736e-15 L5.67134269,7.10542736e-15 C2.2745491,7.10542736e-15 0,2.37607086 0,5.91411055 L0,14.0859897 C0,15.3181378 0.280561122,16.4119325 0.791583166,17.3042123 C1.12224449,16.9021851 1.49298597,16.4620606 1.85370741,16.0199309 C2.46492986,15.2890636 3.05611222,14.5662167 3.42685371,14.0960153 C3.97795591,13.4142735 5.43086172,11.6196883 7.44488978,12.46184 C7.85571142,12.6322755 8.21643287,12.8728902 8.54709419,13.0834282 C9.35871743,13.6248114 9.6993988,13.7852212 10.2705411,13.4734246 C10.9018036,13.1335562 11.3126253,12.46184 11.743487,11.7590444 C11.9739479,11.3880966 12.2044088,11.028177 12.4549098,10.6973317 C13.5470942,9.27369429 15.2304609,8.8927209 16.6332665,9.7348726 C17.3346693,10.1559484 17.9358717,10.6873061 18.496994,11.2276867 C18.6172345,11.3479941 18.7374749,11.4592785 18.8476954,11.5695602 C18.997996,11.7189419 19.498998,12.2202227 20,12.7024548 L20,5.91411055 C20,2.37607086 17.7254509,7.10542736e-15 14.3386774,7.10542736e-15" id="Fill-3" opacity="0.400000006"></path>
+                                    <path d="M9.45440882,6.79666548 C9.45440882,8.20526445 8.28106212,9.37826146 6.87324649,9.37826146 C5.46643287,9.37826146 4.29308617,8.20526445 4.29308617,6.79666548 C4.29308617,5.38906907 5.46643287,4.2150695 6.87324649,4.2150695 C8.28106212,4.2150695 9.45440882,5.38906907 9.45440882,6.79666548" id="Fill-5"></path>
+                                </g>
+                            </g>
+                        </svg>
+                        <h1 class="text-xl font-semibold">بنر</h1>
+                    </div>
+                    <div id="article-banner" class="product-image-uploadbox overflow-hidden relative cursor-pointer bg-[var(--color12)] rounded-lg border-2 border-[var(--color11)] h-50 mt-2 hover:bg-[var(--color13)] z-3" style="background-size: cover; background-image: url('{{ article.banner.url|default_if_none:"" }}');">
+                        <input onchange="SetUploadedImage(event ,'article-banner') ,document.getElementById('uploadbox-icon').classList.add('hidden') ,document.getElementById('btn-delete-banner').classList.replace('hidden' ,'block')" name="banner" id="article-img-input" class="z-1 opacity-0 absolute w-[100%] h-[100%] cursor-pointer" type="file" accept="image/png, image/jpeg, image/webp">
+                        <div class="{% if article.banner %}hidden{% endif %}" id="uploadbox-icon">
+                            <div class="centerbox">
+                                <svg class="mt-7" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24">
+                                    <path d="M0 0h24v24H0z" fill="none" />
+                                    <g fill="none" stroke="#d0c1bd" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                        <path d="M19 11V9a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" />
+                                        <path d="m13 13l9 3l-4 2l-2 4zM3 3v.01M7 3v.01M11 3v.01M15 3v.01M3 7v.01M3 11v.01M3 15v.01" />
+                                    </g>
+                                </svg>
+                            </div>
+                            <div class="preview-banner"></div>
+                            <div class="centerbox">بنر مقاله رو از اینجا آپلود کنید</div>
+                            <div class="text-center text-sm text-[var(--color10)]">jpg - png - jpeg - webp</div>
+                        </div>
+                        <button type="button" onclick="document.getElementById('article-img-input').value= '' ,document.getElementById('article-banner').style.backgroundImage = '',document.getElementById('uploadbox-icon').classList.replace('hidden','block') ,document.getElementById('btn-delete-banner').classList.replace('block' ,'hidden')" class="absolute {% if not article.banner or add_view %}hidden{% endif %} bottom-2 left-2 bg-[var(--loss-bg)] w-5 h-5 cursor-pointer rounded z-4" id="btn-delete-banner"><i class="fa fa-trash text-xs text-[var(--color5)]"></i></button>
+                    </div>
+                </div>
+
+                <div class="tablebox-default mt-2 relative" style="animation: load8 700ms;">
+                    <div class="flex justify-between mt-1">
+                        <h1 class="text-xl font-semibold">فعال / غیر فعال</h1>
+                        <label class="switch">
+                          <input type="checkbox" name="is_active" {% if add_view %}checked{% else %}
+                              {% if article.is_active %}
+                                  checked
+                              {% endif %}
+                          {% endif %}>
+                          <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="mt-1 text-[var(--color10)]">
+                        در صورت فعال نبودن مقاله، مقاله فقط برای شما قابل نمایشه و برای کاربران سایت نمایش داده نمیشه
+                    </div>
+                    {% if edit_view %}
+                    <div class="flex justify-between mt-3 border-t border-[var(--color11)] pt-2">
+                        <h1 class="text-xl font-semibold">بازدید</h1>
+                        <div class="flex gap-1">
+                            <svg id="Show" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <g id="Iconly/Bulk/Show" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                                    <g id="Show" transform="translate(2.000000, 4.000000)" fill="#674d45" fill-rule="nonzero">
+                                        <path d="M10,0 C12.0682927,0 14.0292683,0.717575758 15.7365854,2.04606061 C17.4439024,3.36387879 18.897561,5.29454545 19.9414634,7.70909091 C20.0195122,7.89236364 20.0195122,8.10666667 19.9414634,8.28121212 C17.8536585,13.110303 14.1365854,16 10,16 L10,16 L9.9902439,16 C5.86341463,16 2.14634146,13.110303 0.0585365854,8.28121212 C-0.0195121951,8.10666667 -0.0195121951,7.89236364 0.0585365854,7.70909091 C2.14634146,2.8790303 5.86341463,0 9.9902439,0 L9.9902439,0 Z M10,4.12121212 C7.84390244,4.12121212 6.09756098,5.8569697 6.09756098,8 C6.09756098,10.1333333 7.84390244,11.8690909 10,11.8690909 C12.1463415,11.8690909 13.8926829,10.1333333 13.8926829,8 C13.8926829,5.8569697 12.1463415,4.12121212 10,4.12121212 Z" id="Fill-1" opacity="0.400000006"></path>
+                                        <path d="M12.4309268,7.99689697 C12.4309268,9.32538182 11.3382439,10.4114424 10.0016585,10.4114424 C8.65531707,10.4114424 7.56263415,9.32538182 7.56263415,7.99689697 C7.56263415,7.83204848 7.58214634,7.67786667 7.61141463,7.52271515 L7.66019512,7.52271515 C8.74312195,7.52271515 9.62117073,6.66938182 9.66019512,5.60174545 C9.7675122,5.58332121 9.88458537,5.57265455 10.0016585,5.57265455 C11.3382439,5.57265455 12.4309268,6.65871515 12.4309268,7.99689697" id="Fill-4"></path>
+                                    </g>
+                                </g>
+                                <div class="text-xl">{{ article.view|to_fanum }}</div>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex justify-between mt-3">
+                        <h1 class="text-xl font-semibold">تاریخ ثبت</h1>
+                        <div class="flex gap-1">
+                            <div class="text-xl">{{ article.created_at|show_jalali_date|to_fanum }}</div>
+                        </div>
+                    </div>
+                    <div class="flex justify-between mt-3">
+                        <h1 class="text-xl font-semibold">توسط کاربر</h1>
+                        <div class="flex gap-1">
+                            <a href="{% url 'admin_user_edit' article.author.pk %}" class="text-xl">{{ article.author }}</a>
+                        </div>
+                    </div>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+    </form>
+    {{ form.media }}
+{% endblock %}

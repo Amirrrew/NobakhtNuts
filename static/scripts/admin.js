@@ -136,10 +136,18 @@ let order_table_partial = document.getElementById('order-table-partial')
 let search_tables = (search ,table ,url ,name) => {
     let table_partial = document.getElementById(table)
     let search_value = document.getElementById(search)
+
+    clearTimeout(search_timeout);
+
+    if (controller) {
+        controller.abort();
+    }
+    controller = new AbortController();
+
     loader.style = 'display: block'
-    setTimeout(() => {
+    search_timeout = setTimeout(() => {
         let q = search_value.value.trim()
-        fetch(url + `?q=${q}`).then(res => res.json()).then(
+        fetch(url + `?q=${q}` ,{signal: controller.signal}).then(res => res.json()).then(
             data => {
                 data.data_length > 0 ? table_partial.innerHTML = data.html : table_partial.innerHTML = `<div class="mt-5 text-center w-[100%] mb-3">رکوردی یافت نشد!</div>`
             }
@@ -212,6 +220,18 @@ let ProductsSort = () => {
     document.getElementById('loader').style = 'display: block'
     fetch(`/adminpanel/products/?sort=${sort_type}`).then(res => res.json()).then(data => {
         data.data_length > 0 ? product_table_partial.innerHTML = data.html : product_table_partial.innerHTML = `<div class="mt-5 text-center w-[100%] mb-3">رکوردی یافت نشد!</div>`
+    }).finally(()=> {
+        document.getElementById('loader').style = 'display: none'
+    })
+}
+
+let article_table_partial = document.getElementById('article-table-partial')
+let article_select_sort = document.getElementById('article-select-sort')
+let ArticlesSort = () => {
+    let sort_type = article_select_sort.value
+    document.getElementById('loader').style = 'display: block'
+    fetch(`/adminpanel/articles/?sort=${sort_type}`).then(res => res.json()).then(data => {
+        data.data_length > 0 ? article_table_partial.innerHTML = data.html : article_table_partial.innerHTML = `<div class="mt-5 text-center w-[100%] mb-3">رکوردی یافت نشد!</div>`
     }).finally(()=> {
         document.getElementById('loader').style = 'display: none'
     })

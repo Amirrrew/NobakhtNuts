@@ -1,8 +1,11 @@
+from ckeditor_uploader.fields import RichTextUploadingField
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.exceptions import ValidationError
 from django.template.base import kwarg_re
 from django.core import validators
+
+from article_module.models import Article
 from order_module.models import PaymentMethod, Cards, PostingMethod
 from product_module.models import Product, ProductCategory, ProductSubCategory, PackageSize, ProductBrand
 from account_module.models import User
@@ -55,6 +58,16 @@ class BrandForm(forms.ModelForm):
     class Meta:
         model = ProductBrand
         fields = ['title' ,'slug' ,'logo' ,'is_active']
+
+class ArticleForm(forms.ModelForm):
+    class Meta:
+        model = Article
+        fields = ['title' ,'author' ,'desc' ,'banner' ,'slug' ,'content' ,'time_to_read' ,'is_active']
+
+    def __init__(self ,*args ,**kwargs ):
+        super().__init__(*args ,**kwargs )
+
+        self.fields['banner'].required = False
 
 class UserForm(forms.ModelForm):
     class Meta:

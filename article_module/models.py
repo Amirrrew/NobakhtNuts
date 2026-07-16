@@ -8,7 +8,7 @@ from ckeditor.fields import RichTextField
 
 class Article(models.Model):
     title = models.CharField(max_length=1000,verbose_name='عنوان مقاله')
-    banner = models.ImageField(upload_to='article_banners' ,null=True ,blank=False ,verbose_name='بنر مقاله')
+    banner = models.ImageField(upload_to='article_banners' ,null=True ,blank=True ,verbose_name='بنر مقاله')
     view = models.PositiveIntegerField(default=0 ,verbose_name='بازدید')
     created_at = models.DateTimeField(auto_now_add=True ,verbose_name='تاریخ آپلود')
     author = models.ForeignKey(User,on_delete=models.CASCADE ,verbose_name='نویسنده')

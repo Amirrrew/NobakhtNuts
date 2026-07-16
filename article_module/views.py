@@ -12,10 +12,7 @@ class ArticleListView(ListView):
     paginate_by = 20
 
     def get_queryset(self):
-        query = super(ArticleListView ,self).get_queryset()
-        query = Article.objects.filter(is_active=True)
-        return query
-
+        return Article.objects.filter(is_active=True)
 
 class ArticleDetailView(DetailView):
     model = Article

@@ -692,3 +692,16 @@ body:has(#admin-searchbox input:focus) .overlay {
     outline: none;
     cursor: pointer;
 }
+
+.cke_chrome {
+    margin-top: 10px !important;
+    border-radius: 10px !important;
+    border: 1px solid var(--color11);
+    width: 100% !important;
+}
+
+.cke_top {
+    background: var(--color12) !important;
+    font-family: rokh !important;
+    border-bottom: 1px solid #EDE7DA !important;
+}

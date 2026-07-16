@@ -19,7 +19,8 @@ from urllib3 import request
 from account_module.form import LoginForm
 from account_module.models import User , BlackList_phones
 from adminpanel_module.forms import ProductAddForm, MainCategoryForm, SubCategoryForm, PackForm, BrandForm, UserForm, \
-    SupportWayForm, SiteSettingForm, FooterLinkForm, PaymentForm, CardForm, PostingForm, AdminLoginForm
+    SupportWayForm, SiteSettingForm, FooterLinkForm, PaymentForm, CardForm, PostingForm, AdminLoginForm, ArticleForm
+from article_module.models import Article
 from order_module.context_processors import orders
 from order_module.models import Order, OrderStatus, PaymentMethod, Cards, PostingMethod
 from product_module.models import Product, ProductCategory, ProductSubCategory, ProductBrand, PackageSize, \
@@ -916,6 +917,112 @@ def CommentDelete(request , pk):
     if comment:
         comment.delete()
     return redirect('admin_comment_list')
+
+
+@method_decorator(permission_checker_decorator_factory() ,name='dispatch')
+class ArticleList(ListView):
+    model = Article
+    template_name = 'adminpanel_module/articles/article_list.html'
+    context_object_name = 'articles'
+    paginate_by = 15
+
+    def get_queryset(self):
+        search = self.request.GET.get('q')
+
+        queryset = Article.objects.order_by('is_active' ,'-created_at')
+        sort_by = self.request.GET.get('sort')
+
+        if sort_by == '-view':
+            queryset = queryset.order_by('-view')
+        elif sort_by == 'view':
+            queryset = queryset.order_by('view')
+        elif sort_by == '-created_at':
+            queryset = queryset.order_by('-created_at')
+        elif sort_by == 'created_at':
+            queryset = queryset.order_by('created_at')
+
+        if search:
+            queryset = queryset.filter(
+                Q(title__icontains=search)
+            )
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def get(self, request, *args, **kwargs):
+        response = super().get(request, *args, **kwargs)
+        if request.GET.get('q') is not None or request.GET.get('sort') is not None:
+            html = render_to_string(
+                'adminpanel_module/articles/table_components/article_table_partial.html',
+                {'articles': self.object_list},
+                request=request
+            )
+
+            return JsonResponse({
+                'html': html,
+                'data_length': self.object_list.count() if hasattr(self.object_list, 'count') else len(self.object_list)
+            })
+        return response
+
+@method_decorator(permission_checker_decorator_factory() ,name='dispatch')
+class ArticleAdd(CreateView):
+    model = Article
+    template_name = 'adminpanel_module/articles/article_add_update.html'
+    context_object_name = 'article'
+    form_class = ArticleForm
+    success_url = reverse_lazy('admin_article_list')
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        form.save_m2m()
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        context["message_e"] = "فیلد هارا به درستی پر کنید"
+        return self.render_to_response(context)
+
+    def get_context_data(self, **kwargs):
+        context = super(ArticleAdd ,self).get_context_data(**kwargs)
+        context['add_view'] = True
+        context['author_users'] = User.objects.filter(is_superuser=True)
+        return context
+
+@method_decorator(permission_checker_decorator_factory() ,name='dispatch')
+class ArticleEdit(UpdateView):
+    model = Article
+    template_name = 'adminpanel_module/articles/article_add_update.html'
+    context_object_name = 'article'
+    form_class = ArticleForm
+    success_url = reverse_lazy('admin_article_list')
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        form.save_m2m()
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        context["message_e"] = form.errors
+        return self.render_to_response(context)
+
+    def get_context_data(self, **kwargs):
+        context = super(ArticleEdit ,self).get_context_data(**kwargs)
+        context['edit_view'] = True
+        context['author_users'] = User.objects.filter(is_superuser=True)
+        return context
+
+@permission_checker_decorator_factory({'permission': 'admin_index'})
+def ArticleDelete(request ,pk):
+    article = get_object_or_404(Article ,pk=pk)
+    if article:
+        article.delete()
+    return redirect('admin_article_list')
 
 @method_decorator(permission_checker_decorator_factory(), name='dispatch')
 class UsersList(ListView):

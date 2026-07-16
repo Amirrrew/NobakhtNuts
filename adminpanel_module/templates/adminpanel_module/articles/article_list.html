@@ -1,0 +1,71 @@
+{% extends 'adminpanel_module/shared/base-admin.html' %}
+{% load poll_extras %}
+{% load static %}
+
+{% block admin_title %}
+    مقالات
+{% endblock %}
+
+{% block admin_content %}
+    <div class="p-2 pt-6 sticky mt-[-10px] top-[-10px] z-10 bg-[var(--header-bg)] backdrop-filter-[blur(10px)] rounded-xl">
+        <div class="flex justify-between">
+            <div class="flex gap-1 items-start">
+                <svg class="mt-[-3px]" id="Folder" width="35" height="35" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M20.5419 7.25362C19.4449 6.07162 18.0459 6.09962 16.8129 6.12162C16.0399 6.13562 15.3089 6.15062 14.7869 5.85262C14.1419 5.48562 13.9189 5.06962 13.6599 4.58662C13.3739 4.05262 13.0499 3.44762 12.1689 2.97162C10.5429 2.09562 8.63389 1.92462 6.16189 2.43462C3.71889 2.93462 2.13989 5.09962 2.13989 7.94962V14.0156C2.13989 21.2876 6.33089 21.8506 12.2499 21.8506C17.9779 21.8506 22.3599 21.2736 22.3599 13.9886C22.3599 12.2036 22.3599 9.21562 20.5419 7.25362Z" fill="#674d45"></path>
+                <path d="M7.44556 15.4756H17.0386C17.4526 15.4756 17.7886 15.1396 17.7886 14.7256C17.7886 14.3116 17.4526 13.9756 17.0386 13.9756H7.44556C7.03156 13.9756 6.69556 14.3116 6.69556 14.7256C6.69556 15.1396 7.03156 15.4756 7.44556 15.4756Z" fill="#674d45"></path>
+                </svg>
+                <h1 class="text-4xl font-semibold">مقالات</h1>
+                <div class="admin-searchbox mr-2" style="margin-top: -8px; width: 250px">
+                    <div class="flex">
+                        <svg class="m-2.5" id="Search" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M11.5139 2.20227C6.51788 2.20227 2.45288 6.26727 2.45288 11.2643C2.45288 16.2603 6.51788 20.3243 11.5139 20.3243C16.5099 20.3243 20.5749 16.2603 20.5749 11.2643C20.5749 6.26727 16.5099 2.20227 11.5139 2.20227Z" fill="#674d45"></path>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M20.1373 17.9767C19.0833 17.9767 18.2253 18.8327 18.2253 19.8867C18.2253 20.9407 19.0833 21.7977 20.1373 21.7977C21.1903 21.7977 22.0473 20.9407 22.0473 19.8867C22.0473 18.8327 21.1903 17.9767 20.1373 17.9767Z" fill="#674d45"></path>
+                        </svg>
+                        <input oninput="search_tables('article-search','article-table-partial' ,`/adminpanel/articles/` ,'')" name="q" id="article-search" placeholder="جستجو با عنوان">
+                    </div>
+                </div>
+
+                <div class="input-admin flex justify-between mt-[-8px]" style="width: 150px; border-radius: 15px; border: 2px solid var(--color12)">
+                    <svg class="mt-2.5 ml-2" id="Filter" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <g id="Iconly/Bulk/Filter" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                            <g id="Filter" transform="translate(2.000000, 3.000000)" fill="#674d45" fill-rule="nonzero">
+                                <path d="M8.08328843,12.9579529 L1.5077694,12.9579529 C0.675551802,12.9579529 5.23038403e-14,13.6216572 5.23038403e-14,14.4392797 C5.23038403e-14,15.2558107 0.675551802,15.9206066 1.5077694,15.9206066 L8.08328843,15.9206066 C8.91550602,15.9206066 9.59105783,15.2558107 9.59105783,14.4392797 C9.59105783,13.6216572 8.91550602,12.9579529 8.08328843,12.9579529" id="Fill-1" opacity="0.400000006"></path>
+                                <path d="M20,3.37856047 C20,2.56202954 19.3244482,1.89832525 18.4933417,1.89832525 L11.9178227,1.89832525 C11.0856051,1.89832525 10.4100533,2.56202954 10.4100533,3.37856047 C10.4100533,4.19618302 11.0856051,4.8598873 11.9178227,4.8598873 L18.4933417,4.8598873 C19.3244482,4.8598873 20,4.19618302 20,3.37856047" id="Fill-4" opacity="0.400000006"></path>
+                                <path d="M6.87773957,3.37856047 C6.87773957,5.24522877 5.33885923,6.75821256 3.43886978,6.75821256 C1.53999144,6.75821256 4.39154885e-14,5.24522877 4.39154885e-14,3.37856047 C4.39154885e-14,1.51298378 1.53999144,-2.51650552e-14 3.43886978,-2.51650552e-14 C5.33885923,-2.51650552e-14 6.87773957,1.51298378 6.87773957,3.37856047" id="Fill-6"></path>
+                                <path d="M20,14.3992173 C20,16.264794 18.4611197,17.7777778 16.5611302,17.7777778 C14.6622519,17.7777778 13.1222604,16.264794 13.1222604,14.3992173 C13.1222604,12.532549 14.6622519,11.0195652 16.5611302,11.0195652 C18.4611197,11.0195652 20,12.532549 20,14.3992173" id="Fill-9"></path>
+                            </g>
+                        </g>
+                    </svg>
+                    <select name="sort" class="select-admin-sales w-[100%]" onchange="ArticlesSort()" id="article-select-sort">
+                        <option value="-created_at">جدیدترین</option>
+                        <option value="created_at">قدیمی ترین</option>
+                        <option value="-view">پربازدید ترین</option>
+                        <option value="view">کم بازدید ترین</option>
+                    </select>
+                    <i class="fa fa-angle-down ml-3 text-[var(--color10)] mt-4"></i>
+                </div>
+            </div>
+            <div class="flex gap-1">
+                <div>
+                        <a href="{% url 'admin_article_add' %}" class="btn-defIconFlex gap-2">
+                            <div>مقاله جدید</div>
+                            <i class="fa fa-add mt-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% include 'adminpanel_module/articles/table_components/article_table.html' %}
+    {% if page_obj.has_other_pages %}
+        <ul class="centerbox gap-2 mt-10 flex-wrap">
+            {% if page_obj.has_previous %}<a href="?{% query_transform page=page_obj.previous_page_number %}"><button class="rounded-xl bg-[var(--color12)] w-8 h-8 m-1 cursor-pointer text-[var(--color6)]"><i class="fa fa-arrow-right text-sm mt-1"></i></button></a>{% endif %}
+            <div class="flex gap-2">
+                {% for page_index in paginator.page_range %}
+                    <a class="" href="?{% query_transform page=page_index %}"><li class="{% if page_index == page_obj.number %}bg-[var(--color6)] text-[var(--color3)]{% endif %} pt-2 cursor-pointer transition-all px-4 rounded-lg hover:bg-[var(--color12)] hover:text-[var(--color2)]">{{ page_index|to_fanum }}</li></a>
+                {% endfor %}
+            </div>
+            {% if page_obj.has_next %}<a href="?{% query_transform page=page_obj.next_page_number %}"><button class="rounded-xl bg-[var(--color12)] w-8 h-8 m-1 cursor-pointer text-[var(--color6)]"><i class="fa fa-arrow-left text-sm mt-1"></i></button></a>{% endif %}
+        </ul>
+    {% endif %}
+
+{% endblock %}
