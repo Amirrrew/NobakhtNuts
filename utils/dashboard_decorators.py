@@ -292,6 +292,25 @@ def get_sales_month():
         "total_month_sale": total_month_sale
     }
 
+def get_category_chart():
+    categories = (
+        ProductCategory.objects
+        .annotate(
+            products_count=Count("subcategory__products")
+        )
+        .order_by("-products_count")
+    )
+
+    max_count = max(
+        [c.products_count for c in categories],
+        default=1
+    )
+
+    return {
+        "categories": categories,
+        "max_count": max_count,
+    }
+
 
 def get_orders_status_chart():
     statuses = (
