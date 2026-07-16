@@ -159,7 +159,6 @@ def Orders_Stats(request):
         'month_orders': orders_data['days'],
         'month_orders_max': orders_data['max_orders'],
         'month_total_orders': orders_data['total_orders'],
-        'month_orders_growth': orders_data['orders_growth'],
     }
     return render(request ,'adminpanel_module/stats/orders_stats/orders_stats.html' ,context)
 
