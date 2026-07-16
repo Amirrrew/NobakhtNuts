@@ -232,16 +232,14 @@ def get_new_tickets():
 
 
 def get_sales_month():
+
     today = timezone.localdate()
 
-    # تاریخ شمسی امروز
     j_today = jdatetime.date.fromgregorian(date=today)
 
-    # اولین روز ماه شمسی
     first_j = jdatetime.date(j_today.year, j_today.month, 1)
     first_day = first_j.togregorian()
 
-    # اولین روز ماه بعد
     if j_today.month == 12:
         next_j = jdatetime.date(j_today.year + 1, 1, 1)
     else:
@@ -249,84 +247,49 @@ def get_sales_month():
 
     next_month = next_j.togregorian()
 
-    current = first_day
 
     days = []
-    max_sale = 1
-    total_sale = 0
+    total_month_sale = 0
+    max_sale = 0
+
+    current = first_day
 
     while current < next_month:
-        sale = (
-            Order.objects.filter(
-                is_paid=True,
-                payment_date__date=current
-            ).aggregate(
-                total=Sum("finalized_price")
-            )["total"] or 0
+
+        start = timezone.make_aware(
+            datetime.combine(current, time.min)
         )
 
-        total_sale += sale
+        end = timezone.make_aware(
+            datetime.combine(current, time.max)
+        )
+
+        sale = Order.objects.filter(
+            is_paid=True,
+            payment_date__range=(start, end)
+        ).aggregate(
+            total=Coalesce(
+                Sum("finalized_price"),
+                0
+            )
+        )["total"]
+
+
+        total_month_sale += sale
         max_sale = max(max_sale, sale)
 
         days.append({
             "day": current,
-            "sale": sale,
+            "sale": sale
         })
 
         current += timedelta(days=1)
 
-    # ---------- ماه قبل ----------
-
-    if j_today.month == 1:
-        prev_first_j = jdatetime.date(j_today.year - 1, 12, 1)
-    else:
-        prev_first_j = jdatetime.date(j_today.year, j_today.month - 1, 1)
-
-    prev_first = prev_first_j.togregorian()
-    prev_last = first_day
-
-    previous_sale = (
-        Order.objects.filter(
-            is_paid=True,
-            payment_date__date__gte=prev_first,
-            payment_date__date__lt=prev_last,
-        ).aggregate(
-            total=Sum("finalized_price")
-        )["total"] or 0
-    )
-
-    if previous_sale == 0:
-        growth = 100 if total_sale else 0
-    else:
-        growth = round(
-            (total_sale - previous_sale) * 100 / previous_sale,
-            1
-        )
 
     return {
         "days": days,
         "max_sale": max_sale,
-        "total_month_sale": total_sale,
-        "monthsale_growth": growth,
-    }
-
-def get_category_chart():
-    categories = (
-        ProductCategory.objects
-        .annotate(
-            products_count=Count("subcategory__products")
-        )
-        .order_by("-products_count")
-    )
-
-    max_count = max(
-        [c.products_count for c in categories],
-        default=1
-    )
-
-    return {
-        "categories": categories,
-        "max_count": max_count,
+        "total_month_sale": total_month_sale
     }
 
 
@@ -354,12 +317,14 @@ def get_orders_status_chart():
 
 
 def get_orders_month_count():
+
     today = timezone.localdate()
 
     j_today = jdatetime.date.fromgregorian(date=today)
 
     first_j = jdatetime.date(j_today.year, j_today.month, 1)
     first_day = first_j.togregorian()
+
 
     if j_today.month == 12:
         next_j = jdatetime.date(j_today.year + 1, 1, 1)
@@ -368,55 +333,45 @@ def get_orders_month_count():
 
     next_month = next_j.togregorian()
 
-    current = first_day
 
     days = []
-    max_orders = 1
     total_orders = 0
+    max_orders = 1
+
+    current = first_day
 
     while current < next_month:
-        orders = Order.objects.filter(
+
+        start = timezone.make_aware(
+            datetime.combine(current, time.min)
+        )
+
+        end = timezone.make_aware(
+            datetime.combine(current, time.max)
+        )
+
+
+        count = Order.objects.filter(
             is_paid=True,
-            payment_date__date=current
+            payment_date__range=(start, end)
         ).count()
 
-        total_orders += orders
-        max_orders = max(max_orders, orders)
+
+        total_orders += count
+        max_orders = max(max_orders, count)
+
 
         days.append({
             "day": current,
-            "orders": orders,
+            "orders": count
         })
+
 
         current += timedelta(days=1)
 
-    # ---------- ماه قبل ----------
-
-    if j_today.month == 1:
-        prev_first_j = jdatetime.date(j_today.year - 1, 12, 1)
-    else:
-        prev_first_j = jdatetime.date(j_today.year, j_today.month - 1, 1)
-
-    prev_first = prev_first_j.togregorian()
-    prev_last = first_day
-
-    previous_orders = Order.objects.filter(
-        is_paid=True,
-        payment_date__date__gte=prev_first,
-        payment_date__date__lt=prev_last,
-    ).count()
-
-    if previous_orders == 0:
-        growth = 100 if total_orders else 0
-    else:
-        growth = round(
-            (total_orders - previous_orders) * 100 / previous_orders,
-            1
-        )
 
     return {
         "days": days,
         "max_orders": max_orders,
         "total_orders": total_orders,
-        "orders_growth": growth,
     }
