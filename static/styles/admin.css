@@ -682,3 +682,13 @@ body:has(#admin-searchbox input:focus) .overlay {
 .sales-stats-option:hover .sales-stats-option-iconbox {
     box-shadow: 2px 2px 80px var(--color10);
 }
+
+.select-admin-sales {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+    outline: none;
+    cursor: pointer;
+}

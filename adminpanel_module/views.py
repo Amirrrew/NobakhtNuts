@@ -162,6 +162,23 @@ def Orders_Stats(request):
         'month_orders_growth': orders_data['orders_growth'],
     }
     return render(request ,'adminpanel_module/stats/orders_stats/orders_stats.html' ,context)
+
+
+@permision_checker_decorator_factory({'permission': 'admin_index'} ,)
+def Sales_Stats(request):
+    period = request.GET.get('period')
+
+    if period == 'week':
+        data = get_sales_week()
+    elif period == 'month':
+        data = get_sales_week()
+    elif period == 'year':
+        data = get_sales_year
+    context = {}
+    return render(request ,'adminpanel_module/stats/sales_stats/sales_stats.html' ,context)
+
+
+
 @method_decorator(permision_checker_decorator_factory(), name='dispatch')
 class OrdersListView(ListView):
     model = Order
