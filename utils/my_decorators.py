@@ -60,7 +60,7 @@ def filter_products(request, queryset):
     if order in ['price', '-price', '-created_at', '-view']:
         queryset = queryset.order_by('stock_order', order)
     else:
-        queryset = queryset.order_by('stock_order', '-created_at')
+        queryset = queryset.order_by('-chosen' ,'stock_order', '-created_at')
 
     start_price = request.GET.get('start_price')
     end_price = request.GET.get('end_price')

@@ -6,6 +6,7 @@ from django.template.base import kwarg_re
 from django.core import validators
 
 from article_module.models import Article
+from home_module.models import SpecialEvents
 from order_module.models import PaymentMethod, Cards, PostingMethod
 from product_module.models import Product, ProductCategory, ProductSubCategory, PackageSize, ProductBrand
 from account_module.models import User
@@ -21,7 +22,7 @@ class AdminLoginForm(AuthenticationForm):
 class ProductAddForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['holoo_id' ,'title' ,'category' ,'brand' ,'is_byWeight' ,'packs' ,'price' ,'offer' ,'quantity' ,'desc' ,'pack_weight' ,'is_active']
+        fields = ['holoo_id' ,'title' ,'category' ,'brand' ,'is_byWeight' ,'packs' ,'price' ,'offer' ,'quantity' ,'desc' ,'pack_weight' ,'is_active' ,'chosen']
 
     def __init__(self ,*args ,**kwargs ):
         super().__init__(*args ,**kwargs )
@@ -137,4 +138,10 @@ class CardForm(forms.ModelForm):
 class PostingForm(forms.ModelForm):
     class Meta:
         model = PostingMethod
+        fields = '__all__'
+
+
+class EventForm(forms.ModelForm):
+    class Meta:
+        model = SpecialEvents
         fields = '__all__'

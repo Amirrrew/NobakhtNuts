@@ -30,7 +30,7 @@
 
             <div class="flex justify-between items-start gap-2">
 
-                <div class="prd-section flex w-[75%] mt-5 gap-5 relative" style="animation: load8 400ms">
+                <div class="prd-section flex w-[80%] mt-5 gap-2 relative" style="animation: load8 400ms">
                     <div class="prd-photo-gallery">
                         <div onclick="PhotoGallery(false ,0)" class="pg-mainphoto">
                             <img loading="lazy" alt="{{ product.title }}" onclick="" src="{{ product.product_image.first.image.url }}">
@@ -48,18 +48,18 @@
                         </div>
                     </div>
 
-                    <div class="prd-detail-row1 border-t border-[var(--color9)]">
+                    <div class="prd-detail-row1 border-t w-[100%] border-[var(--color9)]">
                     {% if product.features.all %}
                         <div class="flex w-[100%] justify-between mt-3">
                             <div>
-                                ویژگی ها محصول
+                                ویژگی های محصول
                             </div>
                             <button onclick="ScrollTo('full-features')" class="btn-prdnavbar rounded-lg bg-[var(--color12)] px-3 flex gap-1 text-[var(--color6)] pt-1 h-6 text-xs cursor-pointer">مشخصات کامل<i class="fa fa-arrow-left mt-[1px]"></i></button>
                         </div>
                     {% endif %}
-                        <div class="flex flex-wrap mt-2 gap-2">
+                        <div class="flex mt-2 gap-2">
                             {% for spec in product.features.all|slice:3 %}
-                                <div class="prd-feature overflow-hidden flex-nowrap w-[32.3%] h-14 rounded-xl p-2 bg-[var(--color12)] relative" style="animation: load8 {% widthratio forloop.counter 1 200 %}ms">
+                                <div class="prd-feature overflow-hidden w-[100%] h-14 rounded-xl p-2 bg-[var(--color12)] relative" style="animation: load8 {% widthratio forloop.counter 1 200 %}ms">
                                     <div class="text-[var(--color10)] px-1 text-sm">{{ spec.title }}</div>
                                     <div class="text-m truncate text-[var(--color6)] mt-[-3px] text-nowrap">{{ spec.desc|to_fanum }}</div>
                                 </div>
@@ -113,7 +113,16 @@
                         </div>
 
                         <div class="prd-aspects hidden mt-5">
-                            <div class="flex gap-2 border-t border-[var(--color8)] pt-1 pb-2">
+                            <div class="flex gap-2 border-b border-t pt-2 pb-0.5 border-[var(--color8)] pb-2" >
+                                <svg id="Star" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M21.625 11.5156C17.265 10.3916 13.858 6.98456 12.734 2.62456L12.25 0.747559L11.766 2.62456C10.642 6.98456 7.23505 10.3916 2.87505 11.5156L0.998047 11.9996L2.87505 12.4846C7.23505 13.6086 10.642 17.0156 11.766 21.3746L12.25 23.2526L12.734 21.3746C13.858 17.0156 17.265 13.6086 21.625 12.4846L23.502 11.9996L21.625 11.5156Z" fill="#674d45"></path>
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M19.0009 7.747C19.0009 6.585 20.2749 5.248 21.4999 5.248C20.3209 5.248 19.0009 3.897 19.0009 2.75C19.0009 3.897 17.6929 5.248 16.5029 5.248C17.6479 5.248 19.0009 6.578 19.0009 7.747Z" fill="#674d45"></path>
+                                </svg>
+                                <div class="">
+                                    کیفیت بی نظیر
+                                </div>
+                            </div>
+                            <div class="flex gap-2 border-[var(--color8)] pt-1 pb-2">
                                 <svg class="mt-2" id="Send" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M11.3565 12.8934C11.3694 12.9519 11.3842 13.0176 11.4006 13.09C11.4738 13.4129 11.581 13.8688 11.7172 14.4028C11.989 15.4682 12.3788 16.8545 12.8475 18.1152C13.0818 18.7455 13.339 19.3529 13.6149 19.8769C13.8872 20.3942 14.194 20.8617 14.5381 21.1862C14.8813 21.5098 15.3414 21.7597 15.8734 21.6332C16.3742 21.514 16.7676 21.0965 17.0902 20.5376C18.1385 18.7214 19.5304 14.763 20.5433 11.0838C21.0521 9.23596 21.4716 7.43589 21.7073 5.98436C21.825 5.25971 21.8989 4.60988 21.9128 4.07868C21.9243 3.64052 21.9223 3.14268 21.7108 2.74545C21.664 2.65772 21.5922 2.5859 21.5045 2.53917C21.1072 2.32761 20.6094 2.32565 20.1712 2.33712C19.64 2.35102 18.9902 2.42491 18.2656 2.54259C16.814 2.7783 15.014 3.19781 13.1661 3.70659C9.48696 4.71957 5.52852 6.11138 3.71239 7.1597C3.15349 7.48233 2.73593 7.8757 2.61678 8.37649C2.49019 8.90853 2.74015 9.36859 3.06377 9.71184C3.38819 10.0559 3.85573 10.3627 4.37304 10.6351C4.89706 10.911 5.50445 11.1681 6.13473 11.4024C7.39547 11.8711 8.78173 12.2609 9.84714 12.5327C10.3811 12.6689 10.8371 12.7761 11.1599 12.8493C11.2323 12.8658 11.2981 12.8805 11.3565 12.8934Z" fill="#674d45"></path>
                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M19.0624 5.60285C19.3553 5.89574 19.3553 6.37062 19.0624 6.66351L13.5306 12.1953C13.2377 12.4882 12.7628 12.4882 12.4699 12.1953C12.177 11.9024 12.177 11.4275 12.4699 11.1346L18.0017 5.60285C18.2946 5.30996 18.7695 5.30996 19.0624 5.60285Z" fill="#674d45"></path>
@@ -131,16 +140,6 @@
                                     امکان ارجاع محصول
                                 </div>
                             </div>
-                            <a href="" class="flex gap-2 border-t border-[var(--color8)] pt-2" >
-                                <svg class="" id="Danger" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M19.3101 10.6927L19.0981 10.3187C16.1121 5.00867 14.2561 3.03467 12.2501 3.03467C10.2441 3.03467 8.38808 5.00867 5.40208 10.3187L5.19108 10.6927C4.11808 12.5747 1.88808 16.4897 2.30208 18.8257C2.79008 21.5887 5.63508 22.0347 12.2501 22.0347C18.8661 22.0347 21.7111 21.5887 22.1981 18.8257C22.6121 16.4897 20.3821 12.5747 19.3101 10.6927Z" fill="#f97e7e"></path>
-                                <path d="M11.5005 16.4297C11.5005 16.8437 11.8405 17.1797 12.2545 17.1797C12.6685 17.1797 13.0045 16.8437 13.0045 16.4297C13.0045 16.0157 12.6685 15.6797 12.2545 15.6797H12.2455C11.8315 15.6797 11.5005 16.0157 11.5005 16.4297Z" fill="#f97e7e"></path>
-                                <path d="M12.2495 8.28467C11.8355 8.28467 11.4995 8.62067 11.4995 9.03467V12.9297C11.4995 13.3437 11.8355 13.6797 12.2495 13.6797C12.6635 13.6797 12.9995 13.3437 12.9995 12.9297V9.03467C12.9995 8.62067 12.6635 8.28467 12.2495 8.28467Z" fill="#f97e7e"></path>
-                                </svg>
-                                <div class="mt-1 text-[var(--color5)]">
-                                    گزارش مشکل
-                                </div>
-                            </a>
                         </div>
 
 
@@ -150,6 +149,7 @@
 
                 {% include 'product_module/include/product_managecard_desktop.html' %}
             </div>
+            {% include 'product_module/include/product_desc.html' %}
             {% include 'product_module/include/product_features.html' %}
             {% include 'product_module/product_comment_section.html' %}
             {% include 'product_module/include/product_suggestion.html' %}

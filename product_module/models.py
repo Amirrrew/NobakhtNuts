@@ -128,6 +128,7 @@ class Product(models.Model):
     slug = models.SlugField(max_length=1000 ,default='' ,null=True ,blank=True,unique=True,db_index=True ,verbose_name="عنوان در url")
     packs = models.ManyToManyField(PackageSize ,null=True ,blank=True ,verbose_name='اندازه بسته بندی های محصول')
     pack_weight = models.FloatField(null=True ,blank=True ,verbose_name='وزن بسته')
+    chosen = models.BooleanField(default=False ,verbose_name='محصول برگزیده')
 
 
     def get_absolute_url(self):

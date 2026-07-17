@@ -69,4 +69,5 @@ urlpatterns = [
     path('posting-fees/<int:pk>/edit', views.PostingEdit.as_view(), name='admin_posting_edit'),
     path('blacklist/' ,views.BlackList_list.as_view() ,name='admin_blacklist'),
     path('blacklist/<int:pk>/delete', views.BlackList_delete, name='admin_blacklist_delete'),
+    path('event/<int:pk>' ,views.EventUpdate.as_view() ,name='admin_event'),
 ]

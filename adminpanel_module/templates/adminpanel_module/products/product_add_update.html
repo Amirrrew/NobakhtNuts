@@ -247,6 +247,16 @@
                     <div class="mt-1 text-[var(--color10)]">
                         در صورت فعال نبودن محصول، محصول فقط برای شما قابل نمایشه و برای کاربران سایت نمایش داده نمیشه
                     </div>
+                    <div class="flex justify-between mt-5">
+                        <h1 class="text-xl font-semibold">برگزیده</h1>
+                        <label class="switch">
+                          <input type="checkbox" name="chosen" {% if product.chosen %}checked{% endif %}>
+                          <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="mt-1 text-[var(--color10)]">
+                        در صورت برگزیده بودن، محصول در لیست محصولات نسبت به بقیه بالاتر نمایش داده میشود
+                    </div>
                     {% if edit_view %}
                         <div class="flex justify-between mt-3 border-t border-[var(--color11)] pt-2">
                             <h1 class="text-xl font-semibold">بازدید</h1>

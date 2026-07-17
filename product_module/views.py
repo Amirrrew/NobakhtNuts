@@ -30,7 +30,7 @@ class ProductListView(ListView):
             is_active=True,
             is_deleted=False,
             category__is_active=True
-        ).order_by('-quantity')
+        ).order_by('-chosen' ,'-quantity')
 
         category_slug = self.kwargs.get("category")
         subcategory_slug = self.kwargs.get("subcategory")

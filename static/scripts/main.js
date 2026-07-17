@@ -62,6 +62,8 @@ let Back = (url) => {
     window.location.href=`${url}`
 }
 
+let footer = document.querySelector('footer')
+
 // انیمیشن و شرینک هدر
 let HeaderManage = () => {
     if (window.innerWidth > 1300) {

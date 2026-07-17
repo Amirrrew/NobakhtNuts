@@ -1,0 +1,37 @@
+{% load poll_extras %}
+{% if special_event %}
+    <div class="centerbox">
+        <div class="event-bar hidden" id="eventbar">
+            <a href="{{ special_event.url }}" class="flex gap-2">
+                <div class="event-bar-logo"><h3 class="text-2xl mt-2.5">{{ special_event.emoji }}</h3></div>
+                <div>
+                    <h1 class="font-semibold mt-1">{{ special_event.title }}</h1>
+                    <h4 class="text-[var(--color7)] mt-[-4px]">{{ special_event.desc }}</h4>
+                </div>
+            </a>
+            <div class="flex bg-[var(--color15)] z-20 rounded-[30px] p-4 gap-6">
+                <i onclick="close_eventbar()" class="fa fa-close cursor-pointer"></i>
+                <a href="{{ special_event.url }}" class="fa fa-angle-left"></a>
+            </div>
+        </div>
+    </div>
+    <script>
+    let event_bar = document.getElementById('eventbar')
+    let close_eventbar = () => {
+        event_bar.style.bottom = '-200px'
+    }
+
+    setTimeout(()=> {
+        event_bar.style.display = 'flex'
+        window.innerWidth < 1000 ? event_bar.style.animation = 'Eventbar_appear_mobile 1s' : event_bar.style.animation = 'Eventbar_appear_desktop 1s'
+    } ,1000)
+
+    let close_in_footer = () => {
+        if (document.documentElement.scrollTop > (footer.offsetTop -600)) {
+            event_bar.style.bottom = '-200px'
+        }
+    }
+
+    document.addEventListener('scroll' ,close_in_footer)
+    </script>
+{% endif %}

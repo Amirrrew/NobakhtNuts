@@ -260,6 +260,16 @@ input[type="number"] {
     body .article-titlebar {
         margin-top: 80px;
     }
+
+    body #prd-descs {
+        width: 100%;
+    }
+
+    body .event-bar {
+        bottom: 70px;
+        width: 96%;
+        animation: Eventbar_appear_mobile;
+    }
 }
 
 @media screen and (max-width: 1000px) {
@@ -2460,6 +2470,7 @@ footer {
 
 .prd-photo-gallery {
     width: 500px;
+    min-width: 500px;
     height: auto;
     overflow-x: hidden;
     overflow-y: visible;
@@ -2766,4 +2777,90 @@ input[type='radio']:checked + label .address-unchecked-icon {
     100% {
         top: 60px;
     }
+}
+
+.event-bar {
+    width: 30%;
+    height: 60px;
+    border-radius: 30px;
+    background-color: var(--color12);
+    position: fixed;
+    bottom: 10px;
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--color11);
+    padding: 5px;
+    transition: 200ms;
+    z-index: 10;
+    animation: Eventbar_appear_desktop 1s;
+    text-wrap: nowrap;
+    overflow: hidden;
+    justify-content: space-between;
+}
+
+@keyframes Eventbar_appear_desktop {
+    0% {
+        width: 5%;
+        border-radius: 50%;
+        bottom: -300px;
+        background-color: #fff;
+    }
+    29% {
+        width: 5%;
+        border-radius: 50%;
+        background-color: #fff;
+    }
+    30% {
+        bottom: 35px;
+        height: 80px;
+        width: 5%;
+        border-radius: 30px;
+    }
+    50% {
+        bottom: 5px;
+        height: 60px;
+        background-color: var(--color12);
+    }
+    100% {
+        bottom: 10px;
+        width: 30%;
+    }
+}
+
+@keyframes Eventbar_appear_mobile {
+    0% {
+        width: 10%;
+        border-radius: 50%;
+        bottom: -300px;
+        background-color: #fff;
+    }
+    29% {
+        width: 10%;
+        border-radius: 50%;
+        background-color: #fff;
+    }
+    30% {
+        bottom: 95px;
+        height: 80px;
+        width: 10%;
+        border-radius: 30px;
+    }
+    50% {
+        bottom: 65px;
+        height: 60px;
+        background-color: var(--color12);
+    }
+    100% {
+        bottom: 70px;
+        width: 96%;
+    }
+}
+
+.event-bar-logo {
+    width: 50px;
+    height: 100%;
+    border-radius: 30px;
+    background-color: var(--color17);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
