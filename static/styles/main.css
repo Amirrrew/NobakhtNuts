@@ -1826,6 +1826,7 @@ footer {
     transition: 200ms;
     top: -200px;
     border: 2px solid var(--color4);
+    animation: Showmessage 1s;
 }
 
 
@@ -2820,6 +2821,9 @@ input[type='radio']:checked + label .address-unchecked-icon {
         height: 60px;
         background-color: var(--color12);
     }
+    70% {
+        width: 31%;
+    }
     100% {
         bottom: 10px;
         width: 30%;
@@ -2849,6 +2853,9 @@ input[type='radio']:checked + label .address-unchecked-icon {
         height: 60px;
         background-color: var(--color12);
     }
+    70% {
+        width: 97%;
+    }
     100% {
         bottom: 70px;
         width: 96%;
@@ -2863,4 +2870,15 @@ input[type='radio']:checked + label .address-unchecked-icon {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.pill-title {
+    width: auto;
+    padding: 5px 30px;
+    background-color: var(--color12);
+    font-weight: bold;
+    border-radius: 20px;
+    border: 2px solid var(--color15);
+    animation: load8 400ms;
+    position: relative;
 }
