@@ -337,6 +337,10 @@ input[type="number"] {
     body .deposit-desc {
         display: none;
     }
+
+    body .prd-photo-gallery {
+        min-width: auto;
+    }
 }
 
 @media screen and (max-width: 890px) {
@@ -1134,7 +1138,7 @@ header {
     position: fixed;
     top: 0;
     border-left: 2px solid var(--color8);
-    right: -500px;
+    right: -1000px;
     transition: 200ms;
     z-index: 1000;
 }
@@ -1208,7 +1212,7 @@ header {
     backdrop-filter: blur(10px);
     transition: 200ms;
     padding: 0 10px ;
-    right: -100%;
+    right: -200%;
     transition: 200ms;
     overflow-y: scroll;
 }
@@ -2795,6 +2799,15 @@ input[type='radio']:checked + label .address-unchecked-icon {
     text-wrap: nowrap;
     overflow: hidden;
     justify-content: space-between;
+}
+
+.event-bar:hover {
+    border: 1px solid var(--color9);
+}
+
+.event-bar:active {
+    background-color: var(--color3);
+    transform: scale(.95);
 }
 
 @keyframes Eventbar_appear_desktop {
