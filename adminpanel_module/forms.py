@@ -6,7 +6,7 @@ from django.template.base import kwarg_re
 from django.core import validators
 
 from article_module.models import Article
-from home_module.models import SpecialEvents
+from home_module.models import SpecialEvents, SliderSlide
 from order_module.models import PaymentMethod, Cards, PostingMethod
 from product_module.models import Product, ProductCategory, ProductSubCategory, PackageSize, ProductBrand
 from account_module.models import User
@@ -144,4 +144,9 @@ class PostingForm(forms.ModelForm):
 class EventForm(forms.ModelForm):
     class Meta:
         model = SpecialEvents
+        fields = '__all__'
+
+class SliderForm(forms.ModelForm):
+    class Meta:
+        model = SliderSlide
         fields = '__all__'

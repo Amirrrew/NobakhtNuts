@@ -20,7 +20,7 @@ from account_module.form import LoginForm
 from account_module.models import User , BlackList_phones
 from adminpanel_module.forms import ProductAddForm, MainCategoryForm, SubCategoryForm, PackForm, BrandForm, UserForm, \
     SupportWayForm, SiteSettingForm, FooterLinkForm, PaymentForm, CardForm, PostingForm, AdminLoginForm, ArticleForm, \
-    EventForm
+    EventForm, SliderForm
 from article_module.models import Article
 from home_module.models import SpecialEvents, SliderSlide
 from order_module.context_processors import orders
@@ -1643,4 +1643,59 @@ class EventUpdate(UpdateView):
 class SliderPreview(ListView):
     model = SliderSlide
     template_name = 'adminpanel_module/sliders/slider_preview.html'
-    context_object_name = 'sliders'
+    context_object_name = 'admin_sliders'
+
+@method_decorator(permission_checker_decorator_factory() ,name='dispatch')
+class SliderAdd(CreateView):
+    model = SliderSlide
+    template_name = 'adminpanel_module/sliders/slider_add_update.html'
+    context_object_name = 'admin_slider'
+    form_class = SliderForm
+    success_url = reverse_lazy('admin_sliders')
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        form.save_m2m()
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        context["message_e"] = "فیلد هارا به درستی پر کنید"
+        return self.render_to_response(context)
+
+    def get_context_data(self, **kwargs):
+        context = super(SliderAdd ,self).get_context_data(**kwargs)
+        context['add_view'] =True
+        return context
+
+@method_decorator(permission_checker_decorator_factory() ,name='dispatch')
+class SliderEdit(UpdateView):
+    model = SliderSlide
+    template_name = 'adminpanel_module/sliders/slider_add_update.html'
+    context_object_name = 'admin_slider'
+    form_class = SliderForm
+    success_url = reverse_lazy('admin_sliders')
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        form.save_m2m()
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        context["message_e"] = "فیلد هارا به درستی پر کنید"
+        return self.render_to_response(context)
+
+    def get_context_data(self, **kwargs):
+        context = super(SliderEdit ,self).get_context_data(**kwargs)
+        context['edit_view'] =True
+        return context
+
+@permission_checker_decorator_factory({'permission': 'admin_index'})
+def SliderDelete(request ,pk):
+    slide = get_object_or_404(SliderSlide ,pk=pk)
+    if slide:
+        slide.delete()
+    return redirect('admin_sliders')

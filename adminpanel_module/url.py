@@ -71,4 +71,7 @@ urlpatterns = [
     path('blacklist/<int:pk>/delete', views.BlackList_delete, name='admin_blacklist_delete'),
     path('event/<int:pk>' ,views.EventUpdate.as_view() ,name='admin_event'),
     path('sliders/', views.SliderPreview.as_view(), name='admin_sliders'),
+    path('sliders/add', views.SliderAdd.as_view(), name='admin_sliders_add'),
+    path('sliders/<int:pk>/edit', views.SliderEdit.as_view(), name='admin_sliders_edit'),
+    path('sliders/<int:pk>/delete' ,views.SliderDelete ,name='admin_sliders_delete')
 ]

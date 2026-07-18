@@ -355,6 +355,27 @@ let SetUploadedImage = (event, parentElement) => {
     }
 }
 
+let SetUploadedImageSlider = (event, parentElement ,slider) => {
+    var parent = document.getElementById(`${parentElement}`)
+    var file = event.target.files[0]
+    var slide = document.getElementById(slider)
+    var icon = document.getElementById('preview-icon')
+
+    if (file && file.type.startsWith('image/')) {
+        var reader = new FileReader()
+        reader.onload = (e) => {
+            parent.style.backgroundImage = `url(${e.target.result})`
+            parent.style.backgroundSize = 'cover'
+            slide.src = e.target.result
+            icon.classList.add('hidden')
+        }
+        reader.readAsDataURL(file)
+    } else {
+        Message('فقط عکس مجاز است!', true)
+        event.target.value = ''
+    }
+}
+
 htmladdress = `
     
 `

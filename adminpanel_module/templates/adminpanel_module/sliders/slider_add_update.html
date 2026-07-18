@@ -1,0 +1,179 @@
+{% extends 'adminpanel_module/shared/base-admin.html' %}
+{% load poll_extras %}
+
+{% block admin_title %}
+    {% if add_view %}
+        افزودن اسلاید جدید
+        {% else %}
+        ویرایش اسلاید شماره {{ admin_slider.pk }}
+    {% endif %}
+{% endblock %}
+
+{% block admin_content %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="flex justify-between p-2 pt-6 sticky mt-[-10px] top-[-10px] z-10 bg-[var(--header-bg)] backdrop-filter-[blur(10px)] rounded-xl">
+            <div class="flex gap-2 items-start">
+                <a href="{% url 'admin_sliders' %}"><button type="button" class="btn-prdcounter mt-1 text-sm pt-1 rounded-2xl"><i class="fa fa-angle-right"></i></button></a>
+                <svg id="Image" width="35px" height="35px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <g id="Iconly/Bulk/Image" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                        <g id="Image" transform="translate(2.000000, 2.000000)" fill="#674d45" fill-rule="nonzero">
+                            <path d="M14.3328156,20 L5.66618229,20 C2.27689532,20 0,17.6228892 0,14.0842812 L0,5.91672095 C0,2.37811294 2.27689532,0 5.66618229,0 L14.3338177,0 C17.7231047,0 20,2.37811294 20,5.91672095 L20,14.0842812 C20,17.6228892 17.7231047,20 14.3328156,20" id="Fill-1" opacity="0.400000006"></path>
+                            <path d="M13.4284,11.0896 C13.6504,10.7986 14.4744,9.8886 15.5394,10.5366 C16.2184,10.9446 16.7894,11.4966 17.4004,12.0876 C17.6334,12.3136 17.8004,12.5716 17.9104,12.8466 C18.2434,13.6786 18.0704,14.6786 17.7144,15.5026 C17.2924,16.4836 16.4844,17.2246 15.4664,17.5486 C15.0144,17.6936 14.5404,17.7556 14.0674,17.7556 L14.0674,17.7556 L5.6864,17.7556 C4.8524,17.7556 4.1144,17.5616 3.5094,17.1976 C3.1304,16.9696 3.0634,16.4446 3.3444,16.1026 C3.8144,15.5326 4.2784,14.9606 4.7464,14.3836 C5.6384,13.2796 6.2394,12.9596 6.9074,13.2406 C7.1784,13.3566 7.4504,13.5316 7.7304,13.7156 C8.4764,14.2096 9.5134,14.8876 10.8794,14.1516 C11.8194,13.6376 12.3624,12.7556 12.8364,11.9916 C13.0304,11.6806 13.2144,11.3706 13.4284,11.0896 Z M6.76,4.189 C8.13,4.189 9.245,5.305 9.245,6.675 C9.245,8.045 8.13,9.16 6.76,9.16 C5.389,9.16 4.275,8.045 4.275,6.675 C4.275,5.305 5.389,4.189 6.76,4.189 Z" id="Combined-Shape"></path>
+                        </g>
+                    </g>
+                </svg>
+                <div class="flex gap-2">
+                    <h1 class="text-4xl font-semibold">اسلایدر ها</h1>
+                    <i class="fa fa-angle-left mt-2 text-[var(--color10)]"></i>
+                    <div class="text-2xl font-semibold mt-0.5 text-[var(--color6)]">{% if add_view %}اسلاید جدید{% else %}{{ admin_slider.title }}{% endif %}</div>
+                </div>
+            </div>
+            <div class="flex gap-1 m-[-5px] items-start">
+                <button class="btn-defIconFlex gap-1 z-20" type="submit">ذخیره <i class="fa fa-add mt-1"></i></button>
+            </div>
+        </div>
+
+        <div class="overflow-hidden border border-[var(--color11)] rounded-2xl relative" style="height: 500px">
+            <div class="bg-[var(--color12)] gap-2 rounded-xl border border-[var(--color11)] absolute top-3 right-3 flex px-2 py-1">
+                <i class="fa fa-info-circle text-xs mt-1 text-[var(--color10)]"></i>
+                <div>پیش نمایش</div>
+            </div>
+            <div class="centerbox mt-10">
+                <div class="pill-title" id="slide-title">{% if add_view %}عنوان اسلاید{% else %}{{ admin_slider.title|to_fanum }}{% endif %}</div>
+            </div>
+            <div class="swiper-text-box mt-5 centerbox">
+                <h1 id="slide-desc" class="swiper-text max-w-200 text-6xl text-center font-semibold relative" style="animation: load8 700ms">{% if add_view %}سرتیتر اسلاید{% else %}{{ admin_slider.desc|to_fanum }}{% endif %}</h1>
+            </div>
+            <div class="centerbox">
+                {% if add_view %}
+                    <svg class="mt-20" id="preview-icon" width="100px" height="100px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <g id="Iconly/Bulk/Image-2" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                            <g id="Image-2" transform="translate(2.000000, 2.000000)" fill="#674d45" fill-rule="nonzero">
+                                <path d="M19.9998998,12.7023545 L19.9998998,14.0858894 C19.9998998,14.315476 19.9898798,14.5470678 19.9698397,14.7766544 C19.6892786,17.9357258 17.4948898,20 14.3285571,20 L5.67124248,20 C4.06803607,20 2.71533066,19.4796706 1.74338677,18.5362601 C1.36262525,18.1863662 1.04198397,17.7753159 0.791482966,17.304112 C1.12214429,16.9020848 1.49288577,16.4619603 1.85360721,16.0208332 C2.46482966,15.2889633 3.05601202,14.5661164 3.42675351,14.0959151 C3.97785571,13.4141732 5.43076152,11.619588 7.44478958,12.4617397 C7.85561122,12.6321752 8.21633267,12.87279 8.54699399,13.0833279 C9.35861723,13.6247111 9.6992986,13.785121 10.2704409,13.4743269 C10.9017034,13.133456 11.3125251,12.4617397 11.7433868,11.7599467 C11.9738477,11.3879963 12.2043086,11.0280767 12.4548096,10.6972314 C13.546994,9.27359403 15.2303607,8.89262065 16.6331663,9.73477234 C17.3345691,10.1558482 17.9357715,10.6872058 18.4968938,11.2275865 C18.6171343,11.3478939 18.7373747,11.4591782 18.8475952,11.56946 C18.9978958,11.7198442 19.4988978,12.221125 19.9998998,12.7023545" id="Fill-1"></path>
+                                <path d="M14.3386774,7.10542736e-15 L5.67134269,7.10542736e-15 C2.2745491,7.10542736e-15 0,2.37607086 0,5.91411055 L0,14.0859897 C0,15.3181378 0.280561122,16.4119325 0.791583166,17.3042123 C1.12224449,16.9021851 1.49298597,16.4620606 1.85370741,16.0199309 C2.46492986,15.2890636 3.05611222,14.5662167 3.42685371,14.0960153 C3.97795591,13.4142735 5.43086172,11.6196883 7.44488978,12.46184 C7.85571142,12.6322755 8.21643287,12.8728902 8.54709419,13.0834282 C9.35871743,13.6248114 9.6993988,13.7852212 10.2705411,13.4734246 C10.9018036,13.1335562 11.3126253,12.46184 11.743487,11.7590444 C11.9739479,11.3880966 12.2044088,11.028177 12.4549098,10.6973317 C13.5470942,9.27369429 15.2304609,8.8927209 16.6332665,9.7348726 C17.3346693,10.1559484 17.9358717,10.6873061 18.496994,11.2276867 C18.6172345,11.3479941 18.7374749,11.4592785 18.8476954,11.5695602 C18.997996,11.7189419 19.498998,12.2202227 20,12.7024548 L20,5.91411055 C20,2.37607086 17.7254509,7.10542736e-15 14.3386774,7.10542736e-15" id="Fill-3" opacity="0.400000006"></path>
+                                <path d="M9.45440882,6.79666548 C9.45440882,8.20526445 8.28106212,9.37826146 6.87324649,9.37826146 C5.46643287,9.37826146 4.29308617,8.20526445 4.29308617,6.79666548 C4.29308617,5.38906907 5.46643287,4.2150695 6.87324649,4.2150695 C8.28106212,4.2150695 9.45440882,5.38906907 9.45440882,6.79666548" id="Fill-5"></path>
+                            </g>
+                        </g>
+                    </svg>
+                    <img id="slide-preview-img" src="" loading="lazy" alt="">
+                {% else %}
+                <img src="{{ admin_slider.banner.url }}" loading="lazy" alt="{{ admin_slider.title }}">
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="flex gap-2">
+            <div class="tablebox-default mt-2 relative" style="width: 100%; animation: load 300ms">
+                <div class="flex gap-1">
+                    <svg class="mt-[-2px]" id="Info Square" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.052 2.78467 2.5 5.33667 2.5 12.5347C2.5 19.7327 5.052 22.2847 12.25 22.2847C19.448 22.2847 22 19.7327 22 12.5347C22 5.33667 19.448 2.78467 12.25 2.78467Z" fill="#674d45"></path>
+                        <path d="M12.2461 9.78467H12.2551C12.6691 9.78467 13.0011 9.44867 13.0011 9.03467C13.0011 8.62067 12.6601 8.28467 12.2461 8.28467C11.8321 8.28467 11.4961 8.62067 11.4961 9.03467C11.4961 9.44867 11.8321 9.78467 12.2461 9.78467Z" fill="#674d45"></path>
+                        <path d="M12.2501 17.1797C12.6641 17.1797 13.0001 16.8437 13.0001 16.4297V12.5347C13.0001 12.1207 12.6641 11.7847 12.2501 11.7847C11.8361 11.7847 11.5001 12.1207 11.5001 12.5347V16.4297C11.5001 16.8437 11.8361 17.1797 12.2501 17.1797Z" fill="#674d45"></path>
+                    </svg>
+                    <h1 class="text-xl font-semibold">مشخصات رویداد</h1>
+                </div>
+
+                <div class="editpanel-row mt-2 flex gap-2">
+                    <div class="w-[40%]">
+                        <div> عنوان (pill)<span class="text-[var(--loss-dot)]">*</span></div>
+                        <input oninput="slide_preview('title')" value="{{ admin_slider.title }}" class="input-admin" name="title" id="slide-inp-title" placeholder="عنوانی برای pill وارد کنید">
+                    </div>
+
+                    <div class="w-[100%]">
+                        <div> نوشته سر تیتر<span class="text-[var(--loss-dot)]">*</span></div>
+                        <input oninput="slide_preview('desc')" value="{{ admin_slider.desc }}" class="input-admin" name="desc" id="slide-inp-desc" placeholder="یک الی دو خط برای سر تیتر">
+                    </div>
+
+                </div>
+
+                <div class="flex mt-3 w-[100%] bg-[var(--color12)] p-3 rounded-xl">
+                        <div id="upload-avatar" class="image-inputbox" style="{% if admin_slider.banner %}background-image: url({{ admin_slider.banner.url }});{% endif %} width: 140px; height: 140px">
+                            <input oninput="SetUploadedImageSlider(event,'upload-avatar' ,'slide-preview-img')" name="banner" type="file" class="cursor-pointer w-[100%] h-[100%] opacity-0" style="z-index: 100">
+                            {% if not admin_slider.banner %}
+                                <div class="centerbox">
+                                    <svg style="z-index: 1" class="relative top-[-100px]" id="Upload" width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M16.65 7.28717C15.53 7.20717 14.3499 7.16735 13.1199 7.15735H11.6199C10.4099 7.16735 9.15 7.21717 7.85 7.28717H7.83C3.8 7.65717 2.5 9.48717 2.5 14.7872C2.5 22.3872 5.35 22.3872 12.25 22.3872C19.15 22.3872 22 22.3872 22 14.7872C22 9.48717 20.7 7.65717 16.65 7.28717Z" fill="#674d45"></path>
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12.9998 4.16917L14.6388 5.81217C14.7848 5.95917 14.9778 6.03316 15.1698 6.03316C15.3608 6.03316 15.5528 5.95917 15.6988 5.81417C15.9928 5.52117 15.9928 5.04617 15.7008 4.75317L12.7808 1.82517C12.4998 1.54217 11.9998 1.54217 11.7188 1.82517L8.79883 4.75317C8.50683 5.04617 8.50683 5.52117 8.80083 5.81417C9.09483 6.10617 9.56883 6.10617 9.86083 5.81217L11.4998 4.16917V14.406C11.4998 14.8177 11.8454 15.1483 12.257 15.1483C12.6689 15.1483 12.9998 14.8173 12.9998 14.4054V4.16917Z" fill="#674d45"></path>
+                                    </svg>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="mx-3 mt-3">
+                            {% if t.image %}
+                                <div class="profile-info">
+                                    <div class="text-xl">
+                                        تصویر ضمیمه
+                                    </div>
+                                </div>
+                                <div>
+                                    <a class="mt-2" href="{% url 'delete_avatar_page' %}">
+                                        <button type="button" class="btn-defIconFlex btn-delete-upload gap-2" style="z-index: 200">
+                                            <svg id="Delete" width="22px" height="22px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                <g id="Iconly/Bulk/Delete" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                                                    <g id="Delete" transform="translate(3.000000, 2.000000)" fill="#c5b8b4" fill-rule="nonzero">
+                                                        <path d="M16.6432894,7.4884379 C16.6432894,7.55643552 16.1103307,14.2971996 15.8059218,17.1341003 C15.6153015,18.8750394 14.492976,19.9310024 12.8094878,19.9610014 C11.5159931,19.9900003 10.2497298,20 9.00389021,20 C7.68121893,20 6.38772423,19.9900003 5.13215907,19.9610014 C3.50507888,19.9220027 2.38178085,18.8450404 2.2008861,17.1341003 C1.88772423,14.2871999 1.36449103,7.55643552 1.35476551,7.4884379 C1.34503998,7.28344508 1.41117355,7.0884519 1.54538578,6.93045743 C1.67765291,6.78446254 1.86827318,6.69646562 2.06861898,6.69646562 L15.9391614,6.69646562 C16.1385347,6.69646562 16.3194294,6.78446254 16.4623946,6.93045743 C16.5956343,7.0884519 16.6627404,7.28344508 16.6432894,7.4884379" id="Fill-1" opacity="0.400000006"></path>
+                                                        <path d="M18,3.97686081 C18,3.56587519 17.67614,3.24388646 17.2871191,3.24388646 L14.371407,3.24388646 C13.77815,3.24388646 13.2626972,2.82190123 13.1304301,2.22692206 L12.9670413,1.49794757 C12.7384915,0.616978406 11.9497515,-1.50990331e-14 11.0647288,-1.50990331e-14 L6.93624379,-1.50990331e-14 C6.04149557,-1.50990331e-14 5.26053598,0.616978406 5.0232332,1.54594589 L4.87054247,2.22792202 C4.73730279,2.82190123 4.22185001,3.24388646 3.62956559,3.24388646 L0.713853469,3.24388646 C0.323859952,3.24388646 0,3.56587519 0,3.97686081 L0,4.35684751 C0,4.75783348 0.323859952,5.08982186 0.713853469,5.08982186 L17.2871191,5.08982186 C17.67614,5.08982186 18,4.75783348 18,4.35684751 L18,3.97686081 Z" id="Fill-4"></path>
+                                                    </g>
+                                                </g>
+                                            </svg>
+                                            <div style="color: #e8afaf">
+                                                حذف عکس
+                                            </div>
+                                        </button>
+                                    </a>
+                                </div>
+                            {% else %}
+                                <div class="profile-info">
+                                    <div class="text-xl">
+                                        تصویر
+                                    </div>
+                                    <div class="text-sm" style="color: var(--color5)">
+                                        فرمت عکس باید png - jpg - jpeg - webp
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+
+            </div>
+
+            <div class="tablebox-default mt-2 relative" style="animation: load8 500ms; width: 35%">
+                    <div class="flex gap-1">
+                        <svg id="Setting" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                            <g id="Iconly/Bulk/Setting" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                                <g id="Setting" transform="translate(2.499897, 2.000100)" fill="#674d45" fill-rule="nonzero">
+                                    <path d="M9.51207539,12.83 C7.9076023,12.83 6.60971643,11.58 6.60971643,10.01 C6.60971643,8.44 7.9076023,7.18 9.51207539,7.18 C11.1165485,7.18 12.3837756,8.44 12.3837756,10.01 C12.3837756,11.58 11.1165485,12.83 9.51207539,12.83" id="Path"></path>
+                                    <path d="M18.730131,12.37 C18.5359591,12.07 18.2600306,11.77 17.9023455,11.58 C17.6161974,11.44 17.4322451,11.21 17.2687319,10.94 C16.7475337,10.08 17.0541209,8.95 17.9227847,8.44 C18.944742,7.87 19.2717684,6.6 18.6790331,5.61 L17.9943217,4.43 C17.411806,3.44 16.1343592,3.09 15.1226214,3.67 C14.2232989,4.15 13.0684871,3.83 12.5472888,2.98 C12.3837756,2.7 12.2917995,2.4 12.3122386,2.1 C12.3428973,1.71 12.2202625,1.34 12.0363101,1.04 C11.6581859,0.42 10.9734745,0 10.217226,0 L8.77626608,0 C8.03023719,0.02 7.34552574,0.42 6.96740151,1.04 C6.77322961,1.34 6.6608143,1.71 6.68125344,2.1 C6.70169259,2.4 6.60971643,2.7 6.44620325,2.98 C5.92500498,3.83 4.77019314,4.15 3.88109021,3.67 C2.85913283,3.09 1.59190568,3.44 0.999170395,4.43 L0.314458948,5.61 C-0.26805676,6.6 0.0589696023,7.87 1.07070741,8.44 C1.93937119,8.95 2.2459584,10.08 1.73497971,10.94 C1.56124696,11.21 1.37729463,11.44 1.09114656,11.58 C0.743681049,11.77 0.437093834,12.07 0.273580653,12.37 C-0.104543579,12.99 -0.0841044313,13.77 0.2940198,14.42 L0.999170395,15.62 C1.37729463,16.26 2.08244522,16.66 2.81825454,16.66 C3.16572005,16.66 3.574503,16.56 3.90152936,16.36 C4.15701871,16.19 4.46360592,16.13 4.80085186,16.13 C5.81258967,16.13 6.6608143,16.96 6.68125344,17.95 C6.68125344,19.1 7.62145424,20 8.8069248,20 L10.1967868,20 C11.3720378,20 12.3122386,19.1 12.3122386,17.95 C12.3428973,16.96 13.191122,16.13 14.2028598,16.13 C14.5298861,16.13 14.8364734,16.19 15.1021823,16.36 C15.4292086,16.56 15.827772,16.66 16.1854571,16.66 C16.9110468,16.66 17.6161974,16.26 17.9943217,15.62 L18.7096918,14.42 C19.0775965,13.75 19.1082552,12.99 18.730131,12.37" id="Path" opacity="0.400000006"></path>
+                                </g>
+                            </g>
+                        </svg>
+                        <h1 class="text-xl font-semibold">وضعیت و تنظیمات</h1>
+                    </div>
+                    <div class="flex justify-between mt-5">
+                        <h1 class="text-xl font-semibold">فعال / غیر فعال</h1>
+                        <label class="switch">
+                            <input type="checkbox" name="is_active" {% if add_view %}checked{% elif admin_slider.is_active %}checked{% endif %}>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="flex justify-between mt-5">
+                        <h1 class="text-xl font-semibold">اسلاید اصلی</h1>
+                        <label class="switch">
+                            <input type="checkbox" name="is_primary" {%if admin_slider.is_primary %}checked{% endif %}>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+    </form>
+    <script>
+        let slide_preview = (slidename) => {
+            let slide_element = document.getElementById(`slide-${slidename}`)
+            let slide_input = document.getElementById(`slide-inp-${slidename}`)
+            slide_element.innerHTML = slide_input.value
+        }
+    </script>
+{% endblock %}

@@ -43,7 +43,7 @@
                         </g>
                     </svg>
                 </button>
-                <a href="" id="" class="btn-defIconFlex h-10 w-10 centerbox mt-1">
+                <a href="{% url 'admin_sliders_add' %}" id="" class="btn-defIconFlex h-10 w-10 centerbox mt-1">
                     <i class="fa fa-add mt-1"></i>
                 </a>
             </div>
@@ -52,21 +52,22 @@
         <div class="w-[100%]">
             <div class="swiper admin-swiper">
                 <div class="swiper-wrapper ">
-                    {% for slide in slider %}
-                        <a href="" class="swiper-slide border border-[var(--color11)] rounded-2xl" style="height: 500px">
-                            <div class="centerbox mt-10">
+                    {% for slide in admin_sliders %}
+                        <div class="swiper-slide border border-[var(--color11)] rounded-2xl" style="height: 500px">
+                            <button onclick="OpenDialog('آیا از حذف این اسلاید مطمئن هستید؟' ,'{% url 'admin_sliders_delete' slide.pk %}')" class="bg-[var(--cancel-bg)] text-[var(--loss-bg)] w-5 h-5 rounded absolute top-2 right-2 cursor-pointer z-20"><i class="fa fa-trash text-xs"></i></button>
+                            <a href="{% url 'admin_sliders_edit' slide.pk %}" class="centerbox mt-10">
                                 <div class="pill-title">{{ slide.title|to_fanum }}</div>
-                            </div>
-                            <div class="swiper-text-box mt-5 centerbox">
+                            </a>
+                            <a href="{% url 'admin_sliders_edit' slide.pk %}" class="swiper-text-box mt-5 centerbox">
                                 <h1 class="swiper-text max-w-200 text-6xl text-center font-semibold relative" style="animation: load8 700ms">{{ slide.desc }}</h1>
-                            </div>
-                            <div class="centerbox">
-                                <img src="{{ slide.banner.url }}" loading="lazy" alt="{{ slide.title }}">
-                            </div>
-                        </a>
+                            </a>
+                            <a href="{% url 'admin_sliders_edit' slide.pk %}" class="centerbox">
+                                <img src="{% if slide.banner %}{{ slide.banner.url }}{% endif %}" loading="lazy" alt="{{ slide.title }}">
+                            </a>
+                        </div>
                     {% endfor %}
                     <div class="swiper-slide border border-[var(--color11)] rounded-2xl " style="height: 500px">
-                        <a href="" class="w-[100%] h-[100%] centerbox items-center">
+                        <a href="{% url 'admin_sliders_add' %}" class="w-[100%] h-[100%] centerbox items-center">
                             <div>
                                 <svg id="Plus" width="100" height="100" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.2499 2.29761C4.69094 2.29761 2.01294 4.97561 2.01294 12.5346C2.01294 20.0936 4.69094 22.7716 12.2499 22.7716C19.8079 22.7716 22.4869 20.0936 22.4869 12.5346C22.4869 4.97561 19.8079 2.29761 12.2499 2.29761Z" fill="#c5b8b4"></path>
