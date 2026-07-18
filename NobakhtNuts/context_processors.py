@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from unicodedata import category
 
 from account_module.models import Notification
-from home_module.models import SpecialEvents
+from home_module.models import SpecialEvents, SliderSlide
 from order_module.models import OrderDetail, Order
 from product_module.models import ProductCategory, ProductSubCategory, ProductBrand, Product
 from site_settings.models import FooterLinkBox
@@ -23,6 +23,7 @@ def global_context(request):
     footers = FooterLinkBox.objects.prefetch_related('links').all()
     support_ways = SupportWays.objects.all()
     special_event = SpecialEvents.objects.filter(is_active=True).first()
+    slider = SliderSlide.objects.filter(is_active=True).order_by('-is_primary')
     context = {
         'category': category,
         'brand': brand,
@@ -31,7 +32,8 @@ def global_context(request):
         'new_notifs': new_notifs,
         'footers': footers,
         'support_ways': support_ways,
-        'special_event': special_event
+        'special_event': special_event,
+        'slider': slider
     }
     return context
 

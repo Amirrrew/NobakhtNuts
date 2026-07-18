@@ -1,0 +1,29 @@
+{% load poll_extras %}
+
+
+    <div class="w-[100%]">
+        <div class="swiper home-swiper">
+            <div class="swiper-wrapper">
+                {% for slide in slider %}
+                    <div class="swiper-slide">
+                        <div class="centerbox">
+                            <div class="pill-title">{{ slide.title|to_fanum }}</div>
+                        </div>
+                        <div class="swiper-text-box mt-5 centerbox">
+                            <h1 class="swiper-text max-w-200 text-6xl text-center font-semibold relative" style="animation: load8 700ms">{{ slide.desc }}</h1>
+                        </div>
+                        <div class="centerbox">
+                            <img src="{{ slide.banner.url }}" loading="lazy" alt="{{ slide.title }}">
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="centerbox w-[100%] items-start">
+            <div class="flex swiper-controls items-start gap-3">
+                <button id="homeswiper-button-prev" class="homeswiper-btn transition-all bg-[var(--color12)] rounded-xl w-8 h-8 min-w-8 min-h-8 max-w-8 max-h-8 cursor-pointer"><i class="fa fa-angle-right text-xs"></i></button>
+                <div class="centerbox homeswiper-pagination mt-3 transition-all"></div>
+                <button id="homeswiper-button-next" class="homeswiper-btn transition-all bg-[var(--color12)] rounded-xl w-8 h-8 min-w-8 min-h-8 max-w-8 max-h-8 cursor-pointer"><i class="fa fa-angle-left text-xs"></i></button>
+            </div>
+        </div>
+    </div>

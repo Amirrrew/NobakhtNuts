@@ -8,4 +8,4 @@ def home(request):
     context = {
         'user': user,
     }
-    return render(request ,'home.html' ,context)
+    return render(request, 'home_module/home.html', context)
