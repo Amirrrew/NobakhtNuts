@@ -22,7 +22,7 @@ from adminpanel_module.forms import ProductAddForm, MainCategoryForm, SubCategor
     SupportWayForm, SiteSettingForm, FooterLinkForm, PaymentForm, CardForm, PostingForm, AdminLoginForm, ArticleForm, \
     EventForm
 from article_module.models import Article
-from home_module.models import SpecialEvents
+from home_module.models import SpecialEvents, SliderSlide
 from order_module.context_processors import orders
 from order_module.models import Order, OrderStatus, PaymentMethod, Cards, PostingMethod
 from product_module.models import Product, ProductCategory, ProductSubCategory, ProductBrand, PackageSize, \
@@ -1638,3 +1638,9 @@ class EventUpdate(UpdateView):
         context = self.get_context_data(form=form)
         context["message_e"] = "فیلد هارا به درستی پر کنید"
         return self.render_to_response(context)
+
+@method_decorator(permission_checker_decorator_factory() ,name='dispatch')
+class SliderPreview(ListView):
+    model = SliderSlide
+    template_name = 'adminpanel_module/sliders/slider_preview.html'
+    context_object_name = 'sliders'

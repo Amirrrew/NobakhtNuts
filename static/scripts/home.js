@@ -8,7 +8,7 @@ const homeswiper = new Swiper('.home-swiper' , {
         clickable: true ,
     },
 
-    speed: 1300,
+    speed: 500,
 
     autoplay: {
         delay: 4000,

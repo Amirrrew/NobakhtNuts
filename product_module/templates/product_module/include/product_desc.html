@@ -17,8 +17,10 @@
         <div id="prd-desc-text" class="mt-2 transition-all overflow-hidden w-[100%]">
 
         </div>
-        <button onclick="DescExpantion('more')" id="more-desc" class="px-2 py-1 cursor-pointer rounded-xl bg-[var(--color12)] text-[var(--color6)] ">بیشتر <i class="fa fa-angle-left mr-1 text-xs"></i></button>
-        <button onclick="DescExpantion('less')" id="less-desc" class="hidden px-2 py-1 cursor-pointer rounded-xl bg-[var(--color12)] text-[var(--color6)] ">کمتر <i class="fa fa-angle-right mr-1 text-xs"></i></button>
+        {% if product.desc|length > 550 %}
+            <button onclick="DescExpantion('more')" id="more-desc" class="px-2 py-1 cursor-pointer rounded-xl bg-[var(--color12)] text-[var(--color6)] ">بیشتر <i class="fa fa-angle-left mr-1 text-xs"></i></button>
+            <button onclick="DescExpantion('less')" id="less-desc" class="hidden px-2 py-1 cursor-pointer rounded-xl bg-[var(--color12)] text-[var(--color6)] ">کمتر <i class="fa fa-angle-right mr-1 text-xs"></i></button>
+        {% endif %}
     </div>
     <script>
     let desc = document.getElementById('prd-desc-text')

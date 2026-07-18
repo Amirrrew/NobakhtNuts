@@ -57,7 +57,7 @@
                             <button onclick="ScrollTo('full-features')" class="btn-prdnavbar rounded-lg bg-[var(--color12)] px-3 flex gap-1 text-[var(--color6)] pt-1 h-6 text-xs cursor-pointer">مشخصات کامل<i class="fa fa-arrow-left mt-[1px]"></i></button>
                         </div>
                     {% endif %}
-                        <div class="flex mt-2 gap-2">
+                        <div class="product-features flex mt-2 gap-2">
                             {% for spec in product.features.all|slice:3 %}
                                 <div class="prd-feature overflow-hidden w-[100%] h-14 rounded-xl p-2 bg-[var(--color12)] relative" style="animation: load8 {% widthratio forloop.counter 1 200 %}ms">
                                     <div class="text-[var(--color10)] px-1 text-sm">{{ spec.title }}</div>
