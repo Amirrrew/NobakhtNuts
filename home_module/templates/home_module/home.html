@@ -7,10 +7,12 @@
 
 {% block page_content %}
     {% include 'home_module/components/home_slider.html' %}
-    <div class="home-container w-[100%] centerbox">
-        <div class="home-inner-container w-[90%]">
+    <div class="home-inner-container w-[100%]">
+        <div class="centerbox">
             {% include 'home_module/components/home_carousel_category.html' %}
-            {% include 'home_module/components/home_carousel_special.html' %}
+        </div>
+        <div class="centerbox">
+            {% include 'home_module/components/special_carousels/home_carousel_special.html' %}
         </div>
     </div>
     {% include 'include/event_bar.html' %}

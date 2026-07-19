@@ -17,7 +17,7 @@ class PostingMethod(models.Model):
     price_single = models.IntegerField(verbose_name='نرخ معمولی')
     price_per_k = models.PositiveIntegerField(verbose_name='نرخ بر کیلو')
     max_weight = models.FloatField(max_length=100,null=True ,blank=True ,verbose_name='محدوده وزنی')
-    is_active = models.BooleanField(default=True ,verbose_name='فعال / غیر فعال')
+    is_active = models.BooleanField(default=True,db_index=True ,verbose_name='فعال / غیر فعال')
     time = models.CharField(max_length=200,null=True ,blank=True ,verbose_name='زمان ارسال')
     desc = models.TextField(max_length=1000,null=True ,blank=True ,verbose_name='توضیحات')
     order_type = models.PositiveIntegerField(null=True ,blank=True ,verbose_name='ترتیب')
@@ -37,7 +37,7 @@ class Cards(models.Model):
     card_code = models.CharField(max_length=16 ,verbose_name='شماره کارت')
     shaba = models.CharField(max_length=26 ,null=True ,blank=True ,verbose_name='شماره شبا با IR')
     owner = models.CharField(max_length=100 ,null=True ,blank=True ,verbose_name='به نام')
-    is_active = models.BooleanField(default=True ,verbose_name='فعال / غیر فعال')
+    is_active = models.BooleanField(default=True,db_index=True ,verbose_name='فعال / غیر فعال')
 
     def __str__(self):
         return self.title
@@ -48,7 +48,7 @@ class Cards(models.Model):
 
 
 class OrderStatus(models.Model):
-    title = models.CharField(max_length=100 ,verbose_name='وضعیت سفارش')
+    title = models.CharField(max_length=100,db_index=True ,verbose_name='وضعیت سفارش')
     progress_level = models.IntegerField(null=True ,blank=True ,verbose_name='میزان پیشرفت به درصد')
     icon = models.TextField(null=True ,blank=True ,verbose_name='آیکون')
     desc = models.TextField(null=True ,blank=True ,verbose_name='توضیحات')
@@ -67,7 +67,7 @@ class PaymentMethod(models.Model):
     desc = models.TextField(max_length=500 ,null=True ,blank=True ,verbose_name='توضیحات')
     steps = models.ManyToManyField(OrderStatus ,null=True ,blank=True ,verbose_name='مراحل')
     merchant_id = models.CharField(max_length= 2000,null=True ,blank=True ,verbose_name='مرچنت آیدی')
-    is_active = models.BooleanField(default=True ,verbose_name='فعال / غیر فعال')
+    is_active = models.BooleanField(default=True,db_index=True ,verbose_name='فعال / غیر فعال')
 
     def __str__(self):
         return self.title
@@ -78,14 +78,14 @@ class PaymentMethod(models.Model):
 
 
 class Order(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE ,verbose_name='کاربر')
-    is_paid = models.BooleanField(default=False ,verbose_name='پرداخت شده')
-    is_done = models.BooleanField(default=False ,verbose_name='پایان یافته')
-    payment_date = models.DateTimeField(auto_now_add=True,null=True ,blank=True ,verbose_name='تاریخ پرداخت')
-    status = models.ForeignKey(OrderStatus,on_delete=DO_NOTHING ,null=True ,blank=True ,verbose_name='وضعیت')
+    user = models.ForeignKey(User, db_index=True,on_delete=models.CASCADE ,verbose_name='کاربر')
+    is_paid = models.BooleanField(default=False,db_index=True ,verbose_name='پرداخت شده')
+    is_done = models.BooleanField(default=False,db_index=True ,verbose_name='پایان یافته')
+    payment_date = models.DateTimeField(auto_now_add=True,db_index=True,null=True ,blank=True ,verbose_name='تاریخ پرداخت')
+    status = models.ForeignKey(OrderStatus,db_index=True,on_delete=DO_NOTHING ,null=True ,blank=True ,verbose_name='وضعیت')
     desc = models.TextField(max_length=3000 ,null=True ,blank=True ,verbose_name='توضیحات سفارش')
     address = models.ForeignKey(Address ,on_delete=DO_NOTHING ,null=True ,blank=True ,verbose_name='آدرس')
-    payment_method = models.ForeignKey(PaymentMethod ,on_delete=DO_NOTHING ,null=True ,blank=True ,verbose_name='روش پرداخت')
+    payment_method = models.ForeignKey(PaymentMethod,on_delete=DO_NOTHING ,null=True ,blank=True ,verbose_name='روش پرداخت')
     posting_method = models.ForeignKey(PostingMethod ,on_delete=DO_NOTHING ,null=True ,blank=True ,verbose_name='روش ارسال')
     receipt = models.ImageField(upload_to='receipts' ,null=True ,blank=True ,verbose_name='رسید واریزی')
     finalized_price = models.IntegerField(null=True ,blank=True ,verbose_name='قیمت نهایی')
@@ -189,9 +189,9 @@ class Order(models.Model):
 
 
 class OrderDetail(models.Model):
-    order = models.ForeignKey(Order ,on_delete=models.CASCADE ,verbose_name='جزئیات سفارش' ,related_name='orderdetails_set')
-    product = models.ForeignKey(Product ,on_delete=models.CASCADE ,verbose_name='محصول')
-    pack_size = models.ForeignKey(PackageSize,null=True ,blank=True ,on_delete=models.CASCADE ,verbose_name='اندازه بسته بندی')
+    order = models.ForeignKey(Order,db_index=True ,on_delete=models.CASCADE ,verbose_name='جزئیات سفارش' ,related_name='orderdetails_set')
+    product = models.ForeignKey(Product,db_index=True ,on_delete=models.CASCADE ,verbose_name='محصول')
+    pack_size = models.ForeignKey(PackageSize,db_index=True,null=True ,blank=True ,on_delete=models.CASCADE ,verbose_name='اندازه بسته بندی')
     count = models.PositiveIntegerField(null=True ,blank=True ,verbose_name='تعداد')
     final_price = models.IntegerField(null=True ,blank=True ,verbose_name='قیمت نهایی')
 

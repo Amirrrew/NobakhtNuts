@@ -1,5 +1,8 @@
 from django.db import models
 
+from product_module.models import Product
+
+
 class SpecialEvents(models.Model):
     title = models.CharField(max_length=100 ,null=True ,blank=False ,verbose_name='عنوان رویداد')
     desc = models.CharField(max_length=50 ,null=True ,blank=False ,verbose_name='توضیح کوتاه')
@@ -28,3 +31,27 @@ class SliderSlide(models.Model):
     class Meta:
         verbose_name = 'اسلاید'
         verbose_name_plural = 'اسلایدر ها'
+
+class Carousel(models.Model):
+    title = models.CharField(max_length=200 ,null=True ,blank=True ,verbose_name='عنوان کاروزل کالا')
+    desc = models.CharField(max_length=200 ,null=True ,blank=True ,verbose_name='توضیحات')
+    banner = models.ImageField(upload_to='carousels' ,null=True ,blank=True ,verbose_name='بنر')
+    is_active = models.BooleanField(default=False ,db_index=True ,verbose_name='فعال / غیرفعال')
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = 'کاروزل'
+        verbose_name_plural = 'کاروزل ها'
+
+class CarouselItem(models.Model):
+    carousel = models.ForeignKey(Carousel,on_delete=models.CASCADE ,null=False ,blank=False,related_name='carousel_set' ,verbose_name='زیر مجموعه کاروزل؟')
+    product = models.ForeignKey(Product,on_delete=models.CASCADE ,db_index=True ,null=False ,blank=False ,verbose_name='کالا')
+
+    def __str__(self):
+        return f'{self.carousel}-item-{self.pk}'
+
+    class Meta:
+        verbose_name= 'آیتم کاروزل'
+        verbose_name_plural = 'آیتم های کاروزل'

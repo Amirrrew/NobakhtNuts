@@ -349,6 +349,31 @@ input[type="number"] {
     body .prd-photo-gallery {
         min-width: auto;
     }
+
+    body .special-carousel-sidebanner {
+        position: absolute;
+        height: 550px;
+        width: 100%;
+    }
+
+    body .carousel-banner {
+        border-radius: 0;
+    }
+
+    .carousel-banner .carousel-banner-content {
+        display: none;
+    }
+
+    body .home-carousel {
+        width: 100%;
+    }
+    .home-carousel .home-carousel-title {
+        margin-right: 20px;
+    }
+    body .special-carousel {
+        margin-top: 40px;
+        padding: 0 10px;
+    }
 }
 
 @media screen and (max-width: 890px) {
@@ -1538,6 +1563,7 @@ header {
     cursor: default;
     transition: 200ms;
     transition-delay: 100ms;
+    background-color: #fff;
 }
 
 .product-card:hover {
@@ -3013,4 +3039,22 @@ body .swiper-pagination-bullet-active {
 
 .category-carousel .swiper-wrapper {
   transition-timing-function: linear !important;
+}
+
+
+@keyframes spin-offer {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-on-scroll {
+    opacity: 0;
+    transition: 300ms;
+    position: relative;
+}
+
+.animate-on-scroll.active {
+    opacity: 1;
+    animation: load8 500ms;
 }

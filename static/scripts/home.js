@@ -31,37 +31,39 @@ const category_carousel = new Swiper('.category-carousel' , {
     loop: true,
     autoplay: {
         delay: 0,
-        waitForTransition: true,
+
     },
 
-    navigation: {
-        nextEl: "#category-carousel-button-next",
-        prevEl: "#category-carousel-button-prev",
-    },
 
     breakpoints: {
         300: {
+            slidesPerView: 2.2
+        },
+        400: {
             slidesPerView: 2.5
         },
         500: {
             slidesPerView: 3
         },
         600: {
-            slidesPerView: 4
+            slidesPerView: 3
         },
         700: {
-            slidesPerView: 5
+            slidesPerView: 3
         },
         800: {
-            slidesPerView: 6
+            slidesPerView: 4
         },
         900: {
-            slidesPerView: 7
+            slidesPerView: 5
         },
         1000: {
-            slidesPerView: 8
+            slidesPerView: 6
         },
         1160: {
+            slidesPerView: 7
+        },
+        1300: {
             slidesPerView: 9
         }
     }
@@ -76,3 +78,72 @@ btn_carousel_category.addEventListener('click' ,()=> {
         SideMenu('open' ,'cat-sidemenu')
     }
 })
+
+const special_carousel = new Swiper('.special-carousel' , {
+    slidesPerView: 3,
+    spaceBetween: 10,
+    navigation: {
+        nextEl: '.btn-special-carousel-next',
+        prevEl: '.btn-special-carousel-prev',
+    },
+    speed: 500,
+    autoplay: {
+        delay: 3000,
+        waitForTransition: true,
+    },
+
+    breakpoints: {
+        300: {
+            slidesPerView: 1.1
+        },
+        800: {
+            slidesPerView: 1.5
+        },
+        1050: {
+            slidesPerView: 2
+        },
+        1130: {
+            slidesPerView: 2.5
+        },
+        1200: {
+            slidesPerView: 2.5
+        }
+    }
+
+})
+
+function initScrollAnimation(options = {}) {
+    const {
+        selector = '.animate-on-scroll',
+        activeClass = 'active',
+        threshold = 0.2,
+        rootMargin = '0px 0px -200px 0px',
+        once = true
+    } = options;
+
+    const elements = document.querySelectorAll(selector);
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add(activeClass);
+
+                if (once) {
+                    observer.unobserve(entry.target);
+                }
+            } else if (!once) {
+                entry.target.classList.remove(activeClass);
+            }
+        });
+    }, {
+        threshold: threshold,
+        rootMargin: rootMargin
+    });
+
+    elements.forEach(el => observer.observe(el));
+
+    return observer
+}
+
+
+initScrollAnimation();

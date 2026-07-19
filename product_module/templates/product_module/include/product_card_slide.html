@@ -1,7 +1,7 @@
 {% load static %}
 {% load poll_extras %}
 
-<div class="product-card swiper-slide" style='    height: 465px;'>
+<div class="product-card swiper-slide" style='height: 465px;'>
     <div style="{% if p.quantity <= 0 %}background-color: var(--color5){% endif %}" class="product-card-imagebox">
         <img loading="lazy" alt="{{ p.title }}" class="product-card-image" src="{{ p.product_image.first.image.url }}">
     </div>

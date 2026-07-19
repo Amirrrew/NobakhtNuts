@@ -112,9 +112,9 @@ class PackageSize(models.Model):
 
 class Product(models.Model):
     holoo_id = models.CharField(max_length=100 ,blank=True ,null=True ,verbose_name='بارکد هلو')
-    title = models.CharField(max_length=300 ,blank=False ,null=True ,verbose_name="عنوان محصول")
-    category = models.ForeignKey(ProductSubCategory,on_delete=models.CASCADE,null=False,blank=False,related_name='products' ,verbose_name="دسته بندی")
-    brand = models.ForeignKey(ProductBrand ,on_delete=models.CASCADE,null=True,blank=True ,verbose_name="برند")
+    title = models.CharField(max_length=300,db_index=True ,blank=False ,null=True ,verbose_name="عنوان محصول")
+    category = models.ForeignKey(ProductSubCategory,db_index=True,on_delete=models.CASCADE,null=False,blank=False,related_name='products' ,verbose_name="دسته بندی")
+    brand = models.ForeignKey(ProductBrand,db_index=True ,on_delete=models.CASCADE,null=True,blank=True ,verbose_name="برند")
     price = models.IntegerField(default=0,blank=True ,null=True ,verbose_name="قیمت")
     is_byWeight = models.BooleanField(default=False ,verbose_name='کالای وزنی؟')
     quantity = models.FloatField(default=0 ,verbose_name="تعداد")
@@ -128,7 +128,7 @@ class Product(models.Model):
     slug = models.SlugField(max_length=1000 ,default='' ,null=True ,blank=True,unique=True,db_index=True ,verbose_name="عنوان در url")
     packs = models.ManyToManyField(PackageSize ,null=True ,blank=True ,verbose_name='اندازه بسته بندی های محصول')
     pack_weight = models.FloatField(null=True ,blank=True ,verbose_name='وزن بسته')
-    chosen = models.BooleanField(default=False ,verbose_name='محصول برگزیده')
+    chosen = models.BooleanField(default=False,db_index=True ,verbose_name='محصول برگزیده')
 
 
     def get_absolute_url(self):
@@ -202,9 +202,9 @@ class Product(models.Model):
 
 
 class ProductImage(models.Model):
-    product = models.ForeignKey(Product ,on_delete=models.CASCADE ,related_name='product_image')
+    product = models.ForeignKey(Product,db_index=True ,on_delete=models.CASCADE ,related_name='product_image')
     image = models.ImageField(upload_to='product_imgs' ,verbose_name='تصویر کالا')
-    is_Main = models.BooleanField(default=False ,verbose_name='عکس اصلی؟')
+    is_Main = models.BooleanField(default=False,db_index=True ,verbose_name='عکس اصلی؟')
 
     class Meta:
         verbose_name = 'عکس کالا'
@@ -216,7 +216,7 @@ class ProductImage(models.Model):
 class ProductFeature(models.Model):
     title = models.CharField(max_length=50 ,null=True ,verbose_name='عنوان ویژگی')
     desc = models.CharField(max_length=200 ,verbose_name='توضیحات')
-    product = models.ForeignKey(Product ,on_delete=models.CASCADE ,related_name='features' ,verbose_name='محصول')
+    product = models.ForeignKey(Product,db_index=True ,on_delete=models.CASCADE ,related_name='features' ,verbose_name='محصول')
 
     def __str__(self):
         return self.desc
@@ -228,13 +228,13 @@ class ProductFeature(models.Model):
 
 
 class ProductComment(models.Model):
-    user = models.ForeignKey(User ,on_delete=models.CASCADE ,null=True)
+    user = models.ForeignKey(User,db_index=True ,on_delete=models.CASCADE ,null=True)
     product = models.ForeignKey(Product ,on_delete=models.CASCADE ,related_name='comment_set' ,verbose_name='برای محصول')
     text = models.TextField(max_length=2000 ,verbose_name='متن نظر')
     rating = models.FloatField(default=0 ,verbose_name='امتیاز')
     is_approved = models.BooleanField(default=False ,verbose_name='تایید شده؟')
-    created_at = models.DateTimeField(auto_now_add=True ,verbose_name='تاریخ')
-    like = models.ManyToManyField(User ,blank=True,null=True,related_name='likes' ,verbose_name= 'لایک')
+    created_at = models.DateTimeField(auto_now_add=True,db_index=True ,verbose_name='تاریخ')
+    like = models.ManyToManyField(User,db_index=True ,blank=True,null=True,related_name='likes' ,verbose_name= 'لایک')
 
     def __str__(self):
         return self.text

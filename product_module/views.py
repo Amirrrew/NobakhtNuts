@@ -80,6 +80,8 @@ class ProductListView(ListView):
             context["title_prd"] = "همه محصولات"
 
         max_price = Product.objects.order_by("-price").first()
+        brand = ProductBrand.objects.filter(is_active=True)
+        context['brand'] = brand
         context["db_max_price"] = max_price.price if max_price else 0
         context["brands"] = ProductBrand.objects.all()
         context["category_grid"] = ProductCategory.objects.filter(
