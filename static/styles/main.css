@@ -553,6 +553,10 @@ input[type="number"] {
         top: 20px;
         right: 20px;
     }
+
+    body .btn-carousel-category {
+        display: none;
+    }
 }
 
 @media screen and (max-width: 450px) {
@@ -3005,4 +3009,8 @@ body .swiper-pagination-bullet-active {
     width: 20px;
     border-radius: 10px;
     background-color: var(--color6) !important;
+}
+
+.category-carousel .swiper-wrapper {
+  transition-timing-function: linear !important;
 }

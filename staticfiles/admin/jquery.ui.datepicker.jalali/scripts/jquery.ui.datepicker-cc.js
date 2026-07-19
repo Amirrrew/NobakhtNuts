@@ -1071,7 +1071,7 @@ $.extend(Datepicker.prototype, {
 	 *
 	 * @param  format string - the expected format of the date
 	 * @param  value string - the date in the above format
-	 * @param  settings Object - attributes include:
+	 * @param  settings Object - attributes components:
 	 *					shortYearCutoff  number - the cutoff year for determining the century (optional)
 	 *					dayNamesShort	string[7] - abbreviated names of the days from Sunday (optional)
 	 *					dayNames		string[7] - names of the days from Sunday (optional)
@@ -1280,7 +1280,7 @@ $.extend(Datepicker.prototype, {
 	 *
 	 * @param  format string - the desired format of the date
 	 * @param  date Date - the date value to format
-	 * @param  settings Object - attributes include:
+	 * @param  settings Object - attributes components:
 	 *					dayNamesShort	string[7] - abbreviated names of the days from Sunday (optional)
 	 *					dayNames		string[7] - names of the days from Sunday (optional)
 	 *					monthNamesShort string[12] - abbreviated names of the months (optional)

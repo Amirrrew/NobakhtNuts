@@ -3896,7 +3896,7 @@ S2.define('select2/data/tokenizer',[
 
       callback(data);
 
-      // Reset the term to not include the tokenized portion
+      // Reset the term to not components the tokenized portion
       term = term.substr(i + 1) || '';
       i = 0;
     }

@@ -78,4 +78,8 @@ def filter_products(request, queryset):
     if request.GET.get('available'):
         queryset = queryset.filter(quantity__gt=0)
 
+    offer = request.GET.get('offer')
+    if offer:
+        queryset = queryset.order_by('-offer')
+
     return queryset.distinct()
