@@ -285,7 +285,7 @@ input[type="number"] {
 
     body .searchbox {
         width: 95%;
-        animation: OpenSearch_Mobile .8s;
+        animation: OpenSearch_Mobile 1s;
     }
 
     body .search-suggest {
