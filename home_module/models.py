@@ -1,4 +1,3 @@
-from colorfield.fields import ColorField
 from django.db import models
 
 from product_module.models import Product
@@ -41,8 +40,8 @@ class Carousel(models.Model):
     url = models.CharField(max_length= 1000 ,null=True ,blank=True ,verbose_name='آدرس در صورت نیاز')
     icon = models.CharField(max_length= 2000 ,null=True ,blank=True ,verbose_name='آیکون')
     emoji = models.CharField(max_length=100 ,null=True ,blank=True ,verbose_name='ایموجی')
-    color_bg = ColorField(default='#fff' ,verbose_name='رنگ قالب')
-    color_fore = ColorField(default='#fff' ,verbose_name='رنگ متن')
+    color_bg = models.CharField(max_length=100 ,null=True ,blank=True, default='#fff' ,verbose_name='رنگ قالب')
+    color_fore = models.CharField(max_length=100 ,null=True ,blank=True, default='#fff' ,verbose_name='رنگ متن')
     switch_on_break = models.BooleanField(db_index=True ,default=False ,verbose_name='سوییچ به رنگ قالب در موبایل')
 
     def __str__(self):
