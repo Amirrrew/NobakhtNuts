@@ -174,29 +174,20 @@ let Search = (mobile) => {
         })
         .then(res => res.json())
         .then(data => {
-            console.log(data)
             let search_result = "";
             if (data.data.length > 0) {
                 data.data.forEach((product, p) => {
                     search_result += `
-                        <a href="${product.url}" class="search-result-card mt-2 pb-2 border-b border-[var(--color11)]" style="animation: load ${(p + 1) * 150}ms; border-radius:0;">
-                            <div class="rounded-2xl min-w-20 min-h-20 max-w-20 bg-[var(--color11)] border border-[var(--color9)] overflow-hidden">
-                                <img class="w-full h-full" src="${product.image}">
+                        <a href="${product.url}" class="search-result-card mt-2 pb-2 border-b border-[#dad9d9]" style="animation: load ${(p + 1) * 150}ms; border-radius:0;">
+                            <div class="rounded-2xl min-w-15 min-h-15 max-w-15 bg-[var(--color11)] border border-[#dad9d9] overflow-hidden">
+                                <img alt="${product.title}" class="w-full h-full" src="${product.image}">
                             </div>
 
                             <div class="flex w-full">
                                 <div class="w-full">
-                                    <div class="flex justify-between items-start mt-2">
-                                        <div class="search-result-title flex text-start text-2xl items-start">
+                                    <div class="flex justify-between items-start ">
+                                        <div class="search-result-title flex text-start items-start">
                                             ${to_fanum(product.title)}
-                                            <div class="bg-[var(--color11)] border border-[var(--color9)] px-1.5 py-1 text-sm mr-2 rounded-xl">
-                                                ${product.is_byWeight ? 'کیلویی' : 'عددی'}
-                                            </div>
-                                        </div>
-
-                                        <div class="bg-[var(--color11)] border border-[var(--color9)] text-[var(--color6)] text-center centerbox gap-1 py-0.5 px-2 rounded-xl">
-                                            <i class="fa fa-star text-xs mt-1"></i>
-                                            ${to_fanum(product.rating)}
                                         </div>
                                     </div>
 
@@ -216,7 +207,7 @@ let Search = (mobile) => {
                                                 ${threeDigitsCurrency(product.final_price)} تومان
                                             </div>
 
-                                            <div class="px-2 py-0.5 text-[var(--color3)] bg-[var(--color5)] h-6 rounded-lg">
+                                            <div class="px-2 py-0.5 text-[var(--color3)] bg-[var(--color5)] h-5 mt-1 text-sm rounded-lg">
                                                 ${to_fanum(product.offer)} %
                                             </div>
                                             `
@@ -230,9 +221,9 @@ let Search = (mobile) => {
                 });
 
                 search_resultbox_result.innerHTML = `
-                <div style="background-color: rgba(255,255,255,0.31)" class="flex justify-between px-3 w-[96%] rounded-xl pt-2 bg-[rgba(255, 255, 255, 0.75)] h-10 border border-[var(--color11)]">
+                <div style="background-color: rgba(255,255,255,0.76)" class="flex justify-between px-3 w-[96%] rounded-xl pt-2 bg-[rgba(255, 255, 255, 0.75)] h-10 border border-[var(--color11)]">
                     <div>
-                        ${data.result_count} محصول پیدا شد
+                        ${to_fanum(data.result_count)} محصول پیدا شد
                     </div>
                      <a href="/products/?q=${encodeURIComponent(q)}">
                          نمایش همه نتایج <i class="fa fa-angle-left mr-1 mt-1"></i>

@@ -65,6 +65,8 @@ class ProductListView(ListView):
 
         category_slug = self.kwargs.get("category")
         subcategory_slug = self.kwargs.get("subcategory")
+        offer = self.request.GET.get('offer')
+        q = self.request.GET.get('q')
 
         if category_slug:
             category = ProductCategory.objects.prefetch_related('subcategory').filter(slug=category_slug ,is_active=True).first()
@@ -82,6 +84,10 @@ class ProductListView(ListView):
             context["current_category"] = subcategory.main_category
             context["current_subcategory"] = subcategory
             context['subcats'] = ProductSubCategory.objects.filter(main_category=subcategory.main_category ,is_active=True)
+        elif q:
+            context['title_prd'] = 'نتایج برای ' + q
+        elif offer:
+            context['title_prd'] = 'تخفیف های ویژه'
         else:
             context["title_prd"] = "همه محصولات"
 
@@ -250,8 +256,6 @@ def search_product(request):
             'price': p.price,
             'offer': p.offer,
             'final_price': p.final_price,
-            'rating': f'{p.average_rating}({p.comments_count})',
-            'is_byWeight': p.is_byWeight,
             'url': p.get_absolute_url(),
             'image': p.product_image.first().image.url
         })

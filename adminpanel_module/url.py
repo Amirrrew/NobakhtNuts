@@ -73,5 +73,7 @@ urlpatterns = [
     path('sliders/', views.SliderPreview.as_view(), name='admin_sliders'),
     path('sliders/add', views.SliderAdd.as_view(), name='admin_sliders_add'),
     path('sliders/<int:pk>/edit', views.SliderEdit.as_view(), name='admin_sliders_edit'),
-    path('sliders/<int:pk>/delete' ,views.SliderDelete ,name='admin_sliders_delete')
+    path('sliders/<int:pk>/delete' ,views.SliderDelete ,name='admin_sliders_delete'),
+    path('carousels/' ,views.CarouselList.as_view() ,name='admin_carousel_list'),
+    path('carousels/add' ,views.CarouselAdd.as_view() ,name='admin_carousel_add'),
 ]

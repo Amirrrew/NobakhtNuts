@@ -73,7 +73,7 @@ const category_carousel = new Swiper('.category-carousel' , {
 let btn_carousel_category = document.getElementById('btn-carousel-category')
 btn_carousel_category.addEventListener('click' ,()=> {
     if (window.innerWidth > 1130) {
-        Menu('cat' ,null)
+        CategoryMenu(true)
     } else {
         SideMenu('open' ,'cat-sidemenu')
     }
@@ -102,11 +102,11 @@ const special_carousel = new Swiper('.special-carousel' , {
         1050: {
             slidesPerView: 2
         },
-        1130: {
+        1500: {
             slidesPerView: 2.5
         },
-        1200: {
-            slidesPerView: 2.5
+        1800: {
+            slidesPerView: 3.5
         }
     }
 

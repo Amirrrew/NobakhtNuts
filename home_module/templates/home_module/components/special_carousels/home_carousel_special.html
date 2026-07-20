@@ -2,7 +2,19 @@
 
 <div class="home-carousel animate-on-scroll w-[90%] mt-20">
     {% if is_carousel %}
-
+        <a {% if special_carousel.url %}href="{{ special_carousel.url }}"{% endif %} class="home-carousel-title flex gap-2">
+            <div class="w-15 h-10 bg-[{{ special_carousel.color_bg|default_if_none:"var(--color6)" }}] rounded-xl centerbox items-center">
+                {% if special_carousel.icon %}
+                    {{ special_carousel.icon|safe }}
+                    {% else %}
+                    {{ special_carousel.emoji }}
+                {% endif %}
+            </div>
+            <div class="flex text-4xl mt-0.5">
+                <h3>تخفیف های</h3>
+                <h3 class="text-[{{ special_carousel.color_bg|default_if_none:"var(--color6)" }}]  font-semibold">ویـــــژه</h3>
+            </div>
+        </a>
     {% else %}
         <a href="/products/?offer=1" class="home-carousel-title flex gap-2">
             <div class="w-15 h-10 bg-[#B21002] rounded-xl centerbox items-center">
@@ -22,13 +34,19 @@
     {% endif %}
     <div class="home-carousel flex w-[100%] gap-2 mt-4">
         <div class="special-carousel-sidebanner min-w-[350px] h-[465px]">
-            {% include 'home_module/components/special_carousels/home_carousel_offer_banner.html' %}
+            {% if is_carousel %}
+                {% include 'home_module/components/special_carousels/home_carousel_banner.html' %}
+                {% else %}
+                {% include 'home_module/components/special_carousels/home_carousel_offer_banner.html' %}
+            {% endif %}
         </div>
         <div class="special-carousel swiper w-[100%]">
             <div class="swiper-wrapper">
                 {% if is_carousel %}
-                    {% for p in special_carousel.carousel_set.all %}
-                        {% include 'product_module/include/product_card_slide.html' %}
+                    {% for item in special_carousel.carousel_set.all %}
+                        {% with p=item.product %}
+                            {% include 'product_module/include/product_card_slide.html' %}
+                        {% endwith %}
                     {% endfor %}
                 {% else %}
                     {% for p in special_carousel %}

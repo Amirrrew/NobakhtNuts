@@ -6,7 +6,7 @@ from django.template.base import kwarg_re
 from django.core import validators
 
 from article_module.models import Article
-from home_module.models import SpecialEvents, SliderSlide
+from home_module.models import SpecialEvents, SliderSlide, Carousel
 from order_module.models import PaymentMethod, Cards, PostingMethod
 from product_module.models import Product, ProductCategory, ProductSubCategory, PackageSize, ProductBrand
 from account_module.models import User
@@ -150,3 +150,15 @@ class SliderForm(forms.ModelForm):
     class Meta:
         model = SliderSlide
         fields = '__all__'
+
+class CarouselForm(forms.ModelForm):
+    class Meta:
+        model = Carousel
+        fields = '__all__'
+
+    def __init__(self ,*args ,**kwargs):
+        super().__init__(*args ,**kwargs )
+        self.fields['banner'].required = False
+        self.fields['icon'].required = False
+        self.fields['url'].required = False
+        self.fields['emoji'].required = False

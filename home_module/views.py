@@ -11,11 +11,10 @@ def home(request):
     special_event = SpecialEvents.objects.filter(is_active=True).first()
     slider = SliderSlide.objects.filter(is_active=True).order_by('-is_primary')
 
-    special_carousel = list(
-        CarouselItem.objects.select_related("product").filter(
-            carousel__is_active=True
-        )
-    )
+    special_carousel = Carousel.objects.prefetch_related("carousel_set__product").filter(
+        is_active=True
+    ).first()
+
     carousel_exist = bool(special_carousel)
     context = {
         'user': user,

@@ -1,0 +1,28 @@
+{% load poll_extras %}
+
+<div class="carousel-banner centerbox items-center w-[100%] h-[100%] rounded-xl border-1 border-[var(--color11)]" style="{% if special_carousel.banner %}background-image: url('{{ special_carousel.banner.url }}'){% endif %}">
+    <div class="carousel-banner-content">
+        {% if special_carousel.icon %}
+            {{ special_carousel.icon|safe }}
+            {% elif special_carousel.emoji %}
+            <h5 class="text-6xl">{{ special_carousel.emoji }}</h5>
+        {% endif %}
+        <a {% if special_carousel.url %}href="{{ special_carousel.url }}"{% endif %} class="text-center mt-20">
+            <h4 class="text-5xl text-wrap text-[{{ special_carousel.color_fore|default_if_none:"var(--color6)" }}]">{{ special_carousel.desc }}</h4>
+        </a>
+        <div class="centerbox gap-2 mt-5">
+            <button class="btn-special-carousel-prev bg-[{{ special_carousel.color_bg|default_if_none:"var(--color6)" }}] text-[{{ special_carousel.color_fore|default_if_none:"var(--color3)" }}] transition-all rounded-xl w-10 h-10 text-white cursor-pointer"><i class="fa fa-angle-right mt-1.5"></i></button>
+            <button class="btn-special-carousel-next bg-[{{ special_carousel.color_bg|default_if_none:"var(--color6)" }}] text-[{{ special_carousel.color_fore|default_if_none:"var(--color3)" }}] transition-all rounded-xl w-10 h-10 text-white cursor-pointer"><i class="fa fa-angle-left mt-1.5"></i></button>
+        </div>
+    </div>
+</div>
+{% if special_carousel.switch_on_break %}
+    <style>
+        @media screen and (max-width: 1130px) {
+            body .carousel-banner {
+                background-image: none !important;
+                background-color: {{ special_carousel.color_bg }} !important;
+            }
+        }
+    </style>
+{% endif %}

@@ -20,9 +20,9 @@ from account_module.form import LoginForm
 from account_module.models import User , BlackList_phones
 from adminpanel_module.forms import ProductAddForm, MainCategoryForm, SubCategoryForm, PackForm, BrandForm, UserForm, \
     SupportWayForm, SiteSettingForm, FooterLinkForm, PaymentForm, CardForm, PostingForm, AdminLoginForm, ArticleForm, \
-    EventForm, SliderForm
+    EventForm, SliderForm, CarouselForm
 from article_module.models import Article
-from home_module.models import SpecialEvents, SliderSlide
+from home_module.models import SpecialEvents, SliderSlide, Carousel
 from order_module.context_processors import orders
 from order_module.models import Order, OrderStatus, PaymentMethod, Cards, PostingMethod
 from product_module.models import Product, ProductCategory, ProductSubCategory, ProductBrand, PackageSize, \
@@ -1699,3 +1699,35 @@ def SliderDelete(request ,pk):
     if slide:
         slide.delete()
     return redirect('admin_sliders')
+
+
+@method_decorator(permission_checker_decorator_factory() ,name='dispatch')
+class CarouselList(ListView):
+    model = Carousel
+    template_name = 'adminpanel_module/carousels/carousel_list.html'
+
+    def get_queryset(self):
+        return Carousel.objects.order_by('-is_active')
+
+@method_decorator(permission_checker_decorator_factory() ,name='dispatch')
+class CarouselAdd(CreateView):
+    model = Carousel
+    template_name = 'adminpanel_module/carousels/carousel_add_update.html'
+    form_class = CarouselForm
+    context_object_name = 'carousel'
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        form.save_m2m()
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        context["message_e"] = "فیلد هارا به درستی پر کنید"
+        return self.render_to_response(context)
+
+    def get_context_data(self, **kwargs):
+        context = super(CarouselAdd ,self).get_context_data(**kwargs)
+        context['add_view'] =True
+        return context

@@ -1390,7 +1390,7 @@ header .category-menu {
 .submenu-panel{
     display:grid;
     grid-auto-flow:column;
-    grid-template-rows:repeat(12,auto);
+    grid-template-rows:repeat(11,auto);
     column-gap:2rem;
 }
 
@@ -1622,8 +1622,10 @@ header .category-menu {
     width: 30px;
     height: 30px;
     border-radius: 10px;
-    padding-top: 4px;
-    padding-right: 1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 8px;
 }
 
 .side-menu-emoji {

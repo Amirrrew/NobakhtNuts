@@ -1,0 +1,118 @@
+{% extends 'adminpanel_module/shared/base-admin.html' %}
+{% load poll_extras %}
+
+{% block admin_title %}
+	{% if add_view %}
+        کاروزل جدید
+        {% else %}
+        ویرایش {{ carousel.title }}
+    {% endif %}
+{% endblock %}
+
+{% block admin_content %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="flex justify-between p-2 pt-6 sticky mt-[-10px] top-[-10px] z-10 bg-[var(--header-bg)] backdrop-filter-[blur(10px)] rounded-xl">
+            <div class="flex gap-2 items-start">
+                <a href="{% url 'admin_carousel_list' %}"><button type="button" class="btn-prdcounter mt-1 text-sm pt-1 rounded-2xl"><i class="fa fa-angle-right"></i></button></a>
+                <svg class="mt-[-2px]" id="Play" width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.854C5.052 2.854 2.5 5.406 2.5 12.604C2.5 19.802 5.052 22.354 12.25 22.354C19.449 22.354 22 19.802 22 12.604C22 5.406 19.449 2.854 12.25 2.854Z" fill="#674d45"></path>
+                <path d="M11.0397 16.08C11.3597 16.08 11.7027 15.963 12.0027 15.839C12.7097 15.546 16.0057 13.734 16.0057 12.46C16.0057 11.206 12.7797 9.42902 11.9557 9.08802C11.6217 8.94902 10.8407 8.62802 10.3687 9.09902L10.3681 9.09961C10.2335 9.23521 9.82569 9.64607 9.8147 12.441C9.80271 15.254 10.2294 15.6807 10.3686 15.8199L10.3687 15.82C10.5587 16.01 10.7917 16.08 11.0397 16.08Z" fill="#674d45"></path>
+                </svg>
+                <div class="flex gap-2">
+                    <h1 class="text-4xl font-semibold">تنظیمات</h1>
+                    <i class="fa fa-angle-left mt-2 text-[var(--color10)]"></i>
+                    <div class="text-2xl font-semibold mt-1 text-[var(--color6)]">{% if add_view %}فایل تنظیمات جدید{% else %}{{ sitesettings.title }}{% endif %}</div>
+                </div>
+            </div>
+            <div class="flex gap-1 m-[-5px] items-start">
+                <a href="{% url 'admin_sitesettings_list' %}" class="flex gap-1 bg-[var(--cancel-bg)] text-[var(--loss-dot)] h-[42px] rounded-xl p-2.5"><div>انصراف</div><i class="fa fa-trash text-xs mt-1"></i></a>
+                <button class="btn-defIconFlex gap-1 z-20" type="submit">ذخیره <i class="fa fa-add mt-1"></i></button>
+            </div>
+        </div>
+        <div class="flex gap-2 items-start">
+            <div class="tablebox-default mt-2 relative" style="width: 65%; animation: load 300ms">
+                <div class="flex gap-1">
+                    <svg class="mt-[-2px]" id="Info Square" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.052 2.78467 2.5 5.33667 2.5 12.5347C2.5 19.7327 5.052 22.2847 12.25 22.2847C19.448 22.2847 22 19.7327 22 12.5347C22 5.33667 19.448 2.78467 12.25 2.78467Z" fill="#674d45"></path>
+                        <path d="M12.2461 9.78467H12.2551C12.6691 9.78467 13.0011 9.44867 13.0011 9.03467C13.0011 8.62067 12.6601 8.28467 12.2461 8.28467C11.8321 8.28467 11.4961 8.62067 11.4961 9.03467C11.4961 9.44867 11.8321 9.78467 12.2461 9.78467Z" fill="#674d45"></path>
+                        <path d="M12.2501 17.1797C12.6641 17.1797 13.0001 16.8437 13.0001 16.4297V12.5347C13.0001 12.1207 12.6641 11.7847 12.2501 11.7847C11.8361 11.7847 11.5001 12.1207 11.5001 12.5347V16.4297C11.5001 16.8437 11.8361 17.1797 12.2501 17.1797Z" fill="#674d45"></path>
+                    </svg>
+                    <h1 class="text-xl font-semibold">مشخصات فایل تنظیمات</h1>
+                </div>
+
+                <div class="editpanel-row mt-2 flex gap-2">
+                    <div class="w-[100%]">
+                        <div> عنوان<span class="text-[var(--loss-dot)]">*</span></div>
+                        <input value="{{ carousel.title }}" class="input-admin" name="title" id="title" placeholder="عنوان را وارد کنید">
+                    </div>
+
+                    <div class="w-[100%]">
+                        <div>جمله<span class="text-[var(--loss-dot)]">*</span></div>
+                        <input value="{{ carousel.desc }}" class="input-admin" name="desc" id="" placeholder="جمله ای جالب بنویسید">
+                    </div>
+                </div>
+
+                <div class="editpanel-row mt-2 flex gap-2">
+                    <div class="w-[100%]">
+                        <div>آدرس (در صورت نیاز)</div>
+                        <input value="{{ carousel.url }}" class="input-admin" name="url" id="title" placeholder="مثلا /products/-----">
+                    </div>
+                </div>
+
+                <div class="editpanel-row mt-2 flex gap-2">
+                    <div class="w-[100%]">
+                        <div>ایموجی<span class="text-[var(--loss-dot)]">*</span></div>
+                        <input value="{{ carousel.emoji }}" class="input-admin" name="emoji" id="title" placeholder="ایموجی در صورت نبودن آیکون">
+                    </div>
+
+                    <div class="w-[100%]">
+                        <div>آیکون<span class="text-[var(--loss-dot)]">*</span></div>
+                        <input value="{{ carousel.icon }}" class="input-admin" name="icon" id="" placeholder="مثلا fa fa-bag یا svg">
+                    </div>
+                </div>
+
+                <div class="editpanel-row mt-2 flex gap-2">
+                    <div class="w-[100%]">
+                        <div>رنگ اولیه<span class="text-[var(--loss-dot)]">*</span></div>
+                        <input value="{% if add_view %}#fff{% else %}{{ carousel.color_bg }}{% endif %}" type="color" class="input-admin" name="color_bg" id="title">
+                    </div>
+
+                    <div class="w-[100%]">
+                        <div>رنگ ثانویه<span class="text-[var(--loss-dot)]">*</span></div>
+                        <input value="{% if add_view %}#fff{% else %}{{ carousel.color_fore }}{% endif %}" type="color" class="input-admin" name="color_fore" id="">
+                    </div>
+                </div>
+
+
+
+            </div>
+
+            <div class="tablebox-default mt-2 relative" style="animation: load8 500ms; width: 35%">
+                <div class="flex justify-between">
+                    <h1 class="text-xl font-semibold">نمایش</h1>
+                    <label class="switch">
+                        <input type="checkbox" name="is_default"
+                            {% if carousel.is_active %}
+                               checked
+                            {% endif %}
+                        >
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="mt-3 text-[var(--color10)]">در صورت فعال بودت تیک نمایش، کاروزل در صفحه اصلی نمایش داده میشود و در صورت غیرفعال بودن همه کاروزل ها، محصولات تخفیف دار نمایش داده میشوند.</div>
+                <div class="flex justify-between mt-3">
+                    <h1 class="text-xl font-semibold">مخفی کردن بنر در موبایل</h1>
+                    <label class="switch">
+                        <input type="checkbox" name="is_default"
+                            {% if carousel.is_active %}
+                               checked
+                            {% endif %}
+                        >
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

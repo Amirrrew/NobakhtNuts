@@ -4,7 +4,7 @@
     <div class="category-menu-bar">
         <a href="{% url 'all_products_page' %}" class="menu-cat-title {% if not forloop.last %}border-b border-[var(--color13)]{% endif %}">
             <div class="flex gap-2">
-                <h2 class="mt-2">همه محصولات</h2>
+                <h2 class="mt-1.5">همه محصولات</h2>
             </div>
             <i class="fa fa-angle-left text-sm mt-3"></i>
         </a>
@@ -18,7 +18,7 @@
         </a>
         {% endfor %}
     </div>
-    <div class="mr-4 w-[100%]" id="submenu-panel">
+    <div class="mt-3 mr-4 w-[100%]" id="submenu-panel">
         {% for cat in category %}
             <div style="{% if not forloop.first %}display: none;{% endif %}" class="submenu-panel" id="submenu-{{ cat.id }}">
             {% for sub in cat.subcategory.all %}
