@@ -282,6 +282,17 @@ input[type="number"] {
     body #btn-opensearch {
         display: none;
     }
+
+    body .searchbox {
+        width: 95%;
+        animation: OpenSearch_Mobile .8s;
+    }
+
+    body .search-suggest {
+        width: 95%;
+        right: 3%;
+        overflow-x: hidden;
+    }
 }
 
 @media screen and (max-width: 1000px) {
@@ -553,6 +564,10 @@ input[type="number"] {
         display: flex;
     }
 
+    body #search-result-box {
+        width: 94%;
+    }
+
 }
 
 @media screen and (max-width: 550px) {
@@ -789,33 +804,64 @@ input[type="number"] {
 
 @keyframes OpenSearch {
     0% {
-        width: 5%;
+        width: 3%;
         border-radius: 50%;
         top: -300px;
         background-color: #fff;
     }
     29% {
-        width: 5%;
+        width: 3%;
+        border-radius: 50%;
+        background-color: #fff;
+    }
+    30% {
+        top: 70px;
+        width: 3%;
+        border-radius: 30px;
+    }
+    50% {
+        top: 5px;
+        height: 60px;
+    }
+    70% {
+        width: 62%;
+    }
+    100% {
+        top: 10px;
+        width: 60%;
+    }
+}
+
+@keyframes OpenSearch_Mobile {
+    0% {
+        width: 10%;
+        border-radius: 50%;
+        top: -300px;
+        background-color: #fff;
+    }
+    29% {
+        width: 10%;
         border-radius: 50%;
         background-color: #fff;
     }
     30% {
         top: 50px;
-        width: 5%;
+        width: 10%;
         border-radius: 30px;
     }
     50% {
-        top: 0px;
+        top: 5px;
         height: 60px;
     }
     70% {
-        top: 10px;
-        width: 62%;
+        width: 101%;
     }
     100% {
-        width: 60%;
+        top: 10px;
+        width: 95%;
     }
 }
+
 
 
 @keyframes CloseSearch {
@@ -1013,9 +1059,9 @@ input[type="number"] {
 .card__skeleton {
   background-image: linear-gradient(
 		90deg,
-		var(--color13) 0px,
-		rgb(229 229 229 / 100%) 40px,
-		var(--color13) 80px
+        rgb(220, 220, 220) 0px,
+        rgb(184, 184, 184) 40px,
+        rgb(213, 213, 213) 80px
 	);
   background-size: 300%;
   background-position: 100% 0;
@@ -1294,7 +1340,7 @@ header .category-menu {
     z-index: 99;
     text-wrap: nowrap;
     top: 45px;
-    box-shadow: 2px 2px 100px rgba(0, 0, 0, 0.05);
+    box-shadow: 2px 2px 100px rgba(0, 0, 0, 0.1);
     animation: category_menu .8s;
     overflow: hidden;
     padding: 10px;
@@ -1466,11 +1512,6 @@ header .category-menu {
     100% { transform: translateX(0); background-color: var(--color14); color: var(--color2)}
 }
 
-.searchbox:hover {
-    background-color: var(--color12);
-}
-
-
 .search-input::placeholder {
     color: rgb(97, 97, 97);
     font-size: 15px;
@@ -1577,12 +1618,11 @@ header .category-menu {
 
 .menu-emoji {
     font-size: 20px;
-    margin-top: 5px;
     background-color: var(--color11);
     width: 30px;
     height: 30px;
     border-radius: 10px;
-    padding-top: 3px;
+    padding-top: 4px;
     padding-right: 1px;
 }
 
@@ -1600,7 +1640,7 @@ header .category-menu {
 .search-suggest {
     display: none;
     width: 60%;
-    height: calc(100vh - 100px);
+    height: calc(100% - 100px);
     right: 20%;
     opacity: 1;
     transition: 200ms;

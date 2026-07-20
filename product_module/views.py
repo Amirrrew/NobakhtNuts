@@ -49,6 +49,12 @@ class ProductListView(ListView):
             else:
                 return redirect('all_products')
 
+        q = self.request.GET.get("q")
+
+        if q:
+            queryset = search_product_queryset(q)
+            return filter_products(self.request, queryset)
+
         return filter_products(
             self.request,
             queryset
@@ -201,49 +207,60 @@ def like_comment(request: HttpRequest):
     })
 
 
-def search_product(request):
+def search_product_queryset(q):
     try:
-        q = request.GET.get('q', '').strip()
-
-        if len(q) < 2:
-            return JsonResponse([], safe=False)
-
         words = q.split()
 
-        products = Product.objects.filter(
+        queryset = Product.objects.filter(
             is_active=True,
             is_deleted=False,
         )
 
         for word in words:
-            products = products.filter(
+            queryset = queryset.filter(
                 Q(title__icontains=word) |
                 Q(category__title__icontains=word) |
                 Q(brand__title__icontains=word)
-            ).order_by('-quantity')
+            )
 
-        data = []
-
-        for p in products:
-            data.append({
-                'title': p.title,
-                'category': p.category.title,
-                'price': p.price,
-                'offer': p.offer,
-                'final_price': p.final_price,
-                'rating': f'{p.average_rating}({p.comments_count})',
-                'is_byWeight': p.is_byWeight,
-                'url': p.get_absolute_url(),
-                'image': p.product_image.first().image.url
-            })
-
-        return JsonResponse(data, safe=False)
+        return queryset.order_by('-chosen' ,'-quantity')
 
     except:
         return JsonResponse({
             'message': 'در جستجو مشکلی پیش آمده!',
             'error': True
         })
+
+
+def search_product(request):
+    q = request.GET.get('q', '').strip()
+
+    if len(q) < 2:
+        return JsonResponse([], safe=False)
+
+    queryset = search_product_queryset(q)
+    products = queryset[:10]
+
+    data = []
+
+    for p in products:
+        data.append({
+            'title': p.title,
+            'category': p.category.title,
+            'price': p.price,
+            'offer': p.offer,
+            'final_price': p.final_price,
+            'rating': f'{p.average_rating}({p.comments_count})',
+            'is_byWeight': p.is_byWeight,
+            'url': p.get_absolute_url(),
+            'image': p.product_image.first().image.url
+        })
+
+
+    return JsonResponse({
+        'data': data,
+        'result_count': queryset.values('id').count()
+    }, safe=False)
 
 
 

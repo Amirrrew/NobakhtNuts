@@ -12,9 +12,9 @@
         <a onmouseenter="ShowSubmenu({{ cat.id }})" data-id="{{ cat.id }}" href="{{ cat.get_absolute_url }}" class="menu-cat-title {% if not forloop.last %}border-b border-[var(--color13)]{% endif %}">
             <div class="flex gap-2">
                 <div class="menu-emoji">{{ cat.emoji }}</div>
-                <h2 class="mt-2">{{ cat.title }}</h2>
+                <h2 class="mt-0.5">{{ cat.title }}</h2>
             </div>
-            <i class="fa fa-angle-left text-sm mt-3"></i>
+            <i class="fa fa-angle-left text-sm mt-2"></i>
         </a>
         {% endfor %}
     </div>
