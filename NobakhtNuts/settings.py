@@ -24,7 +24,6 @@ INSTALLED_APPS = [
     'cachalot',
     'ckeditor',
     'ckeditor_uploader',
-    'colorfield',
     'iranian_cities',
     'django_jalali',
     'account_module',
