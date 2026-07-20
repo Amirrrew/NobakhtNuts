@@ -16,14 +16,10 @@ def global_context(request):
     if request.user.is_authenticated:
         basket = Order.objects.prefetch_related('orderdetails_set').filter(user=request.user ,is_paid=False).first()
         new_notifs = Notification.objects.filter(user=request.user ,is_seen=False).exists()
-    columns = {}
-    for i in range(1, 6):
-        columns[i] = ProductCategory.objects.filter(column=i ,is_active=True)
     footers = FooterLinkBox.objects.prefetch_related('links').all()
 
     context = {
         'category': category,
-        'columns': columns,
         'basket': basket,
         'new_notifs': new_notifs,
         'footers': footers,

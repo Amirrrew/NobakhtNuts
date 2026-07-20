@@ -76,7 +76,7 @@ input[type="number"] {
     --color16: rgba(246, 241, 241, 0.89);
     --color17: rgba(198, 175, 175, 0.15);
     --color18: rgb(250, 246, 246);
-    --header-bg: rgba(255, 255, 255, 0.78);
+    --header-bg: rgb(255, 255, 255);
     --border: #3a3a3a31;
 }
 

@@ -278,6 +278,10 @@ input[type="number"] {
     body .swiper-text {
         font-size: 40px;
     }
+
+    body #btn-opensearch {
+        display: none;
+    }
 }
 
 @media screen and (max-width: 1000px) {
@@ -785,27 +789,34 @@ input[type="number"] {
 
 @keyframes OpenSearch {
     0% {
-        top: 0;
-        filter: none;
-        width: 300px;
-        right: 1000px;
+        width: 5%;
+        border-radius: 50%;
+        top: -300px;
+        background-color: #fff;
     }
-
-    10% {
-        filter: blur(20px);
+    29% {
+        width: 5%;
+        border-radius: 50%;
+        background-color: #fff;
     }
-
-    90% {
-        width: 97%;
+    30% {
+        top: 50px;
+        width: 5%;
+        border-radius: 30px;
     }
-
+    50% {
+        top: 0px;
+        height: 60px;
+    }
+    70% {
+        top: 10px;
+        width: 62%;
+    }
     100% {
-        filter: none;
-        top: 80px;
-        position: fixed;
-        right: 20px;
+        width: 60%;
     }
 }
+
 
 @keyframes CloseSearch {
     0% {
@@ -1164,11 +1175,20 @@ header {
     position: fixed;
     top: 0;
     transition: 200ms;
-    backdrop-filter: blur(30px);
-    background-color: var(--header-bg);
+    background-color: transparent;
     border: 1px solid #00000012;
-    transition: 200ms;
     z-index: 100;
+}
+
+header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    background-color: var(--header-bg);
+    z-index: -1;
+    top: -1px;
 }
 /* ------------ side menu -------- */
 .side-menu {
@@ -1261,6 +1281,96 @@ header {
 .search-sidemenu::-webkit-scrollbar {
     display: none;
 }
+
+header .category-menu {
+    width: 50vw;
+    height: 500px;
+    border: 1px solid var(--color13);
+    background-color: rgba(255, 255, 255, 0.91);
+    backdrop-filter: blur(30px) !important;
+    -webkit-backdrop-filter: blur(30px) !important;
+    position: absolute;
+    border-radius: 20px;
+    z-index: 99;
+    text-wrap: nowrap;
+    top: 45px;
+    box-shadow: 2px 2px 100px rgba(0, 0, 0, 0.05);
+    animation: category_menu .8s;
+    overflow: hidden;
+    padding: 10px;
+    right: -70px;
+}
+
+.category-menu-bar {
+    background-color: rgba(159, 129, 129, 0.04);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 250px;
+    min-width: 250px;
+    padding: 10px;
+    overflow: hidden;
+    overflow-y: scroll;
+    scrollbar-gutter: stable;
+}
+.category-menu-bar::-webkit-scrollbar {
+    background-color: var(--color13);
+    visibility: hidden;
+}
+
+.category-menu-bar::-webkit-scrollbar-thumb {
+    background-color: var(--color14);
+    visibility: hidden;
+}
+.category-menu-bar:hover::-webkit-scrollbar-thumb {
+    visibility: visible;
+}
+
+.category-menu-bar:hover::-webkit-scrollbar {
+    visibility: visible;
+}
+
+.index-overlay {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.29);
+    z-index: 98;
+    animation: load8 200ms;
+    backdrop-filter: blur(20px);
+}
+
+.submenu-panel{
+    display:grid;
+    grid-auto-flow:column;
+    grid-template-rows:repeat(12,auto);
+    column-gap:2rem;
+}
+
+@keyframes category_menu {
+    0% {
+        width: 50px;
+        height: 50px;
+        top: -200px;
+        right: -100px;
+        filter: blur(30px);
+    }
+    30% {
+        height: 50px;
+        width: 50px;
+        top: 150px;
+    }
+    65% {
+        top: 35px;
+        right: -70px;
+        filter: none;
+    }
+    70% {
+        width: 51vw;
+        height: 510px;
+    }
+}
 /* -------- header with box inside --------- */
 .header-innerbox {
     width: 98%;
@@ -1306,7 +1416,7 @@ header {
 
 .header-subbox {
     display: flex;
-    border: 2px solid var(--color11);
+    border: 1px solid var(--color11);
     border-radius: 10px;
     height: 50px;
     margin-top: 10px;
@@ -1326,28 +1436,24 @@ header {
 }
 
 /* ------- header searchbox -------- */
-.header-search {
-    width: 230px;
-    z-index: 2000;
-    height: 50px;
-    transition: 200ms;
-    margin-top: 10px;
-    z-index: 55;
-}
+
 
 .searchbox {
-    width: 100%;
-    height: 100%;
-    border: 2px solid var(--color11);
+    width: 60%;
+    height: 60px;
+    border: 1px solid var(--color11);
     outline: none;
-    border-radius: 10px;
-    background-color: #ffffff00;
-    display: flex;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
     overflow: hidden;
     transition: 200ms;
-    position: relative;
+    position: fixed;
     padding: 5px;
+    top: 10px;
+    backdrop-filter: blur(20px);
+    animation: OpenSearch 1s;
 }
+
 
 @keyframes shake {
     0%   { transform: translateX(0); background-color: var(--error); color: #fff;}
@@ -1361,19 +1467,15 @@ header {
 }
 
 .searchbox:hover {
-    border: 2px solid #3a3a3a31;
+    background-color: var(--color12);
 }
 
-.searchbox:hover .search-input::placeholder {
-    color: rgb(97, 97, 97);
-}
 
 .search-input::placeholder {
     color: rgb(97, 97, 97);
     font-size: 15px;
     transition: 200ms;
     position: relative;
-    animation: Searchplace 3s 1s infinite !important;
 }
 
 .search-input:focus .searchbox {
@@ -1440,11 +1542,18 @@ header {
 }
 
 .menu-cat-title {
-    font-size: 30px;
-    border-bottom: 2px solid var(--color9);
+    width: 100%;
+    padding: 5px 10px;
+    font-size: 18px;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 10px;
+    height: 100%;
+    transition: 200ms;
+    border-radius: 5px;
+}
+
+.menu-cat-title:hover {
+    background-color: var(--color12);
 }
 
 .menu-cat-option {
@@ -1469,7 +1578,7 @@ header {
 .menu-emoji {
     font-size: 20px;
     margin-top: 5px;
-    background-color: var(--color9);
+    background-color: var(--color11);
     width: 30px;
     height: 30px;
     border-radius: 10px;
@@ -1489,13 +1598,32 @@ header {
 }
 
 .search-suggest {
-    width: 100%;
-    height: 90%;
-    opacity: 0;
     display: none;
+    width: 60%;
+    height: calc(100vh - 100px);
+    right: 20%;
+    opacity: 1;
     transition: 200ms;
     margin-top: 10px;
     overflow-y: scroll;
+    top: 70px;
+    position: fixed;
+    z-index: 89;
+    backdrop-filter: blur(20px);
+    background-color: rgba(255, 255, 255, 0.75);
+    border-radius: 20px;
+    animation: loadsearchsuggest 300ms;
+    padding: 10px 20px;
+}
+@keyframes loadsearchsuggest {
+    0% {
+        top: 150px;
+        opacity: 0;
+    }
+    100% {
+        top: 70px;
+        opacity: 1;
+    }
 }
 
 .search-suggest::-webkit-scrollbar {

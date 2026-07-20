@@ -1,8 +1,9 @@
 let $ = document
 // تعریف متغیر های حیاتی
 let parentHeader = $.getElementById('header')
+let btn_opensearch = document.getElementById('btn-opensearch')
 let headerLogobox = $.getElementById('header-logo')
-let header = $.getElementById('header-box')
+let header = $.querySelector('header')
 let headerLogo = $.getElementById('main-logo')
 let headtitle = $.getElementById('head-title')
 let headersubbox = $.getElementById('header-subbox')
@@ -10,7 +11,7 @@ let menu = $.getElementById('menu')
 let menuIcon = $.getElementById('menu-icon')
 let headerrow = $.getElementById('header-option-row')
 let closeMenu = $.getElementById('close-menu-btn')
-let searchbox = $.getElementById('header-search')
+let searchbox = $.getElementById('searchbox')
 let searchInner = $.getElementById('search-box')
 let btnCloseSearch = $.getElementById('close-search')
 let logo = $.getElementById('main-logo')
@@ -47,9 +48,7 @@ let Showloader = (time) => {
 
 // اجرای placeholder swap برای سرچ صفحات
 let StartIntervals = (start) => {
-    start ? setInterval(() => {
-        searchinput.setAttribute('placeholder', `مثلا...  ${PlaceHolderText()}`)
-    }, 3000) : null
+    null
 }
 
 // بررسی بودن در صفحه مورد نظر
@@ -73,7 +72,7 @@ let HeaderManage = () => {
                 headerLogo.style = "width: 35px; height: 35px;";
                 headerrow.style = "margin-top: -5px; position: absolute;"
                 headtitle.style = "display: none;"
-                searchbox.style = "margin-top: -5px;"
+                btn_opensearch.style = 'margin-top: -5px;'
                 headersubbox.style = "margin-top: -5px"
                 headershrunk = true
             } else {
@@ -81,7 +80,7 @@ let HeaderManage = () => {
                 headerLogo.style = "width: 70px; height: 70px;";
                 headerrow.style = "margin-top: 10px; position: relative;"
                 headtitle.style = "display: block; font-weight: 800;"
-                searchbox.style = "margin-top: 10px;"
+                btn_opensearch.style = 'margin-top: 10px;'
                 headersubbox.style = "margin-top: 10px"
                 headershrunk = false
             }
@@ -89,59 +88,54 @@ let HeaderManage = () => {
     }
 }
 
+let panel = document.getElementById("submenu-panel");
 
-
-// باز بسته کردن منوی تاپ و دسته بندی و سرچ
-let menuopen = false
-let searchopen = false
-let Menu = (model, searchManage) => {
-    if (model === "cat" && menuopen === false && searchopen === false) {
-        parentHeader.style = 'height: 100%;'
-        header.style = 'height: 100%;'
-        menu.style = "opacity: 1; display: flex;"
-        headerrow.style = 'animation: unload 200ms; display: none;'
-        closeMenu.style = "display: flex; animation: load 200ms;"
-        headerLogobox.style = "animation: unload2 300ms; display: none;"
-        document.body.style.overflowY = 'hidden'
-        menuopen = true
-    }
-    else if (model === "cat" && menuopen === true && searchopen === false) {
-        parentHeader.style = 'height: 95px;'
-        header.style = 'height: 95px;'
-        menu.style = "opacity: 0; display: none;"
-        headerrow.style = 'animation: load2 200ms; display: flex; margin-top: 10px'
-        closeMenu.style = "display: none; animation: unload 200ms;"
-        headerLogobox.style = "animation: load 300ms; opacity:1; display: flex;"
-        document.body.style.overflowY = 'scroll'
-        menuopen = false
-        HeaderManage()
-    }
-    else if (searchManage === 'open' && model === "search" && menuopen === false && searchopen === false) {
-        searchbox.style = "animation: OpenSearch 400ms; position: fixed; width: 97%; top: 80px; height: 60px; right: 20px; margin-top: 10px;"
-        searchInner.style = 'gap: 10px'
-        parentHeader.style = 'height: 100%;'
-        header.style = 'height: 100%;'
-        searchSuggest.style = "opacity: 1; display: block;"
-        headerrow.style = 'animation: unload 200ms; display: none;'
-        btnCloseSearch.style = 'display: block;'
-        document.body.style.overflowY = 'hidden'
-        searchopen = true
-        searchinput.addEventListener('input' ,() => Search(false))
-    }
-    else if (searchManage === 'close' && model === "search" && menuopen === false && searchopen === true) {
-        searchbox.style = "animation: CloseSearch 400ms; position: relative; width: 300px; top: 0px; height: 50px; marin-top: 0;"
-        searchInner.style = "gap: 0;"
-        parentHeader.style = 'height: 130px;'
-        header.style = 'height: 130px;'
-        searchSuggest.style = "opacity: 0; display: none;"
-        headerrow.style = 'animation: load2 200ms; display: flex;'
-        btnCloseSearch.style = 'display: none;'
-        document.body.style.overflowY = 'scroll'
-        searchopen = false
-        HeaderManage()
-        searchinput.removeEventListener('input' ,() => Search(false))
+let ShowSubmenu = (id) =>{
+    document.querySelectorAll('.submenu-panel').forEach(item => {
+        item.style.display = 'none'
+    })
+    document.getElementById(`submenu-${id}`).style.display = 'grid'
+}
+let overlay = document.getElementById('overlay')
+let category_menu = document.getElementById('category-menu')
+let CategoryMenu = (action) => {
+    if (action === true) {
+        category_menu.classList.replace('hidden', 'flex')
+        document.getElementById('category-arrow').classList.add('transform-[rotate(180deg)]', 'top-[-5px]')
+        category_menu.addEventListener('mouseleave', () => {
+            category_menu.classList.replace('flex', 'hidden')
+            document.getElementById('category-arrow').classList.replace('transform-[rotate(180deg)]', 'transform-[none]')
+            document.getElementById('category-arrow').classList.replace('top-[-5px]', 'top-0')
+            category_menu.removeEventListener('mouseleave', () => {})
+        })
+    }else {
+        category_menu.classList.replace('flex', 'hidden')
+        document.getElementById('category-arrow').classList.replace('transform-[rotate(180deg)]', 'transform-[none]')
+        document.getElementById('category-arrow').classList.replace('top-[-5px]', 'top-0')
+        category_menu.removeEventListener('mouseleave', () => {})
     }
 }
+
+
+let Search_action = (action) => {
+    if (action === true) {
+        searchbox.classList.replace('hidden' ,'flex')
+        overlay.classList.replace('hidden' ,'flex')
+        header.style = 'top: -300px;'
+        CategoryMenu(false)
+        searchinput.addEventListener('input' ,() => Search(false))
+        document.body.style = 'overflow-y: hidden;'
+    } else {
+        searchbox.classList.replace('flex' ,'hidden')
+        overlay.classList.replace('flex' ,'hidden')
+        header.style = 'top: 0px;'
+        searchSuggest.style = 'display: none;'
+        searchinput.removeEventListener('input' ,() => Search(false))
+        HeaderManage()
+        document.body.style = 'overflow-y: scroll;'
+    }
+}
+
 
 // جستجو بین محصولات
 let search_timeout;
@@ -152,6 +146,7 @@ let search_resultbox = document.getElementById('search-result');
 let search_resultbox_mobile = document.getElementById('search-result-mobile');
 
 let Search = (mobile) => {
+    searchSuggest.style = 'display: block'
 
     clearTimeout(search_timeout);
 
@@ -234,7 +229,7 @@ let Search = (mobile) => {
             } else {
 
                 search_result = `
-                    <div class="${!mobile ? 'mt-20' : 'mt-64'} mx-2" style="animation:load .2s;">
+                    <div class="${!mobile ? 'mt-3' : 'mt-64'} mx-2" style="animation:load .2s;">
                         نتیجه‌ای برای "${q}" پیدا نشد
                     </div>
                 `;
@@ -252,35 +247,6 @@ let Search = (mobile) => {
         });
 
     }, 500);
-}
-
-// placeholder swap سرچ باکس
-let textlist = [
-    "پسته احمد آقایی 26 دانه",
-    "برنج طارم بوجاری",
-    "برگه زردآلو محلی",
-    "آلو طرقبه قرمز",
-    "بادام درختی شور ایرانی",
-    "انجیر استهبان صدیک پرک",
-    "زرشک پفکی",
-    "بادام زمینی شور آستانه",
-    "مویز ازبک درشت"
-]
-
-let current_index = 0
-let PlaceHolderText = () => {
-    let current_text = ''
-    if (current_index >= 0 || current_index <= 8) {
-        current_text = textlist[current_index]
-        if (current_index + 1 !== 9) {
-            current_index++
-        }
-        else {
-            current_index = 0
-        }
-    }
-
-    return current_text
 }
 
 
