@@ -33,8 +33,8 @@ class SliderSlide(models.Model):
         verbose_name_plural = 'اسلایدر ها'
 
 class Carousel(models.Model):
-    title = models.CharField(max_length=200 ,null=False ,blank=False ,verbose_name='عنوان کاروزل کالا')
-    desc = models.CharField(max_length=200 ,null=False ,blank=False ,verbose_name='توضیحات')
+    title = models.CharField(max_length=200 ,null=True ,blank=False ,verbose_name='عنوان کاروزل کالا')
+    desc = models.CharField(max_length=200 ,null=True ,blank=False ,verbose_name='توضیحات')
     banner = models.ImageField(upload_to='carousels' ,null=True ,blank=True ,verbose_name='بنر')
     is_active = models.BooleanField(default=False ,db_index=True ,verbose_name='فعال / غیرفعال')
     url = models.CharField(max_length= 1000 ,null=True ,blank=True ,verbose_name='آدرس در صورت نیاز')

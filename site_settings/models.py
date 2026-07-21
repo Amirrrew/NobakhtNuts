@@ -11,12 +11,6 @@ class SiteSettings(models.Model):
     email = models.CharField(max_length=500 ,verbose_name='ایمیل سایت')
     tel = models.CharField(max_length=11 ,verbose_name='تلفن ثابت')
     phone = models.CharField(max_length=11 ,verbose_name="موبایل")
-    about_img1 = models.ImageField(upload_to='settings' ,null=True ,blank=True ,verbose_name='تصویر 1')
-    about_img2 = models.ImageField(upload_to='settings' ,null=True ,blank=True ,verbose_name='تصویر 2')
-    about_img3 = models.ImageField(upload_to='settings' ,null=True ,blank=True ,verbose_name='تصویر 3')
-    about_text1 = models.TextField(max_length=2000,null=True ,blank=True ,verbose_name='متن درباره ما 1')
-    about_text2 = models.TextField(max_length=2000,null=True ,blank=True ,verbose_name='متن درباره ما 2')
-    about_text3 = models.TextField(max_length=2000,null=True ,blank=True ,verbose_name='متن درباره ما 3')
     is_default = models.BooleanField(default=False ,verbose_name="تنظیمات اصلی ؟")
 
     def __str__(self):

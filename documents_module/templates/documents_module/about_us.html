@@ -1,0 +1,76 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block page_title %}
+	درباره ما
+{% endblock %}
+
+{% block page_content %}
+{#    {% include 'userpanel_module/include/pop_up_ticket.html' %}#}
+    <div class="centerbox mt-40">
+        <div>
+            <div class="centerbox">
+                <svg class="relative" style="animation: load4 500ms" id="Info Square" width="70" height="70" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.052 2.78467 2.5 5.33667 2.5 12.5347C2.5 19.7327 5.052 22.2847 12.25 22.2847C19.448 22.2847 22 19.7327 22 12.5347C22 5.33667 19.448 2.78467 12.25 2.78467Z" fill="#674d45"></path>
+                <path d="M12.2461 9.78467H12.2551C12.6691 9.78467 13.0011 9.44867 13.0011 9.03467C13.0011 8.62067 12.6601 8.28467 12.2461 8.28467C11.8321 8.28467 11.4961 8.62067 11.4961 9.03467C11.4961 9.44867 11.8321 9.78467 12.2461 9.78467Z" fill="#674d45"></path>
+                <path d="M12.2501 17.1797C12.6641 17.1797 13.0001 16.8437 13.0001 16.4297V12.5347C13.0001 12.1207 12.6641 11.7847 12.2501 11.7847C11.8361 11.7847 11.5001 12.1207 11.5001 12.5347V16.4297C11.5001 16.8437 11.8361 17.1797 12.2501 17.1797Z" fill="#674d45"></path>
+                </svg>
+            </div>
+            <h1 class="text-5xl relative text-center mt-5 font-black" style="animation: load 500ms">
+                درباره ما
+            </h1>
+        </div>
+    </div>
+    <section class="container w-[100%] mt-20 centerbox">
+        <div class="w-[90%]">
+            <div>
+                <h2 aria-labelledby="about-title" class="about-title relative text-2xl font-semibold">برنج و خشکبار نوبخت، فروشگاه تخصصی برنج و خشکبار در قائمشهر و مازندران👋</h2>
+            </div>
+            <div class="flex gap-10 about-container">
+                <div class="text-[var(--color7)]">
+                    <p class="mt-8">برنج و خشکبار نوبخت یک فروشگاه تخصصی و کیفیت محور در حوزه برنج ،آجیل و خشکبار واقع در شهر قائمشهر در استان مازندران است.</p>
+                    <p>در طی بیش از 20 سال تجربه کسب و کارمان و حضور در این حوزه، همواره سعی داشته ایم که محصولاتی با بهترین کیفیت و قیمتی مناسب ارائه دهیم و همیشه رضایت مشتری را در اولین اولویت خود قرار داده ایم و اعتقاد داریم که اعتماد و رضایت مشتری بزرگترین سرمایه ای است که یک فروشگاه ،کسب و کار یا یک شرکت میتواند داشته باشد...</p>
+                    <p class="mt-10">در برنج و خشکبار نوبخت، شما با طیف گسترده ای از محصولات مواجه میشوید، که باعث میشود گزینه های متعددی برای انتخاب داشته باشید.</p>
+                    <p>در فروشگاه ما، چه در شعبه حضوری و چه در شعبه اینترنتی، شما میتوانید انواع برنج ،آجیل هایی مانند پسته ،بادام درختی ،بادام هندی ،بادام زمینی ، فندق و خشکبار مانند کشمش ، مویز و و دیگر محصولات منتخب را با اطمینان از کیفیت و تازگی تهیه کنید.</p>
+                    <p>تمامی محصولات ما با دقت انتخاب میشوند تا طعم، عطر و ارزش غذایی آنها حفظ گردد.</p>
+                    <div class="flex mt-5">
+                        <a href="{% url 'support_page' %}" class="btn-defIconFlex gap-2">تماس و شبکه های اجتماعی<i class="fa fa-arrow-left text-xs text-[var(--color11)] mt-1"></i></a>
+                    </div>
+                </div>
+                <div class="w-[500px] about-swiper-box">
+                    <div class="swiper about-swiper h-[500px] w-[100%] mt-3">
+                        <div class="swiper-wrapper">
+                            <div class="about-photo swiper-slide overflow-hidden rounded-2xl">
+                                <img alt="شعبه حضوری برنج و خشکبار نوبخت - تصویر 1" src="{% static 'media/posters/nobakhtnuts_place_3.jpg' %}" class="w-[100%] h-[100%]">
+                            </div>
+                            <div class="about-photo swiper-slide overflow-hidden rounded-2xl">
+                                <img alt="شعبه حضوری برنج و خشکبار نوبخت - تصویر 2" src="{% static 'media/posters/nobakhtnuts_place_2.jpg' %}" class="w-[100%] h-[100%]">
+                            </div>
+                            <div class="about-photo swiper-slide overflow-hidden rounded-2xl">
+                                <img alt="شعبه حضوری برنج و خشکبار نوبخت - تصویر 3" src="{% static 'media/posters/nobakhtnuts_place_1.jpg' %}" class="w-[100%] h-[100%]">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-between mt-2">
+                        <h4 class="text-[var(--color2)] pr-3 text-xl font-semibold">تصاویری از شعبه حضوری خشکبار نوبخت</h4>
+                        <div class="flex gap-1">
+                            <button class="btn-about-prev cursor-pointer bg-[var(--color12)] rounded-xl w-8 h-8"><i class="fa fa-angle-right text-sm mt-1"></i></button>
+                            <button class="btn-about-next cursor-pointer bg-[var(--color12)] rounded-xl w-8 h-8"><i class="fa fa-angle-left text-sm mt-1"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+    let about_swiper = new Swiper('.about-swiper' ,{
+        slidesPerView: 1,
+        spaceBetween: 10,
+        navigation: {
+            prevEl: '.btn-about-prev',
+            nextEl: '.btn-about-next'
+        },
+
+    })
+    </script>
+{% endblock %}

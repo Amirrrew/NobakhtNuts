@@ -10,10 +10,10 @@
                             <div class="pill-title">{{ slide.title|to_fanum }}</div>
                         </div>
                         <div class="swiper-text-box mt-5 centerbox">
-                            <h1 class="swiper-text max-w-200 text-6xl text-center font-semibold relative" style="animation: load8 700ms">{{ slide.desc }}</h1>
+                            <h2 class="swiper-text max-w-200 text-6xl text-center font-semibold relative" style="animation: load8 700ms">{{ slide.desc }}</h2>
                         </div>
                         <div class="centerbox">
-                            <img src="{{ slide.banner.url }}" loading="lazy" alt="{{ slide.title }}">
+                            <img src="{{ slide.banner.url }}" loading="eager" alt="{{ slide.title }}">
                         </div>
                     </div>
                 {% endfor %}
