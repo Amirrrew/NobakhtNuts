@@ -76,4 +76,6 @@ urlpatterns = [
     path('sliders/<int:pk>/delete' ,views.SliderDelete ,name='admin_sliders_delete'),
     path('carousels/' ,views.CarouselList.as_view() ,name='admin_carousel_list'),
     path('carousels/add' ,views.CarouselAdd.as_view() ,name='admin_carousel_add'),
+    path('carousels/<int:pk>/edit' ,views.CarouselEdit.as_view(), name='admin_carousel_edit'),
+    path('carousels/<int:pk>/delete' ,views.CarouselDelete ,name='admin_carousel_delete'),
 ]

@@ -2,7 +2,7 @@
 {% load poll_extras %}
 
 
-    <a onclick="Showloader(3000)" href="{{ cat.get_absolute_url }}" class="{% if cat.id == current_category.id %}active-category{% endif %} flex-nowrap p-2 rounded-2xl bg-[var(--color12)] swiper-slide relative" style="animation: load3 {% widthratio forloop.counter 1 100 %}ms;">
+    <a onclick="Showloader(3000)" href="{{ cat.get_absolute_url }}" class="{% if cat.id == current_category.id %}active-category{% endif %} flex-nowrap p-2 rounded-2xl bg-[var(--color12)] swiper-slide relative" style="">
         <div class="flex gap-2">
             <div class="emoji-card text-2xl bg-[var(--color13)] centerbox items-center pt-1.5 w-15 h-15 rounded-xl">{{ cat.emoji }}</div>
             <div class="mt-2 text-nowrap">

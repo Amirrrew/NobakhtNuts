@@ -21,10 +21,10 @@
             </a>
         </div>
     </div>
-    <div class="w-[100%] mt-3 flex flex-wrap">
+    <div class="w-[100%] gap-2 mt-3 flex flex-wrap">
         {% if carousel_list %}
             {% for c in carousel_list %}
-                <a href="" class="w-[32.5%] gap-2 flex h-30 rounded-2xl p-2 bg-[var(--color12)]">
+                <a href="{% url 'admin_carousel_edit' c.pk %}" class="w-[32.5%] gap-2 flex h-30 rounded-2xl mt-1 p-2 bg-[var(--color12)] relative" style="animation: load5 {% widthratio forloop.counter 1 100 %}ms">
                     <div class="w-28 h-[100%] bg-[var(--color11)] overflow-hidden rounded-lg">
                         {% if c.banner %}
                             <img loading="lazy" alt="{{ c.title }}" src="{{ c.banner.url }}">

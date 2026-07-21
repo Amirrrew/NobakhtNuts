@@ -1715,12 +1715,25 @@ class CarouselAdd(CreateView):
     template_name = 'adminpanel_module/carousels/carousel_add_update.html'
     form_class = CarouselForm
     context_object_name = 'carousel'
+    success_url = reverse_lazy('admin_carousel_edit')
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.save()
         form.save_m2m()
+        carousel =self.object
+        if carousel.is_active:
+            for ca in Carousel.objects.all():
+                ca.is_active = False
+            carousel.is_active=True
+            carousel.save()
         return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse(
+            "admin_carousel_edit",
+            kwargs={"pk": self.object.pk}
+        )
 
     def form_invalid(self, form):
         context = self.get_context_data(form=form)
@@ -1731,3 +1744,43 @@ class CarouselAdd(CreateView):
         context = super(CarouselAdd ,self).get_context_data(**kwargs)
         context['add_view'] =True
         return context
+
+@method_decorator(permission_checker_decorator_factory() ,name='dispatch')
+class CarouselEdit(UpdateView):
+    model = Carousel
+    template_name = 'adminpanel_module/carousels/carousel_add_update.html'
+    form_class = CarouselForm
+    context_object_name = 'carousel'
+    success_url = reverse_lazy('admin_carousel_list')
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        form.save_m2m()
+        carousel =self.object
+        if carousel.is_active:
+            for ca in Carousel.objects.all():
+                ca.is_active = False
+            carousel.is_active=True
+            carousel.save()
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        context["message_e"] = "فیلد هارا به درستی پر کنید"
+        return self.render_to_response(context)
+
+    def get_context_data(self, **kwargs):
+        context = super(CarouselEdit ,self).get_context_data(**kwargs)
+        context['edit_view'] =True
+        context['special_carousel'] = Carousel.objects.filter(pk=self.object.pk).prefetch_related('carousel_set').first()
+        return context
+
+
+
+@permission_checker_decorator_factory({'permission': 'admin_index'})
+def CarouselDelete(request ,pk):
+    carousel = get_object_or_404(Carousel ,pk=pk)
+    if carousel:
+        carousel.delete()
+    return redirect('admin_carousel_list')

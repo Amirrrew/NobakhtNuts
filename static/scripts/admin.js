@@ -262,3 +262,36 @@ let SalesChartDataChange = () => {
 }
 
 
+const special_carousel = new Swiper('.special-carousel' , {
+    slidesPerView: 3,
+    spaceBetween: 10,
+    navigation: {
+        nextEl: '.btn-special-carousel-next',
+        prevEl: '.btn-special-carousel-prev',
+    },
+    speed: 500,
+    autoplay: {
+        delay: 3000,
+        waitForTransition: true,
+    },
+
+    breakpoints: {
+        300: {
+            slidesPerView: 1.1
+        },
+        800: {
+            slidesPerView: 1.5
+        },
+        1050: {
+            slidesPerView: 2
+        },
+        1500: {
+            slidesPerView: 2.1
+        },
+        1800: {
+            slidesPerView: 3.5
+        }
+    }
+
+})
+

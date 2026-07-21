@@ -137,7 +137,7 @@ class Product(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.title) + get_random_string(10)
+            self.slug = f'nnp-{slugify(self.title)}{get_random_string(10)}'
 
         super().save(*args, **kwargs)
 
