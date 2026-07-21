@@ -13,7 +13,9 @@
         <div class="text-center">
             <h1 class="productgrid-title text-6xl relative" style="animation: load8 500ms">
                 {% if request.GET.q %}
-                    <h1 class="text-4xl">{{ title_prd }}</h1>
+                    <span class="text-4xl">
+                        {{ title_prd }}
+                    </span>
                     {% elif request.GET.offer %}
                     <div class="home-carousel-title centerbox gap-2">
                             <div class="w-15 h-10 bg-[#B21002] rounded-xl centerbox items-center">
@@ -25,14 +27,18 @@
                                     </g>
                                 </svg>
                             </div>
-                            <div class="flex text-4xl mt-0.5">
-                                <h3>تخفیف های</h3>
-                                <h3 class="text-[#B21002]  font-semibold">ویـــــژه</h3>
-                            </div>
+                            <span class="text-4xl mt-0.5">
+                                <span class="flex ">
+                                    <span>تخفیف های</span>
+                                    <span class="text-[#B21002]  font-semibold">ویـــــژه</span>
+                                </span>
+                                <span class="text-center sr-only">خرید خشکبار نوبخت با تخفیف‌های ویژه</span>
+                            </span>
                         </div>
 
                     {% else %}
                     {{ title_prd }}
+                    <span class="sr-only">خرید {{ title_prd }} از برنج و خشکبار نوبخت</span>
                 {% endif %}
             </h1>
             {% if products %}

@@ -697,23 +697,6 @@ let ScrollTo = (element) => {
     section ? document.documentElement.scrollTop = section.offsetTop - 100 : null
 }
 
-// اعمال هزینه پست
-let ApplyPostageFee = (type) => {
-    fetch(`/orders/apply-fee/?type=${type}`).then(res => res.json()).then(
-        data => {
-            if (data.message) {
-                Message(data.message, data.error);
-            }
-
-            if (data.html) {
-                document.querySelectorAll('.checkout').forEach(item => {
-                    item.outerHTML = data.html;
-                });
-            }
-        }
-    )
-}
-
 // نویگیشن پرداخت موبایل
 let payopen = true
 let PayNav = (force) => {

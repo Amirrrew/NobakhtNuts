@@ -17,12 +17,13 @@ def global_context(request):
         basket = Order.objects.prefetch_related('orderdetails_set').filter(user=request.user ,is_paid=False).first()
         new_notifs = Notification.objects.filter(user=request.user ,is_seen=False).exists()
     footers = FooterLinkBox.objects.prefetch_related('links').all()
-
+    support_ways = SupportWays.objects.all()
     context = {
         'category': category,
         'basket': basket,
         'new_notifs': new_notifs,
         'footers': footers,
+        'support_ways': support_ways
     }
     return context
 
