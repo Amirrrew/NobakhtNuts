@@ -9,6 +9,14 @@
       {% endblock %}
   </title>
 </head>
+<!-- Google tag (gtag.js) --> 
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HBTJXXH7DE"></script>
+<script>     
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+      gtag('config', 'G-HBTJXXH7DE');
+</script>
 <body onscroll="HeaderManage()" onload="StartIntervals(true)">
     <div id="overlay" class="index-overlay hidden"></div>
     {% include 'loader.html' %}
