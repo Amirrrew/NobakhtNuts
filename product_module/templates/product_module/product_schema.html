@@ -1,32 +1,30 @@
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org/",
-      "@type": "Product",
-      "name": "{{ product.title }}",
-      "image": [
-        "{{ request.scheme }}://{{ request.get_host }}{{ product.product_image.first.image.url }}"
-      ],
-      "description": "{{ product.desc|striptags|truncatechars:200 }}",
-      "sku": "{{ product.pk }}",
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": "{{ product.title }}",
+  "image": [
+    "{{ request.scheme }}://{{ request.get_host }}{{ product.product_image.first.image.url }}"
+  ],
+  "description": "{{ product.desc|striptags|truncatechars:200 }}",
+  "sku": "{{ product.pk }}",
 
-      "brand": {
-        "@type": "Brand",
-        "name": "{{ product.brand.title }}"
-      },
+  "brand": {
+    "@type": "Brand",
+    "name": "{{ product.brand.title }}"
+  },
 
-      "offers": {
-        "@type": "Offer",
-        "url": "{{ request.build_absolute_uri }}",
-        "priceCurrency": "IRR",
-        "price": "{{ product.final_price }}",
-        "availability": "{% if product.quantity > 0 %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}"
-      }
-    {% if product.comments_count > 0 %}
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "{{ product.average_rating }}",
-        "reviewCount": "{{ product.comments_count }}"
-      }
-    {% endif %}
-    }
-    </script>
+  "offers": {
+    "@type": "Offer",
+    "url": "{{ request.build_absolute_uri }}",
+    "priceCurrency": "IRR",
+    "price": "{{ product.final_price }}",
+    "availability": "{% if product.quantity > 0 %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}"
+  }{% if product.comments_count > 0 %},
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": {{ product.average_rating }},
+    "reviewCount": {{ product.comments_count }}
+  }{% endif %}
+}
+</script>
