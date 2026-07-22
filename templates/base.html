@@ -2,12 +2,16 @@
 <!DOCTYPE html>
 <html lang="fa">
 <head>
-    {% include 'include/head_refrence.html' %}
-  <title>
+    <title>
       برنج و خشکبار نوبخت |  
       {% block page_title %}
       {% endblock %}
-  </title>
+    </title>
+    {% include 'include/head_refrence.html' %}
+
+    {% block schema %}
+
+    {% endblock %}
 </head>
 <body onscroll="HeaderManage()" onload="StartIntervals(true)">
     <div id="overlay" class="index-overlay hidden"></div>

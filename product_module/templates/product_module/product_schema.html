@@ -1,30 +1,67 @@
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org/",
-  "@type": "Product",
-  "name": "{{ product.title }}",
-  "image": [
-    "{{ request.scheme }}://{{ request.get_host }}{{ product.product_image.first.image.url }}"
-  ],
-  "description": "{{ product.desc|striptags|truncatechars:200 }}",
-  "sku": "{{ product.pk }}",
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Product",
+      "name": "{{ product.title }}",
+      "image": [
+        "{{ request.scheme }}://{{ request.get_host }}{{ product.product_image.first.image.url }}"
+      ],
+      "description": "{{ product.desc|striptags|truncatechars:200 }}",
+      "sku": "{{ product.pk }}",
 
-  "brand": {
-    "@type": "Brand",
-    "name": "{{ product.brand.title }}"
-  },
+      "brand": {
+        "@type": "Brand",
+        "name": "{{ product.brand.title }}"
+      },
 
-  "offers": {
-    "@type": "Offer",
-    "url": "{{ request.build_absolute_uri }}",
-    "priceCurrency": "IRR",
-    "price": "{{ product.final_price }}",
-    "availability": "{% if product.quantity > 0 %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}"
-  }{% if product.comments_count > 0 %},
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": {{ product.average_rating }},
-    "reviewCount": {{ product.comments_count }}
-  }{% endif %}
+      "offers": {
+        "@type": "Offer",
+        "url": "{{ request.build_absolute_uri }}",
+        "priceCurrency": "IRR",
+        "price": "{{ product.final_price }}",
+        "availability": "{% if product.quantity > 0 %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}"
+      }
+
+      {% if product.comments_count > 0 %},
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "{{ product.average_rating }}",
+        "reviewCount": "{{ product.comments_count }}"
+      }
+      {% endif %}
+    },
+
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "خانه",
+          "item": "https://nobakhtnuts.ir"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "محصولات",
+          "item": "https://nobakhtnuts.ir/products"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "{{ product.category.title }}",
+          "item": "{{ request.scheme }}://{{ request.get_host }}{{ product.category.get_absolute_url }}"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "{{ product.title }}",
+          "item": "{{ request.build_absolute_uri }}"
+        }
+      ]
+    }
+  ]
 }
 </script>

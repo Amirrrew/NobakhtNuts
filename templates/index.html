@@ -2,12 +2,13 @@
 <!DOCTYPE html>
 <html lang="fa">
 <head>
+    <title>
+        برنج و خشکبار نوبخت
+        {% block page_title %}
+        {% endblock %}
+    </title>
     {% include 'include/head_refrence.html' %}
-  <title>
-      برنج و خشکبار نوبخت
-      {% block page_title %}
-      {% endblock %}
-  </title>
+    {% block schema %}{% endblock %}
 </head>
 <body onscroll="HeaderManage()" onload="StartIntervals(true)">
     <div id="overlay" class="index-overlay hidden"></div>
