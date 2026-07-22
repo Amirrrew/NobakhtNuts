@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin/
+Disallow: /userpanel/
+Disallow: /orders/
+Disallow: /adminpanel/
+Disallow: /ckeditor/
+
+Sitemap: https://nobakhtnuts.ir/sitemap.xml
