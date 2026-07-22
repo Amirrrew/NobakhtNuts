@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'cachalot',
     'ckeditor',
     'ckeditor_uploader',
@@ -145,6 +146,8 @@ CKEDITOR_CONFIGS = {
         'filebrowserBrowseUrl': "/ckeditor/browse/",
     },
 }
+
+SITE_ID= 1
 
 ZP_API_REQUEST = 'https://payment.zarinpal.com/pg/v4/payment/request.json'
 ZP_API_VERIFY = 'https://payment.zarinpal.com/pg/v4/payment/verify.json'

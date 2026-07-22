@@ -1,11 +1,23 @@
 
 from django.conf import settings
-from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.static import serve
+from django.contrib.sitemaps.views import sitemap
 
+from NobakhtNuts.sitemap import StaticViewSitemap
+from article_module.sitemaps import ArticleSitemap
+from product_module.sitemaps import ProductSitemap, CategorySitemap, SubCategorySitemap
+
+sitemaps = {
+    'home': StaticViewSitemap,
+    'products': ProductSitemap,
+    'category': CategorySitemap,
+    'sub_category': SubCategorySitemap,
+    'articles': ArticleSitemap
+}
 urlpatterns = [
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps ,'template_name': 'sitemap/custom_sitemap.xml'}, name='sitemap'),
     path('admin/', admin.site.urls),
     path('adminpanel/' ,include('adminpanel_module.url')),
     path('' , include('home_module.url')),
