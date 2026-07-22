@@ -1,0 +1,38 @@
+{% load static %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+
+  "headline": "{{ article.title }}",
+
+  "image": [
+    "{{ request.scheme }}://{{ request.get_host }}{{ article.banner.url }}"
+  ],
+
+  "description": "{{ article.desc|striptags|truncatechars:200 }}",
+
+  "author": {
+    "@type": "Organization",
+    "name": "برنج و خشکبار نوبخت"
+  },
+
+  "publisher": {
+    "@type": "Organization",
+    "name": "برنج و خشکبار نوبخت",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://nobakhtnuts.ir{% static 'media/logo/favicon-32x32.png' %}"
+    }
+  },
+
+  "datePublished": "{{ article.created_at|date:'c' }}",
+
+  "dateModified": "{{ article.created_at|date:'c' }}",
+
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ request.build_absolute_uri }}"
+  }
+}
+</script>

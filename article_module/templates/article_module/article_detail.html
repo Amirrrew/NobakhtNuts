@@ -6,6 +6,9 @@
 	| {{ article.title|to_fanum }}
 {% endblock %}
 
+{% block schema %}
+    {% include 'article_module/article_schema.html' %}
+{% endblock %}
 
 {% block page_content %}
     <div class="centerbox">
