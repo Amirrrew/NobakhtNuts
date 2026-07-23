@@ -22,11 +22,12 @@ from adminpanel_module.forms import ProductAddForm, MainCategoryForm, SubCategor
     SupportWayForm, SiteSettingForm, FooterLinkForm, PaymentForm, CardForm, PostingForm, AdminLoginForm, ArticleForm, \
     EventForm, SliderForm, CarouselForm
 from article_module.models import Article
-from home_module.models import SpecialEvents, SliderSlide, Carousel
+from home_module.models import SpecialEvents, SliderSlide, Carousel, CarouselItem
 from order_module.context_processors import orders
 from order_module.models import Order, OrderStatus, PaymentMethod, Cards, PostingMethod
 from product_module.models import Product, ProductCategory, ProductSubCategory, ProductBrand, PackageSize, \
     ProductFeature, ProductImage, ProductComment
+from product_module.views import search_product_queryset
 from site_settings.models import SiteSettings, FooterLinkBox, FooterLink
 from support_module.models import Ticket, SupportWays
 from utils.dashboard_decorators import get_sales_week, get_sales_week_growth, today, get_order_today, get_user_growth, \
@@ -1774,7 +1775,44 @@ class CarouselEdit(UpdateView):
         context = super(CarouselEdit ,self).get_context_data(**kwargs)
         context['edit_view'] =True
         context['special_carousel'] = Carousel.objects.filter(pk=self.object.pk).prefetch_related('carousel_set').first()
+        context['products'] = Product.objects.prefetch_related('product_image').only(
+            'pk' ,'title' ,'price'
+        ).filter(is_active=True ,is_deleted=False).order_by('-created_at')
         return context
+
+    def get(self ,request ,*args ,**kwargs):
+        product_pk = request.GET.get('pk')
+        action = request.GET.get('action')
+        response = super().get(request, *args , **kwargs)
+
+        if product_pk:
+            if action == 'add':
+                product = get_object_or_404(Product, pk=product_pk)
+                new_item = CarouselItem(
+                    product=product,
+                    carousel=self.object
+                )
+                new_item.save()
+            elif action == 'del':
+                slide_pk = get_object_or_404(CarouselItem ,pk=product_pk)
+                slide_pk.delete()
+
+            carousel = Carousel.objects.prefetch_related(
+                'carousel_set'
+            ).get(pk=self.object.pk)
+
+            html = render_to_string(
+                'adminpanel_module/carousels/carousel_preview_components/carousel_partial.html',
+                {'special_carousel': carousel},
+                request=request
+            )
+
+            return JsonResponse({
+                'html': html,
+                'carousl': self.object.pk
+            })
+
+        return response
 
 
 
@@ -1784,3 +1822,18 @@ def CarouselDelete(request ,pk):
     if carousel:
         carousel.delete()
     return redirect('admin_carousel_list')
+
+@permission_checker_decorator_factory({'permission': 'admin_index'})
+def Carousel_product_search(request):
+    q = request.GET.get('q')
+    search_results = search_product_queryset(q)
+    html = render_to_string(
+        'adminpanel_module/carousels/carousel_product_menu_partial.html',
+        {'products': search_results},
+        request=request
+    )
+
+    return JsonResponse({
+        'html': html,
+        'data_length': search_results.values('id').count()
+    })

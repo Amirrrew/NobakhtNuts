@@ -46,6 +46,7 @@ body {
     transition: 200ms;
     visibility: hidden;
     z-index: 100;
+    animation: load8 500ms;
 }
 
 .admin-header {
@@ -182,7 +183,7 @@ body {
 }
 
 
-.admin-searchbox {
+.admin-searchbox ,.admin-searchbox-2 {
     width: 400px;
     height: 50px;
     border: 2px solid var(--color12);
@@ -193,7 +194,7 @@ body {
     background-color: #fff;
 }
 
-.admin-searchbox input {
+.admin-searchbox input ,.admin-searchbox-2 input{
     width: 100%;
     height: 50px;
     outline: none;
@@ -204,7 +205,7 @@ body:has(#admin-searchbox input:focus) .overlay {
     visibility: visible;
 }
 
-.admin-searchbox input::placeholder {
+.admin-searchbox input::placeholder ,.admin-searchbox-2 input::placeholder {
     color: var(--color14);
     font-size: 15px;
 }
@@ -705,4 +706,20 @@ body:has(#admin-searchbox input:focus) .overlay {
     background: var(--color12) !important;
     font-family: rokh !important;
     border-bottom: 1px solid #EDE7DA !important;
+}
+
+.carousel-product-overlay {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.carousel-product-menu {
+    width: 700px;
+    height: 90%;
+    background-color: var(--color3);
+    border-radius: 20px;
+    border: 1px solid var(--color11);
+    animation: load5 300ms;
+    position: relative;
+    overflow-x: hidden;
+    padding: 10px;
 }

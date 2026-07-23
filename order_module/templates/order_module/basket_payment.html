@@ -36,7 +36,15 @@
                         </div>
                     </div>
 
+                    <div class="w-[100%] flex-wrap justify-between py-2 px-3 bg-[var(--color12)] mt-2 flex rounded-xl">
+                        <p class="text-[var(--color7)]"><i class="fa fa-info-circle text-[var(--color14)] ml-2 relative top-[1px]"></i>ثبت نهایی سفارش به منزله پذیرفتن قوانین و شرایط برنج و خشکبار نوبخت است.</p>
+                        <a href="{% url 'policies' %}" class="text-[var(--color2)] hover:underline">
+                            مطالعه شرایط <i class="fa fa-external-link text-xs mt-1 mr-2"></i>
+                        </a>
+                    </div>
+
                     {% include 'order_module/include/payment_methods.html' %}
+
 
                 </div>
             </div>

@@ -1,0 +1,13 @@
+{% load poll_extras %}
+
+{% for p in products %}
+    <div onclick="Carousel_grab_item('{{ special_carousel.pk }}' ,'{{ p.pk }}' ,'add')" class="w-[49%] gap-2 p-2 rounded-xl flex cursor-pointer transition-all hover:bg-gray-50">
+        <div class="bg-[var(--color12)] max-w-15 max-h-15 min-w-15 min-h-15 rounded-xl overflow-hidden">
+            <img loading="eager" src="{{ p.product_image.first.image.url }}" alt="{{ p.title }}" class="w-[100%] h-[100%]">
+        </div>
+        <div class="mt-1">
+            <h4>{{ p.title|to_fanum }}</h4>
+            <p>{{ p.price|three_digits_currency }}</p>
+        </div>
+    </div>
+{% endfor %}

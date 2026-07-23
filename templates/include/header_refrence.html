@@ -278,7 +278,7 @@
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M16.1398 18.2319H14.6398C14.5018 19.4349 13.4898 20.3749 12.2518 20.3749C11.0128 20.3749 10.0008 19.4349 9.86279 18.2319H8.36279C8.50579 20.2619 10.1858 21.8749 12.2518 21.8749C14.3168 21.8749 15.9968 20.2619 16.1398 18.2319Z" fill="#674d45"></path>
                     </svg>
                 </a>
-                <a href="" class="flex items-start">
+                <a href="{% url 'my_basket_page' %}" class="flex items-start">
                     {% if basket.orderdetails_set.all %}
                         <div class="mt-[-5px] h-4 w-4 ml-[-7px] text-[var(--color11)] text-center pt-0.5 text-xs rounded-full bg-[var(--color6)]">
                             {{ basket.total_items|to_fanum }}

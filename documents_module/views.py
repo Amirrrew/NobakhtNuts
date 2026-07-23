@@ -20,3 +20,7 @@ class FAQ(ListView):
 
     def get_queryset(self):
         return QuestionCategory.objects.prefetch_related('question_set')
+
+
+class Policies(TemplateView):
+    template_name = 'documents_module/policies.html'

@@ -273,6 +273,7 @@ const special_carousel = new Swiper('.special-carousel' , {
     autoplay: {
         delay: 3000,
         waitForTransition: true,
+        disableOnInteraction: true,
     },
 
     breakpoints: {
@@ -294,4 +295,33 @@ const special_carousel = new Swiper('.special-carousel' , {
     }
 
 })
+
+
+let Product_To_Carousel = (action) => {
+    const menu = document.getElementById('carousel-product-menu')
+    if (action === true) {
+        menu.classList.replace('hidden' ,'centerbox')
+        document.getElementById('product-search').focus()
+    }
+    else {
+        menu.classList.replace('centerbox' ,'hidden')
+    }
+}
+
+let carousel_partial= document.getElementById('carousel-partial')
+let Carousel_grab_item = (carousel_pk ,product_pk ,action) => {
+    console.log(`/adminpanel/carousels/${carousel_pk}/edit/?pk=${product_pk}&action=${action}`)
+    loader.style = 'display:block;'
+    fetch(`/adminpanel/carousels/${carousel_pk}/edit/?pk=${product_pk}&action=${action}`).then(res => res.json()).then(data => {
+        carousel_partial.innerHTML = data.html
+        special_carousel.update()
+        special_carousel.updateSize();
+        special_carousel.updateSlides();
+        special_carousel.updateProgress();
+        special_carousel.slideTo(special_carousel.slides.length - 1);
+    }).finally(() => {
+        loader.style = 'display: none;'
+        Product_To_Carousel(false)
+    })
+}
 

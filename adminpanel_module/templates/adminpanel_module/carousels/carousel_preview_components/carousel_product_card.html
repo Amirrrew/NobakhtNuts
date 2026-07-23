@@ -1,0 +1,128 @@
+{% load static %}
+{% load poll_extras %}
+
+<div class="product-card swiper-slide" style='height: 465px;'>
+    <button
+    data-carousel="{{ special_carousel.pk }}"
+    data-product="{{ item.pk }}"
+    type="button"
+    class="delete-carousel-item bg-[var(--cancel-bg)] absolute text-[var(--loss-bg)] w-5 h-5 rounded cursor-pointer left-2 top-2">
+    <i class="fa fa-trash text-xs mt-1"></i>
+    </button>
+
+    <div style="{% if p.quantity <= 0 %}background-color: var(--color5){% endif %}" class="product-card-imagebox">
+        <img loading="lazy" alt="{{ p.title }}" class="product-card-image" src="{{ p.product_image.first.image.url }}">
+    </div>
+
+    <div class="product-card-details relative">
+        <div class="text-[var(--color10)] flex justify-between">
+            <div class="flex gap-3 mt-[-2px]">
+                <a href="{{ p.category.main_category.get_absolute_url }}" class="cat-prd-title cursor-pointer hover:underline">{{ p.category.main_category }}</a>
+                <div class="prd-dot mt-[-3px]">.</div>
+                <a href="{{ p.category.get_absolute_url }}" class=" cursor-pointer hover:underline">{{ p.category }}</a>
+            </div>
+            {% if p.quantity >= 5 %}
+                <div class="rounded-full w-4 h-4 bg-[var(--color9)] p-1">
+                    <div class="rounded-full w-2 h-2 bg-[var(--color6)]"></div>
+                </div>
+            {% else %}
+                {% if p.quantity < 5 and p.quantity != 0 %}
+                <div class="flex gap-2">
+                    <div class="text-[var(--color5)] mt-[-2px]">
+                        {% if p.is_byWeight %}{{ p.quantity|to_fanum }} کیلو باقیمانده {% else %} {{ p.quantity|floatformat:0|to_fanum }} عدد باقیمانده {% endif %}
+                    </div>
+                    <div class="rounded-full w-4 h-4 bg-[var(--color9)] p-1">
+                        <div class="rounded-full w-2 h-2 bg-[var(--color5)]"></div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="flex gap-2">
+                    <div class="text-[var(--color5)] mt-[-3px]">
+                        ناموجود
+                    </div>
+                    <div class="rounded-full w-4 h-4 bg-[var(--color9)] p-1">
+                        <div class="rounded-full w-2 h-2 bg-[var(--color5)]"></div>
+                    </div>
+                </div>
+                    {% endif %}
+            {% endif %}
+        </div>
+        <a href="{{ p.get_absolute_url }}" class="text-2xl font-black mt-3">
+            {{ p.title|to_fanum }}
+        </a>
+        <div class="">
+            <div class="flex gap-5 mt-2">
+                {% if p.brand %}
+                    <div class="flex gap-2">
+                        <svg class="mt-1" id="Bookmark" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M20.219 12.99L20.216 10.929C20.216 3.335 19.025 2 12.25 2C5.47499 2 4.28399 3.335 4.28399 10.929L4.28099 12.99C4.27199 18.615 4.26799 20.721 5.12699 21.58C5.40499 21.859 5.77399 22 6.22299 22C7.17799 22 8.23999 21.093 9.36499 20.132C10.361 19.281 11.49 18.317 12.25 18.317C13.01 18.317 14.139 19.281 15.135 20.132C16.26 21.093 17.322 22 18.277 22C18.726 22 19.095 21.859 19.373 21.58C20.232 20.721 20.228 18.615 20.219 12.99Z" fill="#674d45"></path>
+                        <path d="M8.82227 9.96777H15.6773C16.0913 9.96777 16.4273 9.63177 16.4273 9.21777C16.4273 8.80377 16.0913 8.46777 15.6773 8.46777H8.82227C8.40827 8.46777 8.07227 8.80377 8.07227 9.21777C8.07227 9.63177 8.40827 9.96777 8.82227 9.96777Z" fill="#674d45"></path>
+                        </svg>
+                        <a href="">
+                            {{ p.brand }}
+                        </a>
+                    </div>
+                {% endif %}
+                <div class="flex gap-1">
+                    <svg class="mt-0.5" id="Star" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M21.6815 9.72949C21.2945 8.08349 19.5765 7.99849 18.1955 7.92949C17.3265 7.88549 16.4275 7.84149 16.0515 7.45249C15.6685 7.05649 15.3695 6.29749 15.0785 5.56349C14.5115 4.12749 13.8685 2.50049 12.2495 2.50049C10.6315 2.50049 9.98953 4.12749 9.42153 5.56349C9.13153 6.29749 8.83153 7.05649 8.44953 7.45249C8.07253 7.84149 7.17353 7.88549 6.30453 7.92949C4.92353 7.99849 3.20553 8.08349 2.81853 9.72949C2.45153 11.2915 3.59853 12.2365 4.61053 13.0705C5.30253 13.6405 5.95653 14.1805 6.10153 14.8405C6.24253 15.4815 6.03053 16.3095 5.82553 17.1115C5.47353 18.4905 5.07353 20.0525 6.40853 21.0595C6.82553 21.3745 7.24853 21.4995 7.66653 21.4995C8.57153 21.4995 9.45353 20.9155 10.2085 20.4155C10.9075 19.9535 11.6305 19.4745 12.2495 19.4745C12.8685 19.4745 13.5925 19.9535 14.2905 20.4155C15.3955 21.1465 16.7695 22.0545 18.0925 21.0595C19.4275 20.0525 19.0275 18.4895 18.6745 17.1095C18.4695 16.3085 18.2585 15.4805 18.3985 14.8405C18.5435 14.1805 19.1975 13.6415 19.8895 13.0705C20.9015 12.2365 22.0485 11.2915 21.6815 9.72949Z" fill="#887069"></path>
+                    </svg>
+                    <div>{{ p.average_rating|to_fanum }} ({{ p.comments_count|to_fanum }})</div>
+                </div>
+            </div>
+            <div class="items-start flex gap-1.5 mt-1">
+                {% for pack in p.packs.all %}
+                    <div class="bg-[var(--color12)] border border-[var(--color8)] py-1 px-2 rounded-xl text-sm text-nowrap text-[var(--color6)]">
+                        {{ pack.title|to_fanum }}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="prd-btbox transition-all flex border-t border-[var(--color11)] absolute bottom-[-3px] w-[91%] justify-between pt-3">
+                {% if p.offer <= 0 %}
+                    <div class="text-3xl font-black">
+                        {{ p.price|three_digits_currency }}
+                    </div>
+
+                    <div class="h-7 px-2 pt-0.5 mt-1 bg-[var(--color12)] text-[var(--color6)] rounded-lg">
+                        {% if p.is_byWeight %}
+                            کیلویی
+                            {% else %}
+                            عددی
+                        {% endif %}
+                    </div>
+
+                    {% else %}
+                    <div class="">
+                        <div style="text-decoration: line-through 1px solid var(--color7)" class="text-sm">{{ p.price|three_digits_currency }}</div>
+                        <div class="text-2xl font-black">{{ p.final_price|three_digits_currency }}</div>
+                    </div>
+                    <div class="flex gap-2">
+                        <div class="h-7 px-2 pt-0.5 mt-5 bg-[var(--color12)] text-[var(--color6)] rounded-lg">
+                            {% if p.is_byWeight %}
+                                کیلویی
+                                {% else %}
+                                عددی
+                            {% endif %}
+                        </div>
+                        <div class=" h-7 px-2 pt-0.5 mt-5 bg-[var(--color5)] text-[var(--color12)] rounded-lg">
+                            {{ p.offer|to_fanum }} %
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+            <a href="{{ p.get_absolute_url }}">
+                <button class="btn-prdcard btn-defIconFlex w-[91%] justify-center gap-2 absolute bottom-[-100px]">
+                        <svg class="mt-[-3px]" id="More Circle" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.051 2.78467 2.5 5.33567 2.5 12.5347C2.5 19.7327 5.051 22.2847 12.25 22.2847C19.449 22.2847 22 19.7327 22 12.5347C22 5.33567 19.449 2.78467 12.25 2.78467Z" fill="#c5b8b4"></path>
+                        <path d="M14.4592 14.4346C14.4592 14.9876 14.9112 15.4346 15.4632 15.4346C16.0152 15.4346 16.4632 14.9876 16.4632 14.4346C16.4632 13.8816 16.0152 13.4346 15.4632 13.4346H15.4542C14.9022 13.4346 14.4592 13.8816 14.4592 14.4346Z" fill="#c5b8b4"></path>
+                        <path d="M11.4592 10.4346C11.4592 10.9876 11.9112 11.4346 12.4632 11.4346C13.0152 11.4346 13.4632 10.9876 13.4632 10.4346C13.4632 9.88157 13.0152 9.43457 12.4632 9.43457H12.4542C11.9022 9.43457 11.4592 9.88157 11.4592 10.4346Z" fill="#c5b8b4"></path>
+                        <path d="M8.4502 14.4346C8.4502 14.9876 8.9032 15.4346 9.4552 15.4346C10.0072 15.4346 10.4552 14.9876 10.4552 14.4346C10.4552 13.8816 10.0072 13.4346 9.4552 13.4346H9.4462C8.8942 13.4346 8.4502 13.8816 8.4502 14.4346Z" fill="#c5b8b4"></path>
+                        </svg>
+                        <div>
+                            مشاهده
+                        </div>
+                </button>
+            </a>
+        </div>
+    </div>
+</div>

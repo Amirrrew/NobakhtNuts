@@ -613,7 +613,7 @@ class BasketPayment(View):
         total_items = current_order.total_items()
         total_weight = current_order.order_weight()
         postage_fee = current_order.postage_fee()
-        payment_method = PaymentMethod.objects.all()
+        payment_method = PaymentMethod.objects.order_by('-pk')
 
         context = {
             'orders': current_order,
