@@ -19,6 +19,7 @@ class PostingMethod(models.Model):
     max_weight = models.FloatField(max_length=100,null=True ,blank=True ,verbose_name='محدوده وزنی')
     is_active = models.BooleanField(default=True,db_index=True ,verbose_name='فعال / غیر فعال')
     time = models.CharField(max_length=200,null=True ,blank=True ,verbose_name='زمان ارسال')
+    estimated_time = models.PositiveIntegerField(default=0 ,null=True ,blank=True ,verbose_name='زمان برای ارسال به عدد')
     desc = models.TextField(max_length=1000,null=True ,blank=True ,verbose_name='توضیحات')
     order_type = models.PositiveIntegerField(null=True ,blank=True ,verbose_name='ترتیب')
     icon = models.CharField(max_length= 1000,null=True ,blank=True ,verbose_name='آیکون')
@@ -81,7 +82,7 @@ class Order(models.Model):
     user = models.ForeignKey(User, db_index=True,on_delete=models.CASCADE ,verbose_name='کاربر')
     is_paid = models.BooleanField(default=False,db_index=True ,verbose_name='پرداخت شده')
     is_done = models.BooleanField(default=False,db_index=True ,verbose_name='پایان یافته')
-    payment_date = models.DateTimeField(auto_now_add=True,db_index=True,null=True ,blank=True ,verbose_name='تاریخ پرداخت')
+    payment_date = models.DateTimeField(db_index=True,null=True ,blank=True ,verbose_name='تاریخ پرداخت')
     status = models.ForeignKey(OrderStatus,db_index=True,on_delete=DO_NOTHING ,null=True ,blank=True ,verbose_name='وضعیت')
     desc = models.TextField(max_length=3000 ,null=True ,blank=True ,verbose_name='توضیحات سفارش')
     address = models.ForeignKey(Address ,on_delete=DO_NOTHING ,null=True ,blank=True ,verbose_name='آدرس')
@@ -101,6 +102,9 @@ class Order(models.Model):
     class Meta:
         verbose_name = 'سبد خرید'
         verbose_name_plural = 'سبد خرید کاربران'
+        indexes = [
+            models.Index(fields=['user','status','is_paid', 'is_done', 'payment_date'], name='idx_order_pending_close'),
+        ]
 
     def calculate_total_price(self):
         total = 0

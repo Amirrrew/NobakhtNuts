@@ -10,7 +10,6 @@ def home(request):
     user = request.user
     special_event = SpecialEvents.objects.filter(is_active=True).first()
     slider = SliderSlide.objects.filter(is_active=True).order_by('-is_primary')
-
     special_carousel = Carousel.objects.prefetch_related("carousel_set__product").filter(
         is_active=True
     ).first()

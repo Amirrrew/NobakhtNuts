@@ -9,8 +9,8 @@ class OrderDetailAdmin(admin.TabularInline):
     extra = 1
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['user' ,'is_paid' ,'status' ,]
-    list_filter = ['is_paid']
+    list_display = ['user' ,'is_paid' ,'status' ,'is_done']
+    list_filter = ['is_done']
     inlines = [OrderDetailAdmin]
 
 admin.site.register(Order, OrderAdmin)

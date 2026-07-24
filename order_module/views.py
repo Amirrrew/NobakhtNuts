@@ -45,18 +45,21 @@ def add_to_order(request: HttpRequest):
                         pack_id = int(request.GET.get('pack'))
                     except Exception as e:
                         return JsonResponse({
-                            'message': f'{e}'
-                        }, status=400)
+                            'message': f'{e}',
+                            'error': True
+                        })
                     pack = PackageSize.objects.filter(id=pack_id).first()
                     if count * pack.size > product.quantity:
                         return JsonResponse({
-                            'message': 'محصول با این مقدار موجود نیست'
-                        }, status=400)
+                            'message': 'محصول با این مقدار موجود نیست',
+                            'error': True
+                        },)
                 else:
                     if count > product.quantity:
                         return JsonResponse({
-                            'message': 'محصول با این مقدار موجود نیست'
-                        }, status=400)
+                            'message': 'محصول با این مقدار موجود نیست',
+                            'error': True
+                        })
 
             except Product.DoesNotExist:
                 return JsonResponse({
@@ -75,8 +78,7 @@ def add_to_order(request: HttpRequest):
 
             if current_order_detail:
                 if product.is_byWeight:
-                    if product.can_shop(count, pack.size):
-                        product.shop(count, pack.size)
+                    if product.shop(count, pack.size):
                         current_order_detail.count += count
                         current_order_detail.save()
                         current_order, created = Order.objects.prefetch_related('orderdetails_set').get_or_create(
@@ -103,8 +105,7 @@ def add_to_order(request: HttpRequest):
                         })
 
                 else:
-                    if product.can_shop(count, 1):
-                        product.shop(count, 1)
+                    if product.shop(count , 1):
                         current_order_detail.count += count
                         current_order_detail.save()
                         current_order, created = Order.objects.prefetch_related('orderdetails_set').get_or_create(
@@ -131,15 +132,13 @@ def add_to_order(request: HttpRequest):
                         })
             else:
                 if product.is_byWeight:
-                    if product.can_shop(count, pack.size):
-                        product.shop(count, pack.size)
+                    if product.shop(count, pack.size):
                         new_detail = OrderDetail(order_id=current_order.id ,product_id=product_id ,pack_size=pack ,count=count)
                         current_order.status = status
                         current_order.save()
                         new_detail.save()
                 else:
-                    if product.can_shop(count, 1):
-                        product.shop(count, 1)
+                    if product.shop(count, 1):
                         new_detail = OrderDetail(order_id=current_order.id ,product_id=product_id ,pack_size=product.packs.first() ,count=count)
                         current_order.status = status
                         current_order.save()
@@ -198,8 +197,7 @@ def change_order_count(request: HttpRequest):
     if type == 'increase':
         if product.is_byWeight:
             pack = order_detail.pack_size.size
-            if product.can_shop(1 , pack):
-                product.shop(1 , pack)
+            if product.shop(1 , pack):
                 order_detail.count += 1
                 order_detail.save()
             else:
@@ -220,8 +218,7 @@ def change_order_count(request: HttpRequest):
                     'html': html
                 })
         else:
-            if product.can_shop(1 , 1):
-                product.shop(1 , 1)
+            if product.shop(1 , 1):
                 order_detail.count += 1
                 order_detail.save()
             else:
@@ -321,8 +318,7 @@ def change_order_count_basket(request: HttpRequest):
     if type == 'increase':
         if product.is_byWeight:
             pack = order_detail.pack_size.size
-            if product.can_shop(1 , pack):
-                product.shop(1 , pack)
+            if product.shop(1 , pack):
                 order_detail.count += 1
                 order_detail.save()
             else:
@@ -348,8 +344,7 @@ def change_order_count_basket(request: HttpRequest):
                     'html': html
                 })
         else:
-            if product.can_shop(1 , 1):
-                product.shop(1 , 1)
+            if product.shop(1 , 1):
                 order_detail.count += 1
                 order_detail.save()
             else:
@@ -639,13 +634,16 @@ class BasketPayment(View):
 
         pay = request.POST.get('payment')
         if pay:
-            pay_method = PaymentMethod.objects.get(id=pay)
+            pay_method = PaymentMethod.objects.filter(id=pay).first()
             current_order.payment_method = pay_method
             current_order.save()
-            if pay_method.id == 1:
-                return redirect('deposit_page')
+            if pay_method:
+                if pay_method.id == 1:
+                    return redirect('deposit_page')
+                else:
+                    return request_online_payment(request)
             else:
-                return request_online_payment(request)
+                message_e = 'روش پرداخت نامعتبر'
 
         context = {
             'orders': current_order,
@@ -748,7 +746,7 @@ def request_online_payment(request):
         }
 
         req_header = {'accept': 'application/json' ,'content-type': 'application/json'}
-        response = requests.post(settings.ZP_API_REQUEST ,data=json.dumps(req_data), headers=req_header)
+        response = requests.post(settings.ZP_API_REQUEST ,data=json.dumps(req_data), headers=req_header ,timeout=30)
         response_data = response.json()
 
         if response.status_code == 200 and 'data' in response_data:

@@ -3,14 +3,14 @@ from datetime import timezone
 from itertools import product
 
 from django.contrib.admin import display
-from django.db import models
+from django.db import models ,transaction
 from django.db.models import DO_NOTHING
 from django.forms import IntegerField
 from django.template.context_processors import request
 from django.urls import reverse
 from django.utils.crypto import get_random_string
 from django.template.defaultfilters import slugify, default
-from django.db.models import Avg
+from django.db.models import Avg ,F
 from django.utils.timesince import timesince
 from django.utils import timezone
 from pyexpat.errors import messages
@@ -66,7 +66,6 @@ class ProductSubCategory(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title)
-
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -182,11 +181,19 @@ class Product(models.Model):
 
 
     def shop(self,count ,size ,*args ,**kwargs):
-        if self.is_byWeight:
-            self.quantity -= (count * size)
-        else:
-            self.quantity -= count
-        super().save(*args, **kwargs)
+        with transaction.atomic():
+            product = Product.objects.select_for_update().get(pk=self.pk)
+            deduction = (count * size) if product.is_byWeight else count
+
+            if product.quantity - deduction < 0:
+                return False
+
+            else:
+                product.quantity = F('quantity') - deduction
+                product.save(update_fields=['quantity'])
+                self.refresh_from_db(fields=['quantity'])
+                return True
+
 
 
     def q_back(self ,count ,size ,*args ,**kwargs):

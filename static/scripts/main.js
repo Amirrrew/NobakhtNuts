@@ -473,10 +473,10 @@ let Message = (text ,error) => {
 
         message_time.style.animation = "ShowmessageTime 4s"
         if (window.innerWidth > 1130) {
-            !error ? message.style.animation = "Showmessage_desktop 4s" : message.style.animation = "Showmessage-e 4s";
+            !error ? message.style.animation = "Showmessage_desktop 4s" : message.style.animation = "Showmessage-e-desktop 4s";
         }
         else {
-            !error ? message.style.animation = "Showmessage_mobile 4s" : message.style.animation = "Showmessage-e 4s";
+            !error ? message.style.animation = "Showmessage_mobile 4s" : message.style.animation = "Showmessage-e-mobile 4s";
         }
         message_text.innerHTML = text
 
@@ -543,7 +543,8 @@ let AddToOrder = (productId, count ,isWeight) => {
         .then(res => res.json())
         .then(data => {
             if (data.message) {
-                Message(data.message, data.error);
+                console.log(data.message ,data.error)
+                data.error ? Message(data.message ,true) : Message(data.message ,false);
             }
             btnAddtocart.style = 'pointer-events: none; background-color: var(--color9); height: 50px; padding-top: 13px;'
             if (data.html) {
