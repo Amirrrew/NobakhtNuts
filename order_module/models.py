@@ -19,6 +19,7 @@ class PostingMethod(models.Model):
     price_range = models.CharField(max_length=100 ,null=True ,blank=True ,verbose_name='محدوده قیمتی')
     price_single = models.IntegerField(verbose_name='نرخ معمولی')
     price_per_k = models.PositiveIntegerField(verbose_name='نرخ بر کیلو')
+    tax = models.CharField(max_length=100 ,null=True ,blank=True ,verbose_name='ارزش افزوده')
     max_weight = models.FloatField(max_length=100,null=True ,blank=True ,verbose_name='محدوده وزنی')
     is_active = models.BooleanField(default=True,db_index=True ,verbose_name='فعال / غیر فعال')
     time = models.CharField(max_length=200,null=True ,blank=True ,verbose_name='زمان ارسال')
@@ -152,18 +153,23 @@ class Order(models.Model):
         total_amount = 0
         total_items = self.total_items()
         total_weight = float(0)
+        total_discount = int(0)
+        total_amount_without_discount = 0
 
         for detail in details:
             total_amount += detail.total_price
+            total_amount_without_discount += detail.total_price_without_discount
             total_weight += detail.calculate_package_weight
+            total_discount+= detail.discount_amount
 
         total_amount_including_postage_fee = total_amount + self.postage_fee()
-
 
         return {
             'total_amount': total_amount,
             'total_items': total_items,
             'total_weight': total_weight,
+            'total_discount': total_discount,
+            'total_amount_without_discount': total_amount_without_discount,
             'total_amount_including_postage_fee': total_amount_including_postage_fee
         }
 
@@ -173,9 +179,16 @@ class Order(models.Model):
             if weight <= 1:
                 return int(self.posting_method.price_single)
             else:
-                return int(self.posting_method.price_per_k * weight)
+                return int(self.posting_method.price_per_k * weight) + int(self.posting_method.tax)
         else:
             return 0
+
+    def total_discount(self):
+        details = self.orderdetails_set.select_related('product', 'pack_size')
+        total_discount = int(0)
+        for detail in details:
+            total_discount += detail.discount_amount
+        return total_discount
 
 
     def include_postage_fee(self):
@@ -211,7 +224,6 @@ class Order(models.Model):
         self.finalized_price = self.include_postage_fee()
         self.postage_fee = self.postage_fee()
         for detail in self.orderdetails_set.all():
-            detail.product.shop(detail.count ,detail.pack_size.size)
             detail.final_price = detail.total_price
             detail.save()
         self.save()
@@ -263,6 +275,12 @@ class OrderDetail(models.Model):
         return self.unit_price * self.count
 
     @property
+    def total_price_without_discount(self):
+        if self.product.is_byWeight:
+            return int(self.product.price * self.pack_size.size) * self.count
+        return self.product.price * self.count
+
+    @property
     def calculate_package_weight(self):
         weight = float(0)
         if self.product.is_byWeight:
@@ -275,6 +293,9 @@ class OrderDetail(models.Model):
     def Check_product_inventory(self):
         return self.product.quantity - (self.count * self.pack_size.size) >=0 if self.product.is_byWeight else self.product.quantity - self.count >= 0
 
+    @property
+    def discount_amount(self):
+        return (self.product.price * self.product.offer // 100) * self.count if not self.product.is_byWeight else (self.product.price * self.product.offer // 100) * (self.count * self.pack_size.size)
 
 
 

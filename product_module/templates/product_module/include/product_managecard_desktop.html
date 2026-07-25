@@ -70,7 +70,7 @@
                                 <path d="M9.01978 12.3999H10.5598V10.8999H9.01978V12.3999Z" fill="#f97e7e"></path>
                                 <path d="M14.6298 12.3999H16.1698V10.8999H14.6298V12.3999Z" fill="#f97e7e"></path>
                                 </svg>
-                                <div id="prd-rem">{{ product.quantity }} کیلو در انبار باقیمانده</div>
+                                <div id="prd-rem">{{ product.quantity|to_fanum }} کیلو در انبار باقیمانده</div>
                             </div>
                             {% else %}
                             <div class="flex mt-3 gap-2 text-[var(--color5)]">
@@ -80,7 +80,7 @@
                                 <path d="M9.01978 12.3999H10.5598V10.8999H9.01978V12.3999Z" fill="#f97e7e"></path>
                                 <path d="M14.6298 12.3999H16.1698V10.8999H14.6298V12.3999Z" fill="#f97e7e"></path>
                                 </svg>
-                                <div id="prd-rem">{{ product.quantity|floatformat }} عدد در انبار باقیمانده</div>
+                                <div id="prd-rem">{{ product.quantity|floatformat|to_fanum }} عدد در انبار باقیمانده</div>
                             </div>
                         {% endif %}
                     {% endif %}
@@ -122,7 +122,7 @@
                     </div>
                     {% if request.user.is_authenticated %}
                         {% if product.quantity > 0 %}
-                            <button id="btn-addtocart" onclick="AddToOrder({{ product.id }} ,1 ,{% if product.is_byWeight %}'true'{% else %}'false'{% endif %})" type="button" class="btn-defIconFlex gap-1 mt-2 w-[100%] justify-center" style="height: 50px; padding-top: 13px;{% if product.is_byWeight %}background-color: var(--color9); pointer-events: none;{% endif %}">
+                            <button id="btn-addtocart" onclick="AddToOrder({{ product.id }} ,{% if product.is_byWeight %}'true'{% else %}'false'{% endif %})" type="button" class="btn-defIconFlex gap-1 mt-2 w-[100%] justify-center" style="height: 50px; padding-top: 13px;{% if product.is_byWeight %}background-color: var(--color9); pointer-events: none;{% endif %}">
                                 <svg class="mt-[-3px]" id="Buy" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M6.39507 6.30158L6.09507 3.24158H2.19507V4.74158H4.73507L6.01507 17.4416H20.8351L22.3051 6.30158H6.39507Z" fill="#c5b8b4"></path>
                                     <path d="M13.8245 11.7118H17.9945V10.2118H13.8245V11.7118Z" fill="#c5b8b4"></path>

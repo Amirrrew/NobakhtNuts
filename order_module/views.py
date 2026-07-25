@@ -173,9 +173,11 @@ def change_order_count(request: HttpRequest):
             'order_module/basket_partial.html',
             {
                 'orders': current_order,
-                'total_amount': order_summary['total_amount'],
                 'total_items': order_summary['total_items'],
+                'total_amount': order_summary['total_amount'],
                 'total_weight': order_summary['total_weight'],
+                'total_amount_without_discount': order_summary['total_amount_without_discount'],
+                'total_discount': int(order_summary['total_discount']),
                 'insufficient_items': current_order.Check_insufficient_items()
             },
             request=request
@@ -205,6 +207,8 @@ def my_basket(request: HttpRequest):
         'total_items': order_summary['total_items'],
         'total_amount': order_summary['total_amount'],
         'total_weight': order_summary['total_weight'],
+        'total_amount_without_discount': order_summary['total_amount_without_discount'],
+        'total_discount': int(order_summary['total_discount']),
         'insufficient_items': current_order.Check_insufficient_items()
     }
     return render(request ,'order_module/shopping_basket.html' ,context)
@@ -426,7 +430,7 @@ class Deposit(View):
             return redirect('login_page')
         message = None
         message_e = None
-        payment_method = PaymentMethod.objects.get(id=1)
+        payment_method = PaymentMethod.objects.filter(title='کارت به کارت').first()
         current_order = Order.objects.filter(user=request.user ,is_paid=False ,payment_method=payment_method).first()
         if not current_order or not current_order.stock_reserved:
             return redirect('payment_page')
@@ -447,7 +451,7 @@ class Deposit(View):
     def post(self ,request):
         message = None
         message_e = None
-        payment_method = PaymentMethod.objects.get(id=1)
+        payment_method = PaymentMethod.objects.filter(title='کارت به کارت').first()
         current_order = Order.objects.get(user=request.user ,is_paid=False ,payment_method=payment_method)
         total_amount = current_order.include_postage_fee() * 10
         card = payment_method.card
@@ -491,7 +495,7 @@ def request_online_payment(request):
     errors = None
     e_code = None
     e_message = None
-    online_pay_merchant = PaymentMethod.objects.filter(id=2).first()
+    online_pay_merchant = PaymentMethod.objects.filter(title='پرداخت آنلاین').first()
     try:
         current_order ,created = Order.objects.get_or_create(is_paid=False ,is_done=False ,user=request.user)
         if not current_order.stock_reserved:
@@ -532,7 +536,7 @@ def verify_payment(request: HttpRequest):
     online_pay_merchant = PaymentMethod.objects.filter(id=2).first()
     if request.GET.get('Status') == 'OK':
         try:
-            current_order = Order.objects.get(user=request.user ,is_paid=False)
+            current_order = Order.objects.get(user=request.user ,is_paid=False ,is_done=False)
         except Order.DoesNotExist:
             context = {
                 'error': 'سفارش یافت نشد!',

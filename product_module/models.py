@@ -165,7 +165,6 @@ class Product(models.Model):
         else:
             return self.price
 
-
     def check_inventory(self , size):
         return self.quantity - (float(size)) >= 0 if self.is_byWeight else self.quantity - 1 >= 0
 
@@ -184,12 +183,11 @@ class Product(models.Model):
                 self.refresh_from_db(fields=['quantity'])
                 return True
 
-
-
-    def q_back(self ,count ,size ,*args ,**kwargs):
-        self.quantity += (count * size)
-        super().save(*args, **kwargs)
-
+    def q_back(self, count, size):
+        with transaction.atomic():
+            product = Product.objects.select_for_update().get(pk=self.pk)
+            product.quantity = F('quantity') + (count * size)
+            product.save(update_fields=['quantity'])
 
 
     class Meta:

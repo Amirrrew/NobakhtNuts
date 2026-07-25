@@ -62,12 +62,17 @@
                         <div>هزینه به ازای هر کیلو<span class="text-[var(--loss-dot)]">*</span></div>
                         <input value="{{ posting.price_per_k }}" class="input-admin" name="price_per_k" id="" placeholder="70,000 تومان به ازای هر کیلو">
                     </div>
+
+                    <div class="w-[100%]">
+                        <div>ارزش افزوده<span class="text-[var(--loss-dot)]">*</span></div>
+                        <input value="{{ posting.tax }}" class="input-admin" name="tax" id="" placeholder="70,000 + ارزش افزوده">
+                    </div>
                 </div>
 
                 <div class="editpanel-row mt-2 flex gap-2">
                     <div class="w-[100%]">
-                        <div> حداکثر وزن مرسوله<span class="text-[var(--loss-dot)]">*</span></div>
-                        <input value="{{ posting.max_weight }}" class="input-admin" name="max_weight" id="title" placeholder="تا 10 کیلو">
+                        <div>زمان تقریبی ارسال<span class="text-[var(--loss-dot)]">*</span></div>
+                        <input value="{{ posting.time }}" class="input-admin" name="time" id="title" placeholder="تا 10 کیلو">
                     </div>
 
                     <div class="w-[100%]">
