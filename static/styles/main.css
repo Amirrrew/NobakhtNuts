@@ -88,6 +88,8 @@ input[type="number"] {
     --box-border-active:#674d45;
     --error:#c0392b;
     --error-bg:#fdecea;
+    --del-bg: #f1aaaa;
+    --deny-text: #731919;
 }
 
 @media screen and (max-width: 1200px) {

@@ -23,7 +23,7 @@
             </div>
 
             <div class="flex gap-1 mt-2">
-                <a style="width: 100%" href="{% url 'checkout_page' %}" {% if not orders.orderdetails_set.all %}disabled class="disabled"{% endif %}>
+                <a style="width: 100%" href="{% url 'checkout_page' %}" {% if not orders.orderdetails_set.all or insufficient_items %}disabled class="disabled"{% endif %}>
                     <button type="submit" style="width: 100%; height: 50px; padding-top: 13px; justify-content: center" class="btn-defIconFlex gap-1">
                         <svg class="mt-[-2px]" id="Wallet" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M17.5207 15.1719C15.6937 15.1719 14.2077 13.6859 14.2077 11.8599C14.2077 10.0329 15.6937 8.54594 17.5207 8.54594H21.7307C20.8527 4.49194 18.0597 2.96094 12.2507 2.96094C5.01471 2.96094 2.44971 5.32694 2.44971 11.9999C2.44971 18.6739 5.01471 21.0389 12.2507 21.0389C18.1927 21.0389 20.9807 19.4389 21.7887 15.1719H17.5207Z" fill="#c5b8b4"></path>

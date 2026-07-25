@@ -527,23 +527,23 @@ function getSelectedPack() {
 }
 
 // افزودن به سبد خرید
-let AddToOrder = (productId, count ,isWeight) => {
+let AddToOrder = (productId ,isWeight) => {
     let pack = getSelectedPack()
     let btnAddtocart = document.getElementById('btn-addtocart')
     let url = null;
 
     if (isWeight === 'false') {
-        url = `/orders/add-to-order/?product_id=${productId}&count=${count}`;
+        url = `/orders/add-to-order/?product_id=${productId}`;
     } else {
-        url = `/orders/add-to-order/?product_id=${productId}&count=${count}&pack=${pack.value}`;
+        url = `/orders/add-to-order/?product_id=${productId}&pack_id=${pack.value}`;
     }
 
     document.getElementById('loader').style = 'display: block;'
     fetch(url)
         .then(res => res.json())
         .then(data => {
+            console.log(data.message)
             if (data.message) {
-                console.log(data.message ,data.error)
                 data.error ? Message(data.message ,true) : Message(data.message ,false);
             }
             btnAddtocart.style = 'pointer-events: none; background-color: var(--color9); height: 50px; padding-top: 13px;'
@@ -553,17 +553,15 @@ let AddToOrder = (productId, count ,isWeight) => {
                 });
                 PrdNav(true)
             }
-            setTimeout(() => {
-                btnAddtocart.style = 'pointer-events: all; background-color: var(--color6); height: 50px; padding-top: 13px;'
-            } ,3000)
         }).finally(()=> {
-        document.getElementById('loader').style = 'display: none;'
+            document.getElementById('loader').style = 'display: none;'
+            btnAddtocart.style = 'pointer-events: all; background-color: var(--color6); height: 50px; padding-top: 13px;'
         })
 }
 
 // تغییر مقدار آیتم سبد خرید
-let change_order_count = (detail_id ,type) => {
-    let url = `/orders/change-order-count/?detail_id=${detail_id}&type=${type}`
+let change_order_count = (detail_id ,type ,page) => {
+    let url = `/orders/change-order-count/?detail_id=${detail_id}&type=${type}&page=${page}`
     document.getElementById('loader').style = 'display: block;'
     fetch(url).then(res => res.json()).then(data => {
         if (data.message) {
@@ -573,22 +571,6 @@ let change_order_count = (detail_id ,type) => {
             document.querySelectorAll('.cart-items').forEach(item => {
                 item.innerHTML = data.html;
             });
-        }
-    }).finally(()=> {
-        document.getElementById('loader').style = 'display: none;'
-        })
-}
-
-// تغییر مقدار آیتم سبد خرید (بکست)
-let change_order_count_basket = (detail_id, type) => {
-    let url = `/orders/change-order-count-basket/?detail_id=${detail_id}&type=${type}`
-    document.getElementById('loader').style = 'display: block;'
-    fetch(url).then(res => res.json()).then(data => {
-        if (data.message) {
-            data.error ? Message(data.message, true) : Message(data.message, false);
-        }
-        if (data.html) {
-            document.querySelector('.cart-items-basket').innerHTML = data.html;
         }
     }).finally(()=> {
         document.getElementById('loader').style = 'display: none;'

@@ -31,9 +31,9 @@
                                                 </div>
                                             </div>
                                             <div class="flex mt-6 ml-2 gap-3">
-                                                <button onclick="change_order_count({{ o.id }} ,'increase')" class="btn-prdcounter"><i class="fa fa-add mt-1.5 text-sm"></i></button>
+                                                <button onclick="change_order_count({{ o.id }} ,'increase' ,'product')" class="btn-prdcounter"><i class="fa fa-add mt-1.5 text-sm"></i></button>
                                                 <div>{{ o.count|to_fanum }}</div>
-                                                <button onclick="change_order_count({{ o.id }} ,'decrease')" class="btn-prdcounter">{% if o.count == 1 %}<i class="fa fa-trash text-sm mt-1.5"></i>{% else %}<i class="fa fa-minus mt-1.5 text-sm"></i>{% endif %}</button>
+                                                <button onclick="change_order_count({{ o.id }} ,'decrease' ,'product')" class="btn-prdcounter">{% if o.count == 1 %}<i class="fa fa-trash text-sm mt-1.5"></i>{% else %}<i class="fa fa-minus mt-1.5 text-sm"></i>{% endif %}</button>
                                             </div>
                                         </div>
                                     </div>

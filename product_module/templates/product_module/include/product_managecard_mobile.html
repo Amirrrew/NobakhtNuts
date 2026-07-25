@@ -85,7 +85,7 @@
                         {% if request.user.is_authenticated %}
                                 <div class="flex gap-2 w-[100%]">
                                     {% if product.quantity > 0 %}
-                                    <button id="btn-addtocart-mobile" onclick="AddToOrder({{ product.id }} ,1 ,{% if product.is_byWeight %}'true'{% else %}'false'{% endif %})" type="button" class="btn-defIconFlex gap-1 mt-2 w-[100%] justify-center" style="height: 50px; padding-top: 13px;{% if product.is_byWeight %}background-color: var(--color9); pointer-events: none;{% endif %}">
+                                    <button id="btn-addtocart-mobile" onclick="AddToOrder({{ product.id }} ,{% if product.is_byWeight %}'true'{% else %}'false'{% endif %})" type="button" class="btn-defIconFlex gap-1 mt-2 w-[100%] justify-center" style="height: 50px; padding-top: 13px;{% if product.is_byWeight %}background-color: var(--color9); pointer-events: none;{% endif %}">
                                         <svg class="mt-[-3px]" id="Buy" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M6.39507 6.30158L6.09507 3.24158H2.19507V4.74158H4.73507L6.01507 17.4416H20.8351L22.3051 6.30158H6.39507Z" fill="#c5b8b4"></path>
                                             <path d="M13.8245 11.7118H17.9945V10.2118H13.8245V11.7118Z" fill="#c5b8b4"></path>

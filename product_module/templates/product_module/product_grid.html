@@ -111,7 +111,7 @@
                 <div class="filterbar-mobile overflow-hidden hidden items-start justify-between border-b border-[var(--color11)] bg-[var(--header-bg)] z-7 backdrop-filter-[blur(10px)] top-[59px] pt-1.5 sticky pb-2">
                     <div onclick="document.documentElement.scrollTop = 0" id="product_grid_cattitle" class="relative cursor-pointer flex items-start gap-2 top-20 font-semibold transition-all ">
                         <button class="rounded-xl bg-[var(--color12)] w-8 h-8 m-1 cursor-pointer text-[var(--color6)]"><i class="fa fa-arrow-up text-sm mt-1"></i></button>
-                        <div class="pt-2">{{ title_prd }}</div>
+                        <div class="pt-2">{{ title_prd|truncatechars:'30' }}</div>
                     </div>
                     <div class="flex gap-3">
                         {% if has_filters %}

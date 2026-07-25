@@ -4,7 +4,6 @@ from . import views
 urlpatterns = [
     path('add-to-order/' , views.add_to_order, name='add_to_order'),
     path('change-order-count/' , views.change_order_count, name='change_order_count'),
-    path('change-order-count-basket/' , views.change_order_count_basket, name='change_order_count_basket'),
     path('my-basket/' ,views.my_basket, name='my_basket_page'),
     path('checkout/' ,views.BasketCheckout.as_view(), name='checkout_page'),
     path('payment/', views.BasketPayment.as_view(), name='payment_page'),

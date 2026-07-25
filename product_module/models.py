@@ -158,7 +158,6 @@ class Product(models.Model):
         avg = self.comment_set.aggregate(avg=Avg('rating'))['avg']
         return round(avg or 0, 1)
 
-
     @property
     def final_price(self):
         if self.offer and self.offer > 0:
@@ -167,17 +166,8 @@ class Product(models.Model):
             return self.price
 
 
-    def can_shop(self ,count ,size):
-        if self.is_byWeight:
-            if self.quantity - (count * size) < 0:
-                return False
-            else:
-                return True
-        else:
-            if (self.quantity - count) < 0:
-                return False
-            else:
-                return True
+    def check_inventory(self , size):
+        return self.quantity - (float(size)) >= 0 if self.is_byWeight else self.quantity - 1 >= 0
 
 
     def shop(self,count ,size ,*args ,**kwargs):

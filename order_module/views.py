@@ -6,6 +6,7 @@ from django.urls import reverse
 from django.utils import timezone
 from itertools import product
 import datetime
+from django.db.models import F, prefetch_related_objects
 from django.conf import settings
 import requests
 from django.http import HttpRequest, JsonResponse, HttpResponse
@@ -25,396 +26,166 @@ from utils.my_decorators import permission_checker_decorator_factory, validate_i
 
 
 def add_to_order(request: HttpRequest):
+    message = ''
+    error = False
+    pack_id = None
+    product_id = None
+    product = None
     try:
         try:
-            pack_id = None
+            #دریافت اطلاعات از گت
             product_id = int(request.GET.get('product_id'))
+            pack_id = int(request.GET.get('pack_id'))
         except(TypeError ,ValueError) as e:
-            return JsonResponse({
-                'message': f'{e}'
-            }, status=400)
-
-
+            message = 'در افزودن مححصول به سبد مشکلی پیش آمد'
+            error = True
 
         if request.user.is_authenticated:
+            pack = None
+
             try:
                 product = Product.objects.get(id=product_id ,is_active=True ,is_deleted=False)
-                count = 1
-                if product.is_byWeight:
-                    try:
-                        pack_id = int(request.GET.get('pack'))
-                    except Exception as e:
-                        return JsonResponse({
-                            'message': f'{e}',
-                            'error': True
-                        })
-                    pack = PackageSize.objects.filter(id=pack_id).first()
-                    if count * pack.size > product.quantity:
-                        return JsonResponse({
-                            'message': 'محصول با این مقدار موجود نیست',
-                            'error': True
-                        },)
-                else:
-                    if count > product.quantity:
-                        return JsonResponse({
-                            'message': 'محصول با این مقدار موجود نیست',
-                            'error': True
-                        })
-
             except Product.DoesNotExist:
-                return JsonResponse({
-                    'message': 'محصول نامعتبر'
-                }, status=400)
+                message = 'محصول نامعتبر'
+                error = True
+            if pack_id:
+                pack_model = PackageSize.objects.filter(id=pack_id).first()
+                pack = pack_model.size
+            elif not pack_id and not product.is_byWeight:
+                pack = 1
+            else:
+                message = 'در افزودن محصول به سبد مشکلی پیش آمد'
+                error = True
 
-            status = OrderStatus.objects.filter(id=1).first()
-            current_order, created = Order.objects.get_or_create(is_paid=False, user_id=request.user.id)
+            # چک کردن اینکه تو سبد هست یا نه
+            current_order ,created = Order.objects.prefetch_related('orderdetails_set').get_or_create(is_paid=False ,is_done=False ,user=request.user)
             if product.is_byWeight:
-                current_order_detail = current_order.orderdetails_set.filter(product_id=product_id,pack_size_id=pack_id).first()
+                current_order_detail = current_order.orderdetails_set.filter(product=product ,pack_size=pack_model).first()
             else:
-                current_order_detail = current_order.orderdetails_set.filter(product_id=product_id ,pack_size=product.packs.first()).first()
+                current_order_detail = current_order.orderdetails_set.filter(product=product).first()
 
-            if product.is_byWeight:
-                pack = PackageSize.objects.filter(id=pack_id).first()
+            existing_count = current_order_detail.count if current_order_detail else 0
+            new_count = existing_count + 1
+            requested_amount = (new_count * pack) if product.is_byWeight else new_count
 
-            if current_order_detail:
-                if product.is_byWeight:
-                    if product.shop(count, pack.size):
-                        current_order_detail.count += count
-                        current_order_detail.save()
-                        current_order, created = Order.objects.prefetch_related('orderdetails_set').get_or_create(
-                            is_paid=False, user_id=request.user.id)
-                        html = render_to_string(
-                            'product_module/include/product_incart.html',
-                            {
-                                'orders': current_order.orderdetails_set.filter(
-                                    product=product
-                                ),
-                                'product': product,
-                            },
-                            request=request
-                        )
-                        return JsonResponse({
-                            'message': 'محصول به سبد خرید اضافه شد',
-                            'html': html,
-                            'error': False
-                        })
-                    else:
-                        return JsonResponse({
-                            'message': 'محصول به این مقدار موجود نیست',
-                            'error': True
-                        })
-
+            # چک کردن اینونتوری و پوش کردن به سبد
+            if product.check_inventory(requested_amount):
+                if current_order_detail:
+                    current_order_detail.count = F('count') + 1
+                    current_order_detail.save(update_fields=['count'])
+                    message = 'محصول در سبد بروزرسانی شد'
+                    error = False
                 else:
-                    if product.shop(count , 1):
-                        current_order_detail.count += count
-                        current_order_detail.save()
-                        current_order, created = Order.objects.prefetch_related('orderdetails_set').get_or_create(
-                        is_paid=False, user_id=request.user.id)
-                        html = render_to_string(
-                            'product_module/include/product_incart.html',
-                            {
-                                'orders': current_order.orderdetails_set.filter(
-                                    product=product
-                                ),
-                                'product': product,
-                            },
-                            request=request
-                        )
-                        return JsonResponse({
-                            'message': 'محصول به سبد خرید اضافه شد',
-                            'html': html,
-                            'error': False
-                        })
-                    else:
-                        return JsonResponse({
-                            'message': 'محصول به این مقدار موجود نیست',
-                            'error': True
-                        })
-            else:
-                if product.is_byWeight:
-                    if product.shop(count, pack.size):
-                        new_detail = OrderDetail(order_id=current_order.id ,product_id=product_id ,pack_size=pack ,count=count)
-                        current_order.status = status
-                        current_order.save()
-                        new_detail.save()
-                else:
-                    if product.shop(count, 1):
-                        new_detail = OrderDetail(order_id=current_order.id ,product_id=product_id ,pack_size=product.packs.first() ,count=count)
-                        current_order.status = status
-                        current_order.save()
-                        new_detail.save()
-                current_order, created = Order.objects.prefetch_related('orderdetails_set').get_or_create(is_paid=False,user_id=request.user.id)
-                html = render_to_string(
-                    'product_module/include/product_incart.html',
-                    {
-                        'orders': current_order.orderdetails_set.filter(
-                            product=product
-                        ),
-                        'product': product,
-                    },
-                    request=request
-                )
-                return JsonResponse({
-                    'message': 'محصول به سبد خرید اضافه شد',
-                    'html': html,
-                    'error': False
-                })
+                    new_detail = OrderDetail(order_id=current_order.id ,product_id=product.id ,pack_size=pack_model if product.is_byWeight else None ,count=1)
+                    new_detail.save()
+                    message = 'محصول به سبد اضافه شد'
+                    error = False
 
+                current_order.last_change = timezone.now()
+                current_order.save()
+            else:
+                message = 'محصول با این مقدار موجود نیست'
+                error = True
         else:
-            return JsonResponse({
-                'message': 'برای افزودن به سبد ابتدا وارد حساب کاربری خود شوید',
-                'error': True
-            })
+            return redirect('login_page')
+    except Exception as e: return JsonResponse({'message': f'{e}' ,'error': True})
 
-
-
-    except Exception as e:
-        return JsonResponse({
-            'message': f'{e}',
-            'error': True
-        })
-
-
-
-def change_order_count(request: HttpRequest):
-    detail_id = int(request.GET.get('detail_id'))
-    type = str(request.GET.get('type'))
-
-    if detail_id is None or type is None:
-        return JsonResponse({
-            'message': 'خطای ناشناخته',
-            'error': True
-        })
-    order_detail = OrderDetail.objects.filter(id=detail_id ,order__is_paid=False ,order__user=request.user).first()
-    if order_detail is None:
-        return JsonResponse({
-            'message': 'جزئیات پیدا نشد',
-            'error': True
-        })
-
-    product = order_detail.product
-
-    if type == 'increase':
-        if product.is_byWeight:
-            pack = order_detail.pack_size.size
-            if product.shop(1 , pack):
-                order_detail.count += 1
-                order_detail.save()
-            else:
-                current_order, created = Order.objects.prefetch_related('orderdetails_set').get_or_create(is_paid=False,user_id=request.user.id)
-                html = render_to_string(
-                    'product_module/include/product_incart.html',
-                    {
-                        'orders': current_order.orderdetails_set.filter(
-                            product=product
-                        ),
-                        'product': product,
-                    },
-                    request=request
-                )
-                return JsonResponse({
-                    'message': 'محصول موجود نیست',
-                    'error': True,
-                    'html': html
-                })
-        else:
-            if product.shop(1 , 1):
-                order_detail.count += 1
-                order_detail.save()
-            else:
-                current_order, created = Order.objects.prefetch_related('orderdetails_set').get_or_create(is_paid=False,user_id=request.user.id)
-                html = render_to_string(
-                    'product_module/include/product_incart.html',
-                    {
-                        'orders': current_order.orderdetails_set.filter(
-                            product=product
-                        ),
-                        'product': product,
-                    },
-                    request=request
-                )
-                return JsonResponse({
-                    'message': 'محصول موجود نیست',
-                    'error': True,
-                    'html': html
-                })
-
-    elif type == 'decrease':
-        if product.is_byWeight:
-            pack = order_detail.pack_size.size
-            if order_detail.count == 1:
-                order_detail.delete()
-                product.q_back(1 , pack)
-            else:
-                order_detail.count -= 1
-                order_detail.save()
-                product.q_back(1 , pack)
-        else:
-            if order_detail.count == 1:
-                order_detail.delete()
-                product.q_back(1 , 1)
-            else:
-                order_detail.count -= 1
-                order_detail.save()
-                product.q_back(1 , 1)
-    else:
-        return JsonResponse({
-            'message': 'درخواست نامعتبر',
-            'error': True
-        })
-
-    current_order ,created = Order.objects.prefetch_related('orderdetails_set').get_or_create(is_paid=False ,user_id=request.user.id)
-    total_amount = current_order.calculate_total_price()
-
-    context = {
-        'orders': current_order,
-        'total': total_amount,
-    }
+    prefetch_related_objects([current_order], 'orderdetails_set')
 
     html = render_to_string(
         'product_module/include/product_incart.html',
-        {
-            'orders': current_order.orderdetails_set.filter(
-                product=product
-            ),
-            'product': product,
+        {'orders': current_order.orderdetails_set.filter(product=product),
+            'product': product ,
         },
         request=request
     )
 
-
     return JsonResponse({
-        'html': html,
-        'error': False,
-        'rem': product.quantity
+        'message': message,
+        'html': html if html is not None else False,
+        'error': error
     })
 
-
-
-
-
-
-def change_order_count_basket(request: HttpRequest):
+def change_order_count(request: HttpRequest):
+    message = ''
+    error = False
     detail_id = int(request.GET.get('detail_id'))
     type = str(request.GET.get('type'))
-    total_amount = 0
-    total_items = 0
-    total_weight = float(0)
+    page = str(request.GET.get('page'))
+
 
     if detail_id is None or type is None:
-        return JsonResponse({
-            'message': 'خطای ناشناخته',
-            'error': True
-        })
-    order_detail = OrderDetail.objects.filter(id=detail_id ,order__is_paid=False ,order__user=request.user).first()
+        message= 'سبد خرید پیدا نشد',
+        error= True
+    current_order ,created = Order.objects.prefetch_related('orderdetails_set').get_or_create(is_paid=False ,is_done=False ,user=request.user)
+    order_detail = current_order.orderdetails_set.filter(id=detail_id).first()
     if order_detail is None:
-        return JsonResponse({
-            'message': 'جزئیات پیدا نشد',
-            'error': True
-        })
+        message= 'سبد خرید پیدا نشد',
+        error= True
 
     product = order_detail.product
+    order_pack_model = order_detail.pack_size
+    pack = order_pack_model.size if product.is_byWeight else 1
+
+    existing_count = order_detail.count if order_detail else 0
+    new_count = existing_count + 1
+    requested_amount = (new_count * pack) if product.is_byWeight else new_count
 
     if type == 'increase':
-        if product.is_byWeight:
-            pack = order_detail.pack_size.size
-            if product.shop(1 , pack):
-                order_detail.count += 1
-                order_detail.save()
-            else:
-                current_order, created = Order.objects.prefetch_related('orderdetails_set').get_or_create(is_paid=False,user_id=request.user.id)
-                for order_detail in current_order.orderdetails_set.all():
-                    total_amount += order_detail.total_price
-                    total_items += order_detail.count
-                total_weight = current_order.order_weight()
-                html = render_to_string(
-                    'order_module/basket_partial.html',
-                    {
-                        'orders': current_order,
-                        'total_amount': total_amount,
-                        'total_items': total_items,
-                        'total_weight': total_weight
-                    },
-                    request=request
-                )
+        if product.check_inventory(requested_amount):
+            order_detail.count = F('count') + 1
+            order_detail.save(update_fields=['count'])
 
-                return JsonResponse({
-                    'message': 'محصول موجود نیست',
-                    'error': True,
-                    'html': html
-                })
+            current_order.last_change = timezone.now()
+            current_order.save()
         else:
-            if product.shop(1 , 1):
-                order_detail.count += 1
-                order_detail.save()
-            else:
-                current_order, created = Order.objects.prefetch_related('orderdetails_set').get_or_create(is_paid=False,user_id=request.user.id)
-                for order_detail in current_order.orderdetails_set.all():
-                    total_amount += order_detail.total_price
-                    total_items += order_detail.count
-                total_weight = current_order.order_weight()
-                html = render_to_string(
-                    'order_module/basket_partial.html',
-                    {
-                        'orders': current_order,
-                        'total_amount': total_amount,
-                        'total_items': total_items,
-                        'total_weight': total_weight
-                    },
-                    request=request
-                )
-
-                return JsonResponse({
-                    'message': 'محصول موجود نیست',
-                    'error': True,
-                    'html': html
-                })
+            message = 'محصول موجود نیست'
+            error = True
 
     elif type == 'decrease':
-        if product.is_byWeight:
-            pack = order_detail.pack_size.size
-            if order_detail.count == 1:
-                order_detail.delete()
-                product.q_back(1 , pack)
-            else:
-                order_detail.count -= 1
-                order_detail.save()
-                product.q_back(1 , pack)
+        if order_detail.count - 1 == 0:
+            order_detail.delete()
         else:
-            if order_detail.count == 1:
-                order_detail.delete()
-                product.q_back(1 , 1)
-            else:
-                order_detail.count -= 1
-                order_detail.save()
-                product.q_back(1 , 1)
+            order_detail.count = F('count') - 1
+            order_detail.save()
+
+        current_order.last_change = timezone.now()
+        current_order.save()
     else:
-        return JsonResponse({
-            'message': 'درخواست نامعتبر',
-            'error': True
-        })
+        message = 'درخواست نامعتبر'
+        error = True
 
-    current_order, created = Order.objects.prefetch_related('orderdetails_set').get_or_create(is_paid=False, user_id=request.user.id)
-    for order_detail in current_order.orderdetails_set.all():
-        total_amount += order_detail.total_price
-        total_items += order_detail.count
-    total_weight = current_order.order_weight()
-    html = render_to_string(
-        'order_module/basket_partial.html',
-        {
-            'orders': current_order,
-            'total_amount': total_amount,
-            'total_items': total_items,
-            'total_weight': total_weight
-        },
-        request=request
-    )
-
+    prefetch_related_objects([current_order] ,'orderdetails_set')
+    if page == 'product':
+        html = render_to_string(
+            'product_module/include/product_incart.html',
+            {
+                'orders': current_order.orderdetails_set.filter(product=product),
+                'product': product,
+                'insufficient_items': current_order.Check_insufficient_items()
+            },
+            request=request
+        )
+    elif page == 'basket':
+        current_order, created = Order.objects.prefetch_related('orderdetails_set').get_or_create(is_paid=False,                                                                                     user_id=request.user.id)
+        order_summary = current_order.get_order_summary()
+        html = render_to_string(
+            'order_module/basket_partial.html',
+            {
+                'orders': current_order,
+                'total_amount': order_summary['total_amount'],
+                'total_items': order_summary['total_items'],
+                'total_weight': order_summary['total_weight'],
+                'insufficient_items': current_order.Check_insufficient_items()
+            },
+            request=request
+        )
 
     return JsonResponse({
         'html': html,
-        'error': False,
-        'rem': product.quantity
+        'error': error,
+        'message': message,
+        'rem': product.quantity,
     })
 
 
@@ -422,10 +193,8 @@ def change_order_count_basket(request: HttpRequest):
 def my_basket(request: HttpRequest):
     if request.user.is_authenticated:
         current_order ,create = Order.objects.prefetch_related('orderdetails_set').get_or_create(is_paid = False ,user_id=request.user.id)
-        total_amount = current_order.calculate_total_price()
-        total_items = current_order.total_items()
-        total_weight = current_order.order_weight()
-        related_products = Product.objects.filter(is_active=True ,quantity__gt=0).order_by('-created_at')
+        order_summary = current_order.get_order_summary()
+        related_products = Product.objects.filter(is_active=True,is_deleted=False ,quantity__gt=0).order_by('-created_at')[:10]
     else:
         return redirect('login_page')
 
@@ -433,24 +202,18 @@ def my_basket(request: HttpRequest):
         'slider_title': 'جدیدترین محصولات',
         'related_products': related_products,
         'orders': current_order,
-        'total_items': total_items,
-        'total_amount': total_amount,
-        'total_weight': total_weight,
+        'total_items': order_summary['total_items'],
+        'total_amount': order_summary['total_amount'],
+        'total_weight': order_summary['total_weight'],
+        'insufficient_items': current_order.Check_insufficient_items()
     }
     return render(request ,'order_module/shopping_basket.html' ,context)
 
 def delete_cart(request):
-    current_order = Order.objects.filter(user=request.user ,is_paid=False).first()
+    current_order = Order.objects.prefetch_related('orderdetails_set').filter(user=request.user ,is_paid=False ,is_done=False).first()
     if current_order:
-        order_detail = OrderDetail.objects.filter(order=current_order)
-        for detail in order_detail:
-            if detail.product.is_byWeight:
-                detail.product.quantity += detail.count * detail.pack_size.size
-                detail.product.save()
-            else:
-                detail.product.quantity += detail.count
-                detail.product.save()
-        current_order.delete()
+        for order in current_order.orderdetails_set.all():
+            order.delete()
     return redirect('my_basket_page')
 
 
@@ -463,15 +226,13 @@ class BasketCheckout(View):
         message = None
         message_e = None
         popup_open = None
-        user = request.user
+
         provinces = Province.objects.all()
-        cities = City.objects.all()
         current_order, create = Order.objects.prefetch_related('orderdetails_set').get_or_create(is_paid=False,user_id=request.user.id)
+        order_summary = current_order.get_order_summary()
         if not current_order.orderdetails_set.all():
             return redirect('my_basket_page')
         my_address = Address.objects.filter(user=request.user)
-        total_amount = current_order.calculate_total_price()
-        total_items = current_order.total_items()
         posting_methods = PostingMethod.objects.filter(is_active=True).order_by('order_type')
 
         msg = request.session.get('message')
@@ -482,16 +243,15 @@ class BasketCheckout(View):
         context = {
             'orders': current_order,
             'my_address': my_address,
-            'total_amount': total_amount,
-            'total_items': total_items,
-            'total_weight': current_order.order_weight(),
+            'total_amount': order_summary['total_amount'],
+            'total_items': order_summary['total_items'],
+            'total_weight': order_summary['total_weight'],
             'address_form': address_form,
             'order_form': order_form,
             'message': message,
             'message_e': message_e,
             'popup_open': popup_open,
             'provinces': provinces,
-            'cities': cities,
             'posting_methods': posting_methods,
         }
         return render(request ,'order_module/basket_checkout.html' ,context)
@@ -502,13 +262,12 @@ class BasketCheckout(View):
         popup_open = None
         address_form = None
         order_form = None
+
         user = request.user
         provinces = Province.objects.all()
-        cities = City.objects.all()
         current_order, create = Order.objects.prefetch_related('orderdetails_set').get_or_create(is_paid=False,user_id=request.user.id)
+        order_summary = current_order.get_order_summary()
         my_address = Address.objects.filter(user=request.user)
-        total_amount = current_order.calculate_total_price()
-        total_items = current_order.total_items()
         posting_methods = PostingMethod.objects.filter(is_active=True).order_by('order_type')
 
         form_type = request.POST.get('form_type')
@@ -566,30 +325,31 @@ class BasketCheckout(View):
                         address.can_delete = False
                         address.save()
                     posting = PostingMethod.objects.filter(id=posting_id).first()
-                    order = Order.objects.filter(user=request.user ,is_paid=False).first()
-                    order.address = address
-                    order.desc = desc
-                    order.posting_method = posting
-                    order.save()
+                    current_order.address = address
+                    current_order.desc = desc
+                    current_order.posting_method = posting
+                    current_order.save()
+
+                    if current_order.Check_insufficient_items():
+                        return redirect('my_basket_page')
+
                     return redirect('payment_page')
             else:
                 message_e = 'در تکمیل سبد خرید مشکلی پیش آمده!'
 
 
-
         context = {
             'orders': current_order,
             'my_address': my_address,
-            'total_amount': total_amount,
-            'total_items': total_items,
-            'total_weight': current_order.order_weight(),
+            'total_amount': order_summary['total_amount_including_postage_fee'],
+            'total_items': order_summary['total_items'],
+            'total_weight': order_summary['total_weight'],
             'address_form': address_form,
             'order_form': order_form,
             'message': message,
             'message_e': message_e,
             'popup_open': popup_open,
             'provinces': provinces,
-            'cities': cities,
             'posting_methods': posting_methods,
         }
         return render(request ,'order_module/basket_checkout.html' ,context)
@@ -604,17 +364,15 @@ class BasketPayment(View):
         current_order, create = Order.objects.prefetch_related('orderdetails_set').get_or_create(is_paid=False,user_id=request.user.id)
         if not current_order.address or not current_order.posting_method:
             return redirect('checkout_page')
-        total_amount = current_order.include_postage_fee()
-        total_items = current_order.total_items()
-        total_weight = current_order.order_weight()
+        order_summary = current_order.get_order_summary()
         postage_fee = current_order.postage_fee()
         payment_method = PaymentMethod.objects.order_by('-pk')
 
         context = {
             'orders': current_order,
-            'total_amount': total_amount,
-            'total_items': total_items,
-            'total_weight': total_weight,
+            'total_amount': order_summary['total_amount_including_postage_fee'],
+            'total_items': order_summary['total_items'],
+            'total_weight': order_summary['total_weight'],
             'postage_fee': postage_fee,
             'payment_method': payment_method,
             'message': message,
@@ -638,10 +396,14 @@ class BasketPayment(View):
             current_order.payment_method = pay_method
             current_order.save()
             if pay_method:
-                if pay_method.id == 1:
-                    return redirect('deposit_page')
+                if current_order.Check_insufficient_items():
+                    return redirect('my_basket_page')
                 else:
-                    return request_online_payment(request)
+                    current_order.make_reservation()
+                    if pay_method.id == 1:
+                        return redirect('deposit_page')
+                    else:
+                        return request_online_payment(request)
             else:
                 message_e = 'روش پرداخت نامعتبر'
 
@@ -666,7 +428,7 @@ class Deposit(View):
         message_e = None
         payment_method = PaymentMethod.objects.get(id=1)
         current_order = Order.objects.filter(user=request.user ,is_paid=False ,payment_method=payment_method).first()
-        if not current_order:
+        if not current_order or not current_order.stock_reserved:
             return redirect('payment_page')
         total_amount = current_order.include_postage_fee() * 10
         card = payment_method.card
@@ -732,6 +494,8 @@ def request_online_payment(request):
     online_pay_merchant = PaymentMethod.objects.filter(id=2).first()
     try:
         current_order ,created = Order.objects.get_or_create(is_paid=False ,is_done=False ,user=request.user)
+        if not current_order.stock_reserved:
+            current_order.make_reservation()
         total = current_order.include_postage_fee()
         total_to_irrial = total * 10
 
@@ -814,6 +578,7 @@ def verify_payment(request: HttpRequest):
                 return render(request ,'order_module/include/payment_verify.html' ,context)
 
             else:
+                current_order.drop_reservation()
                 context = {
                     'error': 'پرداخت ناموفق!',
                     'returning': 'در حال انتقال به سبد خرید',
@@ -822,6 +587,7 @@ def verify_payment(request: HttpRequest):
                 return render(request ,'order_module/include/payment_verify.html' ,context)
 
         else:
+            current_order.drop_reservation()
             context = {
                 'error': 'پرداخت ناموفق!',
                 'returning': 'در حال انتقال به سبد خرید',
@@ -829,11 +595,15 @@ def verify_payment(request: HttpRequest):
             }
             return render(request, 'order_module/include/payment_verify.html', context)
     else:
+        current_order = Order.objects.get(user=request.user, is_paid=False)
+        if current_order:
+            current_order.drop_reservation()
         context = {
             'error': 'پرداخت ناموفق!',
             'returning': 'در حال انتقال به سبد خرید',
             'redirect_url': reverse('my_basket_page'),
         }
+
         return render(request, 'order_module/include/payment_verify.html', context)
 
 
