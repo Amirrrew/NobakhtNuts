@@ -1,0 +1,41 @@
+{% load poll_extras %}
+
+<div id="popup-parent-pop" class="popup-parent">
+    <div id="popup-form" class="popup-form-inventory form-default">
+        <div class="flex justify-between p-5">
+            <div class="flex gap-2 ">
+                <svg class="mt-[-5px]" id="Edit Square" width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.854C5.05 2.854 2.5 5.404 2.5 12.604C2.5 19.804 5.05 22.354 12.25 22.354C19.45 22.354 22 19.804 22 12.604C22 5.404 19.45 2.854 12.25 2.854Z" fill="#674d45"></path>
+                <path d="M16.46 11.3442L17.02 10.7142C17.42 10.2642 17.61 9.71416 17.61 9.16416C17.61 8.52416 17.34 7.87416 16.82 7.41416C15.86 6.56416 14.38 6.65416 13.52 7.61416L12.96 8.24416C13 8.26416 16.44 11.3142 16.46 11.3442Z" fill="#674d45"></path>
+                <path d="M9.06997 17.8742C9.85997 17.8742 10.86 17.6742 11.6 16.8442L15.48 12.4542C15.45 12.4342 12.01 9.38416 11.98 9.35416L8.09997 13.7442C6.66997 15.3642 7.69997 17.6142 7.70997 17.6342C7.71997 17.6642 7.74997 17.6942 7.77997 17.7042C7.78997 17.7042 8.34997 17.8742 9.06997 17.8742Z" fill="#674d45"></path>
+                </svg>
+                <div id="form-title" class=" text-4xl mt-1 font-black">
+                    اصلاح موجودی
+                </div>
+            </div>
+            <button onclick="PopUpOrder('none' ,'close')" class="btn-icon2" style="color: #d1c1bd; width: 40px; height: 40px; padding-right: 8px">
+                <svg id="Close Square" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.052 2.78467 2.5 5.33667 2.5 12.5347C2.5 19.7327 5.052 22.2847 12.25 22.2847C19.449 22.2847 22 19.7327 22 12.5347C22 5.33667 19.449 2.78467 12.25 2.78467Z" fill="#c5b8b4"></path>
+                <path d="M14.6504 15.6777C14.8424 15.6777 15.0344 15.6037 15.1804 15.4577C15.4734 15.1647 15.4734 14.6897 15.1804 14.3967L13.3064 12.5237L15.1694 10.6597C15.4624 10.3667 15.4624 9.89268 15.1694 9.59968C14.8764 9.30668 14.4024 9.30668 14.1094 9.59968L12.2454 11.4637L10.3794 9.59768C10.0864 9.30468 9.61236 9.30468 9.31936 9.59768C9.02636 9.89068 9.02636 10.3647 9.31936 10.6577L11.1854 12.5237L9.31936 14.3917C9.02636 14.6847 9.02636 15.1587 9.31936 15.4517C9.46536 15.5987 9.65836 15.6717 9.84936 15.6717C10.0414 15.6717 10.2334 15.5987 10.3794 15.4517L12.2464 13.5847L14.1194 15.4577C14.2664 15.6037 14.4574 15.6777 14.6504 15.6777Z" fill="#c5b8b4"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="px-5 mt-[-10px]" id="basket-inventory-partial">
+            {% include 'order_module/include/basket_popup_edit_inventory_partial.html' %}
+        </div>
+
+        <div class="flex gap-2 w-[100%] px-5 mt-3 mb-5">
+                <button name="form_type" value="new_address" type="submit" class="btn-defIconFlex gap-2" style="width: 100%; height: 50px; font-size: 17px; justify-content: center; padding-top: 12px">
+                    <svg id="Paper Upload" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M17.26 8.674C15.614 8.674 14.27 7.34 14.27 5.694V3.652L19.552 8.674H17.26ZM20.955 8.85C20.955 8.81 20.955 8.78 20.945 8.74C20.915 8.56 20.885 8.38 20.855 8.21C20.835 8.1 20.785 8.01 20.705 7.93L15.035 2.53C14.965 2.46 14.865 2.41 14.765 2.4C14.595 2.38 14.415 2.36 14.235 2.34C14.205 2.33 14.165 2.33 14.135 2.33C13.555 2.28 12.915 2.25 12.245 2.25C5.68498 2.25 3.35498 4.8 3.35498 12C3.35498 19.19 5.68498 21.75 12.245 21.75C18.815 21.75 21.145 19.19 21.145 12C21.145 10.8 21.085 9.76 20.955 8.85Z" fill="#c5b8b4"></path>
+                    <path d="M13.2397 13.584C13.4307 13.584 13.6227 13.511 13.7687 13.365C14.0617 13.073 14.0637 12.599 13.7707 12.305L11.4267 9.95003C11.2907 9.81303 11.1027 9.72803 10.8947 9.72803C10.6867 9.72803 10.4987 9.81303 10.3627 9.95003L8.01769 12.305C7.72569 12.599 7.72669 13.073 8.01969 13.365C8.31369 13.657 8.78869 13.657 9.08069 13.364L10.1447 12.294V16.519C10.1447 16.933 10.4807 17.269 10.8947 17.269C11.3087 17.269 11.6447 16.933 11.6447 16.519V12.295L12.7087 13.364C12.8547 13.511 13.0467 13.584 13.2397 13.584Z" fill="#c5b8b4"></path>
+                    </svg>
+                    <div>
+                        تایید
+                    </div>
+                </button>
+                <button type="button" onclick="PopUpOrder('none' ,'close')" class="submit-btn btn-defIconFlex2" style="width: 100%; height: 50px; border-radius: 7px; display: block">لغو</button>
+            </div>
+    </div>
+</div>

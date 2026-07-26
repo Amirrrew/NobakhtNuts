@@ -74,4 +74,30 @@
         </div>
         {% include 'order_module/include/checkout_totalbox_mobile.html' %}
     </form>
+    <script>
+
+            // اعمال هزینه پست
+        let ApplyPostageFee = (post) => {
+            let type = ''
+            if (window.innerWidth < 1000) {
+                type = 'mobile'
+            } else {type='desktop'}
+            loader.style = 'display:block;'
+            fetch(`/orders/apply-fee/?type=${type}&post=${post}`).then(res => res.json()).then(
+                data => {
+                    if (data.html) {
+                        document.getElementById(`basket-checkout-${type}`).innerHTML = data.html
+                    }
+                }
+            ).finally(()=> {loader.style = 'display:none;'})
+        }
+
+        let posting_methods = document.querySelectorAll('input[name="posting"]')
+        posting_methods.forEach(item => {
+            item.addEventListener('change' ,()=> {
+                ApplyPostageFee(item.value)
+            })
+        })
+
+    </script>
 {% endblock %}

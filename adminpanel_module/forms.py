@@ -22,7 +22,7 @@ class AdminLoginForm(AuthenticationForm):
 class ProductAddForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['holoo_id' ,'title' ,'category' ,'brand' ,'is_byWeight' ,'packs' ,'price' ,'offer' ,'quantity' ,'desc' ,'pack_weight' ,'is_active' ,'chosen']
+        fields = ['holoo_id' ,'title' ,'category' ,'brand' ,'is_byWeight' ,'packs' ,'price' ,'offer' ,'quantity' ,'desc' ,'pack_weight' ,'is_active' ,'chosen' ,'only_in_qaemshahr']
 
     def __init__(self ,*args ,**kwargs ):
         super().__init__(*args ,**kwargs )

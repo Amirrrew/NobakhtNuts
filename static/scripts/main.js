@@ -358,13 +358,13 @@ let PopUp = (type ,action) => {
     let popup = document.getElementById('popup-form')
 
     if (action === 'open') {
-        parent.style = 'display: flex'
+        window.innerWidth < 1130 ? parent.style = 'display: flex;' : parent.style = 'display: flex; align-items:center;'
         document.body.style.overflowY = 'hidden'
     } else {
-        popup.style = 'animation: unload3 200ms'
+        popup.style = 'animation: unload4 200ms'
         setTimeout(()=> {
             parent.style = 'display: none'
-            popup.style = 'animation: load4 500ms;'
+            popup.style = 'animation: load5 300ms;'
             document.body.style.overflowY = 'scroll'
         } ,100)
     }
@@ -560,8 +560,13 @@ let AddToOrder = (productId ,isWeight) => {
 }
 
 // تغییر مقدار آیتم سبد خرید
-let change_order_count = (detail_id ,type ,page) => {
-    let url = `/orders/change-order-count/?detail_id=${detail_id}&type=${type}&page=${page}`
+let change_order_count = (detail_id ,type ,page ,pack) => {
+    let url = ''
+    if (pack) {
+        url = `/orders/change-order-count/?detail_id=${detail_id}&type=${type}&page=${page}&pack=${pack}`
+    } else {
+        url = `/orders/change-order-count/?detail_id=${detail_id}&type=${type}&page=${page}`
+    }
     document.getElementById('loader').style = 'display: block;'
     fetch(url).then(res => res.json()).then(data => {
         if (data.message) {
@@ -702,5 +707,32 @@ let PayNav = (force) => {
             btnnav.style = 'transform: none'
             payopen = true
         }
+    }
+}
+
+let inventory_partial = document.getElementById('basket-inventory-partial')
+let Get_orderdetail_packs = (detail_id) => {
+    loader.style = 'display: block'
+    fetch(`/orders/change-order-count/?type=get&detail_id=${detail_id}&page=basket`).then(res => res.json()).then(data => {
+        data.html ? inventory_partial.innerHTML = data.html : Message('در دریافت اطلاعات مشکلی پیش آمده!' ,true)
+    }).finally(()=> {
+        loader.style = 'display: none;'
+    })
+}
+
+let PopUpOrder = (type ,action) => {
+    let parent = document.getElementById('popup-parent-pop')
+    let popup = document.getElementById('popup-form')
+
+    if (action === 'open') {
+        parent.style = 'display: flex; align-items:center;'
+        document.body.style.overflowY = 'hidden'
+    } else {
+        popup.style = 'animation: unload4 200ms'
+        setTimeout(()=> {
+            parent.style = 'display: none'
+            popup.style = 'animation: load5 300ms;'
+            document.body.style.overflowY = 'scroll'
+        } ,100)
     }
 }

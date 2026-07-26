@@ -13,7 +13,7 @@
                     <div class="">سبد خرید من ({{ total_items|to_fanum }})</div>
                 </div>
                 <div class="text-[var(--color10)]">
-                    {{ total_weight|to_fanum }} کیلو
+                    {% if not total_discount %}{{ total_weight|to_fanum }} کیلو{% else %}<div class="line-through">{{ total_amount_without_discount|three_digits_currency }}</div>{% endif %}
                 </div>
             </div>
 

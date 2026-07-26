@@ -9,6 +9,7 @@
 
 {% block page_content %}
     {% include 'message_json.html' %}
+    {% include 'order_module/include/basket_popup_edit_inventory.html' %}
     {% if orders.orderdetails_set.all %}
         <div class="shopping-basket centerbox mt-45">
             <div class="basket-titlebox w-[90%] border-b border-[var(--color11)] pb-2">

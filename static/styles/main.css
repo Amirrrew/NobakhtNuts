@@ -296,6 +296,17 @@ input[type="number"] {
         right: 3%;
         overflow-x: hidden;
     }
+
+    body .basket-command-btns {
+        width: 100%;
+    }
+
+    .basket-command-btns .basket-command {
+        width: 100%;
+        height: 40px;
+        font-size: 17px;
+        margin-top: 5px;
+    }
 }
 
 @media screen and (max-width: 1000px) {
@@ -492,7 +503,7 @@ input[type="number"] {
     }
 
     body .popup-parent {
-        align-items: normal;
+        align-items: unset;
     }
 
     #popup-actual-form{
@@ -1749,6 +1760,7 @@ header .category-menu {
     transition: 200ms;
     transition-delay: 100ms;
     background-color: #fff;
+    position: relative;
 }
 
 .product-card:hover {
@@ -1791,6 +1803,7 @@ header .category-menu {
     display: flex;
     justify-content: center;
     overflow: hidden;
+    z-index: 5;
 }
 
 .product-card-image {
@@ -2568,7 +2581,7 @@ footer {
     /*top: 50px;*/
     background-color: #eae4e4;
     border: 2px solid var(--color9);
-    animation: load4 500ms;
+    animation: load5 300ms;
 }
 
 .input-placeholder-popup {
@@ -2583,6 +2596,17 @@ footer {
     100% {
         filter: blur(10px);
         transform: scale(0%);
+    }
+}
+
+@keyframes unload4 {
+    0% {
+        top: 0;
+        opacity: 1;
+    }
+    100% {
+        top: -50px;
+        opacity: 0;
     }
 }
 
@@ -3277,4 +3301,13 @@ body .swiper-pagination-bullet-active {
 @keyframes aboutafter {
     from {width: 0}
     to {width: 100px}
+}
+
+.popup-form-inventory {
+    width: 500px;
+    position: relative;
+    top: 0;
+    background-color: #eae4e4;
+    border: 2px solid var(--color9);
+    animation: load5 300ms;
 }

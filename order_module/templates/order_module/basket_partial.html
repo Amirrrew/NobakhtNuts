@@ -41,7 +41,7 @@
                     <div class="">
                         <div class="text-sm flex w-[100%] gap-2">
                             <div style="text-decoration: line-through 1px solid var(--color7)" class="mt-5">{{ o.total_price_without_discount|three_digits_currency }}</div>
-                            <div class="h-5 px-2 mt-5 bg-[var(--color5)] text-[var(--color3)] rounded-lg">
+                            <div class="h-5 text-nowrap px-2 pt-0.5 mt-5 bg-[var(--color5)] text-[var(--color3)] rounded-lg">
                                 {{ o.product.offer|to_fanum }} %
                             </div>
                         </div>
@@ -49,7 +49,7 @@
                     </div>
                 {% endif %}
 
-                  <div class="flex items-center rounded-lg overflow-hidden pl-3 absolute left-0 bottom-3">
+                  <div class="flex items-center rounded-lg overflow-hidden pl-3  {% if o.Check_product_inventory %}absolute left-0  bottom-3{% else %}relative top-2{% endif %}">
                     <button onclick="change_order_count({{ o.id }}, 'increase','basket')"
                             class="btn-prdcounter flex items-center justify-center">
                       <i class="fa fa-add text-sm"></i>
@@ -81,12 +81,12 @@
                         <div class="mt-1">موجودی تغییر کرده و به این اندازه محصول موجود نیست</div>
                     </div>
                     <div class="flex gap-1 basket-command-btns">
-                        <button class="bg-[var(--color9)] cursor-pointer px-3 py-1.5 rounded-lg text-sm text-[var(--color6)]"> <i class="fa fa-edit text-[10px] mt-1 ml-1"></i>اصلاح موجودی </button>
-                        <button class="bg-[var(--del-bg)] cursor-pointer px-3 py-1.5 rounded-lg text-sm text-[var(--deny-text)]"> <i class="fa fa-trash text-[10px] mt-1 ml-1"></i>حذف از سبد خرید </button>
+                        <button onclick="{% if not o.product.is_byWeight %}change_order_count({{ o.id }}, 'edit','basket'){% else %}Get_orderdetail_packs({{ o.id }}) ,PopUpOrder(null ,'open'){% endif %}" class="basket-command bg-[var(--color8)] cursor-pointer px-3 py-1.5 rounded-lg text-sm text-[var(--color6)]"> <i class="fa fa-edit text-[10px] mt-1 ml-1"></i>اصلاح موجودی </button>
+                        <button onclick="change_order_count({{ o.id }}, 'delete','basket')" class="basket-command bg-[var(--del-bg)] cursor-pointer px-3 py-1.5 rounded-lg text-sm text-[var(--deny-text)]"> <i class="fa fa-trash text-[10px] mt-1 ml-1"></i>حذف از سبد خرید </button>
                     </div>
                 </div>
                 {% elif not o.product.is_available %}
-                <div class="flex flex-wrap justify-between bg-[var(--color12)] mt-3 py-2 px-2 rounded-xl">
+                <div class="flex w-[100%] justify-between bg-[var(--color12)] mt-3 py-2 px-2 rounded-xl">
                     <div class="flex gap-1">
                         <svg id="Danger" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M19.3101 10.6927L19.0981 10.3187C16.1121 5.00867 14.2561 3.03467 12.2501 3.03467C10.2441 3.03467 8.38808 5.00867 5.40208 10.3187L5.19108 10.6927C4.11808 12.5747 1.88808 16.4897 2.30208 18.8257C2.79008 21.5887 5.63508 22.0347 12.2501 22.0347C18.8661 22.0347 21.7111 21.5887 22.1981 18.8257C22.6121 16.4897 20.3821 12.5747 19.3101 10.6927Z" fill="#674d45"></path>
@@ -95,8 +95,8 @@
                         </svg>
                         <div class="mt-1">محصول ناموجود است</div>
                     </div>
-                    <div class="flex gap-1 basket-command-btns">
-                        <button class="bg-[var(--del-bg)] cursor-pointer px-3 py-1.5 rounded-lg text-sm text-[var(--deny-text)]"> <i class="fa fa-trash text-[10px] mt-1 ml-1"></i>حذف از سبد خرید </button>
+                    <div class="flex gap-1">
+                        <button onclick="change_order_count({{ o.id }}, 'delete','basket')" class="bg-[var(--del-bg)] cursor-pointer px-3 py-1.5 rounded-lg text-sm text-[var(--deny-text)]"> <i class="fa fa-trash text-[10px] mt-1 ml-1"></i>حذف از سبد خرید </button>
                     </div>
                 </div>
             {% endif %}

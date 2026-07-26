@@ -162,7 +162,7 @@ class Order(models.Model):
             total_weight += detail.calculate_package_weight
             total_discount+= detail.discount_amount
 
-        total_amount_including_postage_fee = total_amount + self.postage_fee()
+        total_amount_including_postage_fee = total_amount + self.postage_fee() if self.posting_method else 0
 
         return {
             'total_amount': total_amount,

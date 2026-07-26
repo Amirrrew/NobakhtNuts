@@ -257,6 +257,16 @@
                     <div class="mt-1 text-[var(--color10)]">
                         در صورت برگزیده بودن، محصول در لیست محصولات نسبت به بقیه بالاتر نمایش داده میشود
                     </div>
+                    <div class="flex justify-between mt-5">
+                        <h1 class="text-xl font-semibold">فقط در قائمشهر</h1>
+                        <label class="switch">
+                          <input type="checkbox" name="only_in_qaemshahr" {% if product.only_in_qaemshahr %}checked{% endif %}>
+                          <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="mt-1 text-[var(--color10)]">
+                        در صورت فعال بودن، یک لیبل در بالای کارت محصول ظاهر میشود که نشان دهنده ی این است مه کاربرانی که فقط در قائمشهر حضور دارند قادر به خرید این محصول هستند.
+                    </div>
                     {% if edit_view %}
                         <div class="flex justify-between mt-3 border-t border-[var(--color11)] pt-2">
                             <h1 class="text-xl font-semibold">بازدید</h1>

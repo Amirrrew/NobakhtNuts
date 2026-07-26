@@ -151,6 +151,52 @@ def change_order_count(request: HttpRequest):
 
         current_order.last_change = timezone.now()
         current_order.save()
+
+    elif type == 'delete':
+        if order_detail:
+            order_detail.delete()
+
+    elif type == 'edit':
+        order_detail.count = product.quantity
+        order_detail.save()
+
+    elif type == 'get':
+        data = []
+        product_packs = product.packs.all()
+        product_image = product.product_image.first().image.url
+        for p in product_packs:
+            data.append({
+                'id': p.id,
+                'pack_title': p.title,
+                'inventory': product.check_inventory(p.size),
+                'img': product_image,
+                'basket_id': order_detail.id
+            })
+
+        html = render_to_string(
+            'order_module/include/basket_popup_edit_inventory_partial.html',
+            {'packs': data},
+            request=request
+        )
+
+        return JsonResponse({
+            'html': html
+        })
+
+    elif type == 'set':
+        pack_id = request.GET.get('pack')
+        old_detail = order_detail
+        product_pack = PackageSize.objects.filter(id=pack_id).first() if product.is_byWeight else None
+        new_detail = OrderDetail(
+            order=order_detail.order,
+            count=1,
+            product=order_detail.product,
+            pack_size=product_pack
+        )
+
+        new_detail.save()
+        old_detail.delete()
+
     else:
         message = 'درخواست نامعتبر'
         error = True
@@ -238,11 +284,14 @@ class BasketCheckout(View):
             return redirect('my_basket_page')
         my_address = Address.objects.filter(user=request.user)
         posting_methods = PostingMethod.objects.filter(is_active=True).order_by('order_type')
+        postage_fee = current_order.postage_fee() if current_order.posting_method else 0
 
         msg = request.session.get('message')
         if msg:
             message = msg
             del request.session['message']
+
+
 
         context = {
             'orders': current_order,
@@ -250,6 +299,9 @@ class BasketCheckout(View):
             'total_amount': order_summary['total_amount'],
             'total_items': order_summary['total_items'],
             'total_weight': order_summary['total_weight'],
+            'total_amount_without_postage_fee': order_summary['total_amount'],
+            'postage_fee': postage_fee,
+            'total_amount_including_postage_fee': order_summary['total_amount'] + postage_fee,
             'address_form': address_form,
             'order_form': order_form,
             'message': message,
@@ -273,7 +325,7 @@ class BasketCheckout(View):
         order_summary = current_order.get_order_summary()
         my_address = Address.objects.filter(user=request.user)
         posting_methods = PostingMethod.objects.filter(is_active=True).order_by('order_type')
-
+        postage_fee = current_order.postage_fee() if current_order.posting_method else 0
         form_type = request.POST.get('form_type')
 
         if form_type == 'new_address':
@@ -348,6 +400,9 @@ class BasketCheckout(View):
             'total_amount': order_summary['total_amount_including_postage_fee'],
             'total_items': order_summary['total_items'],
             'total_weight': order_summary['total_weight'],
+            'total_amount_without_postage_fee': order_summary['total_amount'],
+            'postage_fee': postage_fee,
+            'total_amount_including_postage_fee': order_summary['total_amount'] + postage_fee,
             'address_form': address_form,
             'order_form': order_form,
             'message': message,
@@ -357,6 +412,43 @@ class BasketCheckout(View):
             'posting_methods': posting_methods,
         }
         return render(request ,'order_module/basket_checkout.html' ,context)
+
+def get_postage_fee(request):
+    post_pk = request.GET.get('post')
+    post_type = request.GET.get('type')
+    print(post_pk)
+    current_order ,created = Order.objects.get_or_create(is_paid=False,user_id=request.user.id ,is_done=False)
+    order_summary = current_order.get_order_summary()
+    postage_fee = 0
+    def calculate_postage_fee():
+        posting_method = PostingMethod.objects.filter(pk=post_pk).first()
+        print(posting_method)
+        weight = order_summary['total_weight']
+        if posting_method.title == 'پست پیشتاز':
+            if weight <= 1:
+                return int(posting_method.price_single)
+            else:
+                return int(posting_method.price_per_k * weight) + int(posting_method.tax)
+        else:
+            return 0
+
+    if post_pk:
+        postage_fee = calculate_postage_fee()
+
+    html = render_to_string(
+        'order_module/include/checkout_totalbox_desktop_partial.html' if post_type == 'desktop' else 'order_module/include/checkout_totalbox_mobile_partial.html',
+        {
+            'total_items': order_summary['total_items'],
+            'total_amount_without_postage_fee': order_summary['total_amount'],
+            'postage_fee': postage_fee,
+            'total_amount_including_postage_fee': order_summary['total_amount'] + postage_fee
+        },
+        request=request,
+    )
+
+    return JsonResponse({
+        'html': html
+    })
 
 
 class BasketPayment(View):
@@ -371,6 +463,7 @@ class BasketPayment(View):
         order_summary = current_order.get_order_summary()
         postage_fee = current_order.postage_fee()
         payment_method = PaymentMethod.objects.order_by('-pk')
+
 
         context = {
             'orders': current_order,

@@ -1,0 +1,13 @@
+{% load poll_extras %}
+
+{% for p in packs %}
+    <div onclick="change_order_count('{{ p.basket_id }}' ,'set' ,'basket' ,'{{ p.id }}') ,PopUpOrder(null ,'close')" class="w-[100%] gap-2 p-2 mt-2 cursor-pointer rounded-lg flex {% if not p.inventory %}disabled {% endif %}" style="background-color: rgba(228,218,218,0.5);">
+        <div class="w-12 h-12 min-h-12 min-w-12 bg-[var(--color17)] rounded">
+            <img loading="eager" src="{{ p.img }}" alt="{{ p.product_title }}">
+        </div>
+        <div class="flex justify-between gap-2 w-[100%] mt-2.5">
+            <div class="flex items-start gap-1"><div class="text-xl ">بسته {{ p.pack_title|to_fanum }}</div>{% if not p.inventory %}<div class="bg-[var(--del-bg)] mt-0.5 text-[var(--deny-text)] px-1 py-0.5 text-sm rounded-lg">ناموجود</div>{% endif %}</div>
+            <i class="fa fa-angle-left ml-2 mt-1"></i>
+        </div>
+    </div>
+{% endfor %}

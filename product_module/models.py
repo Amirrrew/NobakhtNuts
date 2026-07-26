@@ -128,7 +128,7 @@ class Product(models.Model):
     packs = models.ManyToManyField(PackageSize ,null=True ,blank=True ,verbose_name='اندازه بسته بندی های محصول')
     pack_weight = models.FloatField(null=True ,blank=True ,verbose_name='وزن بسته')
     chosen = models.BooleanField(default=False,db_index=True ,verbose_name='محصول برگزیده')
-
+    only_in_qaemshahr = models.BooleanField(default=False ,db_index=True ,verbose_name='فقط در قائمشهر')
 
     def get_absolute_url(self):
         return reverse('product_detail_page' ,args=[self.slug])
@@ -165,8 +165,8 @@ class Product(models.Model):
         else:
             return self.price
 
-    def check_inventory(self , size):
-        return self.quantity - (float(size)) >= 0 if self.is_byWeight else self.quantity - 1 >= 0
+    def check_inventory(self, size):
+        return self.quantity - float(size) >= 0 if self.is_byWeight else self.quantity - size >= 0
 
 
     def shop(self,count ,size ,*args ,**kwargs):
