@@ -147,9 +147,11 @@ let search_tables = (search ,table ,url ,name) => {
     loader.style = 'display: block'
     search_timeout = setTimeout(() => {
         let q = search_value.value.trim()
+        console.log(q)
         fetch(url + `?q=${q}` ,{signal: controller.signal}).then(res => res.json()).then(
             data => {
                 data.data_length > 0 ? table_partial.innerHTML = data.html : table_partial.innerHTML = `<div class="mt-5 text-center w-[100%] mb-3">رکوردی یافت نشد!</div>`
+                console.log(data)
             }
         ).finally(() => {
             name ? ToolbarCheck(name) : null
