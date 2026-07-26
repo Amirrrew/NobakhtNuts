@@ -711,12 +711,24 @@ let PayNav = (force) => {
 }
 
 let inventory_partial = document.getElementById('basket-inventory-partial')
+let inventory_content = document.getElementById('inventory-content')
 let Get_orderdetail_packs = (detail_id) => {
+    let inventory_partial = document.getElementById('basket-inventory-partial')
     loader.style = 'display: block'
+    document.getElementById('skeletons-order').classList.replace('hidden' ,'block')
+    document.getElementById('inventory-content').style.display = 'none';
+
     fetch(`/orders/change-order-count/?type=get&detail_id=${detail_id}&page=basket`).then(res => res.json()).then(data => {
-        data.html ? inventory_partial.innerHTML = data.html : Message('در دریافت اطلاعات مشکلی پیش آمده!' ,true)
+        if (data.html) {
+            inventory_partial.innerHTML = data.html
+        } else {
+            Message('در دریافت اطلاعات مشکلی پیش آمده!' ,true)
+        }
     }).finally(()=> {
         loader.style = 'display: none;'
+        let content = document.getElementById('inventory-content')
+        if (content) content.style.display = 'block'
+        document.getElementById('skeletons-order').classList.replace('block' ,'hidden')
     })
 }
 
