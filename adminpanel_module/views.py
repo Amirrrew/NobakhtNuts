@@ -330,7 +330,7 @@ class ProductListView(ListView):
     def get_queryset(self):
         search = self.request.GET.get('q')
 
-        queryset = Product.objects.select_related('product_image' ,'category').filter(is_deleted=False).order_by('-is_active' ,'-created_at')
+        queryset = Product.objects.filter(is_deleted=False).order_by('-is_active' ,'-created_at')
 
         main_category = self.request.GET.get("main_category")
         sub_category = self.request.GET.get("sub_category")
