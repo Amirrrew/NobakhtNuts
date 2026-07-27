@@ -1,5 +1,7 @@
 import json
 import os
+from datetime import timedelta
+
 from django.contrib.auth.decorators import login_required
 from django.core.validators import validate_image_file_extension
 from django.urls import reverse
@@ -115,12 +117,12 @@ def change_order_count(request: HttpRequest):
 
 
     if detail_id is None or type is None:
-        message= 'سبد خرید پیدا نشد',
+        message= 'سبد خرید پیدا نشد'
         error= True
     current_order ,created = Order.objects.prefetch_related('orderdetails_set').get_or_create(is_paid=False ,is_done=False ,user=request.user)
     order_detail = current_order.orderdetails_set.filter(id=detail_id).first()
     if order_detail is None:
-        message= 'سبد خرید پیدا نشد',
+        message= 'سبد خرید پیدا نشد'
         error= True
 
     product = order_detail.product
@@ -131,13 +133,25 @@ def change_order_count(request: HttpRequest):
     new_count = existing_count + 1
     requested_amount = (new_count * pack) if product.is_byWeight else new_count
 
+    def get_other_packs_weight(product, exclude_detail_id):
+        total = 0
+        for detail in current_order.orderdetails_set.all():
+            if detail.product_id == product.id and detail.id != exclude_detail_id:
+                total += detail.count * detail.pack_size.size
+        return total
+
     if type == 'increase':
-        if product.check_inventory(requested_amount):
+        if product.is_byWeight:
+            other_packs_weight = get_other_packs_weight(product, order_detail.id)
+            total_needed = other_packs_weight + requested_amount
+        else:
+            total_needed = requested_amount
+
+        if product.check_inventory(total_needed):
             order_detail.count = F('count') + 1
             order_detail.save(update_fields=['count'])
-
             current_order.last_change = timezone.now()
-            current_order.save()
+            current_order.save(update_fields=['last_change'])
         else:
             message = 'محصول موجود نیست'
             error = True
@@ -168,7 +182,7 @@ def change_order_count(request: HttpRequest):
             data.append({
                 'id': p.id,
                 'pack_title': p.title,
-                'inventory': product.check_inventory(p.size),
+                'inventory': product.quantity - p.size >=0,
                 'img': product_image,
                 'basket_id': order_detail.id
             })
@@ -496,7 +510,12 @@ class BasketPayment(View):
                 if current_order.Check_insufficient_items():
                     return redirect('my_basket_page')
                 else:
-                    current_order.make_reservation()
+                    if not current_order.stock_reserved:
+                        current_order.make_reservation()
+                    else:
+                        current_order.stock_reserved = True
+                        current_order.stock_reservation_time = timezone.now()
+                        current_order.save()
                     if pay_method.id == 1:
                         return redirect('deposit_page')
                     else:
@@ -529,6 +548,7 @@ class Deposit(View):
             return redirect('payment_page')
         total_amount = current_order.include_postage_fee() * 10
         card = payment_method.card
+        remaining_time = current_order.reservation_expiry_timestamp
 
 
         context = {
@@ -537,6 +557,7 @@ class Deposit(View):
             'card': card,
             'payment_method': payment_method,
             'total_amount': total_amount,
+            'remaining_time': remaining_time
         }
         return render(request ,'order_module/include/basket_deposit.html' ,context)
 
@@ -548,25 +569,29 @@ class Deposit(View):
         current_order = Order.objects.get(user=request.user ,is_paid=False ,payment_method=payment_method)
         total_amount = current_order.include_postage_fee() * 10
         card = payment_method.card
+        remaining_time = current_order.reservation_expiry_timestamp
 
         receipt = request.FILES.get('receipt')
         if not receipt:
             message_e = 'رسید واریزی را آپلود کنید!'
         else:
-            is_validate = validate_image_extension(receipt)
-            if is_validate:
-                try:
-                    status = OrderStatus.objects.filter(title__iexact='در انتظار تایید').first()
-                    address = Address.objects.filter(id=current_order.address.id).first()
-                    current_order.finalize_order(receipt ,status)
-                    address.can_delete = False
-                    address.save()
-                    self.request.session['message'] = 'سفارش با موفقیت ثبت شد'
-                    return redirect(current_order.get_absolute_url())
-                except:
-                    message_e = 'در ثبت سفارش مشکلی پیش آمد!'
+            if timezone.now().timestamp() < remaining_time:
+                is_validate = validate_image_extension(receipt)
+                if is_validate:
+                    try:
+                        status = OrderStatus.objects.filter(title__iexact='در انتظار تایید').first()
+                        address = Address.objects.filter(id=current_order.address.id).first()
+                        current_order.finalize_order(receipt ,status)
+                        address.can_delete = False
+                        address.save()
+                        self.request.session['message'] = 'سفارش با موفقیت ثبت شد'
+                        return redirect(current_order.get_absolute_url())
+                    except:
+                        message_e = 'در ثبت سفارش مشکلی پیش آمد!'
+                else:
+                    message_e = 'فقط فایل‌های jpg، png یا webp مجاز هستند'
             else:
-                message_e = 'فقط فایل‌های jpg، png یا webp مجاز هستند'
+                message_e = 'زمان رزرو به اتمام رسیده!'
 
 
         context = {
@@ -575,6 +600,7 @@ class Deposit(View):
             'card': card,
             'payment_method': payment_method,
             'total_amount': total_amount,
+            'remaining_time': remaining_time
         }
         return render(request ,'order_module/include/basket_deposit.html' ,context)
 

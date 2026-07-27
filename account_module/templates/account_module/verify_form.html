@@ -134,8 +134,8 @@
             e.preventDefault();
 
             const text = e.clipboardData.getData("text")
-                .replace(/\D/g, "")   // فقط عدد
-                .slice(0, 6);         // حداکثر ۶ رقم
+                .replace(/\D/g, "")
+                .slice(0, 6);
 
             text.split("").forEach((char, index) => {
                 if (inputs[index]) {

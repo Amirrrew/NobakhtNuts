@@ -594,6 +594,9 @@ input[type="number"] {
         width: 94%;
     }
 
+    body .empty-cart {
+        width: 50%;
+    }
 }
 
 @media screen and (max-width: 550px) {

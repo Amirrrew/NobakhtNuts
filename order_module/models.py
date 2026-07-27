@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from itertools import product
 
 from django.utils import timezone
@@ -147,6 +147,13 @@ class Order(models.Model):
         self.stock_reservation_time = None
         self.save(update_fields=['stock_reserved', 'stock_reservation_time'])
 
+    @property
+    def reservation_expiry_timestamp(self):
+        if not self.stock_reservation_time:
+            return None
+        expiry = self.stock_reservation_time + timedelta(minutes=15)
+        return expiry.timestamp()
+
     def get_order_summary(self):
         details = self.orderdetails_set.select_related('product', 'pack_size')
 
@@ -211,9 +218,35 @@ class Order(models.Model):
 
         return progress
 
+    def get_other_packs_weight(self ,product, exclude_detail_id):
+        total = 0
+        for detail in self.orderdetails_set.all():
+            if detail.product_id == product.id and detail.id != exclude_detail_id:
+                total += detail.count * detail.pack_size.size
+        return total
+
     def Check_insufficient_items(self):
         order_details = self.orderdetails_set.select_related('product', 'pack_size')
-        insufficient_items = [d for d in order_details if not d.Check_product_inventory()]
+        product_totals = {}
+        for detail in order_details:
+            if detail.product.is_byWeight:
+                amount = detail.count * detail.pack_size.size
+            else:
+                amount = detail.count
+
+            if detail.product_id not in product_totals:
+                product_totals[detail.product_id] = {
+                    'product': detail.product,
+                    'total': 0
+                }
+            product_totals[detail.product_id]['total'] += amount
+
+        insufficient_product_ids = set()
+        for product_id, info in product_totals.items():
+            if not info['product'].check_inventory(info['total']):
+                insufficient_product_ids.add(product_id)
+
+        insufficient_items = [d for d in order_details if d.product_id in insufficient_product_ids]
         return insufficient_items
 
     def finalize_order(self ,receipt ,status):
@@ -291,7 +324,15 @@ class OrderDetail(models.Model):
         return weight
 
     def Check_product_inventory(self):
-        return self.product.quantity - (self.count * self.pack_size.size) >=0 if self.product.is_byWeight else self.product.quantity - self.count >= 0
+        total = 0
+        order_detail = self.order.orderdetails_set.select_related('product' ,'pack_size')
+        if self.product.is_byWeight:
+            for detail in order_detail:
+                if self.product_id == detail.product_id:
+                    total += detail.count * detail.pack_size.size
+            return self.product.quantity - total >=0
+        else:
+            return self.product.quantity - self.count >= 0
 
     @property
     def discount_amount(self):

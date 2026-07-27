@@ -24,6 +24,7 @@
 
             <div class="w-[100%]">
                 <div class="mt-3">
+
                     <div class="flex justify-between">
                         <div class="flex gap-1">
                             <svg class="mt-[-3px]" id="Bank Card" width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -38,45 +39,25 @@
                         </div>
                     </div>
 
-                      <div class="max-w w-[100%] mt-7 mb-55">
+                    <div class="w-[100%] flex gap-2 mt-2 p-4 bg-[var(--color12)] rounded-xl">
+                        <div class="timer-stage mt-1">
+                          <div class="timer-ring-wrap" id="timerRingWrap">
+                            <svg viewBox="0 0 120 120">
+                              <circle class="timer-track" cx="60" cy="60" r="52"></circle>
+                              <circle class="timer-progress" id="timerProgress" cx="60" cy="60" r="52"></circle>
+                            </svg>
+                            <div class="timer-count" style="font-size: 15px" id="timerCount">-</div>
+                          </div>
+                        </div>
+                        <div class="">
+                           <h4 class="text-xl font-semibold"> زمان باقیمانده</h4>
+                            <p class="text-[var(--color10)]">طی این مدت موجودی کالا هایی که در سبد خرید خود گذاشته اید برای شما رزرو شده. چنانچه طی این مدت پرداخت خود را انجام ندهید ،رزرو لغو و پرداخت با شکست مواجه میشود.</p>
+                        </div>
+                    </div>
 
-                            <div class="flex gap-5">
-                              <div class="flex flex-col items-center flex-shrink-0">
-                                <div class="w-9 h-9 rounded-full bg-[#674d45] flex items-center justify-center text-[#f6f3f3] text-sm">
-                                  1
-                                </div>
-                                <div class="w-[2px] flex-1 min-h-6 my-1 bg-[var(--color11)]"></div>
-                              </div>
-                              <div class="pb-8">
-                                <div class="text-xl font-bold text-[#674d45] mb-1 relative" style="animation: load 300ms">شماره کارت و مبلغ را کپی کنید</div>
-                                <div class="deposit-desc text-[var(--color10)] relative" style="animation: load 400ms">شماره کارت و مبلغ درون باکس درج شده. آنها را کپی کنید و در برنامه ی همراه بانک خود جای گذاری کنید</div>
-                              </div>
-                            </div>
+                      <div class="max-w w-[100%] mt-2 mb-55">
 
-                            <div class="flex gap-5">
-                              <div class="flex flex-col items-center flex-shrink-0">
-                                <div class="w-9 h-9 rounded-full bg-[#674d45] flex items-center justify-center text-[#f6f3f3] text-sm">
-                                  2
-                                </div>
-                                <div class="w-[2px] flex-1 min-h-6 my-1 bg-[var(--color11)]"></div>
-                              </div>
-                              <div class="pb-8">
-                                <div class="text-xl font-bold text-[#674d45] mb-1 relative" style="animation: load 500ms">واریز کنید و از رسید آن اسکرین شات بگیرید</div>
-                                <div class="deposit-desc text-[var(--color10)] relative" style="animation: load 600ms">پس از اینکه مبلغ مورد نظر را به شماره کارت واریز کردید، از رسید تراکنش یک اسکرین شات (عکس از صفحه) بگیرید.</div>
-                              </div>
-                            </div>
-
-                            <div class="flex gap-5">
-                              <div class="flex flex-col items-center flex-shrink-0">
-                                <div class="w-9 h-9 rounded-full bg-[#f6f3f3] border-2 border-[#674d45] flex items-center justify-center text-[#674d45] text-sm ring-4 ring-[rgba(103,77,69,0.10)]">
-                                  3
-                                </div>
-                                <div class="w-[2px] flex-1 min-h-6 my-1 bg-[var(--color11)]"></div>
-                              </div>
-                              <div class="pb-8">
-                                <div class="text-xl font-bold text-[#674d45] mb-1 relative" style="animation: load 700ms">رسید را آپلود کنید</div>
-                                <div class="text-[var(--color10)] relative" style="animation: load 800ms">اسکرین شاتی که از رسید خود گرفتید جهت تایید اینجا آپلود کنید.</div>
-                                  <div class="w-[100%] flex mt-3 bg-[var(--color12)] p-3 rounded-xl items-start relative" style="animation: load3 800ms">
+                          <div class="w-[100%] flex mt-3 bg-[var(--color12)] p-3 rounded-xl items-start relative" style="animation: load8 400ms">
                                     <div id="upload-avatar" class="image-inputbox" style="{% if t.image %}background-image: url({{ t.image.url }});{% endif %} width: 140px; height: 140px;">
                                         <input accept="image/png, image/jpeg, image/webp" oninput="SetUploadedImage(event ,'upload-avatar')" name="receipt" type="file" class="cursor-pointer w-[100%] h-[100%] opacity-0" style="z-index: 100">
                                         {% if not orders.image %}
@@ -102,26 +83,7 @@
                                         </div>
                                     </div>
                                 </div>
-                              </div>
-                            </div>
-
-                            <div class="flex gap-5">
-                              <div class="flex flex-col items-center flex-shrink-0">
-                                <div class="w-9 h-9 rounded-full bg-[#674d45] flex items-center justify-center text-[#f6f3f3] text-sm">
-                                    <svg id="Tick Square" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.052 2.78467 2.5 5.33667 2.5 12.5347C2.5 19.7327 5.052 22.2847 12.25 22.2847C19.448 22.2847 22 19.7327 22 12.5347C22 5.33667 19.448 2.78467 12.25 2.78467Z" fill="#c5b8b4"></path>
-                                    <path d="M11.5912 15.4375L16.3412 10.6915C16.6342 10.3985 16.6342 9.92351 16.3412 9.63051C16.0482 9.33851 15.5732 9.33751 15.2802 9.63051L11.0612 13.8465L9.2202 12.0035C8.9282 11.7125 8.4532 11.7105 8.1592 12.0035C7.8662 12.2965 7.8662 12.7715 8.1592 13.0645L10.5302 15.4375C10.6712 15.5785 10.8622 15.6575 11.0612 15.6575C11.2602 15.6575 11.4502 15.5785 11.5912 15.4375Z" fill="#c5b8b4"></path>
-                                    </svg>
-                                </div>
-                                <div class="w-[2px] flex-1 min-h-6 my-1 bg-[var(--color11)]"></div>
-                              </div>
-                              <div class="pb-8">
-                                <p class="text-xl font-bold text-[#674d45] mb-1 relative" style="animation: load 900ms">تایید سفارش</p>
-                                <p class="deposit-desc text-[var(--color10)] relative" style="animation: load 1000ms">پس از اینکه واریز شما تایید شد، سفارش شما در مرحله آماده سازی قرار میگیرد.</p>
-                              </div>
-                            </div>
-
-                          </div>
+                      </div>
                 </div>
             </div>
 
@@ -129,4 +91,88 @@
         </div>
         {% include 'order_module/include/card_number_box_mobile.html' %}
     </form>
+    <script>
+        function to_fanum_timer(num) {
+      const persianDigits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+
+      return num.toString().replace(/[0-9]/g, (d) => persianDigits[d]);
+    }
+
+
+    const EXPIRE_AT = {{ remaining_time }} * 1000;
+    const R = 52;
+    const CIRC = 2 * Math.PI * R;
+
+    const progress = document.getElementById('timerProgress');
+    const ringWrap = document.getElementById('timerRingWrap');
+    const countEl = document.getElementById('timerCount');
+
+    progress.style.strokeDasharray = CIRC;
+
+    let DURATION = 0;
+    let intervalId = null;
+
+    function getRemaining(){
+      return Math.round((EXPIRE_AT - Date.now()) / 1000);
+    }
+
+    function formatTime(totalSeconds) {
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = totalSeconds % 60;
+      return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    }
+
+    function renderExpired(){
+      clearInterval(intervalId);
+      progress.style.strokeDashoffset = CIRC;
+      countEl.textContent = to_fanum_timer(formatTime(0));
+      ringWrap.classList.remove('timer-warn');
+
+
+      {#Message('زمان شما به پایان رسید، در حال انتقال...', true);#}
+        document.getElementById('loader').style.display = 'block'
+      setTimeout(() => {
+        window.location.href = '{% url 'my_basket_page' %}';
+        document.getElementById('loader').style.display = 'block'
+      }, 4000);
+    }
+
+    function render(remaining){
+      const ratio = remaining / DURATION;
+      progress.style.strokeDashoffset = CIRC * (1 - ratio);
+      countEl.textContent = to_fanum_timer(formatTime(remaining));
+      ringWrap.classList.toggle('timer-warn', remaining <= 15);
+    }
+
+    function tick(){
+      const remaining = getRemaining();
+
+      if(remaining <= 0){
+        renderExpired();
+        return;
+      }
+
+      render(remaining);
+    }
+
+    function startTimer(){
+      const remainingNow = getRemaining();
+
+      clearInterval(intervalId);
+
+      if(remainingNow <= 0){
+        renderExpired();
+        return;
+      }
+
+      DURATION = remainingNow;
+      render(remainingNow);
+      intervalId = setInterval(tick, 1000);
+    }
+
+    startTimer();
+
+
+
+    </script>
 {% endblock %}

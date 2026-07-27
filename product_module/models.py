@@ -168,6 +168,8 @@ class Product(models.Model):
     def check_inventory(self, size):
         return self.quantity - float(size) >= 0 if self.is_byWeight else self.quantity - size >= 0
 
+    def check_total_inventory_cart(self ,total):
+        return self.quantity - total
 
     def shop(self,count ,size ,*args ,**kwargs):
         with transaction.atomic():
