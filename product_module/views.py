@@ -66,6 +66,8 @@ class ProductListView(ListView):
         category_slug = self.kwargs.get("category")
         subcategory_slug = self.kwargs.get("subcategory")
         offer = self.request.GET.get('offer')
+        brand = self.request.GET.get('brand')
+        brand_grid = self.request.GET.get('brandgrid')
         q = self.request.GET.get('q')
 
         if category_slug:
@@ -88,6 +90,10 @@ class ProductListView(ListView):
             context['title_prd'] = 'نتایج برای ' + q
         elif offer:
             context['title_prd'] = 'تخفیف های ویژه'
+        elif brand_grid:
+            if brand:
+                brand_model = ProductBrand.objects.filter(pk=brand).first()
+                context['title_prd'] = f'محصولات {brand_model.title} '
         else:
             context["title_prd"] = "همه محصولات"
 
