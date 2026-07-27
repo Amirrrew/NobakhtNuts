@@ -1,6 +1,6 @@
 from pathlib import Path
 import os
-from decouple import config
+from decouple import config, Config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -113,24 +113,26 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'level': 'ERROR',
-            'class': 'logging.FileHandler',
-            'filename': '/home/nobakhtn/logs/nobakhtnuts_errors.log',
+logging_status = Config('LOGGING')
+if logging_status:
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'handlers': {
+            'file': {
+                'level': 'ERROR',
+                'class': 'logging.FileHandler',
+                'filename': '/home/nobakhtn/logs/nobakhtnuts_errors.log',
+            },
         },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'ERROR',
-            'propagate': True,
+        'loggers': {
+            'django': {
+                'handlers': ['file'],
+                'level': 'ERROR',
+                'propagate': True,
+            },
         },
-    },
-}
+    }
 
 LANGUAGE_CODE = 'fa-ir'
 TIME_ZONE = 'Asia/Tehran'
