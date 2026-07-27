@@ -11,5 +11,6 @@ urlpatterns = [
     path('request-payment/', views.request_online_payment, name='request_online_payment'),
     path('verify-payment/' ,views.verify_payment, name='verify_payment'),
     path('delete-basket/' , views.delete_cart, name='delete_basket'),
-    path('apply-fee/' ,views.get_postage_fee ,name='apply_postage_fee')
+    path('apply-fee/' ,views.get_postage_fee ,name='apply_postage_fee'),
+    path('item-not-available' ,views.NaItemView.as_view() ,name='na_item')
 ]

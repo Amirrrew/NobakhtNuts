@@ -460,6 +460,11 @@ input[type="number"] {
     body .about-swiper {
         height: 400px;
     }
+
+    body .na-item-img {
+        width: 50%;
+        margin-top: 20px;
+    }
 }
 
 @media screen and (max-width: 650px) {

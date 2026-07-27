@@ -82,6 +82,11 @@ class PaymentMethod(models.Model):
         verbose_name_plural = 'روش های پرداخت'
 
 
+class InsufficientStockError(Exception):
+    def __init__(self ,product_title):
+        super().__init__(product_title)
+
+
 class Order(models.Model):
     user = models.ForeignKey(User, db_index=True,on_delete=models.CASCADE ,verbose_name='کاربر')
     is_paid = models.BooleanField(default=False,db_index=True ,verbose_name='پرداخت شده')
@@ -97,8 +102,7 @@ class Order(models.Model):
     postage_fee = models.IntegerField(null=True ,blank=True ,verbose_name='هزینه ارسال')
     payment_ref = models.CharField(max_length=200 ,null=True ,blank=True ,verbose_name='شماره تراکنش')
     last_change = models.DateTimeField(null=True ,blank=True ,verbose_name='آخرین تغییرات')
-    stock_reserved = models.BooleanField(default=False,db_index=True ,verbose_name='موجودی رزرو شده؟')
-    stock_reservation_time = models.DateTimeField(blank=True,db_index=True ,null=True ,verbose_name='زمان رزرو موجودی')
+    fail_state = models.BooleanField(default=False ,db_index=True ,verbose_name='پرداخت شده و ناموفق؟')
 
     def __str__(self):
         return str(self.user)
@@ -110,7 +114,7 @@ class Order(models.Model):
         verbose_name = 'سبد خرید'
         verbose_name_plural = 'سبد خرید کاربران'
         indexes = [
-            models.Index(fields=['user','status','is_paid', 'is_done', 'payment_date' ,'stock_reserved' ,'stock_reservation_time'], name='idx_order_pending_close'),
+            models.Index(fields=['user','status','is_paid', 'is_done', 'payment_date'], name='idx_order_pending_close'),
         ]
 
     def calculate_total_price(self):
@@ -128,32 +132,6 @@ class Order(models.Model):
             weight+=detail.calculate_package_weight
         return weight
 
-    @transaction.atomic
-    def make_reservation(self, *args ,**kwargs):
-        details = self.orderdetails_set.select_related('product' ,'pack_size')
-        for detail in details:
-            detail.product.shop(detail.count , detail.pack_size.size if detail.pack_size is not None else 1)
-
-        self.stock_reserved = True
-        self.stock_reservation_time = timezone.now()
-        self.save(update_fields=['stock_reserved', 'stock_reservation_time'])
-
-    @transaction.atomic
-    def drop_reservation(self):
-        details = self.orderdetails_set.select_related('product' ,'pack_size')
-        for detail in details:
-            detail.product.q_back(detail.count ,detail.pack_size.size if detail.pack_size and detail.product.is_byWeight else 1)
-        self.stock_reserved = False
-        self.stock_reservation_time = None
-        self.save(update_fields=['stock_reserved', 'stock_reservation_time'])
-
-    @property
-    def reservation_expiry_timestamp(self):
-        if not self.stock_reservation_time:
-            return None
-        expiry = self.stock_reservation_time + timedelta(minutes=15)
-        return expiry.timestamp()
-
     def get_order_summary(self):
         details = self.orderdetails_set.select_related('product', 'pack_size')
 
@@ -169,7 +147,7 @@ class Order(models.Model):
             total_weight += detail.calculate_package_weight
             total_discount+= detail.discount_amount
 
-        total_amount_including_postage_fee = total_amount + self.postage_fee() if self.posting_method else 0
+        total_amount_including_postage_fee = total_amount + self.calculate_postage_fee() if self.posting_method else 0
 
         return {
             'total_amount': total_amount,
@@ -180,7 +158,7 @@ class Order(models.Model):
             'total_amount_including_postage_fee': total_amount_including_postage_fee
         }
 
-    def postage_fee(self):
+    def calculate_postage_fee(self):
         weight = self.order_weight()
         if self.posting_method.title == 'پست پیشتاز':
             if weight <= 1:
@@ -199,7 +177,7 @@ class Order(models.Model):
 
 
     def include_postage_fee(self):
-        return self.calculate_total_price() + self.postage_fee()
+        return self.calculate_total_price() + self.calculate_postage_fee()
 
     @property
     def order_progress(self):
@@ -249,17 +227,56 @@ class Order(models.Model):
         insufficient_items = [d for d in order_details if d.product_id in insufficient_product_ids]
         return insufficient_items
 
-    def finalize_order(self ,receipt ,status):
+    @transaction.atomic
+    def finalize_order(self, receipt, status):
+        details = list(
+            self.orderdetails_set.select_related('product', 'pack_size').order_by('product_id')
+        )
+
+        for detail in details:
+            product = detail.product
+            size = detail.pack_size.size if product.is_byWeight and product.packs else 1
+
+            if not product.shop(detail.count, size):
+                raise InsufficientStockError(product.title)
+
+            detail.final_price = detail.total_price
+
+        OrderDetail.objects.bulk_update(details, ['final_price'])
+
         self.receipt = receipt
         self.status = status
         self.is_paid = True
         self.payment_date = timezone.now()
+        self.postage_fee = self.calculate_postage_fee()
         self.finalized_price = self.include_postage_fee()
-        self.postage_fee = self.postage_fee()
-        for detail in self.orderdetails_set.all():
+        self.save(update_fields=[
+            'receipt', 'status', 'is_paid', 'payment_date',
+            'postage_fee', 'finalized_price'
+        ])
+
+    @transaction.atomic
+    def order_fail(self ,receipt ,status):
+        details = list(
+            self.orderdetails_set.select_related('product', 'pack_size').order_by('product_id')
+        )
+
+        for detail in details:
             detail.final_price = detail.total_price
-            detail.save()
-        self.save()
+
+        OrderDetail.objects.bulk_update(details, ['final_price'])
+
+        self.receipt = receipt
+        self.status = status
+        self.is_paid = True
+        self.fail_state = True
+        self.payment_date = timezone.now()
+        self.postage_fee = self.calculate_postage_fee()
+        self.finalized_price = self.include_postage_fee()
+        self.save(update_fields=[
+            'receipt', 'status', 'is_paid', 'payment_date',
+            'postage_fee', 'finalized_price'
+        ])
 
     def approve_order(self):
         self.status = OrderStatus.objects.filter(title__iexact='در حال آماده سازی').first()

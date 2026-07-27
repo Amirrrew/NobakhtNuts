@@ -21,7 +21,7 @@ from iranian_cities.models import Province ,City
 
 from account_module.models import Address
 from order_module.form import OrderForm
-from order_module.models import Order, OrderDetail, OrderStatus, PostingMethod, PaymentMethod
+from order_module.models import Order, OrderDetail, OrderStatus, PostingMethod, PaymentMethod, InsufficientStockError
 from product_module.models import Product, PackageSize
 from userpanel_module.form import NewAddressForm
 from utils.my_decorators import permission_checker_decorator_factory, validate_image_extension
@@ -298,7 +298,7 @@ class BasketCheckout(View):
             return redirect('my_basket_page')
         my_address = Address.objects.filter(user=request.user)
         posting_methods = PostingMethod.objects.filter(is_active=True).order_by('order_type')
-        postage_fee = current_order.postage_fee() if current_order.posting_method else 0
+        postage_fee = current_order.calculate_postage_fee() if current_order.posting_method else 0
 
         msg = request.session.get('message')
         if msg:
@@ -339,7 +339,7 @@ class BasketCheckout(View):
         order_summary = current_order.get_order_summary()
         my_address = Address.objects.filter(user=request.user)
         posting_methods = PostingMethod.objects.filter(is_active=True).order_by('order_type')
-        postage_fee = current_order.postage_fee() if current_order.posting_method else 0
+        postage_fee = current_order.calculate_postage_fee() if current_order.posting_method else 0
         form_type = request.POST.get('form_type')
 
         if form_type == 'new_address':
@@ -475,7 +475,7 @@ class BasketPayment(View):
         if not current_order.address or not current_order.posting_method:
             return redirect('checkout_page')
         order_summary = current_order.get_order_summary()
-        postage_fee = current_order.postage_fee()
+        postage_fee = current_order.calculate_postage_fee()
         payment_method = PaymentMethod.objects.order_by('-pk')
 
 
@@ -498,7 +498,7 @@ class BasketPayment(View):
         total_amount = current_order.include_postage_fee()
         total_items = current_order.total_items()
         total_weight = current_order.order_weight()
-        postage_fee = current_order.postage_fee()
+        postage_fee = current_order.calculate_postage_fee()
         payment_method = PaymentMethod.objects.all()
 
         pay = request.POST.get('payment')
@@ -510,12 +510,6 @@ class BasketPayment(View):
                 if current_order.Check_insufficient_items():
                     return redirect('my_basket_page')
                 else:
-                    if not current_order.stock_reserved:
-                        current_order.make_reservation()
-                    else:
-                        current_order.stock_reserved = True
-                        current_order.stock_reservation_time = timezone.now()
-                        current_order.save()
                     if pay_method.id == 1:
                         return redirect('deposit_page')
                     else:
@@ -542,13 +536,11 @@ class Deposit(View):
             return redirect('login_page')
         message = None
         message_e = None
+        failed_item = None
         payment_method = PaymentMethod.objects.filter(title='کارت به کارت').first()
         current_order = Order.objects.filter(user=request.user ,is_paid=False ,payment_method=payment_method).first()
-        if not current_order or not current_order.stock_reserved:
-            return redirect('payment_page')
         total_amount = current_order.include_postage_fee() * 10
         card = payment_method.card
-        remaining_time = current_order.reservation_expiry_timestamp
 
 
         context = {
@@ -557,7 +549,7 @@ class Deposit(View):
             'card': card,
             'payment_method': payment_method,
             'total_amount': total_amount,
-            'remaining_time': remaining_time
+            'failed_item': failed_item
         }
         return render(request ,'order_module/include/basket_deposit.html' ,context)
 
@@ -565,34 +557,32 @@ class Deposit(View):
     def post(self ,request):
         message = None
         message_e = None
+        failed_item = None
         payment_method = PaymentMethod.objects.filter(title='کارت به کارت').first()
         current_order = Order.objects.get(user=request.user ,is_paid=False ,payment_method=payment_method)
         total_amount = current_order.include_postage_fee() * 10
         card = payment_method.card
-        remaining_time = current_order.reservation_expiry_timestamp
 
         receipt = request.FILES.get('receipt')
         if not receipt:
             message_e = 'رسید واریزی را آپلود کنید!'
         else:
-            if timezone.now().timestamp() < remaining_time:
-                is_validate = validate_image_extension(receipt)
-                if is_validate:
-                    try:
-                        status = OrderStatus.objects.filter(title__iexact='در انتظار تایید').first()
-                        address = Address.objects.filter(id=current_order.address.id).first()
-                        current_order.finalize_order(receipt ,status)
-                        address.can_delete = False
-                        address.save()
-                        self.request.session['message'] = 'سفارش با موفقیت ثبت شد'
-                        return redirect(current_order.get_absolute_url())
-                    except:
-                        message_e = 'در ثبت سفارش مشکلی پیش آمد!'
-                else:
-                    message_e = 'فقط فایل‌های jpg، png یا webp مجاز هستند'
+            is_validate = validate_image_extension(receipt)
+            if is_validate:
+                try:
+                    status = OrderStatus.objects.filter(title__iexact='در انتظار تایید').first()
+                    address = current_order.address
+                    current_order.finalize_order(receipt ,status)
+                    address.can_delete = False
+                    address.save()
+                    self.request.session['message'] = 'سفارش با موفقیت ثبت شد'
+                    return redirect(current_order.get_absolute_url())
+                except InsufficientStockError as e:
+                    current_order.order_fail(receipt , OrderStatus.objects.filter(title__iexact='در انتظار تایید').first())
+                    request.session['na_item'] = str(e)
+                    return redirect('na_item')
             else:
-                message_e = 'زمان رزرو به اتمام رسیده!'
-
+                message_e = 'فقط فایل‌های jpg، png یا webp مجاز هستند'
 
         context = {
             'message': message,
@@ -600,7 +590,7 @@ class Deposit(View):
             'card': card,
             'payment_method': payment_method,
             'total_amount': total_amount,
-            'remaining_time': remaining_time
+            'failed_item': failed_item
         }
         return render(request ,'order_module/include/basket_deposit.html' ,context)
 
@@ -617,8 +607,6 @@ def request_online_payment(request):
     online_pay_merchant = PaymentMethod.objects.filter(title='پرداخت آنلاین').first()
     try:
         current_order ,created = Order.objects.get_or_create(is_paid=False ,is_done=False ,user=request.user)
-        if not current_order.stock_reserved:
-            current_order.make_reservation()
         total = current_order.include_postage_fee()
         total_to_irrial = total * 10
 
@@ -682,9 +670,16 @@ def verify_payment(request: HttpRequest):
             ref_id = response_json["data"]["ref_id"]
             if t_status == 100:
                 status = OrderStatus.objects.filter(title__iexact='پرداخت شده').first()
-                current_order.finalize_order(None ,status)
-                current_order.payment_ref = ref_id
-                current_order.save()
+                try:
+                    current_order.finalize_order(None ,status)
+                    current_order.payment_ref = ref_id
+                    current_order.save()
+                    current_order.address.can_delete = False
+                    current_order.address.save()
+                except Exception as e:
+                    current_order.order_fail(None ,status)
+                    request.session['na_item'] = str(e)
+                    return redirect('na_item')
                 context = {
                     'success': 'پرداخت موفق!',
                     'returning': 'در حال انتقال به صفحه سفارش های من',
@@ -701,7 +696,6 @@ def verify_payment(request: HttpRequest):
                 return render(request ,'order_module/include/payment_verify.html' ,context)
 
             else:
-                current_order.drop_reservation()
                 context = {
                     'error': 'پرداخت ناموفق!',
                     'returning': 'در حال انتقال به سبد خرید',
@@ -710,7 +704,6 @@ def verify_payment(request: HttpRequest):
                 return render(request ,'order_module/include/payment_verify.html' ,context)
 
         else:
-            current_order.drop_reservation()
             context = {
                 'error': 'پرداخت ناموفق!',
                 'returning': 'در حال انتقال به سبد خرید',
@@ -718,9 +711,6 @@ def verify_payment(request: HttpRequest):
             }
             return render(request, 'order_module/include/payment_verify.html', context)
     else:
-        current_order = Order.objects.get(user=request.user, is_paid=False)
-        if current_order:
-            current_order.drop_reservation()
         context = {
             'error': 'پرداخت ناموفق!',
             'returning': 'در حال انتقال به سبد خرید',
@@ -730,3 +720,7 @@ def verify_payment(request: HttpRequest):
         return render(request, 'order_module/include/payment_verify.html', context)
 
 
+class NaItemView(View):
+    def get(self ,request):
+        na_item = request.session.get('na_item')
+        return render(request ,'order_module/na_item.html' ,{'na_item': na_item})
