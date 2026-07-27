@@ -102,7 +102,7 @@ class Order(models.Model):
     postage_fee = models.IntegerField(null=True ,blank=True ,verbose_name='هزینه ارسال')
     payment_ref = models.CharField(max_length=200 ,null=True ,blank=True ,verbose_name='شماره تراکنش')
     last_change = models.DateTimeField(null=True ,blank=True ,verbose_name='آخرین تغییرات')
-    # fail_state = models.BooleanField(default=False ,db_index=True ,verbose_name='پرداخت شده و ناموفق؟')
+    fail_state = models.BooleanField(default=False ,db_index=True ,verbose_name='پرداخت شده و ناموفق؟')
 
     def __str__(self):
         return str(self.user)
