@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='order',
             name='fail_state',
-            field=models.CharField(db_index=True, default=False, verbose_name='پرداخت شده و ناموفق؟'),
+            field=models.CharField(max_length=100 , db_index=True, default=False, verbose_name='پرداخت شده و ناموفق؟'),
         ),
         migrations.AddField(
             model_name='order',
