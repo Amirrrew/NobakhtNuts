@@ -113,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-logging_status = Config('LOGGING')
+logging_status = config('LOGGING' ,default=False, cast=bool)
 if logging_status:
     LOGGING = {
         'version': 1,
