@@ -97,8 +97,8 @@ class Order(models.Model):
     postage_fee = models.IntegerField(null=True ,blank=True ,verbose_name='هزینه ارسال')
     payment_ref = models.CharField(max_length=200 ,null=True ,blank=True ,verbose_name='شماره تراکنش')
     last_change = models.DateTimeField(null=True ,blank=True ,verbose_name='آخرین تغییرات')
-    stock_reserved = models.BooleanField(default=False ,verbose_name='موجودی رزرو شده؟')
-    stock_reservation_time = models.DateTimeField(blank=True ,null=True ,verbose_name='زمان رزرو موجودی')
+    stock_reserved = models.BooleanField(default=False,db_index=True ,verbose_name='موجودی رزرو شده؟')
+    stock_reservation_time = models.DateTimeField(blank=True,db_index=True ,null=True ,verbose_name='زمان رزرو موجودی')
 
     def __str__(self):
         return str(self.user)
@@ -110,7 +110,7 @@ class Order(models.Model):
         verbose_name = 'سبد خرید'
         verbose_name_plural = 'سبد خرید کاربران'
         indexes = [
-            models.Index(fields=['user','status','is_paid', 'is_done', 'payment_date'], name='idx_order_pending_close'),
+            models.Index(fields=['user','status','is_paid', 'is_done', 'payment_date' ,'stock_reserved' ,'stock_reservation_time'], name='idx_order_pending_close'),
         ]
 
     def calculate_total_price(self):
