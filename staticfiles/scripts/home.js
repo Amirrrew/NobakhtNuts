@@ -147,3 +147,79 @@ function initScrollAnimation(options = {}) {
 
 
 initScrollAnimation();
+
+const card_block_swiper = new Swiper('#card-block' , {
+    slidesPerView: 3.5,
+    spaceBetween: 10,
+    navigation: {
+        nextEl: '#card-swiper-button-next',
+        prevEl: '#card-swiper-button-prev',
+    },
+    speed: 500,
+    autoplay: {
+        delay: 2000,
+        waitForTransition: true,
+        pauseOnMouseEnter: true,
+    },
+
+    breakpoints: {
+        300: {
+            slidesPerView: 1.1
+        },
+        800: {
+            slidesPerView: 1.3
+        },
+        1050: {
+            slidesPerView: 2.5
+        },
+        1500: {
+            slidesPerView: 3.5
+        },
+        1800: {
+            slidesPerView: 4.5
+        }
+    }
+
+})
+
+function initSwiperScrollAutoplay(options = {}) {
+    const {
+        selector = '.swiper',
+        threshold = 0.2,
+        rootMargin = '0px 0px -100px 0px',
+        once = true
+    } = options;
+
+    const sliderElements = document.querySelectorAll(selector);
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const swiperInstance = entry.target.swiper;
+            if (!swiperInstance) return;
+
+            if (entry.isIntersecting) {
+                swiperInstance.autoplay.start();
+
+                if (once) {
+                    observer.unobserve(entry.target);
+                }
+            } else if (!once) {
+                swiperInstance.autoplay.stop();
+            }
+        });
+    }, {
+        threshold: threshold,
+        rootMargin: rootMargin
+    });
+
+    sliderElements.forEach(el => {
+        if (el.swiper) {
+            el.swiper.autoplay.stop();   // اول متوقفش کن
+            observer.observe(el);
+        }
+    });
+
+    return observer;
+}
+
+initSwiperScrollAutoplay();
