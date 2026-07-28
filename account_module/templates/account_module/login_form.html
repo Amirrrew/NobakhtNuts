@@ -16,7 +16,7 @@
                 <div class="flex gap-2 login-back">
                     <div onclick="history.back()" class="fa fa-arrow-right cursor-pointer"></div>
                     <div class=" relative text-center centerbox gap-2">
-                        <img src="{% static 'media/logo/nobakht-logo.png' %}" loading="lazy" alt="برنج و خشکبار نوبخت" class="mt-[-5px] w-7 h-7">
+                        <img src="{% static 'media/logo/favicon-32x32.webp' %}" loading="eager" alt="برنج و خشکبار نوبخت" class="mt-[-5px] w-7 h-7">
                         <div class=" font-semibold mt-[-3px]">ورود / ثبت نام</div>
                     </div>
                 </div>
@@ -50,7 +50,7 @@
                                 </g>
                             </g>
                         </svg>
-                        <input onblur="PlaceHolderHandle('login-phone' ,'phone-plc' ,'bl')" onfocus="PlaceHolderHandle('login-phone' ,'phone-plc' ,'fc')" oninput="CheckPhone('login-phone' ,'phone-err' ,'btn-login')" type="number" name="phone" id="login-phone">
+                        <input onblur="PlaceHolderHandle('login-phone' ,'phone-plc' ,'bl')" onfocus="PlaceHolderHandle('login-phone' ,'phone-plc' ,'fc')" oninput="CheckPhone('login-phone' ,'phone-err' ,'btn-login')" type="number" name="phone" value="{{ phone|default_if_none:'' }}" id="login-phone">
                         <div class="input-placeholder" id="phone-plc">شماره تلفن</div>
                     </div>
                     <div style="color: var(--color5);" class="account-error hidden gap-1 mt-1 text-sm" id="phone-err">
@@ -102,6 +102,11 @@
         loading.style = 'display: none'
         code.style = 'opacity: 1; animation: load8 300ms; font-size: 20px; font-family: sans-serif; padding-top: -2px; border-radius: 20px 5px 20px 5px; margin-bottom: 27.5px;'
     } ,2500)
+
+    {% if phone %}
+        PlaceHolderHandle('login-phone' ,'phone-plc' ,'fc')
+        CheckPhone('login-phone' ,'phone-err' ,'btn-login')
+    {% endif %}
 
 </script>
 </html>

@@ -9,6 +9,9 @@
 
 
 {% block page_content %}
+    <div class="centerbox">
+        {% include 'userpanel_module/include/order_bottombar.html' %}
+    </div>
     <div class="flex">
         {% render_partial 'userpanel_module.views.side_bar' %}
         {% block panel_content %}

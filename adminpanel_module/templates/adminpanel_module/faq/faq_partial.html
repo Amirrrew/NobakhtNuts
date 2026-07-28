@@ -1,0 +1,35 @@
+{% load poll_extras %}
+
+
+        {% for qc in faq_category %}
+            <div class="question-drawer" id="qc-draw{{ qc.id }}">
+                <div class="flex justify-between w-[100%]">
+                    <div class="flex gap-3" onclick="DrawerQuestion('qc-draw{{ qc.id }}' ,'drawer{{ qc.id }}' ,'drawer-icon{{ qc.id }}')">
+                        <i id="drawer-icon{{ qc.id }}" class="fa fa-add text-[var(--color6)] h-5 w-5 transition-all text-xl mt-1 relative"></i>
+                        <div class="text-3xl">{{ qc.title }}</div>
+                    </div>
+                    <button onclick="OpenDialog('آیا از حذف این دسته سوالات مطمئن هستید؟' ,'{% url 'admin_faqcategory_delete' qc.pk %}')" class="bg-[var(--cancel-bg)] text-[var(--loss-bg)] w-5 h-5 rounded cursor-pointer mt-2"><i class="fa fa-trash text-xs"></i></button>
+                </div>
+                <div id="drawer{{ qc.id }}" style="display: none;" class="mt-3 relative">
+                    {% for q in qc.question_set.all %}
+                        <div class="question-drawer relative mx-3" id="q-draw{{ q.id }}" style="animation: load5 {% widthratio forloop.counter 1 150 %}ms;" onclick="DrawerQuestion('q-draw{{ q.id }}' ,'qdrawer{{ q.id }}' ,'qdrawer-icon{{ q.id }}')">
+                            <div class="flex justify-between w-[100%]">
+                                <div class="flex gap-1">
+                                    <i id="qdrawer-icon{{ q.id }}" class="fa fa-add text-[var(--color6)] h-5 w-5 transition-all mt-1 relative"></i>
+                                    <div class="text-xl text-[var(--color6)]">{{ q.question }}</div>
+                                </div>
+                                <div class="flex gap-1">
+                                    <a href="{% url 'admin_faq_edit' q.pk %}"><button class="bg-[var(--color11)] mt-2 text-[var(--color6)] w-5 h-5 rounded cursor-pointer"><i class="fa fa-pencil text-xs"></i></button></a>
+                                    <button onclick="OpenDialog('آیا از حذف این سوال مطمئن هستید؟' ,'{% url 'admin_faq_delete' q.pk %}')" class="bg-[var(--cancel-bg)] text-[var(--loss-bg)] w-5 h-5 rounded cursor-pointer mt-2"><i class="fa fa-trash text-xs"></i></button>
+                                </div>
+                            </div>
+                            <div id="qdrawer{{ q.id }}" style="display: none" class="relative">
+                                <div class="mt-2 text-[var(--color10)]">
+                                    {{ q.answer|safe }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}

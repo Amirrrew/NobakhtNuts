@@ -11,7 +11,8 @@ from order_module.models import PaymentMethod, Cards, PostingMethod
 from product_module.models import Product, ProductCategory, ProductSubCategory, PackageSize, ProductBrand
 from account_module.models import User
 from site_settings.models import SiteSettings, FooterLink
-from support_module.models import SupportWays
+from support_module.models import SupportWays, Questions
+
 
 class AdminLoginForm(AuthenticationForm):
     class Meta:
@@ -162,3 +163,8 @@ class CarouselForm(forms.ModelForm):
         self.fields['icon'].required = False
         self.fields['url'].required = False
         self.fields['emoji'].required = False
+
+class FAQForm(forms.ModelForm):
+    class Meta:
+        model = Questions
+        fields = '__all__'

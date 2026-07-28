@@ -1,0 +1,10 @@
+<div class="order-bottombar" style="{% if request.resolver_match.url_name == 'order_detail_page' %}display: flex;{% endif %}">
+    <button onclick="OpenDialog('آیا از لغو این سفارش مطمئن هستید؟' ,'{% if request.resolver_match.url_name == 'order_detail_page' %}{% url 'my_order_cancel' order.pk %}{% endif %}')" class="w-[50%] centerbox cursor-pointer gap-2 pt-3 text-[var(--deny-text)] rounded-3xl h-[100%] bg-[var(--cancel-bg)] {% if not order.status.title ==  'در حال آماده سازی' and not order.status.title == 'در انتظار تایید' and not order.status.title == 'پرداخت شده' %}disabled{% endif %}">
+        <i class="fa fa-cancel mt-0.5"></i>
+        <p>لفو سفارش</p>
+    </button>
+    <a href="{% if request.resolver_match.url_name == 'order_detail_page' %}{% url 'my_order_finished' order.pk %}{% endif %}" class="w-[50%] centerbox cursor-pointer gap-2 pt-3 text-[var(--color6)] rounded-3xl h-[100%] {% if not order.status.title == 'ارسال شده' %} disabled {% endif %}">
+        <i class="fa fa-check mt-0.5"></i>
+        <p>بسته به دستم رسید</p>
+    </a>
+</div>

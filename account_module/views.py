@@ -33,6 +33,7 @@ class LoginView(View):
             message_e = request.session.get('message_e')
         if 'phone' in request.session:
             phone = request.session.get('phone')
+            request.session.pop('phone')
         context = {'login_form': login_form ,'message_e': message_e ,'phone': phone}
         return render(request ,'account_module/login_form.html' , context)
 

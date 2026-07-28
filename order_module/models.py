@@ -267,7 +267,7 @@ class Order(models.Model):
         OrderDetail.objects.bulk_update(details, ['final_price'])
 
         self.receipt = receipt
-        self.status = status
+        self.status = OrderStatus.objects.filter(title='خطا در تامین موجودی').first()
         self.is_paid = True
         self.fail_state = True
         self.payment_date = timezone.now()
@@ -290,6 +290,7 @@ class Order(models.Model):
         self.status = OrderStatus.objects.filter(title__iexact='رد شده').first()
         self.save()
 
+
     def return_order(self):
         for o in self.orderdetails_set.all():
             if o.product.is_byWeight:
@@ -298,6 +299,33 @@ class Order(models.Model):
                 o.product.q_back(o.count, 1)
         self.is_done = True
         self.status = OrderStatus.objects.filter(title__iexact="مرجوع شده").first()
+        self.save()
+
+    def deny_return_order(self):
+        for o in self.orderdetails_set.all():
+            if o.product.is_byWeight:
+                o.product.q_back(o.count, o.pack_size.size)
+            else:
+                o.product.q_back(o.count, 1)
+        self.is_done = True
+        self.status = OrderStatus.objects.filter(title__iexact="رد شده").first()
+        self.save()
+
+    def cancel_order(self):
+        for o in self.orderdetails_set.all():
+            if o.product.is_byWeight:
+                o.product.q_back(o.count, o.pack_size.size)
+            else:
+                o.product.q_back(o.count, 1)
+        self.is_done = True
+        self.fail_state = True
+        self.status = OrderStatus.objects.filter(title__iexact="لغو شده").first()
+        self.save()
+
+    def refund_done(self):
+        self.is_done = True
+        self.fail_state = False
+        self.status = OrderStatus.objects.filter(title__iexact='بازگشت وجه انجام شد').first()
         self.save()
 
 

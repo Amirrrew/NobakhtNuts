@@ -116,7 +116,7 @@
             </tr>
             <tr>
                 <td class="border border-[var(--color13)]">هزینه ارسال</td>
-                <td class="border border-[var(--color13)]">{% if not order.postage_fee == 0 %}{{ order.postage_fee|three_digits_currency }}{% else %}پسکرایه{% endif %}</td>
+                <td class="border border-[var(--color13)]">{% if order.postage_fee %}{{ order.postage_fee|three_digits_currency }}{% else %}پسکرایه{% endif %}</td>
             </tr>
             {% if order.address %}
                 <tr>

@@ -5,7 +5,7 @@
         <div class="swiper home-swiper">
             <div class="swiper-wrapper">
                 {% for slide in slider %}
-                    <div class="swiper-slide">
+                    <a href="{{ slide.url }}" class="swiper-slide">
                         <div class="centerbox">
                             <div class="pill-title">{{ slide.title|to_fanum }}</div>
                         </div>
@@ -15,7 +15,7 @@
                         <div class="centerbox">
                             <img src="{{ slide.banner.url }}" loading="eager" alt="{{ slide.title }}">
                         </div>
-                    </div>
+                    </a>
                 {% endfor %}
             </div>
         </div>

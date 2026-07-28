@@ -30,16 +30,18 @@ def side_bar(request: HttpRequest):
 
 @login_required
 def index(request: HttpRequest):
-    user = User.objects.filter(id=request.user.id).first()
-    ongoing_order = Order.objects.filter(user=user ,is_paid=True ,is_done=False).first()
-    ongoing_tickets = Ticket.objects.filter(user=user)
+    # user = User.objects.filter(id=request.user.id).first()
+    # ongoing_order = Order.objects.filter(user=user ,is_paid=True ,is_done=False).first()
+    # ongoing_tickets = Ticket.objects.filter(user=user)
 
-    context = {
-        'user': user,
-        'orders': ongoing_order,
-        'tickets': ongoing_tickets,
-    }
-    return render(request ,'userpanel_module/panel_index.html' ,context)
+    return redirect('edit_info_page')
+
+    # context = {
+    #     'user': user,
+    #     'orders': ongoing_order,
+    #     'tickets': ongoing_tickets,
+    # }
+    # return render(request ,'userpanel_module/panel_index.html' ,context)
 
 
 @method_decorator(login_required , name='dispatch')
@@ -124,7 +126,7 @@ class DeleteAvatar(View):
             return redirect(reverse('edit_info_page'))
 
 
-
+@method_decorator(login_required , name='dispatch')
 class MyAddress(View):
     def get(self ,request: HttpRequest):
         address_form = NewAddressForm()
@@ -216,7 +218,7 @@ def get_cities(request):
 
     return JsonResponse(list(cities), safe=False)
 
-
+@method_decorator(login_required , name='dispatch')
 class MyTickets(View):
     def get(self ,request: HttpRequest):
         template_name = 'userpanel_module/my_tickets.html'
@@ -287,7 +289,7 @@ class MyTickets(View):
         }
         return render(request ,template_name ,context)
 
-
+@method_decorator(login_required , name='dispatch')
 class DeleteTicket(View):
     def get(self ,request: HttpRequest ,pk):
         ticket = get_object_or_404(Ticket, pk=pk ,user=request.user)
@@ -331,6 +333,8 @@ class Order_details(DetailView):
         except:
             return redirect('my_orders_page')
 
+
+@method_decorator(login_required , name='dispatch')
 class My_notifications(ListView):
     model = Notification
     template_name = 'userpanel_module/notifications.html'
@@ -351,7 +355,7 @@ class My_notifications(ListView):
 
         return super().get(request, *args, **kwargs)
 
-
+@method_decorator(login_required , name='dispatch')
 class Notif_detail(DetailView):
     model = Notification
     template_name = 'userpanel_module/include/notifications_detail.html'
@@ -372,3 +376,17 @@ def delete_notif(request ,pk):
         return redirect('notifications_page')
     except:
         return redirect('home')
+
+def OrderFinish(request ,pk):
+    order = Order.objects.filter(pk=pk).first()
+    if order:
+        order.status = OrderStatus.objects.filter(title='پایان یافته').first()
+        order.is_done = True
+        order.save()
+    return redirect('order_detail_page' ,pk=pk)
+
+def OrderCancel(request,pk):
+    order = Order.objects.filter(pk=pk).first()
+    if order:
+        order.cancel_order()
+    return redirect('order_detail_page' ,pk=pk)

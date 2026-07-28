@@ -16,5 +16,7 @@ urlpatterns = [
     path('notifications/' ,views.My_notifications.as_view(),name='notifications_page'),
     path('notifications/<int:pk>/' ,views.Notif_detail.as_view(),name='notif_detail_page'),
     path('notifications/<int:pk>/delete/' ,views.delete_notif,name='notif_delete_page'),
-    path("get-cities/", views.get_cities, name="get_cities")
+    path("get-cities/", views.get_cities, name="get_cities"),
+    path('order-finished/<int:pk>/' ,views.OrderFinish ,name='my_order_finished'),
+    path('order-cancel/<int:pk>/', views.OrderCancel, name='my_order_cancel'),
 ]

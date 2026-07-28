@@ -79,4 +79,10 @@ urlpatterns = [
     path('carousels/<int:pk>/edit/' ,views.CarouselEdit.as_view(), name='admin_carousel_edit'),
     path('carousels/<int:pk>/delete' ,views.CarouselDelete ,name='admin_carousel_delete'),
     path('carousels/productsearch/' ,views.Carousel_product_search ,name='admin_carousel_product_search'),
+    path('faq/' ,views.FaqList.as_view() ,name='admin_faq_list'),
+    path('faq/add' ,views.FaqAddQ.as_view() ,name='admin_faq_add'),
+    path('faq/<int:pk>/edit' ,views.FaqEditQ.as_view() ,name='admin_faq_edit'),
+    path('faq/<int:pk>/delete/' ,views.FaqDelete ,name='admin_faq_delete'),
+    path('faq/addcategory/' ,views.FaqCategoryAdd ,name='admin_faqcategory_add'),
+    path('faq/category/<int:pk>/delete/' ,views.FaqCategoryDelete ,name='admin_faqcategory_delete')
 ]

@@ -23,6 +23,7 @@ class SliderSlide(models.Model):
     desc = models.CharField(max_length=200 ,null=True ,blank=False ,verbose_name='نوشته')
     banner = models.ImageField(upload_to='sliders', null=True ,blank=False ,verbose_name='بنر اسلاید')
     is_primary = models.BooleanField(default=False ,verbose_name='اسلاید اصلی؟')
+    url = models.CharField(max_length=1000 ,null=True ,blank=False ,verbose_name='url اسلایدر')
     is_active = models.BooleanField(default=True ,verbose_name='فعال؟')
 
     def __str__(self):

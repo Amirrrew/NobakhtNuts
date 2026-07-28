@@ -20,7 +20,7 @@ from account_module.form import LoginForm
 from account_module.models import User , BlackList_phones
 from adminpanel_module.forms import ProductAddForm, MainCategoryForm, SubCategoryForm, PackForm, BrandForm, UserForm, \
     SupportWayForm, SiteSettingForm, FooterLinkForm, PaymentForm, CardForm, PostingForm, AdminLoginForm, ArticleForm, \
-    EventForm, SliderForm, CarouselForm
+    EventForm, SliderForm, CarouselForm, FAQForm
 from article_module.models import Article
 from home_module.models import SpecialEvents, SliderSlide, Carousel, CarouselItem
 from order_module.context_processors import orders
@@ -29,7 +29,7 @@ from product_module.models import Product, ProductCategory, ProductSubCategory, 
     ProductFeature, ProductImage, ProductComment
 from product_module.views import search_product_queryset
 from site_settings.models import SiteSettings, FooterLinkBox, FooterLink
-from support_module.models import Ticket, SupportWays
+from support_module.models import Ticket, SupportWays, QuestionCategory, Questions
 from utils.dashboard_decorators import get_sales_week, get_sales_week_growth, today, get_order_today, get_user_growth, \
     get_new_orders, get_lowstock_products, get_best_selling_products, get_new_tickets, get_sales_month, \
     get_category_chart, get_orders_status_chart, get_orders_month_count, get_sales_year, get_sales_chart
@@ -219,7 +219,7 @@ class OrdersListView(ListView):
 
         queryset = Order.objects.filter(
             is_paid=True
-        ).order_by('is_done', '-payment_date' )
+        ).order_by('-fail_state', 'is_done', '-payment_date' )
 
         if search:
             if search.isdigit():
@@ -309,12 +309,16 @@ class OrderDetailView(DeleteView):
         action = request.POST.get('order_action')
         if action == 'approve':
             order.approve_order()
-        elif action == 'reject':
+        elif action == 'deny':
             order.reject_order()
+        elif action == 'deny_back':
+            order.deny_return_order()
         elif action == 'send':
             order.send_order()
         elif action == 'cancel':
             order.return_order()
+        elif action == 'refund':
+            order.refund_done()
 
         return redirect('admin_order_detail' ,pk=order.pk)
 
@@ -1837,3 +1841,97 @@ def Carousel_product_search(request):
         'html': html,
         'data_length': search_results.values('id').count()
     })
+
+@method_decorator(permission_checker_decorator_factory() ,name='dispatch')
+class FaqList(ListView):
+    model = QuestionCategory
+    template_name = 'adminpanel_module/faq/faq_list.html'
+    context_object_name = 'faq_category'
+
+    def get_queryset(self):
+        return QuestionCategory.objects.prefetch_related('question_set')
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(FaqList ,self).get_context_data(*args, **kwargs)
+        return context
+
+@method_decorator(permission_checker_decorator_factory() ,name='dispatch')
+class FaqAddQ(CreateView):
+    model = Questions
+    template_name = 'adminpanel_module/faq/faq_category_add_update.html'
+    context_object_name = 'faq'
+    form_class = FAQForm
+    success_url = reverse_lazy('admin_faq_list')
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        form.save_m2m()
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        context["message_e"] = "فیلد هارا به درستی پر کنید"
+        return self.render_to_response(context)
+
+    def get_context_data(self, **kwargs):
+        context = super(FaqAddQ ,self).get_context_data(**kwargs)
+        context['faq_category'] = QuestionCategory.objects.all()
+        context['add_view'] =True
+        return context
+
+@method_decorator(permission_checker_decorator_factory() ,name='dispatch')
+class FaqEditQ(UpdateView):
+    model = Questions
+    template_name = 'adminpanel_module/faq/faq_category_add_update.html'
+    context_object_name = 'faq'
+    form_class = FAQForm
+    success_url = reverse_lazy('admin_faq_list')
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        form.save_m2m()
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        context = self.get_context_data(form=form)
+        context["message_e"] = "فیلد هارا به درستی پر کنید"
+        return self.render_to_response(context)
+
+    def get_context_data(self, **kwargs):
+        context = super(FaqEditQ ,self).get_context_data(**kwargs)
+        context['faq_category'] = QuestionCategory.objects.all()
+        context['edit_view'] =True
+        return context
+
+@permission_checker_decorator_factory({'permission': 'admin_index'})
+def FaqDelete(request ,pk):
+    faq = Questions.objects.filter(pk=pk).first()
+    if faq:
+        faq.delete()
+    return redirect('admin_faq_list')
+
+@permission_checker_decorator_factory({'permission': 'admin_index'})
+def FaqCategoryAdd(request):
+    title = request.GET.get('title')
+    if title:
+        new_category = QuestionCategory(title=title)
+        new_category.save()
+
+    html = render_to_string(
+        'adminpanel_module/faq/faq_partial.html',
+        {'faq_category': QuestionCategory.objects.prefetch_related('question_set')},
+        request=request
+    )
+
+    return JsonResponse({
+        'html': html
+    })
+
+@permission_checker_decorator_factory({'permission': 'admin_index'})
+def FaqCategoryDelete(request ,pk):
+    category = QuestionCategory.objects.filter(pk=pk).first()
+    if category:
+        category.delete()
+    return redirect('admin_faq_list')
