@@ -13,6 +13,8 @@ body {
     --loss-dot: #731919;
     --deny-bg: #ffac89;
     --deny-text: #731919;
+    --fail-bg: #df7a7a;
+    --fail-fore: #2b0606;
     --blue-bg: #c3e1ff;
     --blue-fore: #3c6d95;
     --warning-bg: #efefa1;
@@ -289,7 +291,7 @@ body:has(#admin-searchbox input:focus) .overlay {
     padding: 12px;
 }
 
-.stat-profit ,.stat-loss ,.stat-static ,.stat-onwait ,.stat-denied ,.stat-warning{
+.stat-profit ,.stat-loss ,.stat-static ,.stat-onwait ,.stat-denied ,.stat-warning ,.stat-fail{
     padding: 3px 10px;
     background-color: var(--profit-bg);
     border-radius: 10px;
@@ -299,6 +301,11 @@ body:has(#admin-searchbox input:focus) .overlay {
     gap: 5px;
     margin-left: -4px;
     color: var(--profit-dot);
+}
+
+.stat-fail {
+    background-color: var(--fail-bg);
+    color: var(--fail-fore);
 }
 
 .stat-warning {
@@ -326,11 +333,15 @@ body:has(#admin-searchbox input:focus) .overlay {
     color: var(--color2);
 }
 
-.stat-dot-profit ,.stat-dot-loss ,.stat-dot-static ,.stat-onwait-dot ,.stat-dot-denied ,.stat-dot-warning{
+.stat-dot-profit ,.stat-dot-loss ,.stat-dot-static ,.stat-onwait-dot ,.stat-dot-denied ,.stat-dot-warning ,.stat-fail-dot{
     background-color: var(--profit-dot);
     padding: 4px;
     margin-top: 6px;
     border-radius: 20px;
+}
+
+.stat-fail-dot {
+    background-color: var(--fail-fore);
 }
 
 .stat-dot-warning {

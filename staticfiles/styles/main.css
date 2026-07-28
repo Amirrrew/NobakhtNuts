@@ -90,6 +90,7 @@ input[type="number"] {
     --error-bg:#fdecea;
     --del-bg: #f1aaaa;
     --deny-text: #731919;
+    --cancel-bg: rgba(255, 1, 1, 0.11);
 }
 
 @media screen and (max-width: 1200px) {
@@ -307,6 +308,11 @@ input[type="number"] {
         font-size: 17px;
         margin-top: 5px;
     }
+
+    body .order-bottombar {
+        width: 96%;
+        bottom: 70px;
+    }
 }
 
 @media screen and (max-width: 1000px) {
@@ -403,6 +409,7 @@ input[type="number"] {
         margin-top: 40px;
         padding: 0 10px;
     }
+
 }
 
 @media screen and (max-width: 890px) {
@@ -459,6 +466,11 @@ input[type="number"] {
 
     body .about-swiper {
         height: 400px;
+    }
+
+    body .na-item-img {
+        width: 50%;
+        margin-top: 20px;
     }
 }
 
@@ -594,6 +606,9 @@ input[type="number"] {
         width: 94%;
     }
 
+    body .empty-cart {
+        width: 50%;
+    }
 }
 
 @media screen and (max-width: 550px) {
@@ -1367,7 +1382,7 @@ header .category-menu {
     text-wrap: nowrap;
     top: 45px;
     box-shadow: 2px 2px 100px rgba(0, 0, 0, 0.1);
-    animation: category_menu .8s;
+    animation: category_menu .7s;
     overflow: hidden;
     padding: 10px;
     right: -70px;
@@ -3310,4 +3325,20 @@ body .swiper-pagination-bullet-active {
     background-color: #eae4e4;
     border: 2px solid var(--color9);
     animation: load5 300ms;
+}
+
+.order-bottombar {
+    width: 350px;
+    height: 60px;
+    border-radius: 30px;
+    background-color: var(--color12);
+    position: fixed;
+    bottom: 5px;
+    backdrop-filter: blur(10px);
+    display: none;
+    border: 1px solid var(--color11);
+    padding: 5px;
+    transition: 200ms;
+    z-index: 10;
+    box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.08);
 }
