@@ -1,6 +1,6 @@
 from django.db import models
 
-from product_module.models import Product
+from product_module.models import Product, ProductCategory, ProductSubCategory
 
 
 class SpecialEvents(models.Model):
@@ -62,3 +62,26 @@ class CarouselItem(models.Model):
     class Meta:
         verbose_name= 'آیتم کاروزل'
         verbose_name_plural = 'آیتم های کاروزل'
+
+
+class CardBlock(models.Model):
+    title = models.CharField(max_length=200 ,null=True ,blank=False ,verbose_name='بلاک کارت ها')
+    seo_name = models.CharField(max_length=100 ,null=True ,blank=True ,verbose_name='اسم برای سئو(درصورت نیاز)')
+    icon = models.ImageField(upload_to='cards_block' ,null=True ,blank=False ,verbose_name='آیکون')
+    url_category = models.ForeignKey(ProductCategory,null=True ,blank=True,on_delete=models.CASCADE ,verbose_name='مرتبط با دسته')
+    is_active = models.BooleanField(default=True ,db_index=True ,verbose_name='فعال؟')
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = 'بلاک کارت ها'
+
+
+class HomeCards(models.Model):
+    card_block = models.ForeignKey(CardBlock,on_delete=models.CASCADE ,db_index=True ,null=False ,blank=False,related_name='cardblock_set' ,verbose_name='بلاک کارت ها')
+    category = models.ForeignKey(ProductSubCategory ,on_delete=models.CASCADE ,db_index=True ,null=False ,blank=False ,verbose_name='مرتبط با دسته')
+    cover = models.ImageField(upload_to='card_images' ,null=True ,blank=False ,db_index=True ,verbose_name='تصویر')
+
+    def __str__(self):
+        return f'{self.card_block.title}: {self.category.title}'

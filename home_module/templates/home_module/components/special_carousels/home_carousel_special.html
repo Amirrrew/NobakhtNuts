@@ -1,6 +1,6 @@
 {% load poll_extras %}
 
-<div class="home-carousel animate-on-scroll w-[90%] mt-20">
+<div class="home-carousel animate-on-scroll w-[90%] mt-30">
     {% if is_carousel %}
         <a {% if special_carousel.url %}href="{{ special_carousel.url }}"{% endif %} class="home-carousel-title flex gap-2">
             <div class="w-15 h-10 bg-[{{ special_carousel.color_bg|default_if_none:"var(--color6)" }}] rounded-xl centerbox items-center">

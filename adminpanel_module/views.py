@@ -4,6 +4,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.views import LoginView
 from django.utils import timezone
 from django.conf import settings
+from urllib.parse import urlparse
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
@@ -1813,7 +1814,7 @@ class CarouselEdit(UpdateView):
 
             return JsonResponse({
                 'html': html,
-                'carousl': self.object.pk
+                'carousel': self.object.pk
             })
 
         return response
@@ -1830,10 +1831,14 @@ def CarouselDelete(request ,pk):
 @permission_checker_decorator_factory({'permission': 'admin_index'})
 def Carousel_product_search(request):
     q = request.GET.get('q')
+    c = request.GET.get('c')
+    carousel = None
     search_results = search_product_queryset(q)
+    if c:
+        carousel = Carousel.objects.filter(pk=c).first()
     html = render_to_string(
         'adminpanel_module/carousels/carousel_product_menu_partial.html',
-        {'products': search_results},
+        {'products': search_results ,'special_carousel': carousel},
         request=request
     )
 
