@@ -160,8 +160,7 @@ input[type="number"] {
         margin-top: 60px;
         position: fixed;
         z-index: 9;
-        background-color: var(--header-bg);
-        backdrop-filter: blur(8px);
+        background-color: #fff;
     }
 
     body .filter-list-desktop::-webkit-scrollbar {
@@ -169,7 +168,7 @@ input[type="number"] {
     }
 
     body .filter-list-btns {
-        position: fixed;
+        position: absolute;
         bottom: 135px;
         width: 98%;
         padding-right: 10px;
@@ -1750,6 +1749,7 @@ header .category-menu {
 
 .product-slide-title {
     font-size: 40px;
+    margin-top: -5px;
 }
 
 .product-slide-slider {

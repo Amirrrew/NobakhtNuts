@@ -85,3 +85,20 @@ class HomeCards(models.Model):
 
     def __str__(self):
         return f'{self.card_block.title}: {self.category.title}'
+
+
+class Banner(models.Model):
+    title = models.CharField(max_length=100 ,null=False ,blank=False ,verbose_name='عنوان')
+    seo_name = models.CharField(max_length=200 ,null=True ,blank=True ,verbose_name='نام برای سئو')
+    category = models.ForeignKey(ProductCategory ,on_delete=models.CASCADE ,db_index=True ,null=True ,blank=True ,verbose_name='مربوط به شاخه اصلی؟')
+    sub_category = models.ForeignKey(ProductSubCategory ,on_delete=models.CASCADE ,db_index=True ,null=True ,blank=True ,verbose_name='مربوط به زیرشاخه؟')
+    url = models.CharField(max_length=1000 ,null=True ,blank=True ,verbose_name='آدرس url')
+    image = models.ImageField(upload_to='home_banner' ,null=False ,blank=False ,verbose_name='تصویر')
+    desc = models.TextField(max_length=100 ,null=True ,blank=True ,verbose_name='توضیحات (درصورت نیاز)')
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = 'بنر صفحه اصلی'
+        verbose_name_plural = 'بنر های صفحه اصلی'

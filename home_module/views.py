@@ -3,9 +3,24 @@ from pyexpat.errors import messages
 
 from home_module.models import SpecialEvents, SliderSlide, Carousel, CarouselItem, CardBlock
 from product_module.models import Product
+from django.views.generic import View, TemplateView
+from django.contrib.staticfiles import finders
+from django.http import FileResponse, Http404
 
 
-# Create your views here.
+class ServiceWorkerView(View):
+    def get(self, request):
+        path = finders.find("../static/scripts/service-worker.js")
+        if not path:
+            raise Http404()
+        return FileResponse(
+            open(path, "rb"),
+            content_type="application/javascript",
+        )
+
+class YoureOffline(TemplateView):
+    template_name = 'offline.html'
+
 def home(request):
     user = request.user
     special_event = SpecialEvents.objects.filter(is_active=True).first()

@@ -4,7 +4,8 @@
     <div class="flex justify-between mt-30">
         <div class="flex gap-2">
             <img class="w-[50px] mt-[-7px]" loading="eager" alt="{{ card_block.seo_title }}" src="{% if card_block.icon %}{{ card_block.icon.url }}{% endif %}">
-            <h2 class="text-4xl font-semibold">{{ card_block.title }}</h2>
+            <h3 class="sr-only">{{ card_block.seo_name }}</h3>
+            <div class="text-4xl font-semibold">{{ card_block.title }}</div>
         </div>
         <div class="btn-carousel-category flex gap-1">
             <button id="card-swiper-button-prev" class="btn-slider h-10 px-2 gap-2">
@@ -44,7 +45,7 @@
                 <a href="{{ card.category.get_absolute_url }}" class="swiper-slide home-card">
                     <div class="h-[100%] flex justify-between items-center mr-10">
                         <div>
-                            <h3 class="text-3xl home-card-title font-semibold">{{ card.category.title }}</h3>
+                            <h4 class="text-3xl home-card-title font-bold">{{ card.category.title }}</h4>
                             <p class="text-[var(--color10)] mt-1"> شامل {{ card.category.products.count|to_fanum }} محصول</p>
                         </div>
                         <div class="w-[50%] home-card-imgbox absolute bottom-0 left-0">

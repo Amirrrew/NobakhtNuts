@@ -2,11 +2,13 @@
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include, re_path
+from django.views.generic import TemplateView
 from django.views.static import serve
 from django.contrib.sitemaps.views import sitemap
 
 from NobakhtNuts.sitemap import StaticViewSitemap
 from article_module.sitemaps import ArticleSitemap
+from home_module.views import ServiceWorkerView
 from product_module.sitemaps import ProductSitemap, CategorySitemap, SubCategorySitemap
 
 sitemaps = {
@@ -33,4 +35,9 @@ urlpatterns = [
 
 urlpatterns += [
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+    path(
+        "service-worker.js",
+        ServiceWorkerView.as_view(),
+        name="service_worker",
+    ),
 ]
