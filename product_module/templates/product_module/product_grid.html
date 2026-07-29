@@ -107,6 +107,7 @@
             <div class="relative pr-5">
                 {% if not request.GET.q %}{% include 'include/filter_side.html' %}{% endif %}
             </div>
+            <div class="w-[100%]">
                 <div class="flex gap-1 w-[100%] items-start flex-wrap mt-2">
                     {% for sub in subcats %}
                         <a onclick="Showloader(3000)" class="{% if sub.id == current_subcategory.id %}active-category{% endif %} bg-[var(--color12)] p-2 rounded-xl text-[var(--color6)]" href="{{ sub.get_absolute_url }}">{{ sub.title }}</a>
@@ -166,6 +167,7 @@
 
     
     <script>
+
 
     const swiper = new Swiper(".swiper-category", {
         slidesPerView: {{ category.count }},

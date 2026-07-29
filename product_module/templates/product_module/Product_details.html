@@ -21,11 +21,11 @@
             <div class="product-titlebar relative">
                 <div class="flex text-[var(--color14)] gap-3 relative" style="animation: load8 150ms">
                     <div><button class="btn-prdcounter back-btn text-sm pt-1 rounded-2xl" onclick="history.back()"><i class="fa fa-angle-right"></i></button></div>
-                    <a href="{% url 'all_products_page' %}" class="">محصولات</a>
+                    <a href="{% url 'all_products_page' %}" class="" style="">محصولات</a>
                     <i class="fa fa-angle-left mt-1.5 text-xs"></i>
-                    <a href="{{ product.category.main_category.get_absolute_url }}" class="">{{ product.category.main_category }}</a>
+                    <a href="{{ product.category.main_category.get_absolute_url }}" class="" style="">{{ product.category.main_category }}</a>
                     <i class="fa fa-angle-left mt-1.5 text-xs"></i>
-                    <a href="{{ product.category.get_absolute_url }}" class="">{{ product.category }}</a>
+                    <a href="{{ product.category.get_absolute_url }}" class="" style="">{{ product.category }}</a>
                 </div>
 
                 <div class="product-titlebar flex gap-2 mt-2 relative" style="animation: load8 200ms">
