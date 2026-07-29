@@ -5,6 +5,7 @@ from django.contrib.messages.context_processors import messages
 from django.http import JsonResponse, HttpResponse, HttpRequest
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template.context_processors import request
+from django.template.defaultfilters import title
 from django.template.defaulttags import comment
 from django.template.loader import render_to_string
 from django.urls import reverse
@@ -114,6 +115,7 @@ class ProductListView(ListView):
             self.request.GET.getlist("brand"),
             self.request.GET.get("available"),
         ])
+        context['page_title'] = context['title_prd']
         return context
 
 
@@ -137,6 +139,7 @@ class ProductDetailView(DetailView):
             id=product.id
         )[:7]
         context['slider_title'] = 'محصولات مرتبط'
+        context['page_title'] = self.object.title
         product.view+=1
         product.save()
         return context
@@ -169,7 +172,6 @@ class ProductDetailView(DetailView):
         context['message_e'] = message_e
         context['comment_form'] = ProductCommentForm()
         context['popup_open'] = popup_open
-
         return self.render_to_response(context)
 
 def delete_comment(self ,id):

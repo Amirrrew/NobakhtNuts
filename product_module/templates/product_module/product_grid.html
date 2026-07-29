@@ -107,33 +107,6 @@
             <div class="relative pr-5">
                 {% if not request.GET.q %}{% include 'include/filter_side.html' %}{% endif %}
             </div>
-            <div class="w-[100%]">
-                <div class="filterbar-mobile overflow-hidden hidden items-start justify-between border-b border-[var(--color11)] bg-[var(--header-bg)] z-7 backdrop-filter-[blur(10px)] top-[59px] pt-1.5 sticky pb-2">
-                    <div onclick="document.documentElement.scrollTop = 0" id="product_grid_cattitle" class="relative cursor-pointer flex items-start gap-2 top-20 font-semibold transition-all ">
-                        <button class="rounded-xl bg-[var(--color12)] w-8 h-8 m-1 cursor-pointer text-[var(--color6)]"><i class="fa fa-arrow-up text-sm mt-1"></i></button>
-                        <div class="pt-2">{{ title_prd|truncatechars:'30' }}</div>
-                    </div>
-                    <div class="flex gap-3">
-                        {% if has_filters %}
-                            <a href="{{ request.path }}" class="gap-1 mt-2.5">
-                                <i class="fa fa-close mt-0.5"></i>
-                                حذف فیلتر ها
-                            </a>
-                        {% endif %}
-                        <button class="{% if has_filters %}bg-[var(--color11)]{% else %}bg-[var(--color12)]{% endif %} p-2 rounded-xl flex items-start" onclick="SideMenu('open' ,'filter-side')">
-                            <svg id="Filter" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <g opacity="0.4">
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M10.7345 16.8484H4.26147C3.70947 16.8484 3.26147 17.2954 3.26147 17.8484C3.26147 18.4014 3.70947 18.8484 4.26147 18.8484H10.7345C11.2865 18.8484 11.7345 18.4014 11.7345 17.8484C11.7345 17.2954 11.2865 16.8484 10.7345 16.8484Z" fill="#674d45"></path>
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M20.2383 6.35919H13.7673C13.2153 6.35919 12.7673 6.80619 12.7673 7.35919C12.7673 7.91219 13.2153 8.35919 13.7673 8.35919H20.2383C20.7903 8.35919 21.2383 7.91219 21.2383 7.35919C21.2383 6.80619 20.7903 6.35919 20.2383 6.35919Z" fill="#674d45"></path>
-                                    </g>
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M17.5172 14.6274C15.1992 14.6274 14.2952 15.5304 14.2952 17.8494C14.2952 20.1684 15.1992 21.0714 17.5172 21.0714C19.8362 21.0714 20.7392 20.1684 20.7392 17.8494C20.7392 15.5304 19.8362 14.6274 17.5172 14.6274Z" fill="#674d45"></path>
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M6.98347 10.5805C9.30247 10.5805 10.2055 9.67754 10.2055 7.35754C10.2055 5.03954 9.30247 4.13654 6.98347 4.13654C4.66447 4.13654 3.76147 5.03954 3.76147 7.35754C3.76147 9.67754 4.66447 10.5805 6.98347 10.5805Z" fill="#674d45"></path>
-                            </svg>
-                            <h1 class="">فیلتر ها</h1>
-                            {% if has_filters %}<div class="p-1 bg-[var(--color6)] rounded-full mt-1.5 mr-1"></div>{% endif %}
-                        </button>
-                    </div>
-                </div>
                 <div class="flex gap-1 w-[100%] items-start flex-wrap mt-2">
                     {% for sub in subcats %}
                         <a onclick="Showloader(3000)" class="{% if sub.id == current_subcategory.id %}active-category{% endif %} bg-[var(--color12)] p-2 rounded-xl text-[var(--color6)]" href="{{ sub.get_absolute_url }}">{{ sub.title }}</a>
@@ -193,16 +166,6 @@
 
     
     <script>
-    let product_grid = document.getElementById('product_grid').offsetTop
-    let product_grid_cattitle = document.getElementById('product_grid_cattitle')
-    document.addEventListener('scroll' ,()=> {
-        if (document.documentElement.scrollTop > product_grid) {
-            product_grid_cattitle.style = 'top: 0px; animation: load 300ms;'
-        }
-        else {
-            product_grid_cattitle.style = 'top: 100px; animation: none;'
-        }
-    })
 
     const swiper = new Swiper(".swiper-category", {
         slidesPerView: {{ category.count }},

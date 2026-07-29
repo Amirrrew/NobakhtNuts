@@ -6,9 +6,19 @@
 	پرداخت
 {% endblock %}
 
+{% block topbar_title %}
+        <div class="flex gap-2 text-[var(--color10)] text-lg">
+            <a href="{% url 'my_basket_page' %}" class=" cursor-pointer hover:text-[var(--color6)]">سبد خرید</a>
+            <div><i class="fa fa-angle-left text-sm mt-0.5"></i></div>
+            <a href="{% url 'checkout_page' %}" class="cursor-pointer hover:text-[var(--color6)]">بررسی سفارش</a>
+            <div><i class="fa fa-angle-left text-sm mt-0.5"></i></div>
+            <a href="{% url 'checkout_page' %}" class="text-[var(--color6)] cursor-pointer hover:text-[var(--color6)]">پرداخت</a>
+        </div>
+{% endblock %}
+
 {% block page_content %}
-    <div class="centerbox">
-        <div class="checkout-title flex mt-35 w-[90%] gap-2 text-[var(--color10)] text-lg">
+    <div class="centerbox order-grid mt-35">
+        <div class="checkout-title flex w-[90%] gap-2 text-[var(--color10)] text-lg">
             <div><button class="btn-prdcounter text-sm pt-1 rounded-2xl" onclick="history.back()"><i class="fa fa-angle-right"></i></button></div>
             <a href="{% url 'my_basket_page' %}" class=" cursor-pointer hover:text-[var(--color6)]">سبد خرید</a>
             <div><i class="fa fa-angle-left text-sm mt-0.5"></i></div>

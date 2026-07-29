@@ -269,7 +269,8 @@ def my_basket(request: HttpRequest):
         'total_weight': order_summary['total_weight'],
         'total_amount_without_discount': order_summary['total_amount_without_discount'],
         'total_discount': int(order_summary['total_discount']),
-        'insufficient_items': current_order.Check_insufficient_items()
+        'insufficient_items': current_order.Check_insufficient_items(),
+        'page_title': 'سبد خرید'
     }
     return render(request ,'order_module/shopping_basket.html' ,context)
 

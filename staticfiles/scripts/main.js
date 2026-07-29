@@ -86,7 +86,11 @@ let HeaderManage = () => {
             }
         }
     }
+
 }
+
+
+
 
 let panel = document.getElementById("submenu-panel");
 

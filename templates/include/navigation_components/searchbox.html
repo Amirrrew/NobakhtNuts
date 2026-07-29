@@ -1,109 +1,115 @@
 {% load poll_extras %}
 
-<div class="searchbox hidden" id="searchbox">
-    <svg class="m-3" id="Search" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M11.5139 2.20227C6.51788 2.20227 2.45288 6.26727 2.45288 11.2643C2.45288 16.2603 6.51788 20.3243 11.5139 20.3243C16.5099 20.3243 20.5749 16.2603 20.5749 11.2643C20.5749 6.26727 16.5099 2.20227 11.5139 2.20227Z" fill="#674d45"></path>
-    <path fill-rule="evenodd" clip-rule="evenodd" d="M20.1373 17.9767C19.0833 17.9767 18.2253 18.8327 18.2253 19.8867C18.2253 20.9407 19.0833 21.7977 20.1373 21.7977C21.1903 21.7977 22.0473 20.9407 22.0473 19.8867C22.0473 18.8327 21.1903 17.9767 20.1373 17.9767Z" fill="#674d45"></path>
-    </svg>
-    <input id="search-input" class="search-input" placeholder="جستجو بین محصولات">
-    <button onclick="Search_action(false)" class="w-[60px] h-[100%] cursor-pointer transition-all rounded-xl hover:bg-[var(--color12)]">
-        <i class="fa fa-close mt-1"></i>
-    </button>
+<div class="w-[100%] centerbox">
 
+        <div class="searchbox hidden" id="searchbox">
+            <svg class="m-3" id="Search" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M11.5139 2.20227C6.51788 2.20227 2.45288 6.26727 2.45288 11.2643C2.45288 16.2603 6.51788 20.3243 11.5139 20.3243C16.5099 20.3243 20.5749 16.2603 20.5749 11.2643C20.5749 6.26727 16.5099 2.20227 11.5139 2.20227Z" fill="#674d45"></path>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M20.1373 17.9767C19.0833 17.9767 18.2253 18.8327 18.2253 19.8867C18.2253 20.9407 19.0833 21.7977 20.1373 21.7977C21.1903 21.7977 22.0473 20.9407 22.0473 19.8867C22.0473 18.8327 21.1903 17.9767 20.1373 17.9767Z" fill="#674d45"></path>
+            </svg>
+            <input id="search-input" class="search-input" placeholder="جستجو بین محصولات">
+            <button onclick="Search_action(false)" class="w-[60px] h-[100%] cursor-pointer transition-all rounded-xl hover:bg-[var(--color12)]">
+                <i class="fa fa-close mt-1"></i>
+            </button>
+
+        </div>
 </div>
 
 
-<div class="search-suggest"  id="search-suggest">
-                <div id="skeletons" class="skeletons hidden">
-                    <div class="skeleton-card mt-2">
-                        <div class="card__skeleton rounded-2xl min-w-20 min-h-20 w-20 h-20"></div>
-                        <div class="flex justify-between w-[100%]">
-                            <div class="w-[100%]">
-                                <div class="card__skeleton w-[50%] p-2 mt-2 rounded-xl"></div>
-                                <div class="card__skeleton px-10 py-5 w-50 mt-2 rounded-xl"></div>
+<div class="w-[100%] centerbox">
+        <div class="search-suggest"  id="search-suggest">
+                        <div id="skeletons" class="skeletons hidden">
+                            <div class="skeleton-card mt-2">
+                                <div class="card__skeleton rounded-2xl min-w-20 min-h-20 w-20 h-20"></div>
+                                <div class="flex justify-between w-[100%]">
+                                    <div class="w-[100%]">
+                                        <div class="card__skeleton w-[50%] p-2 mt-2 rounded-xl"></div>
+                                        <div class="card__skeleton px-10 py-5 w-50 mt-2 rounded-xl"></div>
+                                    </div>
+                                    <div class="p-2">
+                                        <div class="card__skeleton w-10 py-3 rounded-xl"></div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="p-2">
-                                <div class="card__skeleton w-10 py-3 rounded-xl"></div>
+                            <div class="skeleton-card mt-2">
+                                <div class="card__skeleton rounded-2xl min-w-20 min-h-20 w-20 h-20"></div>
+                                <div class="flex justify-between w-[100%]">
+                                    <div class="w-[100%]">
+                                        <div class="card__skeleton w-[50%] p-2 mt-2 rounded-xl"></div>
+                                        <div class="card__skeleton px-10 py-5 w-50 mt-2 rounded-xl"></div>
+                                    </div>
+                                    <div class="p-2">
+                                        <div class="card__skeleton w-10 py-3 rounded-xl"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="skeleton-card mt-2">
+                                <div class="card__skeleton rounded-2xl min-w-20 min-h-20 w-20 h-20"></div>
+                                <div class="flex justify-between w-[100%]">
+                                    <div class="w-[100%]">
+                                        <div class="card__skeleton w-[50%] p-2 mt-2 rounded-xl"></div>
+                                        <div class="card__skeleton px-10 py-5 w-50 mt-2 rounded-xl"></div>
+                                    </div>
+                                    <div class="p-2">
+                                        <div class="card__skeleton w-10 py-3 rounded-xl"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="skeleton-card mt-2">
+                                <div class="card__skeleton rounded-2xl min-w-20 min-h-20 w-20 h-20"></div>
+                                <div class="flex justify-between w-[100%]">
+                                    <div class="w-[100%]">
+                                        <div class="card__skeleton w-[50%] p-2 mt-2 rounded-xl"></div>
+                                        <div class="card__skeleton px-10 py-5 w-50 mt-2 rounded-xl"></div>
+                                    </div>
+                                    <div class="p-2">
+                                        <div class="card__skeleton w-10 py-3 rounded-xl"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="skeleton-card mt-2">
+                                <div class="card__skeleton rounded-2xl min-w-20 min-h-20 w-20 h-20"></div>
+                                <div class="flex justify-between w-[100%]">
+                                    <div class="w-[100%]">
+                                        <div class="card__skeleton w-[50%] p-2 mt-2 rounded-xl"></div>
+                                        <div class="card__skeleton px-10 py-5 w-50 mt-2 rounded-xl"></div>
+                                    </div>
+                                    <div class="p-2">
+                                        <div class="card__skeleton w-10 py-3 rounded-xl"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="skeleton-card mt-2">
+                                <div class="card__skeleton rounded-2xl min-w-20 min-h-20 w-20 h-20"></div>
+                                <div class="flex justify-between w-[100%]">
+                                    <div class="w-[100%]">
+                                        <div class="card__skeleton w-[50%] p-2 mt-2 rounded-xl"></div>
+                                        <div class="card__skeleton px-10 py-5 w-50 mt-2 rounded-xl"></div>
+                                    </div>
+                                    <div class="p-2">
+                                        <div class="card__skeleton w-10 py-3 rounded-xl"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="skeleton-card mt-2">
+                                <div class="card__skeleton rounded-2xl min-w-20 min-h-20 w-20 h-20"></div>
+                                <div class="flex justify-between w-[100%]">
+                                    <div class="w-[100%]">
+                                        <div class="card__skeleton w-[50%] p-2 mt-2 rounded-xl"></div>
+                                        <div class="card__skeleton px-10 py-5 w-50 mt-2 rounded-xl"></div>
+                                    </div>
+                                    <div class="p-2">
+                                        <div class="card__skeleton w-10 py-3 rounded-xl"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="skeleton-card mt-2">
-                        <div class="card__skeleton rounded-2xl min-w-20 min-h-20 w-20 h-20"></div>
-                        <div class="flex justify-between w-[100%]">
-                            <div class="w-[100%]">
-                                <div class="card__skeleton w-[50%] p-2 mt-2 rounded-xl"></div>
-                                <div class="card__skeleton px-10 py-5 w-50 mt-2 rounded-xl"></div>
-                            </div>
-                            <div class="p-2">
-                                <div class="card__skeleton w-10 py-3 rounded-xl"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="skeleton-card mt-2">
-                        <div class="card__skeleton rounded-2xl min-w-20 min-h-20 w-20 h-20"></div>
-                        <div class="flex justify-between w-[100%]">
-                            <div class="w-[100%]">
-                                <div class="card__skeleton w-[50%] p-2 mt-2 rounded-xl"></div>
-                                <div class="card__skeleton px-10 py-5 w-50 mt-2 rounded-xl"></div>
-                            </div>
-                            <div class="p-2">
-                                <div class="card__skeleton w-10 py-3 rounded-xl"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="skeleton-card mt-2">
-                        <div class="card__skeleton rounded-2xl min-w-20 min-h-20 w-20 h-20"></div>
-                        <div class="flex justify-between w-[100%]">
-                            <div class="w-[100%]">
-                                <div class="card__skeleton w-[50%] p-2 mt-2 rounded-xl"></div>
-                                <div class="card__skeleton px-10 py-5 w-50 mt-2 rounded-xl"></div>
-                            </div>
-                            <div class="p-2">
-                                <div class="card__skeleton w-10 py-3 rounded-xl"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="skeleton-card mt-2">
-                        <div class="card__skeleton rounded-2xl min-w-20 min-h-20 w-20 h-20"></div>
-                        <div class="flex justify-between w-[100%]">
-                            <div class="w-[100%]">
-                                <div class="card__skeleton w-[50%] p-2 mt-2 rounded-xl"></div>
-                                <div class="card__skeleton px-10 py-5 w-50 mt-2 rounded-xl"></div>
-                            </div>
-                            <div class="p-2">
-                                <div class="card__skeleton w-10 py-3 rounded-xl"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="skeleton-card mt-2">
-                        <div class="card__skeleton rounded-2xl min-w-20 min-h-20 w-20 h-20"></div>
-                        <div class="flex justify-between w-[100%]">
-                            <div class="w-[100%]">
-                                <div class="card__skeleton w-[50%] p-2 mt-2 rounded-xl"></div>
-                                <div class="card__skeleton px-10 py-5 w-50 mt-2 rounded-xl"></div>
-                            </div>
-                            <div class="p-2">
-                                <div class="card__skeleton w-10 py-3 rounded-xl"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="skeleton-card mt-2">
-                        <div class="card__skeleton rounded-2xl min-w-20 min-h-20 w-20 h-20"></div>
-                        <div class="flex justify-between w-[100%]">
-                            <div class="w-[100%]">
-                                <div class="card__skeleton w-[50%] p-2 mt-2 rounded-xl"></div>
-                                <div class="card__skeleton px-10 py-5 w-50 mt-2 rounded-xl"></div>
-                            </div>
-                            <div class="p-2">
-                                <div class="card__skeleton w-10 py-3 rounded-xl"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-    <div id="search-result">
+            <div id="search-result">
 
-    </div>
-    <div id="search-result-box" class="absolute bottom-4 w-[100%]">
+            </div>
+            <div id="search-result-box" class="absolute bottom-4 w-[100%]">
 
-    </div>
+            </div>
+        </div>
+
 </div>
