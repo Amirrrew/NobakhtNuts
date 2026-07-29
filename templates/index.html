@@ -18,19 +18,38 @@
     {% include 'include/header_refrence.html' %}
     {% include 'include/navigation_components/searchbox.html' %}
     <div class="top-navigator">
-        <div class="flex gap-1">
-            <button onclick="history.back()" class="top-navigator-btn min-w-[45px] h-w-[45px]">
-                <i class="fa fa-arrow-right mt-1.5"></i>
-            </button>
-            <div class="top-navigator-pill">
-                <h4 class="truncate">{% block topbar_title %}{{ page_title|default_if_none:' '|to_fanum }}{% endblock %}</h4>
+        <div class="flex gap-1 {% if request.resolver_match.url_name == 'home' %} w-[100%] {% endif %}">
+            {% if not request.resolver_match.url_name == 'home' %}
+                <button onclick="history.back()" class="top-navigator-btn">
+                    <i class="fa fa-arrow-right mt-1.5"></i>
+                </button>
+                {% else %}
+                <button onclick="document.documentElement.scrollTop = 0" class="top-navigator-btn min-w-[60px] h-w-[60px]">
+                    <i class="fa fa-arrow-up mt-1.5"></i>
+                </button>
+            {% endif %}
+            <div class="top-navigator-pill" style="{% if request.resolver_match.url_name == 'home' %} flex: 1; width: 100%; min-height: 60px; justify-content: center{% endif %}">
+                <div class="{% if not request.resolver_match.url_name == 'home' %} truncate {% endif %}">{% block topbar_title %}{{ page_title|default_if_none:' '|to_fanum }}{% endblock %}</div>
             </div>
+            {% if request.resolver_match.url_name == 'home' %}
+                <button onclick="SideMenu('open', 'cat-sidemenu')" class="top-navigator-btn centerbox items-center min-w-[60px] h-w-[60px]">
+                    <svg id="Category" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <title>Iconly/Bulk/Category</title>
+                        <g id="Iconly/Bulk/Category" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                            <g id="Category" transform="translate(2.000000, 2.000000)" fill="#674d45" fill-rule="nonzero">
+                                <path d="M14.0755097,2.66453526e-15 L17.4614756,2.66453526e-15 C18.8637443,2.66453526e-15 20,1.1458518 20,2.55996321 L20,5.97452492 C20,7.38863633 18.8637443,8.53448813 17.4614756,8.53448813 L14.0755097,8.53448813 C12.673241,8.53448813 11.5369853,7.38863633 11.5369853,5.97452492 L11.5369853,2.55996321 C11.5369853,1.1458518 12.673241,2.66453526e-15 14.0755097,2.66453526e-15" id="Fill-1" opacity="0.400000006"></path>
+                                <path d="M5.9244903,11.4655119 C7.32675901,11.4655119 8.46301469,12.6113637 8.46301469,14.0254751 L8.46301469,17.4400368 C8.46301469,18.8531901 7.32675901,20 5.9244903,20 L2.53852439,20 C1.13625568,20 8.8817842e-16,18.8531901 8.8817842e-16,17.4400368 L8.8817842e-16,14.0254751 C8.8817842e-16,12.6113637 1.13625568,11.4655119 2.53852439,11.4655119 L5.9244903,11.4655119 Z M17.4614756,11.4655119 C18.8637443,11.4655119 20,12.6113637 20,14.0254751 L20,17.4400368 C20,18.8531901 18.8637443,20 17.4614756,20 L14.0755097,20 C12.673241,20 11.5369853,18.8531901 11.5369853,17.4400368 L11.5369853,14.0254751 C11.5369853,12.6113637 12.673241,11.4655119 14.0755097,11.4655119 L17.4614756,11.4655119 Z M5.9244903,7.99360578e-15 C7.32675901,7.99360578e-15 8.46301469,1.1458518 8.46301469,2.55996321 L8.46301469,5.97452492 C8.46301469,7.38863633 7.32675901,8.53448813 5.9244903,8.53448813 L2.53852439,8.53448813 C1.13625568,8.53448813 8.8817842e-16,7.38863633 8.8817842e-16,5.97452492 L8.8817842e-16,2.55996321 C8.8817842e-16,1.1458518 1.13625568,7.99360578e-15 2.53852439,7.99360578e-15 L5.9244903,7.99360578e-15 Z" id="Combined-Shape"></path>
+                            </g>
+                        </g>
+                    </svg>
+                </button>
+            {% endif %}
         </div>
         {% if not request.GET.q %}
             {% if request.resolver_match.url_name == 'all_products_page' or request.resolver_match.url_name == 'products_by_category' or request.resolver_match.url_name == 'products_by_subcategory' %}
                 <div class="flex gap-1">
                     {% if has_filters %}
-                        <a href="{{ request.path }}" class="top-navigator-btn min-w-[45px] min-h-[45px] centerbox items-center">
+                        <a href="{{ request.path }}" class="top-navigator-btn min-w-[60px] min-h-[60px] centerbox items-center">
                             <svg id="Delete" class="mt-[-2px]" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                 <g id="Iconly/Bulk/Delete" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
                                     <g id="Delete" transform="translate(3.000000, 2.000000)" fill="#674d45" fill-rule="nonzero">
@@ -41,7 +60,7 @@
                             </svg>
                         </a>
                     {% endif %}
-                    <button class="{% if has_filters %}bg-[var(--color11)]{% else %}bg-[var(--color12)]{% endif %} p-2 rounded-xl flex items-start top-navigator-btn" onclick="SideMenu('open' ,'filter-side')">
+                    <button class="{% if has_filters %}bg-[var(--color11)]{% else %}bg-[var(--color12)]{% endif %} p-2 rounded-xl flex items-start top-navigator-btn min-h-[60px]" style="padding: 15px 15px;" onclick="SideMenu('open' ,'filter-side')">
                         <svg id="Filter" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g opacity="0.4">
                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M10.7345 16.8484H4.26147C3.70947 16.8484 3.26147 17.2954 3.26147 17.8484C3.26147 18.4014 3.70947 18.8484 4.26147 18.8484H10.7345C11.2865 18.8484 11.7345 18.4014 11.7345 17.8484C11.7345 17.2954 11.2865 16.8484 10.7345 16.8484Z" fill="#674d45"></path>

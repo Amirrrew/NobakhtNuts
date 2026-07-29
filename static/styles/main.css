@@ -1222,6 +1222,8 @@ input[type="number"] {
     color: var(--color6);
     cursor: pointer;
     transition: 190ms;
+    min-width: 60px;
+    min-height: 60px;
 }
 
 .top-navigator-btn:active {
@@ -1237,8 +1239,8 @@ input[type="number"] {
     background-color: var(--color12);
     backdrop-filter: blur(10px);
     color: var(--color6);
-    height: 45px;
-    width: fit-content;
+    height: 60px;
+
     display: flex;
     align-items: center;
     padding: 0 15px;

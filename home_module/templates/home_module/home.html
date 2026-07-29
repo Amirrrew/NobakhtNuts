@@ -9,6 +9,13 @@
     {% include 'home_module/home_schema.html' %}
 {% endblock %}
 
+{% block topbar_title %}
+    <a href="{% url 'home' %}" class="flex gap-2">
+        <img class="w-[45px] max-w-[45px] min-w-[45px]" loading="eager" alt="برنج و خشکبار نوبخت" src="{% static 'media/logo/favicon-32x32.webp' %}">
+        <h2 class="text-xl mt-2.5 font-bold text-nowrap">برنج و خشکبار نوبخت</h2>
+    </a>
+{% endblock %}
+
 {% block page_content %}
     {% include 'home_module/components/home_slider.html' %}
     <div class="home-inner-container w-[100%]">
