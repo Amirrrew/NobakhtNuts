@@ -1,0 +1,29 @@
+{
+    "name": "Nobakht nuts",
+    "short_name": "Nobakht nuts",
+    "description": "فروشگاه اینترنتی برنج و خشکبار نوبخت",
+    "start_url": "/",
+    "scope": "/",
+    "display": "standalone",
+    "orientation": "portrait",
+    "theme_color": "#674d45",
+    "background_color": "#ffffff",
+    "icons": [
+        {
+            "src": "/static/media/logo/pwa_icons/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/static/media/logo/pwa_icons/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "/static/media/logo/pwa_icons/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable any"
+        }
+    ]
+}
