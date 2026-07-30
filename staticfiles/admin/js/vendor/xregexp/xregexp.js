@@ -690,7 +690,7 @@ function dec(hex) {
 }
 /**
  * Returns a pattern that can be used in a native RegExp in place of an ignorable token such as an
- * inline comments or whitespace with flag x. This is used directly as a token handler function
+ * inline comment or whitespace with flag x. This is used directly as a token handler function
  * passed to `XRegExp.addToken`.
  *
  * @private
@@ -1624,7 +1624,7 @@ XRegExp.matchChain = function (str, chain) {
 /**
  * Returns a new string with one or all matches of a pattern replaced. The pattern can be a string
  * or regex, and the replacement can be a string or a function to be called for each match. To
- * perform a global search and replace, use the optional `scope` argument or components flag g if using
+ * perform a global search and replace, use the optional `scope` argument or include flag g if using
  * a regex. Replacement strings can use `$<n>` or `${n}` for named and numbered backreferences.
  * Replacement functions can use named backreferences via the last argument. Also fixes browser bugs
  * compared to the native `String.prototype.replace` and can be used reliably cross-browser.
@@ -1633,7 +1633,7 @@ XRegExp.matchChain = function (str, chain) {
  * @param {String} str String to search.
  * @param {RegExp|String} search Search pattern to be replaced.
  * @param {String|Function} replacement Replacement string or a function invoked to create it.
- *   Replacement strings can components special replacement syntax:
+ *   Replacement strings can include special replacement syntax:
  *     - $$ - Inserts a literal $ character.
  *     - $&, $0 - Inserts the matched substring.
  *     - $` - Inserts the string that precedes the matched substring (left context).
@@ -1756,7 +1756,7 @@ XRegExp.replaceEach = function (str, replacements) {
  * @memberOf XRegExp
  * @param {String} str String to split.
  * @param {RegExp|String} separator Regex or string to use for separating the string.
- * @param {Number} [limit] Maximum number of items to components in the result array.
+ * @param {Number} [limit] Maximum number of items to include in the result array.
  * @returns {Array} Array of substrings.
  * @example
  *
@@ -2221,7 +2221,7 @@ fixed.replace = function (search, replacement) {
  *
  * @memberOf String
  * @param {RegExp|String} separator Regex or string to use for separating the string.
- * @param {Number} [limit] Maximum number of items to components in the result array.
+ * @param {Number} [limit] Maximum number of items to include in the result array.
  * @returns {!Array} Array of substrings.
  */
 
@@ -2294,7 +2294,7 @@ XRegExp.addToken(/\\([ABCE-RTUVXYZaeg-mopqyz]|c(?![A-Za-z])|u(?![\dA-Fa-f]{4}|{[
 });
 /*
  * Unicode code point escape with curly braces: `\u{N..}`. `N..` is any one or more digit
- * hexadecimal number from 0-10FFFF, and can components leading zeros. Requires the native ES6 `u` flag
+ * hexadecimal number from 0-10FFFF, and can include leading zeros. Requires the native ES6 `u` flag
  * to support code points greater than U+FFFF. Avoids converting code points above U+FFFF to
  * surrogate pairs (which could be done without flag `u`), since that could lead to broken behavior
  * if you follow a `\u{N..}` token that references a code point above U+FFFF with a quantifier, or

@@ -1817,15 +1817,6 @@ header .category-menu {
 
 
 /* ------------ welcome and intro ------- */
-.section-welcome {
-    width: 100%;
-    height: 550px;
-    background-image: url(../media/posters/test-poster1.png);
-    background-size: cover;
-    background-repeat: no-repeat;
-    margin-top: 95px;
-}
-
 .product-slide {
     width: 100%;
 }
@@ -1937,13 +1928,6 @@ header .category-menu {
     background-color: var(--color11);
 }
 
-.section-banner-1 {
-    width: 90%;
-    border-radius: 10px;
-    background-image: url(../media/posters/test-poster1.png);
-    background-size: cover;
-    height: 500px;
-}
 
 footer {
     width: 100%;
