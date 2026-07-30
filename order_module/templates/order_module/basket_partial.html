@@ -19,11 +19,11 @@
 
                 <div class="">
                     <div class="flex gap-2">
-                        <div class="flex bg-[var(--color12)] gap-1 rounded-lg px-2 py-0.5 text-sm">
+                        <div class="flex text-[var(--color10)] gap-1 text-sm">
                             <a target="_blank" href="{{ o.product.category.get_absolute_url }}">{{ o.product.category }}</a> <i class="fa fa-angle-left mt-0.5 text-[var(--color14)] text-xs"></i> <a target="_blank" href="{{ o.product.category.main_category.get_absolute_url }}">{{ o.product.category.main_category }}</a>
                         </div>
                         {% if o.product.is_byWeight %}
-                        <div class="bg-[var(--color12)] rounded-lg py-0.5 px-2.5 text-sm text-nowrap flex-shrink-0">
+                        <div class="bg-[var(--color12)] mt-[-2px] rounded-lg py-0.5 px-2.5 text-sm text-nowrap flex-shrink-0">
                           {{ o.pack_size|to_fanum }}
                         </div>
                       {% endif %}

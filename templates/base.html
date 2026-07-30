@@ -23,7 +23,7 @@
     <div class="top-navigator">
         <div class="flex gap-1">
             {% if not request.resolver_match.url_name == 'home' %}
-                <button onclick="history.back()" class="top-navigator-btn min-w-[45px] h-w-[45px]">
+                <button onclick="history.back() ,navigator.vibrate(10)" class="top-navigator-btn min-w-[45px] h-w-[45px]">
                     <i class="fa fa-arrow-right mt-1.5"></i>
                 </button>
                 {% else %}

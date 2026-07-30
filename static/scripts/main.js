@@ -141,6 +141,15 @@ let Search_action = (action) => {
     }
 }
 
+document.addEventListener('keydown' ,(e)=> {
+    if ((e.ctrlKey || e.metaKey) && e.code === 'KeyK') {
+        e.preventDefault();
+        Search_action(true);
+    }
+    else if (e.code === 'Escape') {
+        Search_action(false)
+    }
+})
 
 // جستجو بین محصولات
 let search_timeout;

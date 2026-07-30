@@ -10,6 +10,10 @@
     {% include 'article_module/article_schema.html' %}
 {% endblock %}
 
+{% block topbar_title %}
+    {{ article.title|truncatechars:'35' }}
+{% endblock %}
+
 {% block page_content %}
     <div class="centerbox">
         <div class="w-[90%]">
@@ -85,12 +89,7 @@
 
             <div class="article-text w-[70%]">
 
-                <div id="article-titlebar"  class="flex opacity-0 overflow-hidden w-[101%] mr-[-2px] items-start gap-2 border-b border-[var(--color11)] bg-[var(--header-bg)] z-7 backdrop-filter-[blur(10px)] top-[-200px] pt-1.5 sticky pb-2 transition-all duration-500">
-                    <button onclick="document.documentElement.scrollTop = 0" class="rounded-xl bg-[var(--color12)] min-w-8 min-h-8 m-1 cursor-pointer text-[var(--color6)]"><i class="fa fa-arrow-up text-sm mt-1"></i></button>
-                    <h1 class="mt-2 text-nowrap">{{ article.title }}</h1>
-                </div>
-
-                <div class="w-[100%] mt-[-60px] text-[var(--color6)] overflow-hidden rounded-2xl border border-[var(--color13)] bg-[var(--color12)] p-5">
+                <div class="w-[100%] text-[var(--color6)] overflow-hidden rounded-2xl border border-[var(--color13)] bg-[var(--color12)] p-5">
                     <div class="text-9xl mt-[-60px]">،،</div>
                     <h2 class="mt-[-30px] text-lg">{{ article.desc|to_fanum }}</h2>
                 </div>
@@ -108,16 +107,4 @@
 
         </div>
     </div>
-    <script>
-        let article_titlebar = document.getElementById('article-titlebar')
-        let article_text = document.getElementById('article-text')
-        document.addEventListener('scroll' , ()=> {
-            if (document.documentElement.scrollTop - 350 > article_text.offsetTop) {
-                article_titlebar.style = 'top: 60px; opacity: 1;'
-            }
-            else {
-                article_titlebar.style = 'top: -200px; opacity: 0'
-            }
-        })
-    </script>
 {% endblock %}

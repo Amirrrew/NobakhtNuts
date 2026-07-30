@@ -5,6 +5,10 @@
 	 | درباره ما
 {% endblock %}
 
+{% block topbar_title %}
+    درباره ما
+{% endblock %}
+
 {% block page_content %}
 {#    {% include 'userpanel_module/include/pop_up_ticket.html' %}#}
     <div class="centerbox mt-40">
@@ -26,7 +30,7 @@
             <div>
                 <h2 aria-labelledby="about-title" class="about-title relative text-2xl font-semibold">برنج و خشکبار نوبخت، فروشگاه تخصصی برنج و خشکبار در قائمشهر و مازندران👋</h2>
             </div>
-            <div class="flex gap-10 about-container">
+            <div class="flex gap-10 about-container w-[100%] justify-between">
                 <div class="text-[var(--color7)]">
                     <p class="mt-8">برنج و خشکبار نوبخت یک فروشگاه تخصصی و کیفیت محور در حوزه برنج ،آجیل و خشکبار واقع در شهر قائمشهر در استان مازندران است.</p>
                     <p>در طی بیش از 20 سال تجربه کسب و کارمان و حضور در این حوزه، همواره سعی داشته ایم که محصولاتی با بهترین کیفیت و قیمتی مناسب ارائه دهیم و همیشه رضایت مشتری را در اولین اولویت خود قرار داده ایم و اعتقاد داریم که اعتماد و رضایت مشتری بزرگترین سرمایه ای است که یک فروشگاه ،کسب و کار یا یک شرکت میتواند داشته باشد...</p>
@@ -35,7 +39,7 @@
                     <p>تمامی محصولات ما با دقت انتخاب میشوند تا طعم، عطر و ارزش غذایی آنها حفظ گردد.</p>
 
                     <P class="mt-5">برای آشنایی با محصولات و اطلاع از اخبار و بروزرسانی ها حتما صفحه ی ما در اینستاگرام را دنبال کنید.</P>
-                    <div class="flex mt-2 gap-2">
+                    <div class="flex mt-2 gap-2 flex-wrap">
                         <a href="{{ insta.opt1 }}" target="_blank" class="btn-defIconFlex gap-1">اینستاگرام ما<i class="fa-brands fa-instagram text-xs mt-1 text-[var(--color11)]"></i></a>
                         <a href="tel:01142031500" target="_blank" class="btn-defIconFlex2 gap-1">تماس با ما<i class="fa fa-phone text-xs mt-1 text-[var(--color10)]"></i></a>
                         <a href="{% url 'support_page' %}" class="btn-defIconFlex2 gap-2">راه های ارتباطی<i class="fa fa-arrow-left text-xs text-[var(--color10)] mt-1"></i></a>

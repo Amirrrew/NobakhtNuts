@@ -253,7 +253,7 @@ input[type="number"] {
     }
 
     body .shopping-basket {
-        margin-top: 60px;
+        margin-top: 80px;
     }
 
     body .contact-address {
@@ -335,7 +335,7 @@ input[type="number"] {
     }
 
     body .order-grid {
-        margin-top: 60px;
+        margin-top: 80px;
     }
 }
 
@@ -1365,8 +1365,7 @@ header::before {
 .side-menu {
     width: 320px;
     height: 100%;
-    background-color: var(--header-bg);
-    backdrop-filter: blur(20px);
+    background-color: #fff;
     position: fixed;
     top: 0;
     border-left: 2px solid var(--color8);
@@ -1422,9 +1421,8 @@ header::before {
     height: 100%;
     top: 0;
     z-index: 10002;
-    background-color: var(--header-bg);
+    background-color: #fff;
     border-left: 2px solid var(--color8);
-    backdrop-filter: blur(10px);
     transition: 200ms;
     right: -500px;
 }
@@ -2956,7 +2954,7 @@ footer {
     background-color: var(--color16);
     backdrop-filter: blur(10px);
     position: relative;
-    border: 2px solid var(--color13);
+    border: 2px solid var(--color11);
     padding: 0px 10px;
     padding-bottom: 10px;
     display: none;
