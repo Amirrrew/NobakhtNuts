@@ -139,7 +139,6 @@ class ProductDetailView(DetailView):
             id=product.id
         )[:7]
         context['slider_title'] = 'محصولات مرتبط'
-        context['page_title'] = self.object.title
         product.view+=1
         product.save()
         return context

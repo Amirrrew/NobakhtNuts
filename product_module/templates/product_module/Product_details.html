@@ -10,6 +10,10 @@
     {% include 'product_module/product_schema.html' %}
 {% endblock %}
 
+{% block topbar_title %}
+    <h1 class="truncate">{{ product.title }}</h1>
+{% endblock %}
+
 {% block page_content %}
     {% include 'product_module/include/popup_comment.html' %}
     {% include 'message_cart_json.html' %}

@@ -434,6 +434,13 @@ input[type="number"] {
         padding: 0 10px;
     }
 
+    body .home-banner-row {
+        flex-wrap: wrap;
+    }
+
+    body .home-banner {
+        height: 300px;
+    }
 }
 
 @media screen and (max-width: 890px) {
@@ -1247,6 +1254,9 @@ input[type="number"] {
     user-select: none;
     cursor: default;
     animation: load-pill 1s;
+    flex: 1;
+    overflow: hidden;
+    min-width: 0;
 }
 
 .top-navigator-pill:active {
@@ -1365,7 +1375,8 @@ header::before {
 .side-menu {
     width: 320px;
     height: 100%;
-    background-color: #fff;
+    background-color: var(--header-bg);
+    backdrop-filter: blur(20px);
     position: fixed;
     top: 0;
     border-left: 2px solid var(--color8);
@@ -1421,8 +1432,9 @@ header::before {
     height: 100%;
     top: 0;
     z-index: 10002;
-    background-color: #fff;
+    background-color: var(--header-bg);
     border-left: 2px solid var(--color8);
+    backdrop-filter: blur(10px);
     transition: 200ms;
     right: -500px;
 }
