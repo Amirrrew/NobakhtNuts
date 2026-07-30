@@ -2965,6 +2965,7 @@ footer {
     height: 550px;
     border-radius: 15px;
     overflow: hidden;
+    background-color: #fff;
 }
 
 .pg-mainphotocard img {
