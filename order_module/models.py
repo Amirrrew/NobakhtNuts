@@ -212,6 +212,9 @@ class Order(models.Model):
             else:
                 amount = detail.count
 
+            if detail.product.is_deleted:
+                detail.delete()
+
             if detail.product_id not in product_totals:
                 product_totals[detail.product_id] = {
                     'product': detail.product,

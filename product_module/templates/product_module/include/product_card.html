@@ -18,8 +18,8 @@
             {% endif %}
             {% if p.label %}
                 <div class="flex prd-label gap-1 bg-[var(--color13)] text-[var(--color6)] rounded-lg border border-[var(--color11)] backdrop-filter-[blur(5px)] px-2 pt-0.5 ">
-                    {{ p.label_icon|safe }}
-                    <p class="text-sm fluid">
+                    <div class="mt-[1px]">{{ p.label_icon|safe }}</div>
+                    <p class="text-sm mt-[1.5px]">
                         {{ p.label.title|default_if_none:' '|to_fanum }}
                     </p>
                 </div>

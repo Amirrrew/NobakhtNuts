@@ -1,45 +1,33 @@
-// static/sw.js
 const CACHE_NAME = 'nobakhtnuts-v1';
+
 const urlsToCache = [
     '/',
-    '/static/css/main.css',
-    '/static/js/main.js',
-    '/static/icons/icon-192x192.png',
+    '/static/styles/main.css',
+    '/static/scripts/main.js',
+    '/static/scripts/home.js',
+    '/static/scripts/verify.js',
+    '/static/scripts/account.js',
+    '/static/media/logo/pwa-icons/icon-192.png',
     '/offline/',
 ];
 
-
-self.addEventListener('install', (event) => {
+self.addEventListener('install', event => {
     event.waitUntil(
-        caches.open(CACHE_NAME).then((cache) => {
-            return cache.addAll(urlsToCache);
+        caches.open(CACHE_NAME).then(async cache => {
+            for (const url of urlsToCache) {
+                const response = await fetch(url);
+
+                console.log(
+                    url,
+                    'status:', response.status,
+                    'type:', response.type,
+                    'ok:', response.ok
+                );
+
+                await cache.put(url, response);
+            }
         })
     );
+
     self.skipWaiting();
-});
-
-
-self.addEventListener('activate', (event) => {
-    event.waitUntil(
-        caches.keys().then((cacheNames) => {
-            return Promise.all(
-                cacheNames
-                    .filter((name) => name !== CACHE_NAME)
-                    .map((name) => caches.delete(name))
-            );
-        })
-    );
-    self.clients.claim();
-});
-
-self.addEventListener('fetch', (event) => {
-    event.respondWith(
-        caches.match(event.request).then((response) => {
-            return response || fetch(event.request).catch(() => {
-                if (event.request.mode === 'navigate') {
-                    return caches.match('/offline/');
-                }
-            });
-        })
-    );
 });
