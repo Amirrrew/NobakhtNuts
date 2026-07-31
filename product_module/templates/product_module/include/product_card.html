@@ -4,17 +4,27 @@
 <div class="product-card">
     <a href="{{ p.get_absolute_url }}" style="{% if p.quantity <= 0 %}background-color: var(--color5){% endif %}" class="product-card-imagebox">
         <img loading="lazy" alt="{{ p.title }}" class="product-card-image" src="{{ p.product_image.first.image.url }}">
-        {% if p.only_in_qaemshahr %}
-            <div class="flex z-4 gap-1 bg-[var(--color11)] text-[var(--color6)] rounded-lg border border-[var(--color11)] backdrop-filter-[blur(5px)] px-2 pt-0.5 absolute top-2 right-2">
-                <svg class="mt-[-1px]" id="Location" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.5C7.839 2.5 4.25 6.133 4.25 10.599C4.25 16.007 8.904 21.5 12.25 21.5C15.595 21.5 20.25 16.007 20.25 10.599C20.25 6.133 16.661 2.5 12.25 2.5Z" fill="#674d45"></path>
-                    <path d="M9.39697 10.7102C9.39697 12.2892 10.681 13.5732 12.26 13.5732C13.839 13.5732 15.124 12.2892 15.124 10.7102C15.124 9.13117 13.839 7.84717 12.26 7.84717C10.681 7.84717 9.39697 9.13117 9.39697 10.7102Z" fill="#674d45"></path>
-                </svg>
-                <h5 class="text-sm">
-                    فقط در قائمشهر
-                </h5>
-            </div>
-        {% endif %}
+        <div class="flex z-4 gap-1 absolute top-2 right-2">
+            {% if p.only_in_qaemshahr %}
+                <div class="flex z-4 gap-1 bg-[var(--color11)] text-[var(--color6)] rounded-lg border border-[var(--color11)] backdrop-filter-[blur(5px)] px-2 pt-0.5">
+                    <svg class="mt-[1px]" id="Location" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.5C7.839 2.5 4.25 6.133 4.25 10.599C4.25 16.007 8.904 21.5 12.25 21.5C15.595 21.5 20.25 16.007 20.25 10.599C20.25 6.133 16.661 2.5 12.25 2.5Z" fill="#674d45"></path>
+                        <path d="M9.39697 10.7102C9.39697 12.2892 10.681 13.5732 12.26 13.5732C13.839 13.5732 15.124 12.2892 15.124 10.7102C15.124 9.13117 13.839 7.84717 12.26 7.84717C10.681 7.84717 9.39697 9.13117 9.39697 10.7102Z" fill="#674d45"></path>
+                    </svg>
+                    <p class="text-sm mt-[2px]">
+                        فقط در قائمشهر
+                    </p>
+                </div>
+            {% endif %}
+            {% if p.label %}
+                <div class="flex prd-label animate-nigga gap-1 bg-[var(--color13)] text-[var(--color6)] rounded-lg border border-[var(--color11)] backdrop-filter-[blur(5px)] px-2 pt-0.5 ">
+                    {{ p.label_icon|safe }}
+                    <p class="text-sm fluid">
+                        {{ p.label.title|default_if_none:' '|to_fanum }}
+                    </p>
+                </div>
+            {% endif %}
+        </div>
     </a>
     <div class="product-card-details relative">
         <div class="text-[var(--color10)] flex justify-between">

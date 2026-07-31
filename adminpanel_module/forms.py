@@ -24,7 +24,7 @@ class AdminLoginForm(AuthenticationForm):
 class ProductAddForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['holoo_id' ,'title' ,'category' ,'brand' ,'is_byWeight' ,'packs' ,'price' ,'offer' ,'quantity' ,'desc' ,'pack_weight' ,'is_active' ,'chosen' ,'only_in_qaemshahr']
+        fields = ['holoo_id' ,'title' ,'category' ,'brand' ,'is_byWeight' ,'packs' ,'price' ,'offer' ,'quantity' ,'desc' ,'pack_weight' ,'is_active' ,'chosen' ,'only_in_qaemshahr' ,'label' ,'label_icon']
 
         widgets = {
             'desc': CKEditorUploadingWidget(),
@@ -38,9 +38,9 @@ class ProductAddForm(forms.ModelForm):
         self.fields['desc'].required = False
         self.fields['offer'].required = False
         self.fields['pack_weight'].required = False
+        self.fields['label'].required = False
+        self.fields['label_icon'].required = False
 
-        print(type(self.fields['desc'].widget))
-        print(self.fields['desc'].widget.__class__)
 
 
 class MainCategoryForm(forms.ModelForm):

@@ -128,6 +128,8 @@ class Product(models.Model):
     slug = models.SlugField(max_length=1000 ,default='' ,null=True ,blank=True,unique=True,db_index=True ,verbose_name="عنوان در url")
     packs = models.ManyToManyField(PackageSize ,null=True ,blank=True ,verbose_name='اندازه بسته بندی های محصول')
     pack_weight = models.FloatField(null=True ,blank=True ,verbose_name='وزن بسته')
+    label_icon = models.CharField(max_length=2000 ,null=True ,blank=True ,verbose_name='آیکون برای لیبل')
+    label = models.CharField(max_length=100 ,null=True ,blank=True ,verbose_name='لیبل کالا برای کارت محصول')
     chosen = models.BooleanField(default=False,db_index=True ,verbose_name='محصول برگزیده')
     only_in_qaemshahr = models.BooleanField(default=False ,db_index=True ,verbose_name='فقط در قائمشهر')
 
