@@ -42,3 +42,6 @@ def home(request):
         'banners': banners
     }
     return render(request, 'home_module/home.html', context)
+
+def not_found(request ,exception):
+    return render(request ,'include/404.html' ,status=404)

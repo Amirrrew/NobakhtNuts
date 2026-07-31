@@ -11,6 +11,8 @@ from article_module.sitemaps import ArticleSitemap
 from home_module.views import ServiceWorkerView
 from product_module.sitemaps import ProductSitemap, CategorySitemap, SubCategorySitemap
 
+handler404 = 'home_module.views.not_found'
+
 sitemaps = {
     'home': StaticViewSitemap,
     'products': ProductSitemap,
@@ -18,6 +20,7 @@ sitemaps = {
     'sub_category': SubCategorySitemap,
     'articles': ArticleSitemap
 }
+
 urlpatterns = [
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps ,'template_name': 'sitemap/custom_sitemap.xml'}, name='sitemap'),
     path('admin/', admin.site.urls),
