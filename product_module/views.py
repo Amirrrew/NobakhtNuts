@@ -115,7 +115,6 @@ class ProductListView(ListView):
             self.request.GET.getlist("brand"),
             self.request.GET.get("available"),
         ])
-        context['page_title'] = context['title_prd']
         return context
 
 

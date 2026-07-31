@@ -526,6 +526,7 @@ class ProductEdit(UpdateView):
     template_name = 'adminpanel_module/products/product_add_update.html'
     success_url = reverse_lazy('admin_product_list')
 
+
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.save()

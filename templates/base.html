@@ -31,7 +31,7 @@
                     <i class="fa fa-arrow-up mt-1.5"></i>
                 </button>
             {% endif %}
-            <div class="top-navigator-pill">
+            <div onclick="document.documentElement.scrollTop = 0" class="top-navigator-pill">
                 <h4 class="truncate">{% block topbar_title %}{{ page_title|default_if_none:' '|to_fanum }}{% endblock %}</h4>
             </div>
         </div>

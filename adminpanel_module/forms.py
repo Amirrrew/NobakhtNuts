@@ -1,4 +1,5 @@
 from ckeditor_uploader.fields import RichTextUploadingField
+from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.exceptions import ValidationError
@@ -25,6 +26,10 @@ class ProductAddForm(forms.ModelForm):
         model = Product
         fields = ['holoo_id' ,'title' ,'category' ,'brand' ,'is_byWeight' ,'packs' ,'price' ,'offer' ,'quantity' ,'desc' ,'pack_weight' ,'is_active' ,'chosen' ,'only_in_qaemshahr']
 
+        widgets = {
+            'desc': CKEditorUploadingWidget(),
+        }
+
     def __init__(self ,*args ,**kwargs ):
         super().__init__(*args ,**kwargs )
         self.fields['is_byWeight'].required = False
@@ -33,6 +38,9 @@ class ProductAddForm(forms.ModelForm):
         self.fields['desc'].required = False
         self.fields['offer'].required = False
         self.fields['pack_weight'].required = False
+
+        print(type(self.fields['desc'].widget))
+        print(self.fields['desc'].widget.__class__)
 
 
 class MainCategoryForm(forms.ModelForm):

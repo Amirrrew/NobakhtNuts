@@ -99,7 +99,7 @@
 
                     <div class="editpanel-row mt-2 flex gap-2 ">
                         <div class="w-[100%]">
-                            <div> قیمت<span class="text-[var(--loss-dot)]">*</span></div>
+                            <div> قیمت (به تومان)<span class="text-[var(--loss-dot)]">*</span></div>
                             <input value="{% if product.price %}{{ product.price|three_digits_currency_no_extension }}{% else %}0{% endif %}" class="input-admin" placeholder="قیمت را وارد کنید"  maxlength="15" type="text" name="" id="price-input">
                         </div>
 
@@ -180,8 +180,8 @@
                             </div>
                             <div class="w-[100%] mt-7">
                                 <div>توضیحات تکمیلی</div>
-                                <textarea maxlength="20000" oninput="CheckLength('product-desc' ,20000)" id="product-desc" name="desc" class="w-[100%] input-admin pt-2" style="height: 300px">{% if product.desc %}{{ product.desc }}{% endif %}</textarea>
-                                <div id="product-desc-remaining" class="mr-1">20000/0</div>
+                                {{ form.media }}
+                                {{ form.desc }}
                             </div>
                         </div>
                     </div>

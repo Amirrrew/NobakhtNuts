@@ -1246,7 +1246,6 @@ input[type="number"] {
     backdrop-filter: blur(10px);
     color: var(--color6);
     height: 60px;
-
     display: flex;
     align-items: center;
     padding: 0 15px;
@@ -1517,7 +1516,7 @@ header .category-menu {
     height: 100%;
     position: fixed;
     background-color: rgba(0, 0, 0, 0.29);
-    z-index: 98;
+    z-index: 101;
     animation: load8 200ms;
     backdrop-filter: blur(20px);
 }

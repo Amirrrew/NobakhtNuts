@@ -2,6 +2,7 @@ import math
 from datetime import timezone
 from itertools import product
 
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.contrib.admin import display
 from django.db import models ,transaction
 from django.db.models import DO_NOTHING
@@ -117,7 +118,7 @@ class Product(models.Model):
     price = models.IntegerField(default=0,blank=True ,null=True ,verbose_name="قیمت")
     is_byWeight = models.BooleanField(default=False ,verbose_name='کالای وزنی؟')
     quantity = models.FloatField(default=0 ,verbose_name="تعداد")
-    desc = models.TextField(max_length=20000, null=True ,blank=True ,verbose_name='توضیحات تکمیلی')
+    desc = RichTextUploadingField(max_length=500000 ,null=True ,blank=True ,verbose_name='توضیحات تکمیلی')
     user = models.ForeignKey(User ,null=True ,blank=True,on_delete=models.DO_NOTHING ,verbose_name="افزوده شده توسط کاربر")
     offer = models.IntegerField(default=0,blank=True ,null=True,db_index=True ,verbose_name="تخفیف")
     is_active = models.BooleanField(default=True,db_index=True ,verbose_name="فعال / غیر فعال")

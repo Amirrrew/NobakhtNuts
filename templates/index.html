@@ -28,7 +28,7 @@
                     <i class="fa fa-arrow-up mt-1.5"></i>
                 </button>
             {% endif %}
-            <div class="top-navigator-pill" style="{% if request.resolver_match.url_name == 'home' or request.resolver_match.url_name == 'product_detail_page' %} flex: 1; width: 100%; justify-content: center{% endif %}">
+            <div class="top-navigator-pill" onclick="{% if not request.resolver_match.url_name == 'home' %} document.documentElement.scrollTop = 0 {% endif %}" style="{% if request.resolver_match.url_name == 'home' or request.resolver_match.url_name == 'product_detail_page' %} flex: 1; width: 100%; justify-content: center{% endif %}">
                 <div class="{% if not request.resolver_match.url_name == 'home' %} min-w-0 truncate {% endif %}">{% block topbar_title %}{{ page_title|default_if_none:' '|to_fanum }}{% endblock %}</div>
             </div>
             {% if request.resolver_match.url_name == 'home' %}
@@ -75,7 +75,7 @@
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M17.5172 14.6274C15.1992 14.6274 14.2952 15.5304 14.2952 17.8494C14.2952 20.1684 15.1992 21.0714 17.5172 21.0714C19.8362 21.0714 20.7392 20.1684 20.7392 17.8494C20.7392 15.5304 19.8362 14.6274 17.5172 14.6274Z" fill="#674d45"></path>
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M6.98347 10.5805C9.30247 10.5805 10.2055 9.67754 10.2055 7.35754C10.2055 5.03954 9.30247 4.13654 6.98347 4.13654C4.66447 4.13654 3.76147 5.03954 3.76147 7.35754C3.76147 9.67754 4.66447 10.5805 6.98347 10.5805Z" fill="#674d45"></path>
                         </svg>
-                        <h1 class="">فیلتر ها</h1>
+                        <p class="text-nowrap" style="text-wrap: nowrap">فیلتر ها</p>
                         {% if has_filters %}<div class="p-1 bg-[var(--color6)] rounded-full mt-1.5 mr-1"></div>{% endif %}
                     </button>
                 </div>
