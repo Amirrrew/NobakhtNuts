@@ -7,6 +7,11 @@
 	سبد خرید
 {% endblock %}
 
+{% block extra_head %}
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+{% endblock %}
+
 {% block page_content %}
     {% include 'message_json.html' %}
     {% include 'order_module/include/basket_popup_edit_inventory.html' %}

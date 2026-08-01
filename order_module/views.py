@@ -543,9 +543,10 @@ class BasketPayment(View):
 def apply_discount(request):
     message = None
     error = False
-
+    html = None
     discount_code_get = request.GET.get('d')
     page = request.GET.get('page')
+    print(page)
     current_order = Order.objects.filter(user=request.user ,is_paid=False ,is_done=False).first()
     if discount_code_get:
         discount = DiscountCode.objects.filter(code__iexact=discount_code_get).first()
@@ -553,12 +554,35 @@ def apply_discount(request):
             order_summary = current_order.get_order_summary()
             order_total = order_summary['total_amount']
             is_valid = discount.self_check(order_total)
-            if is_valid:
+            if is_valid == '':
                 current_order.discount_code = discount
                 discount.self_use()
                 current_order.save()
                 message = 'کد تخفیف اعمال شد'
                 error = False
+
+                current_order.refresh_from_db()
+                order_summary = current_order.get_order_summary()
+                postage_fee = current_order.calculate_postage_fee()
+
+                template = (
+                    'order_module/include/payment_totalbox_mobile_partial.html'
+                    if page == 'mobile'
+                    else 'order_module/include/payment_totalbox_desktop_partial.html'
+                )
+
+                html = render_to_string(
+                    template ,
+                    {
+                        'orders': current_order,
+                        'total_amount': order_summary['total_to_pay'],
+                        'total_items': order_summary['total_items'],
+                        'total_weight': order_summary['total_weight'],
+                        'discount_amount': order_summary['discount_amount'],
+                        'postage_fee': postage_fee,
+                    },
+                    request=request
+                )
             else:
                 message = is_valid
                 error = True
@@ -566,22 +590,6 @@ def apply_discount(request):
             message = 'کد تخفیف نامعتبر'
             error = True
 
-    current_order.refresh_from_db()
-    order_summary = current_order.get_order_summary()
-    postage_fee = current_order.calculate_postage_fee()
-
-    html = render_to_string(
-        'order_module/include/payment_totalbox_desktop_partial.html' if page == 'desktop' else 'order_module/include/payment_totalbox_mobile_partial.html',
-        {
-            'orders': current_order,
-            'total_amount': order_summary['total_to_pay'],
-            'total_items': order_summary['total_items'],
-            'total_weight': order_summary['total_weight'],
-            'discount_amount': order_summary['discount_amount'],
-            'postage_fee': postage_fee,
-        },
-        request=request
-    )
 
     return JsonResponse({
         'message': message,

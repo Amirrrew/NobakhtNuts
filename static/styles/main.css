@@ -445,6 +445,19 @@ input[type="number"] {
     body .home-banner {
         height: 300px;
     }
+
+    body .popup-form-inventory {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        border-radius: 20px 20px 0px 0px;
+        transform: translateY(0);
+    }
+
+    body .popup-closer {
+        display: flex;
+        justify-content: center;
+    }
 }
 
 @media screen and (max-width: 890px) {
@@ -544,9 +557,7 @@ input[type="number"] {
         background-color: var(--color9);
     }
     body .popup-form {
-        top: 0;
-        max-height: inherit;
-        border-radius: 0;
+        border-radius: 20px 20px 0px 0px;
     }
 
     body .popup-parent {
@@ -2653,8 +2664,8 @@ footer {
 .popup-parent {
     width: 100%;
     height: 100%;
-    backdrop-filter: blur(20px);
-    background-color: rgba(52, 41, 41, 0.21);
+    backdrop-filter: blur(2px);
+    background-color: rgba(0, 0, 0, 0.29);
     position: fixed;
     z-index: 1000;
     display: none;
@@ -3408,7 +3419,6 @@ body .swiper-pagination-bullet-active {
 .popup-form-inventory {
     width: 500px;
     position: relative;
-    top: 0;
     background-color: #eae4e4;
     border: 2px solid var(--color9);
     animation: load5 300ms;
@@ -3500,3 +3510,12 @@ body .swiper-pagination-bullet-active {
     }
 }
 
+@keyframes popup-mobile {
+    from {bottom: -100%}
+    to{bottom: 0}
+}
+
+@keyframes popup-mobile-close {
+    from {bottom: 0}
+    to{bottom: -100%}
+}

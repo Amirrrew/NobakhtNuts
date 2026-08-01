@@ -745,19 +745,68 @@ let Get_orderdetail_packs = (detail_id) => {
     })
 }
 
+const popupClickHandler = (e) => {
+    let popup = document.getElementById('popup-form')
+
+    if (!popup.contains(e.target)) {
+        PopUpOrder('none', 'close')
+    }
+}
+
 let PopUpOrder = (type ,action) => {
     let parent = document.getElementById('popup-parent-pop')
     let popup = document.getElementById('popup-form')
 
     if (action === 'open') {
-        parent.style = 'display: flex; align-items:center;'
+        window.innerWidth > 1130 ? parent.style = 'display: flex; align-items:center;' :parent.style = 'display: flex; align-items:end;'
         document.body.style.overflowY = 'hidden'
+        window.innerWidth < 1130 ? popup.style = 'animation: popup-mobile 300ms': null
+        setTimeout(() => {
+            document.addEventListener('click', popupClickHandler)
+        }, 200)
     } else {
-        popup.style = 'animation: unload4 200ms'
+        window.innerWidth < 1130 ? popup.style = 'animation: popup-mobile-close 300ms' : popup.style = 'animation: unload4 200ms'
         setTimeout(()=> {
             parent.style = 'display: none'
             popup.style = 'animation: load5 300ms;'
             document.body.style.overflowY = 'scroll'
+            document.removeEventListener('click', popupClickHandler)
         } ,100)
     }
+}
+
+
+let payment_totalbox_partial_desktop = document.getElementById('payment-totalbox-partial-desktop')
+let payment_totalbox_partial_mobile = document.getElementById('payment-totalbox-partial-mobile')
+
+let ApplyDiscount = () => {
+    let code_input = document.getElementById('code-input')
+    let btn_d = document.getElementById('btn-discount')
+    let error = document.getElementById('code-err')
+    let error_text = document.getElementById('code-errtext')
+    let code = code_input.value.trim()
+    let page;
+    if (window.innerWidth > 1000) {
+        page = 'desktop'
+    } else {
+        page = 'mobile'
+    }
+    loader.style = 'display: block;'
+    btn_d.classList.add('disabled')
+    code_input.classList.add('disabled')
+    fetch(`/orders/apply-code/?d=${code}&page=${page}`).then(res => res.json()).then(data=> {
+        if (data.error) {
+            error.style = "display: flex; color: var(--color5)"
+            error_text.innerHTML = data.message
+        }
+        else {
+            Message(data.message ,false)
+            PopUpOrder('none' ,'close')
+            page === 'desktop' ? payment_totalbox_partial_desktop.innerHTML = data.html : payment_totalbox_partial_mobile.innerHTML = data.html
+        }
+    }).finally(() => {
+        loader.style = 'display: none;'
+        btn_d.classList.remove('disabled')
+        code_input.classList.remove('disabled')
+    })
 }
