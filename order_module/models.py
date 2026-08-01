@@ -82,10 +82,27 @@ class PaymentMethod(models.Model):
         verbose_name_plural = 'روش های پرداخت'
 
 
+class DiscountCode(models.Model):
+    code = models.CharField(max_length=15,db_index=True ,unique=True ,null=False ,blank=False ,verbose_name='کد')
+    valid_from = models.DateTimeField(null=True ,blank=True ,verbose_name='زمان از')
+    valid_until = models.DateTimeField(null=True ,blank=True ,verbose_name='زمان تا')
+    usage_limit = models.PositiveIntegerField(default=1 ,verbose_name='تعداد استفاده')
+    usage_count = models.PositiveIntegerField(default=0 ,verbose_name='تعداد بار استفاده شده')
+    is_active = models.BooleanField(db_index=True ,default=True ,verbose_name='فعال؟')
+    value = models.IntegerField(null=False ,blank=False ,verbose_name='مبلغ')
+    min_order_amount = models.IntegerField(null=True ,blank=True ,verbose_name='حداقل مبلغ سبد خرید')
+
+    def __str__(self):
+        return self.code
+
+    class Meta:
+        verbose_name = 'کد تخفیف'
+        verbose_name_plural = 'کد های تخفیف'
+
+
 class InsufficientStockError(Exception):
     def __init__(self ,product_title):
         super().__init__(product_title)
-
 
 class Order(models.Model):
     user = models.ForeignKey(User, db_index=True,on_delete=models.CASCADE ,verbose_name='کاربر')
@@ -103,6 +120,7 @@ class Order(models.Model):
     payment_ref = models.CharField(max_length=200 ,null=True ,blank=True ,verbose_name='شماره تراکنش')
     last_change = models.DateTimeField(null=True ,blank=True ,verbose_name='آخرین تغییرات')
     fail_state = models.BooleanField(default=False ,db_index=True ,verbose_name='پرداخت شده و ناموفق؟')
+    discount = models.IntegerField(default=0,null=True ,blank=True ,verbose_name='تخفیف')
 
     def __str__(self):
         return str(self.user)
@@ -385,6 +403,4 @@ class OrderDetail(models.Model):
     @property
     def discount_amount(self):
         return (self.product.price * self.product.offer // 100) * self.count if not self.product.is_byWeight else (self.product.price * self.product.offer // 100) * (self.count * self.pack_size.size)
-
-
 

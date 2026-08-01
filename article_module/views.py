@@ -3,6 +3,7 @@ from django.views.generic import ListView, DetailView
 
 from article_module.models import Article
 from product_module.models import Product
+from django.db.models import F
 
 
 class ArticleListView(ListView):
@@ -22,8 +23,7 @@ class ArticleDetailView(DetailView):
     def get_context_data(self, **kwargs):
         self.object = self.get_object()
         article = self.object
-        article.view+=1
-        article.save()
+        Article.objects.filter(pk=article.pk).update(view=F('view')+1)
         context = super(ArticleDetailView ,self).get_context_data(**kwargs)
         context['most_viewed_articles'] = Article.objects.filter(is_active=True).exclude(id=article.id).order_by('-view')[:4]
         context['recent_products'] = Product.objects.filter(is_active=True ,is_deleted=False ,quantity__gt=0).order_by('created_at')[:6]

@@ -133,6 +133,9 @@ class Product(models.Model):
     chosen = models.BooleanField(default=False,db_index=True ,verbose_name='محصول برگزیده')
     only_in_qaemshahr = models.BooleanField(default=False ,db_index=True ,verbose_name='فقط در قائمشهر')
 
+
+
+
     def get_absolute_url(self):
         return reverse('product_detail_page' ,args=[self.slug])
 
@@ -198,6 +201,17 @@ class Product(models.Model):
     class Meta:
         verbose_name = "محصول"
         verbose_name_plural = "محصولات"
+
+        indexes = [
+            models.Index(
+                fields=["is_active", "is_deleted", "chosen", "quantity"],
+                name="product_listing_idx",
+            ),
+            models.Index(
+                fields=["is_active", "is_deleted", "offer"],
+                name="product_offer_idx",
+            ),
+        ]
 
 
 

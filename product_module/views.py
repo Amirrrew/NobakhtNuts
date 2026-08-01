@@ -15,8 +15,9 @@ from unicodedata import category
 
 from order_module.models import Order
 from product_module.form import ProductCommentForm
-from product_module.models import Product, ProductCategory, ProductSubCategory, ProductBrand, ProductComment
-from django.db.models import Q
+from product_module.models import Product, ProductCategory, ProductSubCategory, ProductBrand, ProductComment, \
+    ProductImage
+from django.db.models import Q, Prefetch, Count ,Avg ,F
 
 from utils.my_decorators import filter_products
 
@@ -27,11 +28,14 @@ class ProductListView(ListView):
     paginate_by = 12
     context_object_name = "products"
     def get_queryset(self):
-        queryset = Product.objects.filter(
+        queryset = (Product.objects.filter(
             is_active=True,
             is_deleted=False,
             category__is_active=True
-        ).order_by('-chosen' ,'-quantity')
+        ).select_related('category','category__main_category' ,'brand')
+        .prefetch_related('packs' ,Prefetch('product_image' ,queryset=ProductImage.objects.order_by('-is_Main' ,'id'),to_attr='prefetched_images'))
+        .annotate(comments_total=Count('comment_set' ,distinct=True),rating_avarage=Avg('comment_set__rating'))
+        .order_by('-chosen' ,'-quantity'))
 
         category_slug = self.kwargs.get("category")
         subcategory_slug = self.kwargs.get("subcategory")
@@ -132,14 +136,20 @@ class ProductDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         product = self.object
-        context['related_products'] = Product.objects.filter(
-            category__main_category=product.category.main_category ,is_active=True ,quantity__gt=0
-        ).exclude(
-            id=product.id
-        )[:7]
+        context['related_products'] = (Product.objects.filter(
+            is_active=True,
+            is_deleted=False,
+            category__is_active=True,
+            quantity__gt=0,
+            category__main_category=product.category.main_category
+        ).select_related('category','category__main_category' ,'brand')
+        .prefetch_related('packs' ,Prefetch('product_image' ,queryset=ProductImage.objects.order_by('-is_Main' ,'id'),to_attr='prefetched_images'))
+        .annotate(comments_total=Count('comment_set' ,distinct=True),rating_avarage=Avg('comment_set__rating'))
+        .exclude(id=product.id)
+        .order_by('-chosen' ,'-quantity'))[:7]
+
         context['slider_title'] = 'محصولات مرتبط'
-        product.view+=1
-        product.save()
+        Product.objects.filter(pk=product.pk).update(view=F('view') + 1)
         return context
 
     def post(self, request, *args, **kwargs):
@@ -226,7 +236,7 @@ def search_product_queryset(q):
         queryset = Product.objects.filter(
             is_active=True,
             is_deleted=False,
-        )
+        ).prefetch_related(Prefetch('product_image' ,queryset=ProductImage.objects.order_by('-is_Main' ,'id'),to_attr='prefetched_images'))
 
         for word in words:
             queryset = queryset.filter(
@@ -258,12 +268,11 @@ def search_product(request):
     for p in products:
         data.append({
             'title': p.title,
-            'category': p.category.title,
             'price': p.price,
             'offer': p.offer,
             'final_price': p.final_price,
             'url': p.get_absolute_url(),
-            'image': p.product_image.first().image.url
+            'image': p.prefetched_images[0].image.url if p.prefetched_images else ' '
         })
 
 

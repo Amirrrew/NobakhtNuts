@@ -5,7 +5,7 @@
                         <tr class="{% if not forloop.last %} border-b border-[var(--color12)]{% endif %}" style="{% if order.is_done %}opacity: 0.5;{% endif %}">
                             <td><label for="product{{ product.pk }}" class="relative text-[var(--color6)] text-lg cursor-pointer top-1"><input id="product{{ product.pk }}" type="checkbox" class="ui-checkbox" name="product" value="{{ product.pk }}"></label></td>
                             <td><a href="{% url 'admin_product_edit' product.pk %}">{{ product.pk|to_fanum }}#</a></td>
-                            <td><a href="{% url 'admin_product_edit' product.pk %}"><img class="w-10 h-10" src="{% if product.product_image %}{{ product.product_image.first.image.url }}{% endif %}"></a></td>
+                            <td><a href="{% url 'admin_product_edit' product.pk %}"><img alt="{{ product.title }}" class="w-10 h-10" src="{% if product.product_image %}{{ product.prefetched_images.0.image.url }}{% endif %}"></a></td>
                             <td class="{% if not product.is_active %}flex items-start relative top-[-5px] gap-1{% endif %}"><a href="{% url 'admin_product_edit' product.pk %}">{{ product.title|to_fanum }}</a>{% if not product.is_active %}<div class="stat-warning text-nowrap mt-[-3px] max-w-21">غیر فعال<div class="stat-dot-warning"></div></div>{% endif %}</td>
                             <td>{% if product.is_byWeight %}{{ product.quantity|to_fanum }} کیلو{% else %}{{ product.quantity|floatformat|to_fanum }} عدد{% endif %}</td>
                             <td>{{ product.category.title }}</td>

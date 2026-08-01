@@ -13,7 +13,6 @@ import slugify
 from account_module.models import User, Address, Notification
 from django.shortcuts import render, redirect, get_object_or_404
 
-from order_module.context_processors import orders
 from order_module.models import OrderStatus, Order
 from support_module.form import NewTicketForm
 from support_module.models import Ticket, TicketReason, TicketStatus

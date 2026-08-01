@@ -1,6 +1,6 @@
 {% load poll_extras %}
 
-<div class="centerbox home-banner-row gap-2 w-[90%] mt-25">
+<div class="centerbox animate-on-scroll home-banner-row gap-2 w-[90%] mt-25">
     {% for banner in banners %}
         <a href="{% if banner.sub_category %}{{ banner.sub_category.get_absolute_url }}{% elif banner.category %}{{ banner.category.get_absolute_url }}{% else %}{{ banner.url }}{% endif %}" class="home-banner w-[100%] h-[500px] rounded-xl border border-[var(--color11)]" style="background-image: url('{% if banner.image %}{{ banner.image.url }}{% endif %}'); background-size: cover">
         </a>

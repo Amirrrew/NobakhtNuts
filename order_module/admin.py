@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from order_module.models import OrderDetail, Order, OrderStatus, PaymentMethod, PostingMethod, Cards
+from order_module.models import OrderDetail, Order, OrderStatus, PaymentMethod, PostingMethod, Cards, DiscountCode
 
 
 # Register your models here.
@@ -18,4 +18,5 @@ admin.site.register(OrderStatus)
 admin.site.register(PaymentMethod)
 admin.site.register(PostingMethod)
 admin.site.register(Cards)
+admin.site.register(DiscountCode)
 

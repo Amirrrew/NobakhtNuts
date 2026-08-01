@@ -46,7 +46,7 @@
                     <div class="h-[100%] flex justify-between items-center mr-10">
                         <div>
                             <h4 class="text-3xl home-card-title font-bold">{{ card.category.title }}</h4>
-                            <p class="text-[var(--color10)] mt-1"> شامل {{ card.category.products.count|to_fanum }} محصول</p>
+                            <p class="text-[var(--color10)] mt-1"> شامل {{ card.products_count|to_fanum }} محصول</p>
                         </div>
                         <div class="w-[50%] home-card-imgbox absolute bottom-0 left-0">
                             <img class="w-[100%] home-card-img" alt="{{ card.category.title }}" loading="eager" src="{% if card.cover %}{{ card.cover.url }}{% endif %}">

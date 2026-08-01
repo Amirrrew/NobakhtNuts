@@ -9,10 +9,14 @@
       {% endblock %}
     </title>
     {% include 'include/head_refrence.html' %}
+    {% block extra_head %}
+        
+    {% endblock %}
 
     {% block schema %}
 
     {% endblock %}
+
 </head>
 <body onscroll="HeaderManage()" onload="StartIntervals(true)">
     <div id="overlay" class="index-overlay hidden"></div>

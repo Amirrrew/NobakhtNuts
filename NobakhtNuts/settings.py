@@ -1,3 +1,4 @@
+from email.policy import default
 from pathlib import Path
 import os
 from decouple import config, Config
@@ -7,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config('SECRET_KEY')
 
-DEBUG = False
+DEBUG = config('DEBUG' ,default=True ,cast=bool)
 
 ALLOWED_HOSTS = config(
     "ALLOWED_HOSTS",
@@ -67,7 +68,6 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'NobakhtNuts.context_processors.global_context',
                 'site_settings.context_processors.site_settings',
-                'order_module.context_processors.orders'
             ],
         },
     },

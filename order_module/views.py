@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.utils import timezone
 from itertools import product
 import datetime
-from django.db.models import F, prefetch_related_objects
+from django.db.models import F, prefetch_related_objects, Prefetch, Count ,Avg
 from django.conf import settings
 import requests
 from django.http import HttpRequest, JsonResponse, HttpResponse
@@ -22,7 +22,7 @@ from iranian_cities.models import Province ,City
 from account_module.models import Address
 from order_module.form import OrderForm
 from order_module.models import Order, OrderDetail, OrderStatus, PostingMethod, PaymentMethod, InsufficientStockError
-from product_module.models import Product, PackageSize
+from product_module.models import Product, PackageSize, ProductImage
 from userpanel_module.form import NewAddressForm
 from utils.my_decorators import permission_checker_decorator_factory, validate_image_extension
 
@@ -256,7 +256,15 @@ def my_basket(request: HttpRequest):
     if request.user.is_authenticated:
         current_order ,create = Order.objects.prefetch_related('orderdetails_set').get_or_create(is_paid = False ,user_id=request.user.id)
         order_summary = current_order.get_order_summary()
-        related_products = Product.objects.filter(is_active=True,is_deleted=False ,quantity__gt=0).order_by('-created_at')[:10]
+        related_products = (Product.objects.filter(
+            is_active=True,
+            is_deleted=False,
+            category__is_active=True,
+            quantity__gt=0
+        ).select_related('category','category__main_category' ,'brand')
+        .prefetch_related('packs' ,Prefetch('product_image' ,queryset=ProductImage.objects.order_by('-is_Main' ,'id'),to_attr='prefetched_images'))
+        .annotate(comments_total=Count('comment_set' ,distinct=True),rating_avarage=Avg('comment_set__rating'))
+        .order_by('-created_at'))[:10]
     else:
         return redirect('login_page')
 

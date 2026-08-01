@@ -24,7 +24,6 @@ from adminpanel_module.forms import ProductAddForm, MainCategoryForm, SubCategor
     EventForm, SliderForm, CarouselForm, FAQForm
 from article_module.models import Article
 from home_module.models import SpecialEvents, SliderSlide, Carousel, CarouselItem
-from order_module.context_processors import orders
 from order_module.models import Order, OrderStatus, PaymentMethod, Cards, PostingMethod
 from product_module.models import Product, ProductCategory, ProductSubCategory, ProductBrand, PackageSize, \
     ProductFeature, ProductImage, ProductComment
@@ -35,7 +34,7 @@ from utils.dashboard_decorators import get_sales_week, get_sales_week_growth, to
     get_new_orders, get_lowstock_products, get_best_selling_products, get_new_tickets, get_sales_month, \
     get_category_chart, get_orders_status_chart, get_orders_month_count, get_sales_year, get_sales_chart
 from utils.my_decorators import permission_checker_decorator_factory
-from django.db.models import Q, Count ,Sum,Avg
+from django.db.models import Q, Count, Sum, Avg, Prefetch
 
 
 class AdminLogin(LoginView):
@@ -335,7 +334,7 @@ class ProductListView(ListView):
     def get_queryset(self):
         search = self.request.GET.get('q')
 
-        queryset = Product.objects.filter(is_deleted=False).order_by('-is_active' ,'-created_at')
+        queryset = Product.objects.filter(is_deleted=False).select_related('category').prefetch_related(Prefetch('product_image' ,queryset=ProductImage.objects.order_by('-is_Main' ,'id'),to_attr='prefetched_images')).order_by('-is_active' ,'-created_at')
 
         main_category = self.request.GET.get("main_category")
         sub_category = self.request.GET.get("sub_category")
