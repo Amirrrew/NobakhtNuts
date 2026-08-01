@@ -12,5 +12,6 @@ urlpatterns = [
     path('verify-payment/' ,views.verify_payment, name='verify_payment'),
     path('delete-basket/' , views.delete_cart, name='delete_basket'),
     path('apply-fee/' ,views.get_postage_fee ,name='apply_postage_fee'),
-    path('item-not-available' ,views.NaItemView.as_view() ,name='na_item')
+    path('item-not-available' ,views.NaItemView.as_view() ,name='na_item'),
+    path('apply-code/' ,views.apply_discount ,name='apply_code')
 ]

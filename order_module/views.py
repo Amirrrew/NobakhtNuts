@@ -21,7 +21,8 @@ from iranian_cities.models import Province ,City
 
 from account_module.models import Address
 from order_module.form import OrderForm
-from order_module.models import Order, OrderDetail, OrderStatus, PostingMethod, PaymentMethod, InsufficientStockError
+from order_module.models import Order, OrderDetail, OrderStatus, PostingMethod, PaymentMethod, InsufficientStockError, \
+    DiscountCode
 from product_module.models import Product, PackageSize, ProductImage
 from userpanel_module.form import NewAddressForm
 from utils.my_decorators import permission_checker_decorator_factory, validate_image_extension
@@ -490,9 +491,10 @@ class BasketPayment(View):
 
         context = {
             'orders': current_order,
-            'total_amount': order_summary['total_amount_including_postage_fee'],
+            'total_amount': order_summary['total_to_pay'],
             'total_items': order_summary['total_items'],
             'total_weight': order_summary['total_weight'],
+            'discount_amount': order_summary['discount_amount'],
             'postage_fee': postage_fee,
             'payment_method': payment_method,
             'message': message,
@@ -504,9 +506,7 @@ class BasketPayment(View):
         message = None
         message_e = None
         current_order, create = Order.objects.prefetch_related('orderdetails_set').get_or_create(is_paid=False,user_id=request.user.id)
-        total_amount = current_order.include_postage_fee()
-        total_items = current_order.total_items()
-        total_weight = current_order.order_weight()
+        order_summary = current_order.get_order_summary()
         postage_fee = current_order.calculate_postage_fee()
         payment_method = PaymentMethod.objects.all()
 
@@ -528,15 +528,66 @@ class BasketPayment(View):
 
         context = {
             'orders': current_order,
-            'total_amount': total_amount,
-            'total_items': total_items,
-            'total_weight': total_weight,
+            'total_amount': order_summary['total_to_pay'],
+            'total_items': order_summary['total_items'],
+            'total_weight': order_summary['total_weight'],
+            'discount_amount': order_summary['discount_amount'],
             'postage_fee': postage_fee,
             'payment_method': payment_method,
             'message': message,
             'message_e': message_e,
         }
         return render(request ,'order_module/basket_payment.html' ,context)
+
+
+def apply_discount(request):
+    message = None
+    error = False
+
+    discount_code_get = request.GET.get('d')
+    page = request.GET.get('page')
+    current_order = Order.objects.filter(user=request.user ,is_paid=False ,is_done=False).first()
+    if discount_code_get:
+        discount = DiscountCode.objects.filter(code__iexact=discount_code_get).first()
+        if discount:
+            order_summary = current_order.get_order_summary()
+            order_total = order_summary['total_amount']
+            is_valid = discount.self_check(order_total)
+            if is_valid:
+                current_order.discount_code = discount
+                discount.self_use()
+                current_order.save()
+                message = 'کد تخفیف اعمال شد'
+                error = False
+            else:
+                message = is_valid
+                error = True
+        else:
+            message = 'کد تخفیف نامعتبر'
+            error = True
+
+    current_order.refresh_from_db()
+    order_summary = current_order.get_order_summary()
+    postage_fee = current_order.calculate_postage_fee()
+
+    html = render_to_string(
+        'order_module/include/payment_totalbox_desktop_partial.html' if page == 'desktop' else 'order_module/include/payment_totalbox_mobile_partial.html',
+        {
+            'orders': current_order,
+            'total_amount': order_summary['total_to_pay'],
+            'total_items': order_summary['total_items'],
+            'total_weight': order_summary['total_weight'],
+            'discount_amount': order_summary['discount_amount'],
+            'postage_fee': postage_fee,
+        },
+        request=request
+    )
+
+    return JsonResponse({
+        'message': message,
+        'error': error,
+        'html': html
+    })
 
 
 class Deposit(View):

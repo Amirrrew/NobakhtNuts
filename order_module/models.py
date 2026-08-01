@@ -83,13 +83,14 @@ class PaymentMethod(models.Model):
 
 
 class DiscountCode(models.Model):
-    code = models.CharField(max_length=15,db_index=True ,unique=True ,null=False ,blank=False ,verbose_name='کد')
+    code = models.CharField(max_length=10,db_index=True ,unique=True ,null=False ,blank=False ,verbose_name='کد')
     valid_from = models.DateTimeField(null=True ,blank=True ,verbose_name='زمان از')
     valid_until = models.DateTimeField(null=True ,blank=True ,verbose_name='زمان تا')
     usage_limit = models.PositiveIntegerField(default=1 ,verbose_name='تعداد استفاده')
     usage_count = models.PositiveIntegerField(default=0 ,verbose_name='تعداد بار استفاده شده')
     is_active = models.BooleanField(db_index=True ,default=True ,verbose_name='فعال؟')
-    value = models.IntegerField(null=False ,blank=False ,verbose_name='مبلغ')
+    value = models.IntegerField(default=0 ,null=True ,blank=True ,verbose_name='مبلغ')
+    value_percentage = models.IntegerField(default=0 ,null=True ,blank=True ,verbose_name='تخفیف به درصد')
     min_order_amount = models.IntegerField(null=True ,blank=True ,verbose_name='حداقل مبلغ سبد خرید')
 
     def __str__(self):
@@ -99,6 +100,21 @@ class DiscountCode(models.Model):
         verbose_name = 'کد تخفیف'
         verbose_name_plural = 'کد های تخفیف'
 
+    def self_check(self, order_amount):
+        now = timezone.now()
+        if not self.is_active:
+            return 'کد تخفیف غیرفعال است'
+        if not (self.valid_from <= now <= self.valid_until):
+            return 'کد تخفیف منقضی شده'
+        if self.usage_limit and self.usage_count >= self.usage_limit:
+            return 'کد تخفیف قبلاً استفاده شده'
+        if order_amount < self.min_order_amount:
+            return f'حداقل مبلغ سفارش {self.min_order_amount:,.0f} تومان است'
+        return ''
+
+    def self_use(self):
+        self.usage_count +=1
+        self.save()
 
 class InsufficientStockError(Exception):
     def __init__(self ,product_title):
@@ -120,7 +136,7 @@ class Order(models.Model):
     payment_ref = models.CharField(max_length=200 ,null=True ,blank=True ,verbose_name='شماره تراکنش')
     last_change = models.DateTimeField(null=True ,blank=True ,verbose_name='آخرین تغییرات')
     fail_state = models.BooleanField(default=False ,db_index=True ,verbose_name='پرداخت شده و ناموفق؟')
-    discount = models.IntegerField(default=0,null=True ,blank=True ,verbose_name='تخفیف')
+    discount_code = models.ForeignKey(DiscountCode ,db_index=True,on_delete=models.CASCADE , null=True ,blank=True ,verbose_name='کد تخفیف')
 
     def __str__(self):
         return str(self.user)
@@ -158,6 +174,8 @@ class Order(models.Model):
         total_weight = float(0)
         total_discount = int(0)
         total_amount_without_discount = 0
+        total_amount_discount = 0
+        discount_amount = 0
 
         for detail in details:
             total_amount += detail.total_price
@@ -167,11 +185,28 @@ class Order(models.Model):
 
         total_amount_including_postage_fee = total_amount + self.calculate_postage_fee() if self.posting_method else 0
 
+        if self.discount_code:
+            if self.discount_code.value_percentage:
+                total_amount_discount = total_amount_including_postage_fee - (total_amount * self.discount_code.value_percentage // 100)
+                discount_amount = (total_amount * self.discount_code.value_percentage) // 100
+            elif self.discount_code.value:
+                total_amount_discount = total_amount_including_postage_fee - self.discount_code.value
+                discount_amount = self.discount_code.value
+            elif self.discount_code.value and self.discount_code.value_percentage:
+                total_amount_discount = total_amount_including_postage_fee - self.discount_code.value
+                discount_amount = self.discount_code.value
+        else:
+            total_amount_discount = total_amount_including_postage_fee
+
+        total_to_pay = total_amount_discount
+
         return {
             'total_amount': total_amount,
             'total_items': total_items,
             'total_weight': total_weight,
             'total_discount': total_discount,
+            'total_to_pay': total_to_pay,
+            'discount_amount': discount_amount,
             'total_amount_without_discount': total_amount_without_discount,
             'total_amount_including_postage_fee': total_amount_including_postage_fee
         }

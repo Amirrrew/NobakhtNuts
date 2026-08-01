@@ -761,3 +761,36 @@ let PopUpOrder = (type ,action) => {
         } ,100)
     }
 }
+
+
+let ApplyDiscount = () => {
+    let code_input = document.getElementById('code-input')
+    let btn_d = document.getElementById('btn-discount')
+    let error = document.getElementById('code-err')
+    let error_text = document.getElementById('code-errtext')
+    let code = code_input.value.trim()
+    let page;
+    if (window.innerWidth > 1130) {
+        page = 'desktop'
+    } else {
+        page = 'mobile'
+    }
+    loader.style = 'display: block;'
+    btn_d.classList.add('disabled')
+    code_input.classList.add('disabled')
+    fetch(`/orders/apply-code/?d=${code}&page=${page}`).then(res => res.json()).then(data=> {
+        if (data.error) {
+            error.style = "display: flex; color: var(--color5)"
+            error_text.innerHTML = data.message
+        }
+        else {
+            Message(data.message ,false)
+            PopUpOrder('none' ,'close')
+
+        }
+    }).finally(() => {
+        loader.style = 'display: none;'
+        btn_d.classList.remove('disabled')
+        code_input.classList.remove('disabled')
+    })
+}

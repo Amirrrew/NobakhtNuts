@@ -9,6 +9,9 @@ html {
     src: url(../font/Rokh-Medium.woff2);
 }
 
+.hover-underline:hover {
+    text-decoration: underline 1px solid var(--color10);
+}
 
 section {
     z-index: 1;
