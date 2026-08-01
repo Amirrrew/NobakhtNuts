@@ -3,6 +3,10 @@ body {
     background-color: var(--color12);
 }
 
+@font-face {
+    font-family: rokh;
+    src: url(../font/Rokh-Medium.woff2);
+}
 
 :root {
     --profit-dot: #689568;

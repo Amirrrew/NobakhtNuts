@@ -6,8 +6,9 @@ html {
 
 @font-face {
     font-family: rokh;
-    src: url(../font/Rokh-Medium.ttf);
+    src: url(../font/Rokh-Medium.woff2);
 }
+
 
 section {
     z-index: 1;
