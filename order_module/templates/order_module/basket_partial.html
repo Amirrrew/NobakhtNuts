@@ -36,7 +36,7 @@
 
                 <div class="flex items-center justify-between gap-2">
                 {% if not o.product.offer > 0 %}
-                    <div class="basket-price text-2xl font-bold">{{ o.total_price|three_digits_currency }}</div>
+                    <div class="basket-price text-2xl font-semibold">{{ o.total_price|three_digits_currency }}</div>
                     {% else %}
                     <div class="">
                         <div class="text-sm flex w-[100%] gap-2">
@@ -45,7 +45,7 @@
                                 {{ o.product.offer|to_fanum }} %
                             </div>
                         </div>
-                        <div class="basket-price text-2xl font-bold">{{ o.total_price|three_digits_currency }}</div>
+                        <div class="basket-price text-2xl font-semibold">{{ o.total_price|three_digits_currency }}</div>
                     </div>
                 {% endif %}
 

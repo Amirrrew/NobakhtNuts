@@ -48,7 +48,7 @@
                         {% endif %}
                         <div class="transition-all flex justify-between pt-3 w-[100%] pr-2 mb-2">
                             {% if product.offer <= 0 %}
-                                <div class="text-3xl font-black" id="">
+                                <div class="text-3xl font-semibold" id="">
                                     {{ product.price|three_digits_currency }}
                                 </div>
 
@@ -63,7 +63,7 @@
                             {% else %}
                                 <div class="">
                                     <div style="text-decoration: line-through 1px solid var(--color7)" class="text-sm">{{ product.price|three_digits_currency }}</div>
-                                    <div class="text-2xl font-black">{{ product.final_price|three_digits_currency }}</div>
+                                    <div class="text-2xl font-semibold">{{ product.final_price|three_digits_currency }}</div>
                                 </div>
                                 <div class="flex gap-2">
                                     <div class="h-7 px-2 pt-0.5 mt-5 bg-[var(--color11)] text-[var(--color6)] rounded-lg">
