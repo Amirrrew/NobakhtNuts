@@ -555,7 +555,6 @@ let AddToOrder = (productId ,isWeight) => {
     fetch(url)
         .then(res => res.json())
         .then(data => {
-            console.log(data.message)
             if (data.message) {
                 data.error ? Message(data.message ,true) : Message(data.message ,false);
             }

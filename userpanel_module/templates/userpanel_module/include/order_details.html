@@ -131,4 +131,14 @@
 
         </tbody>
     </table>
+
+{% endblock %}
+{% block extra_js %}
+    <script src="{% static 'scripts/celebrate_firework.js' %}"></script>
+    {% if celebrate %}
+        <script>
+            PopUpOrder('' ,'open')
+            startCelebration()
+        </script>
+    {% endif %}
 {% endblock %}

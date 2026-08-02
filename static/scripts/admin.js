@@ -147,11 +147,9 @@ let search_tables = (search ,table ,url ,name) => {
     loader.style = 'display: block'
     search_timeout = setTimeout(() => {
         let q = search_value.value.trim()
-        console.log(q)
         fetch(url + `?q=${q}&c=${name ? name : '0'}` ,{signal: controller.signal}).then(res => res.json()).then(
             data => {
                 data.data_length > 0 ? table_partial.innerHTML = data.html : table_partial.innerHTML = `<div class="mt-5 text-center w-[100%] mb-3">رکوردی یافت نشد!</div>`
-                console.log(data)
             }
         ).finally(() => {
             name ? ToolbarCheck(name) : null
@@ -312,7 +310,6 @@ let Product_To_Carousel = (action) => {
 
 let carousel_partial= document.getElementById('carousel-partial')
 let Carousel_grab_item = (carousel_pk ,product_pk ,action) => {
-    console.log(`/adminpanel/carousels/${carousel_pk}/edit/?pk=${product_pk}&action=${action}`)
     loader.style = 'display:block;'
     fetch(`/adminpanel/carousels/${carousel_pk}/edit/?pk=${product_pk}&action=${action}`).then(res => res.json()).then(data => {
         carousel_partial.innerHTML = data.html

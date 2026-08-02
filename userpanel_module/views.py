@@ -321,7 +321,7 @@ class Order_details(DetailView):
         context = super(Order_details ,self).get_context_data(*args ,**kwargs)
         message = self.request.session.get('message')
         if message:
-            context['message'] = 'سفارش با موفقیت ثبت شد!'
+            context['celebrate'] = 'سفارش با موفقیت ثبت شد!'
             del self.request.session['message']
         return context
 

@@ -494,6 +494,7 @@ class BasketPayment(View):
             'total_amount': order_summary['total_to_pay'],
             'total_items': order_summary['total_items'],
             'total_weight': order_summary['total_weight'],
+            'total_without_discount': order_summary['total_amount_including_postage_fee'],
             'discount_amount': order_summary['discount_amount'],
             'postage_fee': postage_fee,
             'payment_method': payment_method,
@@ -531,6 +532,7 @@ class BasketPayment(View):
             'total_amount': order_summary['total_to_pay'],
             'total_items': order_summary['total_items'],
             'total_weight': order_summary['total_weight'],
+            'total_without_discount': order_summary['total_amount_including_postage_fee'],
             'discount_amount': order_summary['discount_amount'],
             'postage_fee': postage_fee,
             'payment_method': payment_method,
@@ -576,6 +578,7 @@ def apply_discount(request):
                     {
                         'orders': current_order,
                         'total_amount': order_summary['total_to_pay'],
+                        'total_without_discount': order_summary['total_amount_including_postage_fee'],
                         'total_items': order_summary['total_items'],
                         'total_weight': order_summary['total_weight'],
                         'discount_amount': order_summary['discount_amount'],
@@ -607,7 +610,8 @@ class Deposit(View):
         failed_item = None
         payment_method = PaymentMethod.objects.filter(title='کارت به کارت').first()
         current_order = Order.objects.filter(user=request.user ,is_paid=False ,payment_method=payment_method).first()
-        total_amount = current_order.include_postage_fee() * 10
+        order_summary = current_order.get_order_summary()
+        total_amount = order_summary['total_to_pay'] * 10
         card = payment_method.card
 
 
@@ -628,7 +632,8 @@ class Deposit(View):
         failed_item = None
         payment_method = PaymentMethod.objects.filter(title='کارت به کارت').first()
         current_order = Order.objects.get(user=request.user ,is_paid=False ,payment_method=payment_method)
-        total_amount = current_order.include_postage_fee() * 10
+        order_summary = current_order.get_order_summary()
+        total_amount = order_summary['total_to_pay'] * 10
         card = payment_method.card
 
         receipt = request.FILES.get('receipt')
@@ -675,8 +680,9 @@ def request_online_payment(request):
     online_pay_merchant = PaymentMethod.objects.filter(title='پرداخت آنلاین').first()
     try:
         current_order ,created = Order.objects.get_or_create(is_paid=False ,is_done=False ,user=request.user)
-        total = current_order.include_postage_fee()
-        total_to_irrial = total * 10
+        order_summary = current_order.get_order_summary()
+        total_amount = order_summary['total_to_pay']
+        total_to_irrial = total_amount * 10
 
         req_data = {
             'merchant_id': online_pay_merchant.merchant_id,
@@ -720,8 +726,9 @@ def verify_payment(request: HttpRequest):
             }
             return render(request ,'order_module/include/payment_verify.html' ,context)
 
-        total = current_order.include_postage_fee()
-        total_to_irrial = total * 10
+        order_summary = current_order.get_order_summary()
+        total_amount = order_summary['total_to_pay'] * 10
+        total_to_irrial = total_amount * 10
 
         req_header = {'accept': 'application/json', 'content-type': 'application/json'}
         req_data = {

@@ -1,0 +1,23 @@
+{% load static %}
+
+<div id="popup-parent-pop" class="popup-parent" style="{% if popup_open %}display: flex;{% endif %}">
+    <div id="popup-form" class="popup-form-inventory form-default">
+        <div class="hidden popup-closer">
+            <div class="h-1 mt-1 w-10 bg-[var(--color14)] rounded-2xl">
+            </div>
+        </div>
+        <canvas id="fireworkCanvas"></canvas>
+        <div class="centerbox mt-12 relative items-center w-[100%]">
+            <i class="fa fa-check-circle text-[var(--color6)] text-5xl absolute"></i>
+            <img class="w-40" src="{% static 'media/icons/package.webp' %}" alt="new-order-accepted" loading="eager">
+        </div>
+        <div class="text-center text-4xl font-bold mt-8">از خرید شما سپاسگزاریم!</div>
+        <div class="text-center text-lg">سفارش شما با موفقیت ثبت شد</div>
+        <div class="text-center text-[var(--color10)]">در این صفحه میتوانید سفارش خود را مشاهده و پیگیری کنید.</div>
+        <div class="mx-2 mb-2">
+            <button onclick="PopUpOrder('' ,'close') ,stopCelebration()" class="btn-defIconFlex w-[100%] centerbox mt-2" style="height: 50px; padding-top: 13px">
+                باشه
+            </button>
+        </div>
+    </div>
+</div>

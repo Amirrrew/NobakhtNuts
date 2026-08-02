@@ -3519,3 +3519,13 @@ body .swiper-pagination-bullet-active {
     from {bottom: 0}
     to{bottom: -100%}
 }
+
+#fireworkCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 999;
+  }

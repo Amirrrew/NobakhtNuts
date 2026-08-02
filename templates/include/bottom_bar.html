@@ -39,7 +39,7 @@
                 </div>
             {% endif %}
         </a>
-        <a {% if not request.user.is_authenticated %}href="{% url 'login_page' %}"{% else %}onclick="SideMenu('open' ,'user-panel')" {% endif %} class="bottom-bar-option">
+        <a href="{% if not request.user.is_authenticated %}{% url 'login_page' %}{% else %}#{% endif %}" {% if request.user.is_authenticated %}onclick="SideMenu('open' ,'user-panel')"{% endif %} class="bottom-bar-option">
             <div class="centerbox">
                 {% if request.user.is_authenticated %}
                     {% if not request.user.avatar %}
