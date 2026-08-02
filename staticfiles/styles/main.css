@@ -7,6 +7,25 @@ html {
 @font-face {
     font-family: rokh;
     src: url(../font/Rokh-Medium.woff2);
+    font-weight: 500;
+    font-display: swap;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: rokh;
+    src: url(../font/Rokh-SemiBold.woff2);
+    font-weight: 600;
+    font-display: swap;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: rokh;
+    src: url(../font/Rokh-Bold.woff2);
+    font-weight: 700;
+    font-display: swap;
+    font-style: normal;
 }
 
 .hover-underline:hover {
@@ -1324,6 +1343,7 @@ body {
     background-color: var(--color3);
     color: var(--color2);
     overflow-x: hidden;
+    font-weight: 500;
 }
 
 .filter-list-desktop {
@@ -1585,6 +1605,7 @@ header .category-menu {
     display: flex;
     gap: 5px;
     user-select: none;
+    font-weight: 500;
     transition: 200ms;
     text-align: center;
     position: relative;
@@ -3325,7 +3346,7 @@ input[type='radio']:checked + label .address-unchecked-icon {
     width: auto;
     padding: 5px 30px;
     background-color: var(--color12);
-    font-weight: bold;
+    font-weight: 600;
     border-radius: 20px;
     border: 2px solid var(--color15);
     animation: load8 400ms;
