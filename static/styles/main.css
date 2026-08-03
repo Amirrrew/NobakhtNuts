@@ -1925,7 +1925,7 @@ header .category-menu {
     height: 465px;
     border-radius: 15px;
     overflow: hidden;
-    border: 1px solid var(--color12);
+    border: 1px solid var(--color11);
     cursor: default;
     transition: 200ms;
     transition-delay: 100ms;
@@ -2733,6 +2733,11 @@ footer {
     z-index: 1000;
     display: none;
     justify-content: center;
+}
+
+.prd-photo-gallery-innerbox {
+    height: 100%;
+    align-items: center;
 }
 
 .popup-form {

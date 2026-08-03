@@ -539,6 +539,36 @@ input[type="number"] {
         width: 50%;
         margin-top: 20px;
     }
+
+    body .home-swiper {
+        height: 300px;
+    }
+
+    body .homeswiper-btn {
+        display: none;
+    }
+
+    body .homeswiper-controls {
+        margin-top: 5px;
+    }
+
+    body .home-category-carousel {
+        opacity: 1;
+        margin-top: 60px;
+        animation: none;
+    }
+
+    body .home-carousel-sec {
+        margin-top: 60px;
+    }
+
+    .home-swiper {
+        overflow: visible;
+    }
+
+    .home-swiper .swiper-slide {
+        width: 95%;
+    }
 }
 
 @media screen and (max-width: 650px) {
@@ -1895,7 +1925,7 @@ header .category-menu {
     height: 465px;
     border-radius: 15px;
     overflow: hidden;
-    border: 1px solid var(--color12);
+    border: 1px solid var(--color11);
     cursor: default;
     transition: 200ms;
     transition-delay: 100ms;
@@ -2703,6 +2733,11 @@ footer {
     z-index: 1000;
     display: none;
     justify-content: center;
+}
+
+.prd-photo-gallery-innerbox {
+    height: 100%;
+    align-items: center;
 }
 
 .popup-form {
@@ -3550,3 +3585,4 @@ body .swiper-pagination-bullet-active {
     pointer-events: none;
     z-index: 999;
   }
+
