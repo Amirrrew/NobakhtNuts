@@ -26,9 +26,6 @@ class ProductAddForm(forms.ModelForm):
         model = Product
         fields = ['holoo_id' ,'title' ,'category' ,'brand' ,'is_byWeight' ,'packs' ,'price' ,'offer' ,'quantity' ,'desc' ,'pack_weight' ,'is_active' ,'chosen' ,'only_in_qaemshahr' ,'label' ,'label_icon']
 
-        widgets = {
-            'desc': CKEditorUploadingWidget(),
-        }
 
     def __init__(self ,*args ,**kwargs ):
         super().__init__(*args ,**kwargs )

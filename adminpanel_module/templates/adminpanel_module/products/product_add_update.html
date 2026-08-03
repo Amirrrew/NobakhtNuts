@@ -180,8 +180,7 @@
                             </div>
                             <div class="w-[100%] mt-7">
                                 <div>توضیحات تکمیلی</div>
-                                {{ form.media }}
-                                {{ form.desc }}
+                                <textarea name="desc" class="input-admin" style="height: 400px; padding-top: 15px" placeholder="چند خط توضیحات بنویسید">{{ product.desc|default_if_none:'' }}</textarea>
                             </div>
                         </div>
                     </div>

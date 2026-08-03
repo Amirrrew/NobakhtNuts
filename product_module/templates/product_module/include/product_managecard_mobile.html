@@ -17,8 +17,8 @@
                                 </div>
                                 <div class="flex flex-wrap gap-2 mt-1" >
                                     {% for pack in product.packs.all %}
-                                        <input class="pack-size-input" onchange="CartCheck('btn-addtocart-mobile' ,{{ product.final_price }} ,{{ pack.size }} ,'{{ pack.title }}')" type="radio" name="pack_mobile" id="pack_mobile_{{ pack.id }}" value="{{ pack.id }}" hidden>
-                                        <label class="pack-size" for="pack_mobile_{{ pack.id }}" class="cursor-pointer bg-[var(--color11)] border border-[var(--color8)] py-1 px-2 rounded-xl text-sm text-[var(--color6)] peer-checked:bg-[var(--color6)]">{{ pack.title|to_fanum }}</label>
+                                        <input class="pack-size-input" type="radio" name="pack_mobile" id="pack_mobile_{{ pack.id }}" value="{{ pack.id }}" hidden>
+                                        <label class="pack-size tooltip-parent" for="pack_mobile_{{ pack.id }}" class="cursor-pointer bg-[var(--color11)] border border-[var(--color8)] py-1 px-2 rounded-xl text-sm text-[var(--color6)] peer-checked:bg-[var(--color6)]">{{ pack.title|to_fanum }}</label>
                                     {% endfor %}
                                 </div>
                             {% endif %}
@@ -116,7 +116,7 @@
                             </div>
                             {% else %}
                             <a href="{% url 'login_page' %}">
-                                <button id="btn-addtocart-mobile" type="button" class="btn-defIconFlex gap-1 mt-2 w-[100%] justify-center" style="height: 50px; padding-top: 13px;">
+                                <button type="button" class="btn-defIconFlex gap-1 mt-2 w-[100%] justify-center" style="height: 50px; padding-top: 13px;">
                                     <svg id="User" width="22px" height="22px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                     <g id="Iconly/Bulk/2-User" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
                                         <g id="2-User" transform="translate(2.000000, 3.000000)" fill="#e5e5e5" fill-rule="nonzero">
