@@ -2,7 +2,7 @@
 {% load poll_extras %}
                     {% if request.user.is_authenticated %}
                         <div class="cart-items" id="cart-items" style="z-index: 80">
-                            {% for o in orders %}
+                            {% for o in basket.orderdetails_set.all %}
                                 {% if o.product.id == product.id %}
                                 <div id="prd-item" class="prd-item mt-2 p-2 bg-[var(--color13)] w-[100%] rounded-2xl relative">
                                     <div class="flex gap-2">
@@ -26,7 +26,7 @@
                                                         <div class="mt-0.5 text-[var(--color10)]">{{ o.count|to_fanum }} عدد</div>
                                                     {% endif %}
                                                 </div>
-                                                <div class="prd-item-price font-black text-2xl text-[var(--color6)]">
+                                                <div class="prd-item-price font-bold text-2xl text-[var(--color6)]">
                                                     {{ o.total_price|three_digits_currency }}
                                                 </div>
                                             </div>

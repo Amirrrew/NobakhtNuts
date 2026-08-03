@@ -67,12 +67,29 @@ def add_to_order(request: HttpRequest):
             else:
                 current_order_detail = current_order.orderdetails_set.filter(product=product).first()
 
-            existing_count = current_order_detail.count if current_order_detail else 0
+            order_detail = current_order.orderdetails_set.filter(product=product).first()
+            existing_count = order_detail.count if order_detail else 0
             new_count = existing_count + 1
             requested_amount = (new_count * pack) if product.is_byWeight else new_count
 
+            def get_other_packs_weight(product, exclude_detail_id):
+                total = 0
+                for detail in current_order.orderdetails_set.all():
+                    if detail.product_id == product.id:
+                        total += detail.count * detail.pack_size.size
+                return total
+
+            if order_detail:
+                if product.is_byWeight:
+                    other_packs_weight = get_other_packs_weight(product, order_detail.id)
+                    total_needed = other_packs_weight + requested_amount
+                else:
+                    total_needed = requested_amount
+            else:
+                total_needed = requested_amount
+
             # چک کردن اینونتوری و پوش کردن به سبد
-            if product.check_inventory(requested_amount):
+            if product.check_inventory(total_needed):
                 if current_order_detail:
                     current_order_detail.count = F('count') + 1
                     current_order_detail.save(update_fields=['count'])
@@ -130,18 +147,19 @@ def change_order_count(request: HttpRequest):
     order_pack_model = order_detail.pack_size
     pack = order_pack_model.size if product.is_byWeight else 1
 
-    existing_count = order_detail.count if order_detail else 0
-    new_count = existing_count + 1
-    requested_amount = (new_count * pack) if product.is_byWeight else new_count
-
-    def get_other_packs_weight(product, exclude_detail_id):
-        total = 0
-        for detail in current_order.orderdetails_set.all():
-            if detail.product_id == product.id and detail.id != exclude_detail_id:
-                total += detail.count * detail.pack_size.size
-        return total
 
     if type == 'increase':
+        existing_count = order_detail.count if order_detail else 0
+        new_count = existing_count + 1
+        requested_amount = (new_count * pack) if product.is_byWeight else new_count
+
+        def get_other_packs_weight(product, exclude_detail_id):
+            total = 0
+            for detail in current_order.orderdetails_set.all():
+                if detail.product_id == product.id and detail.id != exclude_detail_id:
+                    total += detail.count * detail.pack_size.size
+            return total
+
         if product.is_byWeight:
             other_packs_weight = get_other_packs_weight(product, order_detail.id)
             total_needed = other_packs_weight + requested_amount
@@ -440,13 +458,11 @@ class BasketCheckout(View):
 def get_postage_fee(request):
     post_pk = request.GET.get('post')
     post_type = request.GET.get('type')
-    print(post_pk)
     current_order ,created = Order.objects.get_or_create(is_paid=False,user_id=request.user.id ,is_done=False)
     order_summary = current_order.get_order_summary()
     postage_fee = 0
     def calculate_postage_fee():
         posting_method = PostingMethod.objects.filter(pk=post_pk).first()
-        print(posting_method)
         weight = order_summary['total_weight']
         if posting_method.title == 'پست پیشتاز':
             if weight <= 1:
@@ -548,7 +564,6 @@ def apply_discount(request):
     html = None
     discount_code_get = request.GET.get('d')
     page = request.GET.get('page')
-    print(page)
     current_order = Order.objects.filter(user=request.user ,is_paid=False ,is_done=False).first()
     if discount_code_get:
         discount = DiscountCode.objects.filter(code__iexact=discount_code_get).first()
@@ -609,7 +624,7 @@ class Deposit(View):
         message_e = None
         failed_item = None
         payment_method = PaymentMethod.objects.filter(title='کارت به کارت').first()
-        current_order = Order.objects.filter(user=request.user ,is_paid=False ,payment_method=payment_method).first()
+        current_order ,created = Order.objects.get_or_create(user=request.user ,is_paid=False ,payment_method=payment_method)
         order_summary = current_order.get_order_summary()
         total_amount = order_summary['total_to_pay'] * 10
         card = payment_method.card
@@ -631,7 +646,7 @@ class Deposit(View):
         message_e = None
         failed_item = None
         payment_method = PaymentMethod.objects.filter(title='کارت به کارت').first()
-        current_order = Order.objects.get(user=request.user ,is_paid=False ,payment_method=payment_method)
+        current_order ,created = Order.objects.get_or_create(user=request.user ,is_paid=False ,payment_method=payment_method)
         order_summary = current_order.get_order_summary()
         total_amount = order_summary['total_to_pay'] * 10
         card = payment_method.card

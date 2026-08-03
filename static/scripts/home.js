@@ -1,7 +1,9 @@
 
 const homeswiper = new Swiper('.home-swiper' , {
-    slidesPerView: 1,
-    spaceBetween: 0,
+    slidesPerView: 'auto',
+    spaceBetween: 10,
+    centeredSlides: true,
+    loop: true,
 
     pagination: {
         el: '.homeswiper-pagination',

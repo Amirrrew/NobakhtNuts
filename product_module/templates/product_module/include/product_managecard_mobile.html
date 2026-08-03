@@ -32,7 +32,7 @@
                                     <path d="M9.01978 12.3999H10.5598V10.8999H9.01978V12.3999Z" fill="#f97e7e"></path>
                                     <path d="M14.6298 12.3999H16.1698V10.8999H14.6298V12.3999Z" fill="#f97e7e"></path>
                                     </svg>
-                                    <div id="prd-rem">{{ product.quantity }} کیلو در انبار باقیمانده</div>
+                                    <div id="prd-rem">{{ product.quantity|to_fanum }} کیلو در انبار باقیمانده</div>
                                 </div>
                                 {% else %}
                                 <div class="flex mt-3 gap-2 text-[var(--color5)]">
@@ -42,13 +42,13 @@
                                     <path d="M9.01978 12.3999H10.5598V10.8999H9.01978V12.3999Z" fill="#f97e7e"></path>
                                     <path d="M14.6298 12.3999H16.1698V10.8999H14.6298V12.3999Z" fill="#f97e7e"></path>
                                     </svg>
-                                    <div id="prd-rem">{{ product.quantity|floatformat }} عدد در انبار باقیمانده</div>
+                                    <div id="prd-rem">{{ product.quantity|floatformat|to_fanum }} عدد در انبار باقیمانده</div>
                                 </div>
                             {% endif %}
                         {% endif %}
                         <div class="transition-all flex justify-between pt-3 w-[100%] pr-2 mb-2">
                             {% if product.offer <= 0 %}
-                                <div class="text-3xl font-semibold" id="">
+                                <div class="text-3xl font-bold" id="">
                                     {{ product.price|three_digits_currency }}
                                 </div>
 
@@ -63,7 +63,7 @@
                             {% else %}
                                 <div class="">
                                     <div style="text-decoration: line-through 1px solid var(--color7)" class="text-sm">{{ product.price|three_digits_currency }}</div>
-                                    <div class="text-2xl font-semibold">{{ product.final_price|three_digits_currency }}</div>
+                                    <div class="text-2xl font-bold">{{ product.final_price|three_digits_currency }}</div>
                                 </div>
                                 <div class="flex gap-2">
                                     <div class="h-7 px-2 pt-0.5 mt-5 bg-[var(--color11)] text-[var(--color6)] rounded-lg">

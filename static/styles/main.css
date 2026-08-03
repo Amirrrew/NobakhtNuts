@@ -539,6 +539,36 @@ input[type="number"] {
         width: 50%;
         margin-top: 20px;
     }
+
+    body .home-swiper {
+        height: 300px;
+    }
+
+    body .homeswiper-btn {
+        display: none;
+    }
+
+    body .homeswiper-controls {
+        margin-top: 5px;
+    }
+
+    body .home-category-carousel {
+        opacity: 1;
+        margin-top: 60px;
+        animation: none;
+    }
+
+    body .home-carousel-sec {
+        margin-top: 60px;
+    }
+
+    .home-swiper {
+        overflow: visible;
+    }
+
+    .home-swiper .swiper-slide {
+        width: 95%;
+    }
 }
 
 @media screen and (max-width: 650px) {
@@ -3550,3 +3580,4 @@ body .swiper-pagination-bullet-active {
     pointer-events: none;
     z-index: 999;
   }
+
