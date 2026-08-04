@@ -1,647 +1,645 @@
-{% extends 'adminpanel_module/shared/base-admin.html' %}
-{% load poll_extras %}
+    {% extends 'adminpanel_module/shared/base-admin.html' %}
+    {% load poll_extras %}
 
 
-{% block admin_title %}
-    {% if add_view %}
-        افزودن محصول جدید
-    {% elif edit_view %}
-        ویرایش {{ product.title }}
-    {% endif %}
-{% endblock %}
+    {% block admin_title %}
+        {% if add_view %}
+            افزودن محصول جدید
+        {% elif edit_view %}
+            ویرایش {{ product.title }}
+        {% endif %}
+    {% endblock %}
 
-{% block admin_content %}
-    <form id="product-form" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div id="" class="flex justify-between p-2 pt-6 sticky mt-[-10px] top-[-10px] z-10 bg-[var(--header-bg)] backdrop-filter-[blur(10px)] rounded-xl">
-            <div class="flex gap-1 items-start">
-                <button onclick="history.back()" type="button" class="btn-prdcounter mt-1 text-sm pt-1 rounded-2xl"><i class="fa fa-angle-right"></i></button>
-                <svg class="mt-[-3px] mr-2" id="Bag 2" width="35" height="35" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M7.71924 7.1229C7.72523 4.62077 9.75766 2.5969 12.2607 2.60169C14.7624 2.60768 16.7865 4.64056 16.7812 7.14222V10.1737C16.7812 10.5879 16.4455 10.9237 16.0312 10.9237C15.617 10.9237 15.2812 10.5879 15.2812 10.1737V7.14169L15.2812 7.1399C15.2852 5.46626 13.9315 4.10589 12.2578 4.10169C10.5833 4.09868 9.2237 5.45228 9.21924 7.12564V10.1737C9.21924 10.5879 8.88345 10.9237 8.46924 10.9237C8.05502 10.9237 7.71924 10.5879 7.71924 10.1737L7.71924 7.1229Z" fill="#674d45"></path>
-                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M4.89578 9.00122C6.44852 7.78592 8.85701 7.35071 12.25 7.35071C15.6429 7.35071 18.0514 7.78592 19.6041 9.00122C21.1949 10.2463 21.769 12.2069 21.769 14.9097C21.769 17.6121 21.1949 19.5724 19.6041 20.8173C18.0514 22.0325 15.6429 22.4677 12.25 22.4677C8.857 22.4677 6.44853 22.0325 4.89581 20.8173C3.30504 19.5724 2.73096 17.6121 2.73096 14.9097C2.73096 12.2069 3.30502 10.2463 4.89578 9.00122Z" fill="#674d45"></path>
-                </svg>
-                <div class="flex gap-2 cursor-default">
-                    <a href="{% url 'admin_order_list' %}" class="text-4xl font-semibold">محصولات</a>
-                    <i class="fa fa-angle-left mt-2 text-[var(--color10)]"></i>
-                    {% if not product.pk %}<h1 class="text-2xl text-[var(--color6)] font-semibold mt-0.5">افزودن محصول جدید</h1>{% else %}<h1 class="text-4xl text-[var(--color10)] font-semibold">{{ product.pk|to_fanum }}#</h1>{% endif %}
+    {% block admin_content %}
+        <form id="product-form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div id="" class="flex justify-between p-2 pt-6 sticky mt-[-10px] top-[-10px] z-10 bg-[var(--header-bg)] backdrop-filter-[blur(10px)] rounded-xl">
+                <div class="flex gap-1 items-start">
+                    <button onclick="history.back()" type="button" class="btn-prdcounter mt-1 text-sm pt-1 rounded-2xl"><i class="fa fa-angle-right"></i></button>
+                    <svg class="mt-[-3px] mr-2" id="Bag 2" width="35" height="35" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M7.71924 7.1229C7.72523 4.62077 9.75766 2.5969 12.2607 2.60169C14.7624 2.60768 16.7865 4.64056 16.7812 7.14222V10.1737C16.7812 10.5879 16.4455 10.9237 16.0312 10.9237C15.617 10.9237 15.2812 10.5879 15.2812 10.1737V7.14169L15.2812 7.1399C15.2852 5.46626 13.9315 4.10589 12.2578 4.10169C10.5833 4.09868 9.2237 5.45228 9.21924 7.12564V10.1737C9.21924 10.5879 8.88345 10.9237 8.46924 10.9237C8.05502 10.9237 7.71924 10.5879 7.71924 10.1737L7.71924 7.1229Z" fill="#674d45"></path>
+                        <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M4.89578 9.00122C6.44852 7.78592 8.85701 7.35071 12.25 7.35071C15.6429 7.35071 18.0514 7.78592 19.6041 9.00122C21.1949 10.2463 21.769 12.2069 21.769 14.9097C21.769 17.6121 21.1949 19.5724 19.6041 20.8173C18.0514 22.0325 15.6429 22.4677 12.25 22.4677C8.857 22.4677 6.44853 22.0325 4.89581 20.8173C3.30504 19.5724 2.73096 17.6121 2.73096 14.9097C2.73096 12.2069 3.30502 10.2463 4.89578 9.00122Z" fill="#674d45"></path>
+                    </svg>
+                    <div class="flex gap-2 cursor-default">
+                        <a href="{% url 'admin_order_list' %}" class="text-4xl font-semibold">محصولات</a>
+                        <i class="fa fa-angle-left mt-2 text-[var(--color10)]"></i>
+                        {% if not product.pk %}<h1 class="text-2xl text-[var(--color6)] font-semibold mt-0.5">افزودن محصول جدید</h1>{% else %}<h1 class="text-4xl text-[var(--color10)] font-semibold">{{ product.pk|to_fanum }}#</h1>{% endif %}
+                    </div>
+                </div>
+                <div class="flex gap-1 m-[-5px] items-start">
+                    {% if edit_view %}<a target="_blank" href="{{ product.get_absolute_url }}" class="btn-defIconFlex2 gap-1">مشاهده در وبسایت<i class="fa fa-external-link text-xs mt-1"></i></a>{% endif %}
+                    <a href="{% url 'admin_product_list' %}" class="flex gap-1 bg-[var(--cancel-bg)] text-[var(--loss-dot)] h-[42px] rounded-xl p-2.5"><div>انصراف</div><i class="fa fa-trash text-xs mt-1"></i></a>
+                    <button class="btn-defIconFlex gap-1 z-20" type="submit">ذخیره <i class="fa fa-add mt-1"></i></button>
                 </div>
             </div>
-            <div class="flex gap-1 m-[-5px] items-start">
-                {% if edit_view %}<a target="_blank" href="{{ product.get_absolute_url }}" class="btn-defIconFlex2 gap-1">مشاهده در وبسایت<i class="fa fa-external-link text-xs mt-1"></i></a>{% endif %}
-                <a href="{% url 'admin_product_list' %}" class="flex gap-1 bg-[var(--cancel-bg)] text-[var(--loss-dot)] h-[42px] rounded-xl p-2.5"><div>انصراف</div><i class="fa fa-trash text-xs mt-1"></i></a>
-                <button class="btn-defIconFlex gap-1 z-20" type="submit">ذخیره <i class="fa fa-add mt-1"></i></button>
-            </div>
-        </div>
-        <div class="flex w-[100%] mt-2 gap-2">
+            <div class="flex w-[100%] mt-2 gap-2">
 
-            <div class="w-[60%]">
+                <div class="w-[60%]">
 
-                <div class="tablebox-default w-[100%] relative" style="animation: load8 300ms">
-                    <div class="flex gap-1">
-                        <svg class="mt-[-2px]" id="Info Square" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.052 2.78467 2.5 5.33667 2.5 12.5347C2.5 19.7327 5.052 22.2847 12.25 22.2847C19.448 22.2847 22 19.7327 22 12.5347C22 5.33667 19.448 2.78467 12.25 2.78467Z" fill="#674d45"></path>
-                        <path d="M12.2461 9.78467H12.2551C12.6691 9.78467 13.0011 9.44867 13.0011 9.03467C13.0011 8.62067 12.6601 8.28467 12.2461 8.28467C11.8321 8.28467 11.4961 8.62067 11.4961 9.03467C11.4961 9.44867 11.8321 9.78467 12.2461 9.78467Z" fill="#674d45"></path>
-                        <path d="M12.2501 17.1797C12.6641 17.1797 13.0001 16.8437 13.0001 16.4297V12.5347C13.0001 12.1207 12.6641 11.7847 12.2501 11.7847C11.8361 11.7847 11.5001 12.1207 11.5001 12.5347V16.4297C11.5001 16.8437 11.8361 17.1797 12.2501 17.1797Z" fill="#674d45"></path>
-                        </svg>
-                        <h1 class="text-xl font-semibold">مشخصات ابتدایی</h1>
-                    </div>
-
-                    <div class="editpanel-row mt-2 flex gap-2">
-                        <div class="w-[100%]">
-                            <div> عنوان<span class="text-[var(--loss-dot)]">*</span></div>
-                            <input value="{{ product.title }}" class="input-admin" name="title" id="title" placeholder="عنوانی برای محصول وارد کنید">
+                    <div class="tablebox-default w-[100%] relative" style="animation: load8 300ms">
+                        <div class="flex gap-1">
+                            <svg class="mt-[-2px]" id="Info Square" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.052 2.78467 2.5 5.33667 2.5 12.5347C2.5 19.7327 5.052 22.2847 12.25 22.2847C19.448 22.2847 22 19.7327 22 12.5347C22 5.33667 19.448 2.78467 12.25 2.78467Z" fill="#674d45"></path>
+                            <path d="M12.2461 9.78467H12.2551C12.6691 9.78467 13.0011 9.44867 13.0011 9.03467C13.0011 8.62067 12.6601 8.28467 12.2461 8.28467C11.8321 8.28467 11.4961 8.62067 11.4961 9.03467C11.4961 9.44867 11.8321 9.78467 12.2461 9.78467Z" fill="#674d45"></path>
+                            <path d="M12.2501 17.1797C12.6641 17.1797 13.0001 16.8437 13.0001 16.4297V12.5347C13.0001 12.1207 12.6641 11.7847 12.2501 11.7847C11.8361 11.7847 11.5001 12.1207 11.5001 12.5347V16.4297C11.5001 16.8437 11.8361 17.1797 12.2501 17.1797Z" fill="#674d45"></path>
+                            </svg>
+                            <h1 class="text-xl font-semibold">مشخصات ابتدایی</h1>
                         </div>
 
-                        <div class="w-[100%]">
-                            <div>کد هلو</div>
-                            <input value="{% if product.holoo_id %}{{ product.holoo_id }}{% endif %}" class="input-admin" name="holoo_id" id="" placeholder="کد کالا در نرم افزار را وارد کنید">
+                        <div class="editpanel-row mt-2 flex gap-2">
+                            <div class="w-[100%]">
+                                <div> عنوان<span class="text-[var(--loss-dot)]">*</span></div>
+                                <input value="{{ product.title }}" class="input-admin" name="title" id="title" placeholder="عنوانی برای محصول وارد کنید">
+                            </div>
+
+                            <div class="w-[100%]">
+                                <div>کد هلو</div>
+                                <input value="{% if product.holoo_id %}{{ product.holoo_id }}{% endif %}" class="input-admin" name="holoo_id" id="" placeholder="کد کالا در نرم افزار را وارد کنید">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="editpanel-row mt-2 flex gap-2">
+                        <div class="editpanel-row mt-2 flex gap-2">
 
-                        <div class="w-[100%]">
-                            <div> دسته بندی<span class="text-[var(--loss-dot)]">*</span></div>
-                            <div class="search-select" data-name="category" data-selected="{{ product.category.pk|default:'' }}" data-options='{{ category_options_json }}'>
-                                <div class="search-select-display">
-                                    <span data-role="display-text">انتخاب دسته بندی</span>
-                                    <i class="fa fa-angle-down arrow"></i>
-                                </div>
-                                <div class="search-select-panel">
-                                    <div class="search-select-search-wrap flex">
-
-                                        <input type="text" placeholder="جستجو..." data-role="search-input" autocomplete="off">
+                            <div class="w-[100%]">
+                                <div> دسته بندی<span class="text-[var(--loss-dot)]">*</span></div>
+                                <div class="search-select" data-name="category" data-selected="{{ product.category.pk|default:'' }}" data-options='{{ category_options_json }}'>
+                                    <div class="search-select-display">
+                                        <span data-role="display-text">انتخاب دسته بندی</span>
+                                        <i class="fa fa-angle-down arrow"></i>
                                     </div>
-                                    <div class="search-select-options" data-role="options-list"></div>
-                                </div>
-                            </div>
-                            <input type="hidden" name="category" data-role="hidden-input">
-                        </div>
+                                    <div class="search-select-panel">
+                                        <div class="search-select-search-wrap flex">
 
-                        <div class="w-[100%]">
-                            <div>برند</div>
-                            <div class="search-select" data-name="brand" data-selected="{{ product.brand.pk|default:'' }}" data-options='{{ brand_options_json }}'>
-                                <div class="search-select-display">
-                                    <span data-role="display-text">انتخاب برند</span>
-                                    <i class="fa fa-angle-down arrow"></i>
-                                </div>
-                                <div class="search-select-panel">
-                                    <div class="search-select-search-wrap flex">
-                                        <input type="text" placeholder="جستجو..." data-role="search-input" autocomplete="off">
+                                            <input type="text" placeholder="جستجو..." data-role="search-input" autocomplete="off">
+                                        </div>
+                                        <div class="search-select-options" data-role="options-list"></div>
                                     </div>
-                                    <div class="search-select-options" data-role="options-list"></div>
                                 </div>
-                                <input type="hidden" name="brand" data-role="hidden-input">
+                                <input type="hidden" name="category" data-role="hidden-input">
+                            </div>
+
+                            <div class="w-[100%]">
+                                <div>برند</div>
+                                <div class="search-select" data-name="brand" data-selected="{{ product.brand.pk|default:'' }}" data-options='{{ brand_options_json }}'>
+                                    <div class="search-select-display">
+                                        <span data-role="display-text">انتخاب برند</span>
+                                        <i class="fa fa-angle-down arrow"></i>
+                                    </div>
+                                    <div class="search-select-panel">
+                                        <div class="search-select-search-wrap flex">
+                                            <input type="text" placeholder="جستجو..." data-role="search-input" autocomplete="off">
+                                        </div>
+                                        <div class="search-select-options" data-role="options-list"></div>
+                                    </div>
+                                    <input type="hidden" name="brand" data-role="hidden-input">
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="editpanel-row mt-2 flex gap-2 ">
+                            <div class="w-[100%]">
+                                <div> قیمت (به تومان)<span class="text-[var(--loss-dot)]">*</span></div>
+                                <input value="{% if product.price %}{{ product.price|three_digits_currency_no_extension }}{% else %}0{% endif %}" class="input-admin" placeholder="قیمت را وارد کنید"  maxlength="15" type="text" name="" id="price-input">
+                            </div>
+
+                            <input value="{% if product.price %}{{ product.price }}{% else %}0{% endif %}" name="price" type="hidden" id="price-input-real">
+
+                            <div class="w-[100%] tooltip-parent relative">
+                                <div> تخفیف به درصد</div>
+                                <input type="number" value="{% if product.offer %}{{ product.offer }}{% else %}0{% endif %}" onblur="document.getElementById('tooltip-offer').style = 'visibility: hidden;'" class="input-admin" name="offer" maxlength="3" id="offer-input" placeholder="تخفیف را به درصد وارد کنید">
+                                <div class="tooltip" style="top: 70px; padding: 10px; font-size: 20px" id="tooltip-offer"></div>
                             </div>
                         </div>
 
+                        <div class="editpanel-row mt-2 flex gap-2 ">
+                            <div class="w-[100%]">
+                                <div> تعداد / وزن<span class="text-[var(--loss-dot)]">*</span></div>
+                                <input value="{% if product.is_byWeight %}{{ product.quantity }}{% else %}{{ product.quantity|floatformat }}{% endif %}" class="input-admin" placeholder="میزان موجودی کالا را به وزن یا عدد وارد کنید" maxlength="5" type="text" name="quantity" id="">
+                            </div>
+
+
+                        </div>
+
+                        <div class="editpanel-row mt-2 flex gap-2 ">
+                            <div class="w-[100%]">
+                                <div>وزن بسته بندی به کیلو(در صورت عددی بودن محصول)</div>
+                                <input value="{% if not product.is_byWeight and product.pack_weight %}{{ product.pack_weight }}{% else %}{% if not product.pack_weight %}0{% endif %}{% endif %}" class="input-admin {% if product.is_byWeight %}disabled{% endif %}" placeholder="وزن بسته کالای عددی" maxlength="5" type="text" name="pack_weight" id="pack_weight">
+                                <div class="mt-1 text-[var(--color10)]">این وزن در محاسبه هزینه ارسال و وزن محموله بکار میره و تاثیری در فروش یا آمار انبار نداره</div>
+                                <div class="mt-1 text-[var(--color10)]">برای مثال: ترابیکا بسته -> وزن بسته 0.5 کیلو</div>
+                            </div>
+
+                        </div>
+
+                        <div class="mt-2 flex gap-2">
+                            <label for="is_byweight" class="relative text-[var(--color6)] text-lg cursor-pointer top-1"><input id="is_byweight" type="checkbox" class="ui-checkbox" name="is_byWeight" {% if product.is_byWeight %}checked{% endif %}></label>
+                            <div class="mt-1">کالای وزنی؟</div>
+                        </div>
+
+                        <div class="{% if not product.is_byWeight %}hidden{% endif %} relative" id="product-packs" style="animation: load8 300ms">
+                            <div class="text-[var(--color10)] mt-5">
+                                اندازه بسته بندی را انتخاب کنید
+                            </div>
+                            <div class="choose-weight-desktop flex flex-wrap gap-2 mt-1">
+                            {% for pack in packs %}
+                                <input type="checkbox" name="packs" id="pack{{ pack.pk }}" value="{{ pack.pk }}" class="peer" hidden {% if pack.pk in selected_packs %}checked{% endif %}>
+                                <label for="pack{{ pack.pk }}" class="pack-size-admin pack-size cursor-pointer bg-[var(--color12)] border border-[var(--color8)] py-1 px-2 rounded-xl text-sm text-[var(--color6)] peer-checked:bg-[var(--color6)]">{{ pack.title|to_fanum }}</label>
+                            {% endfor %}
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="editpanel-row mt-2 flex gap-2 ">
-                        <div class="w-[100%]">
-                            <div> قیمت (به تومان)<span class="text-[var(--loss-dot)]">*</span></div>
-                            <input value="{% if product.price %}{{ product.price|three_digits_currency_no_extension }}{% else %}0{% endif %}" class="input-admin" placeholder="قیمت را وارد کنید"  maxlength="15" type="text" name="" id="price-input">
-                        </div>
-
-                        <input value="{% if product.price %}{{ product.price }}{% else %}0{% endif %}" name="price" type="hidden" id="price-input-real">
-
-                        <div class="w-[100%] tooltip-parent relative">
-                            <div> تخفیف به درصد</div>
-                            <input type="number" value="{% if product.offer %}{{ product.offer }}{% else %}0{% endif %}" onblur="document.getElementById('tooltip-offer').style = 'visibility: hidden;'" class="input-admin" name="offer" maxlength="3" id="offer-input" placeholder="تخفیف را به درصد وارد کنید">
-                            <div class="tooltip" style="top: 70px; padding: 10px; font-size: 20px" id="tooltip-offer"></div>
-                        </div>
-                    </div>
-
-                    <div class="editpanel-row mt-2 flex gap-2 ">
-                        <div class="w-[100%]">
-                            <div> تعداد / وزن<span class="text-[var(--loss-dot)]">*</span></div>
-                            <input value="{% if product.is_byWeight %}{{ product.quantity }}{% else %}{{ product.quantity|floatformat }}{% endif %}" class="input-admin" placeholder="میزان موجودی کالا را به وزن یا عدد وارد کنید" maxlength="5" type="text" name="quantity" id="">
+                    <div class="tablebox-default mt-2 w-[100%]">
+                        <div class="flex gap-1">
+                            <svg class="mt-[-2px]" id="More Circle" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.051 2.78467 2.5 5.33567 2.5 12.5347C2.5 19.7327 5.051 22.2847 12.25 22.2847C19.449 22.2847 22 19.7327 22 12.5347C22 5.33567 19.449 2.78467 12.25 2.78467Z" fill="#674d45"></path>
+                            <path d="M14.4592 14.4346C14.4592 14.9876 14.9112 15.4346 15.4632 15.4346C16.0152 15.4346 16.4632 14.9876 16.4632 14.4346C16.4632 13.8816 16.0152 13.4346 15.4632 13.4346H15.4542C14.9022 13.4346 14.4592 13.8816 14.4592 14.4346Z" fill="#674d45"></path>
+                            <path d="M11.4592 10.4346C11.4592 10.9876 11.9112 11.4346 12.4632 11.4346C13.0152 11.4346 13.4632 10.9876 13.4632 10.4346C13.4632 9.88157 13.0152 9.43457 12.4632 9.43457H12.4542C11.9022 9.43457 11.4592 9.88157 11.4592 10.4346Z" fill="#674d45"></path>
+                            <path d="M8.4502 14.4346C8.4502 14.9876 8.9032 15.4346 9.4552 15.4346C10.0072 15.4346 10.4552 14.9876 10.4552 14.4346C10.4552 13.8816 10.0072 13.4346 9.4552 13.4346H9.4462C8.8942 13.4346 8.4502 13.8816 8.4502 14.4346Z" fill="#674d45"></path>
+                            </svg>
+                            <h1 class="text-xl font-semibold">ویژگی ها و توضیحات</h1>
                         </div>
 
 
-                    </div>
-
-                    <div class="editpanel-row mt-2 flex gap-2 ">
-                        <div class="w-[100%]">
-                            <div>وزن بسته بندی به کیلو(در صورت عددی بودن محصول)</div>
-                            <input value="{% if not product.is_byWeight and product.pack_weight %}{{ product.pack_weight }}{% else %}{% if not product.pack_weight %}0{% endif %}{% endif %}" class="input-admin {% if product.is_byWeight %}disabled{% endif %}" placeholder="وزن بسته کالای عددی" maxlength="5" type="text" name="pack_weight" id="pack_weight">
-                            <div class="mt-1 text-[var(--color10)]">این وزن در محاسبه هزینه ارسال و وزن محموله بکار میره و تاثیری در فروش یا آمار انبار نداره</div>
-                            <div class="mt-1 text-[var(--color10)]">برای مثال: ترابیکا بسته -> وزن بسته 0.5 کیلو</div>
+                        <div class="editpanel-row mt-2 flex gap-2">
+                            <input type="hidden" name="features" id="features-input">
+                            <div class="w-[100%]">
+                                <div>ویژگی ها</div>
+                                <div class="flex flex-wrap mt-2 gap-2" id="product-added-features">
+                                </div>
+                                <div class="flex gap-2 w-[100%] mt-2">
+                                    <div class="w-[30%]">
+                                        <input oninput="CheckLength('feature-title',20)" placeholder="عنوان ویژگی" id="feature-title" maxlength="20" class="input-admin" style="">
+                                        <div id="feature-title-remaining" class="mr-1">20/0</div>
+                                    </div>
+                                    <div class="w-[100%]">
+                                        <input oninput="CheckLength('feature-desc',100)" placeholder="توضیحات" id="feature-desc" maxlength="100" class="input-admin w-[100%]">
+                                        <div id="feature-desc-remaining" class="mr-1">100/0</div>
+                                    </div>
+                                    <button type="button" onclick="ProductAddFeature()" class="btn-defIconFlex gap-1" style="height: 50px; width: 60px; display: block"><i class="fa fa-add mt-1 text-[var(--color11)]"></i></button>
+                                </div>
+                                <div class="w-[100%] mt-7">
+                                    <div>توضیحات تکمیلی</div>
+                                    <textarea name="desc" class="input-admin" style="height: 400px; padding-top: 15px" placeholder="چند خط توضیحات بنویسید">{{ product.desc|default_if_none:'' }}</textarea>
+                                </div>
+                            </div>
                         </div>
 
-                    </div>
-
-                    <div class="mt-2 flex gap-2">
-                        <label for="is_byweight" class="relative text-[var(--color6)] text-lg cursor-pointer top-1"><input id="is_byweight" type="checkbox" class="ui-checkbox" name="is_byWeight" {% if product.is_byWeight %}checked{% endif %}></label>
-                        <div class="mt-1">کالای وزنی؟</div>
-                    </div>
-
-                    <div class="{% if not product.is_byWeight %}hidden{% endif %} relative" id="product-packs" style="animation: load8 300ms">
-                        <div class="text-[var(--color10)] mt-5">
-                            اندازه بسته بندی را انتخاب کنید
-                        </div>
-                        <div class="choose-weight-desktop flex flex-wrap gap-2 mt-1">
-                        {% for pack in packs %}
-                            <input type="checkbox" name="packs" id="pack{{ pack.pk }}" value="{{ pack.pk }}" class="peer" hidden {% if pack.pk in selected_packs %}checked{% endif %}>
-                            <label for="pack{{ pack.pk }}" class="pack-size-admin pack-size cursor-pointer bg-[var(--color12)] border border-[var(--color8)] py-1 px-2 rounded-xl text-sm text-[var(--color6)] peer-checked:bg-[var(--color6)]">{{ pack.title|to_fanum }}</label>
-                        {% endfor %}
-                        </div>
                     </div>
                 </div>
 
-                <div class="tablebox-default mt-2 w-[100%]">
-                    <div class="flex gap-1">
-                        <svg class="mt-[-2px]" id="More Circle" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.051 2.78467 2.5 5.33567 2.5 12.5347C2.5 19.7327 5.051 22.2847 12.25 22.2847C19.449 22.2847 22 19.7327 22 12.5347C22 5.33567 19.449 2.78467 12.25 2.78467Z" fill="#674d45"></path>
-                        <path d="M14.4592 14.4346C14.4592 14.9876 14.9112 15.4346 15.4632 15.4346C16.0152 15.4346 16.4632 14.9876 16.4632 14.4346C16.4632 13.8816 16.0152 13.4346 15.4632 13.4346H15.4542C14.9022 13.4346 14.4592 13.8816 14.4592 14.4346Z" fill="#674d45"></path>
-                        <path d="M11.4592 10.4346C11.4592 10.9876 11.9112 11.4346 12.4632 11.4346C13.0152 11.4346 13.4632 10.9876 13.4632 10.4346C13.4632 9.88157 13.0152 9.43457 12.4632 9.43457H12.4542C11.9022 9.43457 11.4592 9.88157 11.4592 10.4346Z" fill="#674d45"></path>
-                        <path d="M8.4502 14.4346C8.4502 14.9876 8.9032 15.4346 9.4552 15.4346C10.0072 15.4346 10.4552 14.9876 10.4552 14.4346C10.4552 13.8816 10.0072 13.4346 9.4552 13.4346H9.4462C8.8942 13.4346 8.4502 13.8816 8.4502 14.4346Z" fill="#674d45"></path>
-                        </svg>
-                        <h1 class="text-xl font-semibold">ویژگی ها و توضیحات</h1>
-                    </div>
-
-
-                    <div class="editpanel-row mt-2 flex gap-2">
-                        <input type="hidden" name="features" id="features-input">
-                        <div class="w-[100%]">
-                            <div>ویژگی ها</div>
-                            <div class="flex flex-wrap mt-2 gap-2" id="product-added-features">
-                            </div>
-                            <div class="flex gap-2 w-[100%] mt-2">
-                                <div class="w-[30%]">
-                                    <input oninput="CheckLength('feature-title',20)" placeholder="عنوان ویژگی" id="feature-title" maxlength="20" class="input-admin" style="">
-                                    <div id="feature-title-remaining" class="mr-1">20/0</div>
-                                </div>
-                                <div class="w-[100%]">
-                                    <input oninput="CheckLength('feature-desc',100)" placeholder="توضیحات" id="feature-desc" maxlength="100" class="input-admin w-[100%]">
-                                    <div id="feature-desc-remaining" class="mr-1">100/0</div>
-                                </div>
-                                <button type="button" onclick="ProductAddFeature()" class="btn-defIconFlex gap-1" style="height: 50px; width: 60px; display: block"><i class="fa fa-add mt-1 text-[var(--color11)]"></i></button>
-                            </div>
-                            <div class="w-[100%] mt-7">
-                                <div>توضیحات تکمیلی</div>
-                                <textarea name="desc" class="input-admin" style="height: 400px; padding-top: 15px" placeholder="چند خط توضیحات بنویسید">{{ product.desc|default_if_none:'' }}</textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="w-[40%]">
-                <div class="tablebox-default relative" style="animation: load8 500ms">
-                    <div class="flex gap-1">
-                        <svg id="Image 2" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                            <g id="Iconly/Bulk/Image-2" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
-                                <g id="Image-2" transform="translate(2.000000, 2.000000)" fill="#674d45" fill-rule="nonzero">
-                                    <path d="M19.9998998,12.7023545 L19.9998998,14.0858894 C19.9998998,14.315476 19.9898798,14.5470678 19.9698397,14.7766544 C19.6892786,17.9357258 17.4948898,20 14.3285571,20 L5.67124248,20 C4.06803607,20 2.71533066,19.4796706 1.74338677,18.5362601 C1.36262525,18.1863662 1.04198397,17.7753159 0.791482966,17.304112 C1.12214429,16.9020848 1.49288577,16.4619603 1.85360721,16.0208332 C2.46482966,15.2889633 3.05601202,14.5661164 3.42675351,14.0959151 C3.97785571,13.4141732 5.43076152,11.619588 7.44478958,12.4617397 C7.85561122,12.6321752 8.21633267,12.87279 8.54699399,13.0833279 C9.35861723,13.6247111 9.6992986,13.785121 10.2704409,13.4743269 C10.9017034,13.133456 11.3125251,12.4617397 11.7433868,11.7599467 C11.9738477,11.3879963 12.2043086,11.0280767 12.4548096,10.6972314 C13.546994,9.27359403 15.2303607,8.89262065 16.6331663,9.73477234 C17.3345691,10.1558482 17.9357715,10.6872058 18.4968938,11.2275865 C18.6171343,11.3478939 18.7373747,11.4591782 18.8475952,11.56946 C18.9978958,11.7198442 19.4988978,12.221125 19.9998998,12.7023545" id="Fill-1"></path>
-                                    <path d="M14.3386774,7.10542736e-15 L5.67134269,7.10542736e-15 C2.2745491,7.10542736e-15 0,2.37607086 0,5.91411055 L0,14.0859897 C0,15.3181378 0.280561122,16.4119325 0.791583166,17.3042123 C1.12224449,16.9021851 1.49298597,16.4620606 1.85370741,16.0199309 C2.46492986,15.2890636 3.05611222,14.5662167 3.42685371,14.0960153 C3.97795591,13.4142735 5.43086172,11.6196883 7.44488978,12.46184 C7.85571142,12.6322755 8.21643287,12.8728902 8.54709419,13.0834282 C9.35871743,13.6248114 9.6993988,13.7852212 10.2705411,13.4734246 C10.9018036,13.1335562 11.3126253,12.46184 11.743487,11.7590444 C11.9739479,11.3880966 12.2044088,11.028177 12.4549098,10.6973317 C13.5470942,9.27369429 15.2304609,8.8927209 16.6332665,9.7348726 C17.3346693,10.1559484 17.9358717,10.6873061 18.496994,11.2276867 C18.6172345,11.3479941 18.7374749,11.4592785 18.8476954,11.5695602 C18.997996,11.7189419 19.498998,12.2202227 20,12.7024548 L20,5.91411055 C20,2.37607086 17.7254509,7.10542736e-15 14.3386774,7.10542736e-15" id="Fill-3" opacity="0.400000006"></path>
-                                    <path d="M9.45440882,6.79666548 C9.45440882,8.20526445 8.28106212,9.37826146 6.87324649,9.37826146 C5.46643287,9.37826146 4.29308617,8.20526445 4.29308617,6.79666548 C4.29308617,5.38906907 5.46643287,4.2150695 6.87324649,4.2150695 C8.28106212,4.2150695 9.45440882,5.38906907 9.45440882,6.79666548" id="Fill-5"></path>
-                                </g>
-                            </g>
-                        </svg>
-                        <h1 class="text-xl font-semibold">تصاویر</h1>
-                        <input type="hidden" name="keep_images" id="keep_images">
-                    </div>
-                    <div class="product-image-uploadbox overflow-hidden relative cursor-pointer bg-[var(--color12)] rounded-lg border-2 border-[var(--color11)] h-50 mt-2 hover:bg-[var(--color13)]">
-                        <input name="images" id="product-imgs-input" multiple class="z-1 opacity-0 absolute w-[100%] h-[100%] cursor-pointer" type="file" accept="image/png, image/jpeg, image/webp">
-                        <div class="centerbox">
-                            <svg class="mt-7" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24">
-                                <path d="M0 0h24v24H0z" fill="none" />
-                                <g fill="none" stroke="#d0c1bd" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                                    <path d="M19 11V9a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" />
-                                    <path d="m13 13l9 3l-4 2l-2 4zM3 3v.01M7 3v.01M11 3v.01M15 3v.01M3 7v.01M3 11v.01M3 15v.01" />
+                <div class="w-[40%]">
+                    <div class="tablebox-default relative" style="animation: load8 500ms">
+                        <div class="flex gap-1">
+                            <svg id="Image 2" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <g id="Iconly/Bulk/Image-2" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                                    <g id="Image-2" transform="translate(2.000000, 2.000000)" fill="#674d45" fill-rule="nonzero">
+                                        <path d="M19.9998998,12.7023545 L19.9998998,14.0858894 C19.9998998,14.315476 19.9898798,14.5470678 19.9698397,14.7766544 C19.6892786,17.9357258 17.4948898,20 14.3285571,20 L5.67124248,20 C4.06803607,20 2.71533066,19.4796706 1.74338677,18.5362601 C1.36262525,18.1863662 1.04198397,17.7753159 0.791482966,17.304112 C1.12214429,16.9020848 1.49288577,16.4619603 1.85360721,16.0208332 C2.46482966,15.2889633 3.05601202,14.5661164 3.42675351,14.0959151 C3.97785571,13.4141732 5.43076152,11.619588 7.44478958,12.4617397 C7.85561122,12.6321752 8.21633267,12.87279 8.54699399,13.0833279 C9.35861723,13.6247111 9.6992986,13.785121 10.2704409,13.4743269 C10.9017034,13.133456 11.3125251,12.4617397 11.7433868,11.7599467 C11.9738477,11.3879963 12.2043086,11.0280767 12.4548096,10.6972314 C13.546994,9.27359403 15.2303607,8.89262065 16.6331663,9.73477234 C17.3345691,10.1558482 17.9357715,10.6872058 18.4968938,11.2275865 C18.6171343,11.3478939 18.7373747,11.4591782 18.8475952,11.56946 C18.9978958,11.7198442 19.4988978,12.221125 19.9998998,12.7023545" id="Fill-1"></path>
+                                        <path d="M14.3386774,7.10542736e-15 L5.67134269,7.10542736e-15 C2.2745491,7.10542736e-15 0,2.37607086 0,5.91411055 L0,14.0859897 C0,15.3181378 0.280561122,16.4119325 0.791583166,17.3042123 C1.12224449,16.9021851 1.49298597,16.4620606 1.85370741,16.0199309 C2.46492986,15.2890636 3.05611222,14.5662167 3.42685371,14.0960153 C3.97795591,13.4142735 5.43086172,11.6196883 7.44488978,12.46184 C7.85571142,12.6322755 8.21643287,12.8728902 8.54709419,13.0834282 C9.35871743,13.6248114 9.6993988,13.7852212 10.2705411,13.4734246 C10.9018036,13.1335562 11.3126253,12.46184 11.743487,11.7590444 C11.9739479,11.3880966 12.2044088,11.028177 12.4549098,10.6973317 C13.5470942,9.27369429 15.2304609,8.8927209 16.6332665,9.7348726 C17.3346693,10.1559484 17.9358717,10.6873061 18.496994,11.2276867 C18.6172345,11.3479941 18.7374749,11.4592785 18.8476954,11.5695602 C18.997996,11.7189419 19.498998,12.2202227 20,12.7024548 L20,5.91411055 C20,2.37607086 17.7254509,7.10542736e-15 14.3386774,7.10542736e-15" id="Fill-3" opacity="0.400000006"></path>
+                                        <path d="M9.45440882,6.79666548 C9.45440882,8.20526445 8.28106212,9.37826146 6.87324649,9.37826146 C5.46643287,9.37826146 4.29308617,8.20526445 4.29308617,6.79666548 C4.29308617,5.38906907 5.46643287,4.2150695 6.87324649,4.2150695 C8.28106212,4.2150695 9.45440882,5.38906907 9.45440882,6.79666548" id="Fill-5"></path>
+                                    </g>
                                 </g>
                             </svg>
+                            <h1 class="text-xl font-semibold">تصاویر</h1>
+                            <input type="hidden" name="keep_images" id="keep_images">
                         </div>
-                        <div class="centerbox">تصاویر محصول رو از اینجا آپلود کنید</div>
-                        <div class="text-center text-sm text-[var(--color10)]">jpg - png - jpeg - webp</div>
-                    </div>
-                    <div class="flex flex-wrap mt-2 gap-1" id="product-imgs-preview"></div>
-                </div>
-
-                <div class="tablebox-default mt-2 relative" style="animation: load8 700ms">
-                    <div class="flex gap-1">
-                        <svg id="Setting" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                            <g id="Iconly/Bulk/Setting" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
-                                <g id="Setting" transform="translate(2.499897, 2.000100)" fill="#674d45" fill-rule="nonzero">
-                                    <path d="M9.51207539,12.83 C7.9076023,12.83 6.60971643,11.58 6.60971643,10.01 C6.60971643,8.44 7.9076023,7.18 9.51207539,7.18 C11.1165485,7.18 12.3837756,8.44 12.3837756,10.01 C12.3837756,11.58 11.1165485,12.83 9.51207539,12.83" id="Path"></path>
-                                    <path d="M18.730131,12.37 C18.5359591,12.07 18.2600306,11.77 17.9023455,11.58 C17.6161974,11.44 17.4322451,11.21 17.2687319,10.94 C16.7475337,10.08 17.0541209,8.95 17.9227847,8.44 C18.944742,7.87 19.2717684,6.6 18.6790331,5.61 L17.9943217,4.43 C17.411806,3.44 16.1343592,3.09 15.1226214,3.67 C14.2232989,4.15 13.0684871,3.83 12.5472888,2.98 C12.3837756,2.7 12.2917995,2.4 12.3122386,2.1 C12.3428973,1.71 12.2202625,1.34 12.0363101,1.04 C11.6581859,0.42 10.9734745,0 10.217226,0 L8.77626608,0 C8.03023719,0.02 7.34552574,0.42 6.96740151,1.04 C6.77322961,1.34 6.6608143,1.71 6.68125344,2.1 C6.70169259,2.4 6.60971643,2.7 6.44620325,2.98 C5.92500498,3.83 4.77019314,4.15 3.88109021,3.67 C2.85913283,3.09 1.59190568,3.44 0.999170395,4.43 L0.314458948,5.61 C-0.26805676,6.6 0.0589696023,7.87 1.07070741,8.44 C1.93937119,8.95 2.2459584,10.08 1.73497971,10.94 C1.56124696,11.21 1.37729463,11.44 1.09114656,11.58 C0.743681049,11.77 0.437093834,12.07 0.273580653,12.37 C-0.104543579,12.99 -0.0841044313,13.77 0.2940198,14.42 L0.999170395,15.62 C1.37729463,16.26 2.08244522,16.66 2.81825454,16.66 C3.16572005,16.66 3.574503,16.56 3.90152936,16.36 C4.15701871,16.19 4.46360592,16.13 4.80085186,16.13 C5.81258967,16.13 6.6608143,16.96 6.68125344,17.95 C6.68125344,19.1 7.62145424,20 8.8069248,20 L10.1967868,20 C11.3720378,20 12.3122386,19.1 12.3122386,17.95 C12.3428973,16.96 13.191122,16.13 14.2028598,16.13 C14.5298861,16.13 14.8364734,16.19 15.1021823,16.36 C15.4292086,16.56 15.827772,16.66 16.1854571,16.66 C16.9110468,16.66 17.6161974,16.26 17.9943217,15.62 L18.7096918,14.42 C19.0775965,13.75 19.1082552,12.99 18.730131,12.37" id="Path" opacity="0.400000006"></path>
-                                </g>
-                            </g>
-                        </svg>
-                        <h1 class="text-xl font-semibold">وضعیت و تنظیمات</h1>
-                    </div>
-                    <div class="flex justify-between mt-5">
-                        <h1 class="text-xl font-semibold">فعال / غیر فعال</h1>
-                        <label class="switch">
-                          <input type="checkbox" name="is_active" {% if add_view %}checked{% else %}
-                              {% if product.is_active %}
-                                  checked
-                              {% endif %}
-                          {% endif %}>
-                          <span class="slider"></span>
-                        </label>
-                    </div>
-                    <div class="mt-1 text-[var(--color10)]">
-                        در صورت فعال نبودن محصول، محصول فقط برای شما قابل نمایشه و برای کاربران سایت نمایش داده نمیشه
-                    </div>
-                    <div class="flex justify-between mt-5">
-                        <h1 class="text-xl font-semibold">برگزیده</h1>
-                        <label class="switch">
-                          <input type="checkbox" name="chosen" {% if product.chosen %}checked{% endif %}>
-                          <span class="slider"></span>
-                        </label>
-                    </div>
-                    <div class="mt-1 text-[var(--color10)]">
-                        در صورت برگزیده بودن، محصول در لیست محصولات نسبت به بقیه بالاتر نمایش داده میشود
-                    </div>
-                    <div class="flex justify-between mt-5">
-                        <h1 class="text-xl font-semibold">فقط در قائمشهر</h1>
-                        <label class="switch">
-                          <input type="checkbox" name="only_in_qaemshahr" {% if product.only_in_qaemshahr %}checked{% endif %}>
-                          <span class="slider"></span>
-                        </label>
-                    </div>
-                    <div class="mt-1 text-[var(--color10)]">
-                        در صورت فعال بودن، یک لیبل در بالای کارت محصول ظاهر میشود که نشان دهنده ی این است مه کاربرانی که فقط در قائمشهر حضور دارند قادر به خرید این محصول هستند.
-                    </div>
-                    {% if edit_view %}
-                        <div class="flex justify-between mt-3 border-t border-[var(--color11)] pt-2">
-                            <h1 class="text-xl font-semibold">بازدید</h1>
-                            <div class="flex gap-1">
-                                <svg id="Show" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                    <g id="Iconly/Bulk/Show" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
-                                        <g id="Show" transform="translate(2.000000, 4.000000)" fill="#674d45" fill-rule="nonzero">
-                                            <path d="M10,0 C12.0682927,0 14.0292683,0.717575758 15.7365854,2.04606061 C17.4439024,3.36387879 18.897561,5.29454545 19.9414634,7.70909091 C20.0195122,7.89236364 20.0195122,8.10666667 19.9414634,8.28121212 C17.8536585,13.110303 14.1365854,16 10,16 L10,16 L9.9902439,16 C5.86341463,16 2.14634146,13.110303 0.0585365854,8.28121212 C-0.0195121951,8.10666667 -0.0195121951,7.89236364 0.0585365854,7.70909091 C2.14634146,2.8790303 5.86341463,0 9.9902439,0 L9.9902439,0 Z M10,4.12121212 C7.84390244,4.12121212 6.09756098,5.8569697 6.09756098,8 C6.09756098,10.1333333 7.84390244,11.8690909 10,11.8690909 C12.1463415,11.8690909 13.8926829,10.1333333 13.8926829,8 C13.8926829,5.8569697 12.1463415,4.12121212 10,4.12121212 Z" id="Fill-1" opacity="0.400000006"></path>
-                                            <path d="M12.4309268,7.99689697 C12.4309268,9.32538182 11.3382439,10.4114424 10.0016585,10.4114424 C8.65531707,10.4114424 7.56263415,9.32538182 7.56263415,7.99689697 C7.56263415,7.83204848 7.58214634,7.67786667 7.61141463,7.52271515 L7.66019512,7.52271515 C8.74312195,7.52271515 9.62117073,6.66938182 9.66019512,5.60174545 C9.7675122,5.58332121 9.88458537,5.57265455 10.0016585,5.57265455 C11.3382439,5.57265455 12.4309268,6.65871515 12.4309268,7.99689697" id="Fill-4"></path>
-                                        </g>
+                        <div class="product-image-uploadbox overflow-hidden relative cursor-pointer bg-[var(--color12)] rounded-lg border-2 border-[var(--color11)] h-50 mt-2 hover:bg-[var(--color13)]">
+                            <input name="images" id="product-imgs-input" multiple class="z-1 opacity-0 absolute w-[100%] h-[100%] cursor-pointer" type="file" accept="image/png, image/jpeg, image/webp">
+                            <div class="centerbox">
+                                <svg class="mt-7" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24">
+                                    <path d="M0 0h24v24H0z" fill="none" />
+                                    <g fill="none" stroke="#d0c1bd" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                        <path d="M19 11V9a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" />
+                                        <path d="m13 13l9 3l-4 2l-2 4zM3 3v.01M7 3v.01M11 3v.01M15 3v.01M3 7v.01M3 11v.01M3 15v.01" />
                                     </g>
-                                    <div class="text-xl">{{ product.view|to_fanum }}</div>
                                 </svg>
                             </div>
+                            <div class="centerbox">تصاویر محصول رو از اینجا آپلود کنید</div>
+                            <div class="text-center text-sm text-[var(--color10)]">jpg - png - jpeg - webp</div>
                         </div>
-                        <div class="flex justify-between mt-3">
-                            <h1 class="text-xl font-semibold">تاریخ ثبت</h1>
-                            <div class="flex gap-1">
-                                <div class="text-xl">{{ product.created_at|show_jalali_date|to_fanum }}</div>
-                            </div>
-                        </div>
-                        <div class="flex justify-between mt-3">
-                            <h1 class="text-xl font-semibold">توسط کاربر</h1>
-                            <div class="flex gap-1">
-                                <a href="{% url 'admin_user_edit' product.user.pk %}" class="text-xl">{{ product.user }}</a>
-                            </div>
-                        </div>
-                    {% endif %}
-                </div>
-
-
-                <div class="tablebox-default mt-2 relative" style="animation: load8 700ms">
-                    <div class="flex gap-1">
-                        <svg id="Bookmark" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M20.219 12.99L20.216 10.929C20.216 3.335 19.025 2 12.25 2C5.47499 2 4.28399 3.335 4.28399 10.929L4.28099 12.99C4.27199 18.615 4.26799 20.721 5.12699 21.58C5.40499 21.859 5.77399 22 6.22299 22C7.17799 22 8.23999 21.093 9.36499 20.132C10.361 19.281 11.49 18.317 12.25 18.317C13.01 18.317 14.139 19.281 15.135 20.132C16.26 21.093 17.322 22 18.277 22C18.726 22 19.095 21.859 19.373 21.58C20.232 20.721 20.228 18.615 20.219 12.99Z" fill="#674d45"></path>
-                        <path d="M8.82227 9.96777H15.6773C16.0913 9.96777 16.4273 9.63177 16.4273 9.21777C16.4273 8.80377 16.0913 8.46777 15.6773 8.46777H8.82227C8.40827 8.46777 8.07227 8.80377 8.07227 9.21777C8.07227 9.63177 8.40827 9.96777 8.82227 9.96777Z" fill="#674d45"></path>
-                        </svg>
-                        <h1 class="text-xl font-semibold">لیبل تگ (اختیاری)</h1>
+                        <div class="flex flex-wrap mt-2 gap-1" id="product-imgs-preview"></div>
                     </div>
-                    <div class="mt-2">
-                        <div>عنوان لیبل تگ</div>
-                        <input name="label" class="input-admin" placeholder="عنوان لیبل تگ" value="{{ product.label|default_if_none:'' }}">
 
-                        <div class="mt-5">آیکون لیبل تگ</div>
-                        <textarea name="label_icon" class="input-admin pt-3" placeholder="آیکون لیبل تگ">{{ product.label_icon|default_if_none:'' }}</textarea>
+                    <div class="tablebox-default mt-2 relative" style="animation: load8 700ms">
+                        <div class="flex gap-1">
+                            <svg id="Setting" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <g id="Iconly/Bulk/Setting" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                                    <g id="Setting" transform="translate(2.499897, 2.000100)" fill="#674d45" fill-rule="nonzero">
+                                        <path d="M9.51207539,12.83 C7.9076023,12.83 6.60971643,11.58 6.60971643,10.01 C6.60971643,8.44 7.9076023,7.18 9.51207539,7.18 C11.1165485,7.18 12.3837756,8.44 12.3837756,10.01 C12.3837756,11.58 11.1165485,12.83 9.51207539,12.83" id="Path"></path>
+                                        <path d="M18.730131,12.37 C18.5359591,12.07 18.2600306,11.77 17.9023455,11.58 C17.6161974,11.44 17.4322451,11.21 17.2687319,10.94 C16.7475337,10.08 17.0541209,8.95 17.9227847,8.44 C18.944742,7.87 19.2717684,6.6 18.6790331,5.61 L17.9943217,4.43 C17.411806,3.44 16.1343592,3.09 15.1226214,3.67 C14.2232989,4.15 13.0684871,3.83 12.5472888,2.98 C12.3837756,2.7 12.2917995,2.4 12.3122386,2.1 C12.3428973,1.71 12.2202625,1.34 12.0363101,1.04 C11.6581859,0.42 10.9734745,0 10.217226,0 L8.77626608,0 C8.03023719,0.02 7.34552574,0.42 6.96740151,1.04 C6.77322961,1.34 6.6608143,1.71 6.68125344,2.1 C6.70169259,2.4 6.60971643,2.7 6.44620325,2.98 C5.92500498,3.83 4.77019314,4.15 3.88109021,3.67 C2.85913283,3.09 1.59190568,3.44 0.999170395,4.43 L0.314458948,5.61 C-0.26805676,6.6 0.0589696023,7.87 1.07070741,8.44 C1.93937119,8.95 2.2459584,10.08 1.73497971,10.94 C1.56124696,11.21 1.37729463,11.44 1.09114656,11.58 C0.743681049,11.77 0.437093834,12.07 0.273580653,12.37 C-0.104543579,12.99 -0.0841044313,13.77 0.2940198,14.42 L0.999170395,15.62 C1.37729463,16.26 2.08244522,16.66 2.81825454,16.66 C3.16572005,16.66 3.574503,16.56 3.90152936,16.36 C4.15701871,16.19 4.46360592,16.13 4.80085186,16.13 C5.81258967,16.13 6.6608143,16.96 6.68125344,17.95 C6.68125344,19.1 7.62145424,20 8.8069248,20 L10.1967868,20 C11.3720378,20 12.3122386,19.1 12.3122386,17.95 C12.3428973,16.96 13.191122,16.13 14.2028598,16.13 C14.5298861,16.13 14.8364734,16.19 15.1021823,16.36 C15.4292086,16.56 15.827772,16.66 16.1854571,16.66 C16.9110468,16.66 17.6161974,16.26 17.9943217,15.62 L18.7096918,14.42 C19.0775965,13.75 19.1082552,12.99 18.730131,12.37" id="Path" opacity="0.400000006"></path>
+                                    </g>
+                                </g>
+                            </svg>
+                            <h1 class="text-xl font-semibold">وضعیت و تنظیمات</h1>
+                        </div>
+                        <div class="flex justify-between mt-5">
+                            <h1 class="text-xl font-semibold">فعال / غیر فعال</h1>
+                            <label class="switch">
+                              <input type="checkbox" name="is_active" {% if add_view %}checked{% else %}
+                                  {% if product.is_active %}
+                                      checked
+                                  {% endif %}
+                              {% endif %}>
+                              <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="mt-1 text-[var(--color10)]">
+                            در صورت فعال نبودن محصول، محصول فقط برای شما قابل نمایشه و برای کاربران سایت نمایش داده نمیشه
+                        </div>
+                        <div class="flex justify-between mt-5">
+                            <h1 class="text-xl font-semibold">برگزیده</h1>
+                            <label class="switch">
+                              <input type="checkbox" name="chosen" {% if product.chosen %}checked{% endif %}>
+                              <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="mt-1 text-[var(--color10)]">
+                            در صورت برگزیده بودن، محصول در لیست محصولات نسبت به بقیه بالاتر نمایش داده میشود
+                        </div>
+                        <div class="flex justify-between mt-5">
+                            <h1 class="text-xl font-semibold">فقط در قائمشهر</h1>
+                            <label class="switch">
+                              <input type="checkbox" name="only_in_qaemshahr" {% if product.only_in_qaemshahr %}checked{% endif %}>
+                              <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="mt-1 text-[var(--color10)]">
+                            در صورت فعال بودن، یک لیبل در بالای کارت محصول ظاهر میشود که نشان دهنده ی این است مه کاربرانی که فقط در قائمشهر حضور دارند قادر به خرید این محصول هستند.
+                        </div>
+                        {% if edit_view %}
+                            <div class="flex justify-between mt-3 border-t border-[var(--color11)] pt-2">
+                                <h1 class="text-xl font-semibold">بازدید</h1>
+                                <div class="flex gap-1">
+                                    <svg id="Show" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                        <g id="Iconly/Bulk/Show" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                                            <g id="Show" transform="translate(2.000000, 4.000000)" fill="#674d45" fill-rule="nonzero">
+                                                <path d="M10,0 C12.0682927,0 14.0292683,0.717575758 15.7365854,2.04606061 C17.4439024,3.36387879 18.897561,5.29454545 19.9414634,7.70909091 C20.0195122,7.89236364 20.0195122,8.10666667 19.9414634,8.28121212 C17.8536585,13.110303 14.1365854,16 10,16 L10,16 L9.9902439,16 C5.86341463,16 2.14634146,13.110303 0.0585365854,8.28121212 C-0.0195121951,8.10666667 -0.0195121951,7.89236364 0.0585365854,7.70909091 C2.14634146,2.8790303 5.86341463,0 9.9902439,0 L9.9902439,0 Z M10,4.12121212 C7.84390244,4.12121212 6.09756098,5.8569697 6.09756098,8 C6.09756098,10.1333333 7.84390244,11.8690909 10,11.8690909 C12.1463415,11.8690909 13.8926829,10.1333333 13.8926829,8 C13.8926829,5.8569697 12.1463415,4.12121212 10,4.12121212 Z" id="Fill-1" opacity="0.400000006"></path>
+                                                <path d="M12.4309268,7.99689697 C12.4309268,9.32538182 11.3382439,10.4114424 10.0016585,10.4114424 C8.65531707,10.4114424 7.56263415,9.32538182 7.56263415,7.99689697 C7.56263415,7.83204848 7.58214634,7.67786667 7.61141463,7.52271515 L7.66019512,7.52271515 C8.74312195,7.52271515 9.62117073,6.66938182 9.66019512,5.60174545 C9.7675122,5.58332121 9.88458537,5.57265455 10.0016585,5.57265455 C11.3382439,5.57265455 12.4309268,6.65871515 12.4309268,7.99689697" id="Fill-4"></path>
+                                            </g>
+                                        </g>
+                                        <div class="text-xl">{{ product.view|to_fanum }}</div>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="flex justify-between mt-3">
+                                <h1 class="text-xl font-semibold">تاریخ ثبت</h1>
+                                <div class="flex gap-1">
+                                    <div class="text-xl">{{ product.created_at|show_jalali_date|to_fanum }}</div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between mt-3">
+                                <h1 class="text-xl font-semibold">توسط کاربر</h1>
+                                <div class="flex gap-1">
+                                    <a href="{% url 'admin_user_edit' product.user.pk %}" class="text-xl">{{ product.user }}</a>
+                                </div>
+                            </div>
+                        {% endif %}
                     </div>
-                </div>
 
+
+                    <div class="tablebox-default mt-2 relative" style="animation: load8 700ms">
+                        <div class="flex gap-1">
+                            <svg id="Bookmark" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M20.219 12.99L20.216 10.929C20.216 3.335 19.025 2 12.25 2C5.47499 2 4.28399 3.335 4.28399 10.929L4.28099 12.99C4.27199 18.615 4.26799 20.721 5.12699 21.58C5.40499 21.859 5.77399 22 6.22299 22C7.17799 22 8.23999 21.093 9.36499 20.132C10.361 19.281 11.49 18.317 12.25 18.317C13.01 18.317 14.139 19.281 15.135 20.132C16.26 21.093 17.322 22 18.277 22C18.726 22 19.095 21.859 19.373 21.58C20.232 20.721 20.228 18.615 20.219 12.99Z" fill="#674d45"></path>
+                            <path d="M8.82227 9.96777H15.6773C16.0913 9.96777 16.4273 9.63177 16.4273 9.21777C16.4273 8.80377 16.0913 8.46777 15.6773 8.46777H8.82227C8.40827 8.46777 8.07227 8.80377 8.07227 9.21777C8.07227 9.63177 8.40827 9.96777 8.82227 9.96777Z" fill="#674d45"></path>
+                            </svg>
+                            <h1 class="text-xl font-semibold">لیبل تگ (اختیاری)</h1>
+                        </div>
+                        <div class="mt-2">
+                            <div>عنوان لیبل تگ</div>
+                            <input name="label" class="input-admin" placeholder="عنوان لیبل تگ" value="{{ product.label|default_if_none:'' }}">
+
+                            <div class="mt-5">آیکون لیبل تگ</div>
+                            <textarea name="label_icon" class="input-admin pt-3" placeholder="آیکون لیبل تگ">{{ product.label_icon|default_if_none:'' }}</textarea>
+                        </div>
+                    </div>
+
+                </div>
             </div>
-        </div>
-    </form>
-    {% if product_images %}{{ product_images|json_script:"product-images-data" }}{% endif %}
-    <script>
+        </form>
+        {% if product_images %}{{ product_images|json_script:"product-images-data" }}{% endif %}
+        <script>
 
 
-        let form = document.getElementById('product-form')
-        let feature_input = document.getElementById('features-input')
-        form.addEventListener('submit' ,()=> {
-            feature_input.value = JSON.stringify(product_features)
-            let keepImages = product_imgs
-            .filter(img => img.is_old)
-            .map(img => img.id);
+            let form = document.getElementById('product-form')
+            let feature_input = document.getElementById('features-input')
+            form.addEventListener('submit' ,()=> {
+                feature_input.value = JSON.stringify(product_features)
+                let keepImages = product_imgs
+                .filter(img => img.is_old)
+                .map(img => img.id);
 
-            document.getElementById("keep_images").value =
-            JSON.stringify(keepImages);
-        })
-
-
-        let product_imgs = []
-        {% if product_images %}
-        let oldImages = JSON.parse(
-            document.getElementById('product-images-data').textContent
-        )
-
-        oldImages.forEach(img => {
-            product_imgs.push({
-                id: img.id,
-                file: null,
-                url: img.url,
-                is_old: true
-            });
-        });
-        {% endif %}
+                document.getElementById("keep_images").value =
+                JSON.stringify(keepImages);
+            })
 
 
+            let product_imgs = []
+            {% if product_images %}
+            let oldImages = JSON.parse(
+                document.getElementById('product-images-data').textContent
+            )
 
-        let product_img_input = document.getElementById('product-imgs-input')
-        let product_imgs_preview = document.getElementById('product-imgs-preview')
-        product_img_input.addEventListener('change', () => {
-            for (const file of product_img_input.files) {
+            oldImages.forEach(img => {
                 product_imgs.push({
-                    file,
-                    is_cover: product_imgs.length === 0
+                    id: img.id,
+                    file: null,
+                    url: img.url,
+                    is_old: true
                 });
+            });
+            {% endif %}
+
+
+
+            let product_img_input = document.getElementById('product-imgs-input')
+            let product_imgs_preview = document.getElementById('product-imgs-preview')
+            product_img_input.addEventListener('change', () => {
+                for (const file of product_img_input.files) {
+                    product_imgs.push({
+                        file,
+                        is_cover: product_imgs.length === 0
+                    });
+                }
+
+                product_img_input.value = "";
+                UpdateInput();
+                RenderImagesPreview();
+            });
+
+            let RenderImagesPreview = () => {
+                product_imgs_preview.innerHTML = ''
+                product_imgs.forEach((img ,index) => {
+
+                    const url = img.is_old ? img.url : URL.createObjectURL(img.file);
+
+                    product_imgs_preview.innerHTML += `
+                        <div id="product-img-${index}" class="bg-white img-preview-box relative bg-cover">
+                            <div class="${!img.is_cover ? 'hidden' : ''} absolute bottom-0 bg-[var(--color12)] backdrop-filter-[blur(10px)] border border-[var(--color11)] rounded m-1 px-2" id="cover-${index}"">کاور</div>
+                            <img class="w-[100%] h-[100%]" src="${url}">
+                            <div class="absolute top-2 gap-1 left-1 flex">
+                                <button type='button' onclick='PreviewProductImage(${index})' class=" bg-[var(--color12)] backdrop-filter-[blur(10px)] w-5 h-5 cursor-pointer rounded border border-[var(--color11)] p-[-5px]"><i class="fa fa-expand text-xs text-[var(--color6)]"></i></button>
+                                <button type='button' onclick="RemoveImg(${index})" class=" bg-[var(--loss-bg)] w-5 h-5 cursor-pointer rounded"><i class="fa fa-trash text-xs text-[var(--color5)]"></i></button>
+                            <div>
+                        </div>
+                    `
+                })
             }
 
-            product_img_input.value = "";
-            UpdateInput();
-            RenderImagesPreview();
-        });
+            {% if product_images %}
+                RenderImagesPreview()
+            {% endif %}
 
-        let RenderImagesPreview = () => {
-            product_imgs_preview.innerHTML = ''
-            product_imgs.forEach((img ,index) => {
+            let RemoveImg = (index) => {
+                product_imgs.splice(index ,1)
+                RenderImagesPreview()
+                UpdateInput()
+            }
 
-                const url = img.is_old ? img.url : URL.createObjectURL(img.file);
+            let UpdateInput = () => {
+                const dt = new DataTransfer();
 
-                product_imgs_preview.innerHTML += `
-                    <div id="product-img-${index}" class="bg-white img-preview-box relative bg-cover">
-                        <div class="${!img.is_cover ? 'hidden' : ''} absolute bottom-0 bg-[var(--color12)] backdrop-filter-[blur(10px)] border border-[var(--color11)] rounded m-1 px-2" id="cover-${index}"">کاور</div>
-                        <img class="w-[100%] h-[100%]" src="${url}">
-                        <div class="absolute top-2 gap-1 left-1 flex">
-                            <button type='button' onclick='PreviewProductImage(${index})' class=" bg-[var(--color12)] backdrop-filter-[blur(10px)] w-5 h-5 cursor-pointer rounded border border-[var(--color11)] p-[-5px]"><i class="fa fa-expand text-xs text-[var(--color6)]"></i></button>
-                            <button type='button' onclick="RemoveImg(${index})" class=" bg-[var(--loss-bg)] w-5 h-5 cursor-pointer rounded"><i class="fa fa-trash text-xs text-[var(--color5)]"></i></button>
-                        <div>
-                    </div>
-                `
-            })
-        }
+                product_imgs.forEach(img => {
+                    if (!img.is_old) {
+                        dt.items.add(img.file);
+                    }
+                });
 
-        {% if product_images %}
-            RenderImagesPreview()
-        {% endif %}
+                product_img_input.files = dt.files;
+            }
 
-        let RemoveImg = (index) => {
-            product_imgs.splice(index ,1)
-            RenderImagesPreview()
+            {% if product_images %}
             UpdateInput()
-        }
+            {% endif %}
 
-        let UpdateInput = () => {
-            const dt = new DataTransfer();
+            let PreviewProductImage = (img) => {
+                let overlay = document.getElementById('overlay')
+                let image = document.getElementById(`product-img-${img}`)
+                overlay.style = 'visibility: visible; z-index: 1000;'
+                image.style = 'position: fixed; width: 35%; height: 80%; top: 10%; right: 32%; z-index: 2000; animation: load_preview 300ms'
+                document.addEventListener('click' ,(e) => {
+                    if (!image.contains(e.target)) {
+                        overlay.style = 'visibility: hidden; z-index: 100;'
+                        image.style = 'position: relative; width: 90px; height: 90px; top: 0; right: 0; z-index: 1; animation: none'
+                        document.removeEventListener('click' , (e)=>{})
+                    }
+                })
+            }
 
-            product_imgs.forEach(img => {
-                if (!img.is_old) {
-                    dt.items.add(img.file);
-                }
-            });
+            let CheckLength = (element , max) => {
+                const el = document.getElementById(element)
+                const indicator = document.getElementById(`${element}-remaining`)
+                const input = el.value
+                indicator.innerHTML = `${max}/${input.length}`
+            }
 
-            product_img_input.files = dt.files;
-        }
+            let price_input = document.getElementById('price-input')
+            let price_input_real = document.getElementById('price-input-real')
+            let offer_input = document.getElementById('offer-input')
+            let weight_check = document.getElementById('is_byweight')
+            let packs = document.getElementById('product-packs')
+            let pack_weight_input = document.getElementById('pack_weight')
 
-        {% if product_images %}
-        UpdateInput()
-        {% endif %}
+            price_input.addEventListener('input' ,()=> {
+                price_input_real.value = price_input.value.replace(/،/g, '')
+                InputSetCurrency('price-input')
+            })
 
-        let PreviewProductImage = (img) => {
-            let overlay = document.getElementById('overlay')
-            let image = document.getElementById(`product-img-${img}`)
-            overlay.style = 'visibility: visible; z-index: 1000;'
-            image.style = 'position: fixed; width: 35%; height: 80%; top: 10%; right: 32%; z-index: 2000; animation: load_preview 300ms'
-            document.addEventListener('click' ,(e) => {
-                if (!image.contains(e.target)) {
-                    overlay.style = 'visibility: hidden; z-index: 100;'
-                    image.style = 'position: relative; width: 90px; height: 90px; top: 0; right: 0; z-index: 1; animation: none'
-                    document.removeEventListener('click' , (e)=>{})
+            offer_input.addEventListener('input' , ()=> {
+                let price = Number(price_input_real.value)
+                let offer = Number(offer_input.value)
+                let discount_amount = Number((price * offer) / 100)
+                let final_price = price - discount_amount
+                document.getElementById('tooltip-offer').style = 'visibility: visible; top: 70px; padding: 10px; font-size: 20px'
+                document.getElementById('tooltip-offer').innerHTML = `${threeDigitsCurrency(final_price)} تومان`
+            })
+
+            weight_check.addEventListener('change' ,()=> {
+                if (weight_check.checked) {
+                    packs.classList.remove('hidden')
+                    pack_weight_input.classList.add('disabled')
+                } else {
+                    packs.classList.add('hidden')
+                    pack_weight_input.classList.remove('disabled')
+                    let selected_packs = document.querySelectorAll('input[name="packs"]:checked')
+
+                    selected_packs.forEach(item => {
+                        item.checked = false;
+                    })
                 }
             })
-        }
 
-        let CheckLength = (element , max) => {
-            const el = document.getElementById(element)
-            const indicator = document.getElementById(`${element}-remaining`)
-            const input = el.value
-            indicator.innerHTML = `${max}/${input.length}`
-        }
-
-        {% if product.desc %}CheckLength('product-desc' ,20000){% endif %}
-
-        let price_input = document.getElementById('price-input')
-        let price_input_real = document.getElementById('price-input-real')
-        let offer_input = document.getElementById('offer-input')
-        let weight_check = document.getElementById('is_byweight')
-        let packs = document.getElementById('product-packs')
-        let pack_weight_input = document.getElementById('pack_weight')
-
-        price_input.addEventListener('input' ,()=> {
-            price_input_real.value = price_input.value.replace(/،/g, '')
-            InputSetCurrency('price-input')
-        })
-
-        offer_input.addEventListener('input' , ()=> {
-            let price = Number(price_input_real.value)
-            let offer = Number(offer_input.value)
-            let discount_amount = Number((price * offer) / 100)
-            let final_price = price - discount_amount
-            document.getElementById('tooltip-offer').style = 'visibility: visible; top: 70px; padding: 10px; font-size: 20px'
-            document.getElementById('tooltip-offer').innerHTML = `${threeDigitsCurrency(final_price)} تومان`
-        })
-
-        weight_check.addEventListener('change' ,()=> {
-            if (weight_check.checked) {
-                packs.classList.remove('hidden')
-                pack_weight_input.classList.add('disabled')
-            } else {
-                packs.classList.add('hidden')
-                pack_weight_input.classList.remove('disabled')
-                let selected_packs = document.querySelectorAll('input[name="packs"]:checked')
-
-                selected_packs.forEach(item => {
-                    item.checked = false;
-                })
+            let RenderFeatures = () => {
+                htmlFeature = ''
+                for (let i = 0; i < product_features.length; i++) {
+                    let fe = product_features[i]
+                    htmlFeature += `
+                         <div class="prd-feature overflow-hidden flex-nowrap w-[32.3%] h-14 rounded-xl p-2 bg-[var(--color12)] relative">
+                               <div class="text-[var(--color10)] px-1 text-sm">${fe.title}</div>
+                               <div class="flex justify-between">
+                                   <div class="text-m truncate text-[var(--color6)] mt-[-3px] text-nowrap">${fe.desc}</div>
+                                   <button onclick="ProductRemoveFeature(${fe.id})" class="absolute bottom-2 left-2 bg-[var(--loss-bg)] w-5 h-5 cursor-pointer rounded"><i class="fa fa-trash text-xs text-[var(--color5)]"></i></button>
+                               </div>
+                         </div>
+                    `
+                }
+                added_features.innerHTML = htmlFeature
+                feature_input.value = JSON.stringify(product_features)
             }
-        })
 
-        let RenderFeatures = () => {
-            htmlFeature = ''
-            for (let i = 0; i < product_features.length; i++) {
-                let fe = product_features[i]
-                htmlFeature += `
-                     <div class="prd-feature overflow-hidden flex-nowrap w-[32.3%] h-14 rounded-xl p-2 bg-[var(--color12)] relative">
-                           <div class="text-[var(--color10)] px-1 text-sm">${fe.title}</div>
-                           <div class="flex justify-between">
-                               <div class="text-m truncate text-[var(--color6)] mt-[-3px] text-nowrap">${fe.desc}</div>
-                               <button onclick="ProductRemoveFeature(${fe.id})" class="absolute bottom-2 left-2 bg-[var(--loss-bg)] w-5 h-5 cursor-pointer rounded"><i class="fa fa-trash text-xs text-[var(--color5)]"></i></button>
-                           </div>
-                     </div>
-                `
+            let added_features = document.getElementById('product-added-features')
+            let feature_title = document.getElementById('feature-title')
+            let feature_desc = document.getElementById('feature-desc')
+            let htmlFeature = ''
+            let featureId = 0
+            let product_features = {% if product_features %}JSON.parse('{{ product_features|default:"[]"|escapejs }}'){% else %}[]{% endif %}
+            {% if product_features %}RenderFeatures(){% endif %}
+
+
+            let ProductAddFeature = () => {
+                if (feature_title.value.trim().length && feature_desc.value.trim().length) {
+                    let title = feature_title.value
+                    let desc = feature_desc.value
+
+                    product_features.push({
+                        id: featureId++,
+                        title: title,
+                        desc: desc
+                    })
+
+                    RenderFeatures()
+
+                    feature_title.value = ''
+                    feature_desc.value = ''
+                    feature_title.focus()
+                    CheckLength(feature_title.id, 20)
+                    CheckLength(feature_desc.id, 100)
+                } else {
+                    Message('عنوان یا توضیحات نمیتوانند خالی باشند!', true)
+                }
             }
-            added_features.innerHTML = htmlFeature
-            feature_input.value = JSON.stringify(product_features)
-        }
-
-        let added_features = document.getElementById('product-added-features')
-        let feature_title = document.getElementById('feature-title')
-        let feature_desc = document.getElementById('feature-desc')
-        let htmlFeature = ''
-        let featureId = 0
-        let product_features = {% if product_features %}JSON.parse('{{ product_features|default:"[]"|escapejs }}'){% else %}[]{% endif %}
-        {% if product_features %}RenderFeatures(){% endif %}
 
 
-        let ProductAddFeature = () => {
-            if (feature_title.value.trim().length && feature_desc.value.trim().length) {
-                let title = feature_title.value
-                let desc = feature_desc.value
-
-                product_features.push({
-                    id: featureId++,
-                    title: title,
-                    desc: desc
-                })
-
+            let ProductRemoveFeature = (id) => {
+                product_features = product_features.filter(item => item.id !== id);
                 RenderFeatures()
-
-                feature_title.value = ''
-                feature_desc.value = ''
-                feature_title.focus()
-                CheckLength(feature_title.id, 20)
-                CheckLength(feature_desc.id, 100)
-            } else {
-                Message('عنوان یا توضیحات نمیتوانند خالی باشند!', true)
             }
-        }
-
-
-        let ProductRemoveFeature = (id) => {
-            product_features = product_features.filter(item => item.id !== id);
-            RenderFeatures()
-        }
 
 
 
 
-        class SearchableSelect {
-        constructor(el) {
-            this.el = el;
-            this.name = el.dataset.name;
-            this.options = JSON.parse(el.dataset.options || '[]');
-            this.filtered = this.options;
-            this.selectedValue = null;
+            class SearchableSelect {
+            constructor(el) {
+                this.el = el;
+                this.name = el.dataset.name;
+                this.options = JSON.parse(el.dataset.options || '[]');
+                this.filtered = this.options;
+                this.selectedValue = null;
 
-            this.display = el.querySelector('[data-role="display-text"]');
-            this.displayWrap = el.querySelector('.search-select-display');
-            this.searchInput = el.querySelector('[data-role="search-input"]');
-            this.optionsList = el.querySelector('[data-role="options-list"]');
+                this.display = el.querySelector('[data-role="display-text"]');
+                this.displayWrap = el.querySelector('.search-select-display');
+                this.searchInput = el.querySelector('[data-role="search-input"]');
+                this.optionsList = el.querySelector('[data-role="options-list"]');
 
-            this.hiddenInput = el.parentElement.querySelector(`[data-role="hidden-input"][name="${this.name}"]`)
-                || el.nextElementSibling;
+                this.hiddenInput = el.parentElement.querySelector(`[data-role="hidden-input"][name="${this.name}"]`)
+                    || el.nextElementSibling;
 
-            this.renderOptions(this.options);
-            this.bindEvents();
-            const preSelected = el.dataset.selected;
-            if (preSelected) {
-                this.selectByValue(preSelected);
-            }
-        }
-
-        bindEvents() {
-            this.displayWrap.addEventListener('click', (e) => {
-                e.stopPropagation();
-                this.toggle();
-            });
-
-            this.searchInput.addEventListener('input', () => {
-                const q = this.searchInput.value.trim().toLowerCase();
-                this.filtered = this.options.filter(opt =>
-                    opt.label.toLowerCase().includes(q)
-                );
-                this.renderOptions(this.filtered);
-            });
-
-            document.addEventListener('click', (e) => {
-                if (!this.el.contains(e.target)) {
-                    this.close();
+                this.renderOptions(this.options);
+                this.bindEvents();
+                const preSelected = el.dataset.selected;
+                if (preSelected) {
+                    this.selectByValue(preSelected);
                 }
-            });
-
-            this.el.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') this.close();
-            });
-        }
-
-        selectByValue(value) {
-            const opt = this.options.find(o => String(o.value) === String(value));
-            if (opt) {
-                this.select(opt);
-            }
-        }
-
-        renderOptions(list) {
-            this.optionsList.innerHTML = '';
-
-            if (list.length === 0) {
-                this.optionsList.innerHTML = `<div class="search-select-empty">نتیجه‌ای یافت نشد</div>`;
-                return;
             }
 
-            list.forEach(opt => {
-                const item = document.createElement('div');
-                item.className = 'search-select-option';
-                item.textContent = opt.label;
-                item.dataset.value = opt.value;
-
-                if (this.selectedValue === opt.value) {
-                    item.classList.add('selected');
-                }
-
-                item.addEventListener('click', () => {
-                    this.select(opt);
+            bindEvents() {
+                this.displayWrap.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.toggle();
                 });
 
-                this.optionsList.appendChild(item);
-            });
-        }
+                this.searchInput.addEventListener('input', () => {
+                    const q = this.searchInput.value.trim().toLowerCase();
+                    this.filtered = this.options.filter(opt =>
+                        opt.label.toLowerCase().includes(q)
+                    );
+                    this.renderOptions(this.filtered);
+                });
 
-        select(opt) {
-            this.selectedValue = opt.value;
-            this.display.textContent = opt.label;
-            this.displayWrap.classList.add('has-value');
+                document.addEventListener('click', (e) => {
+                    if (!this.el.contains(e.target)) {
+                        this.close();
+                    }
+                });
 
-            if (this.hiddenInput) {
-                this.hiddenInput.value = opt.value;
-                this.hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
+                this.el.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') this.close();
+                });
             }
 
-            this.close();
-        }
+            selectByValue(value) {
+                const opt = this.options.find(o => String(o.value) === String(value));
+                if (opt) {
+                    this.select(opt);
+                }
+            }
 
-        toggle() {
-            this.el.classList.contains('open') ? this.close() : this.open();
-        }
+            renderOptions(list) {
+                this.optionsList.innerHTML = '';
 
-        open() {
-            this.el.classList.add('open');
-            this.searchInput.value = '';
-            this.filtered = this.options;
-            this.renderOptions(this.options);
-            setTimeout(() => this.searchInput.focus(), 0);
-        }
+                if (list.length === 0) {
+                    this.optionsList.innerHTML = `<div class="search-select-empty">نتیجه‌ای یافت نشد</div>`;
+                    return;
+                }
 
-        close() {
-            this.el.classList.remove('open');
-        }
-    }
-    document.querySelectorAll('.search-select').forEach(el => new SearchableSelect(el));
+                list.forEach(opt => {
+                    const item = document.createElement('div');
+                    item.className = 'search-select-option';
+                    item.textContent = opt.label;
+                    item.dataset.value = opt.value;
 
-    </script>
-{% endblock %}
+                    if (this.selectedValue === opt.value) {
+                        item.classList.add('selected');
+                    }
+
+                    item.addEventListener('click', () => {
+                        this.select(opt);
+                    });
+
+                    this.optionsList.appendChild(item);
+                });
+            }
+
+            select(opt) {
+                this.selectedValue = opt.value;
+                this.display.textContent = opt.label;
+                this.displayWrap.classList.add('has-value');
+
+                if (this.hiddenInput) {
+                    this.hiddenInput.value = opt.value;
+                    this.hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+
+                this.close();
+            }
+
+            toggle() {
+                this.el.classList.contains('open') ? this.close() : this.open();
+            }
+
+            open() {
+                this.el.classList.add('open');
+                this.searchInput.value = '';
+                this.filtered = this.options;
+                this.renderOptions(this.options);
+                setTimeout(() => this.searchInput.focus(), 0);
+            }
+
+            close() {
+                this.el.classList.remove('open');
+            }
+        }
+        document.querySelectorAll('.search-select').forEach(el => new SearchableSelect(el));
+
+        </script>
+    {% endblock %}

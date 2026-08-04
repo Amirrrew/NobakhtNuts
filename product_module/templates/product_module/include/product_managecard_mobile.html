@@ -1,6 +1,6 @@
 {% load static %}
 {% load poll_extras %}
-<div class="prd-navbarbox centerbox w-[100%] fixed bottom-1" style="z-index: 100">
+<div class="prd-navbarbox centerbox w-[100%] fixed bottom-1" style="z-index: 100; overflow: visible">
         <div id="prd-navbar" class="prd-navbar">
             <div onclick="PrdNav()" class="btn-prdnavbar flex justify-between w-[100%] p-2 pt-3 items-start">
                 <div>{{ product.title|to_fanum }}</div>
@@ -17,8 +17,8 @@
                                 </div>
                                 <div class="flex flex-wrap gap-2 mt-1" >
                                     {% for pack in product.packs.all %}
-                                        <input class="pack-size-input" type="radio" name="pack_mobile" id="pack_mobile_{{ pack.id }}" value="{{ pack.id }}" hidden>
-                                        <label class="pack-size tooltip-parent" for="pack_mobile_{{ pack.id }}" class="cursor-pointer bg-[var(--color11)] border border-[var(--color8)] py-1 px-2 rounded-xl text-sm text-[var(--color6)] peer-checked:bg-[var(--color6)]">{{ pack.title|to_fanum }}</label>
+                                        <input onchange="CartCheck('btn-addtocart-mobile' ,{{ product.final_price }} ,{{ pack.size }} ,'{{ pack.title }}')" class="pack-size-input" type="radio" name="pack_mobile" id="pack_mobile_{{ pack.id }}" value="{{ pack.id }}" hidden>
+                                        <label class="pack-size relative tooltip-parent" for="pack_mobile_{{ pack.id }}" class="cursor-pointer bg-[var(--color11)] border border-[var(--color8)] py-1 px-2 rounded-xl text-sm text-[var(--color6)] peer-checked:bg-[var(--color6)] tooltip-parent">{{ pack.title|to_fanum }} <div class="tooltip font-semibold" style="top: -60px; background-color: var(--color13); border: 1px solid var(--color11); padding: 5px 15px; width: auto; right: -8px;">{{ product.final_price|pack_price:pack.size|three_digits_currency }}</div></label>
                                     {% endfor %}
                                 </div>
                             {% endif %}
@@ -46,7 +46,7 @@
                                 </div>
                             {% endif %}
                         {% endif %}
-                        <div class="transition-all flex justify-between pt-3 w-[100%] pr-2 mb-2">
+                        <div class="transition-all flex justify-between pt-3 w-[100%] pr-2 mb-2 relative">
                             {% if product.offer <= 0 %}
                                 <div class="text-3xl font-bold" id="">
                                     {{ product.price|three_digits_currency }}
@@ -78,9 +78,6 @@
                                     </div>
                                 </div>
                             {% endif %}
-                        </div>
-                        <div class="w-[100%] flex rounded-lg bg-[var(--color15)] p-2 text-3xl text-[var(--color6)] relative" style="display: none;" id="pricebox">
-                            <div id="prd-pack">قیمت بسته</div>
                         </div>
                         {% if request.user.is_authenticated %}
                                 <div class="flex gap-2 w-[100%]">

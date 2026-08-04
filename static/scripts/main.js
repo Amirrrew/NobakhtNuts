@@ -517,10 +517,10 @@ let CloseMessage = () => {
 // اعمال قیمت روی بسته بندی محصول با توجه به وزن
 let CartCheck = (id ,productprice ,size ,packtitle) => {
     let btn = document.getElementById(id)
-    let pricebox = document.getElementById('pricebox')
+    let pricebox = document.querySelectorAll('.pricebox')
     let price = productprice
     btn.style = 'pointer-events: all; background-color: var(--color6); height: 50px; padding-top: 13px;'
-    pricebox.style = 'display: block; animation: load5 300ms;'
+    pricebox.forEach(item => {item.style = 'display: block; animation: load5 300ms;'})
 
     setTimeout(()=> {
         pricebox.style = 'display: block; animation: none;'
@@ -530,7 +530,7 @@ let CartCheck = (id ,productprice ,size ,packtitle) => {
     <div class="text-[var(--color10)] text-sm text-thin">قیمت بسته ${to_fanum(packtitle)}</div>
     <div class="text-black">${threeDigitsCurrency(price * size)} تومان</div>
     `
-    pricebox.innerHTML = cartpackhtml
+    pricebox.forEach(item => {item.innerHTML = cartpackhtml})
 }
 
 // دریافت پک های انتخاب شده محصول

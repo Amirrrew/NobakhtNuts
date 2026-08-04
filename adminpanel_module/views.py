@@ -436,7 +436,7 @@ def ProductSelectedAction(request):
                 product.save()
                 message = 'کالا های انتخابی حذف شدند'
 
-    products_after = Product.objects.filter(is_deleted=False)
+    products_after = Product.objects.filter(is_deleted=False).select_related('category').prefetch_related(Prefetch('product_image' ,queryset=ProductImage.objects.order_by('-is_Main' ,'id'),to_attr='prefetched_images')).order_by('-is_active' ,'-created_at')
     html = render_to_string(
         'adminpanel_module/products/table_components/product_table_partial.html',
         {'products': products_after},

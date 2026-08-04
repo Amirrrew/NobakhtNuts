@@ -108,6 +108,9 @@ class PackageSize(models.Model):
         verbose_name = 'بسته بندی'
         verbose_name_plural = 'بسته بندی ها'
 
+    def calculate_price(self, price):
+        return int(price * self.size)
+
 
 
 class Product(models.Model):

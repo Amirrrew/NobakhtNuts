@@ -134,3 +134,10 @@ def month_fa(value):
     else:
         month_number = value.month
     return MONTHS[month_number - 1]
+
+@register.filter
+def pack_price(price, weight):
+    try:
+        return int(float(price) * float(weight))
+    except (TypeError, ValueError):
+        return 0
