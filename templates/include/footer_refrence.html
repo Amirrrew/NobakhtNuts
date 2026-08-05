@@ -1,25 +1,34 @@
 {% load static %}    
 <footer id="footer">
         <div class="footer-inner">
-            <div class="flex justify-between p-[40px]">
-                <div>
-                    <a href=""><img loading="lazy" class="w-20 h-20" src="{% static 'media/logo/favicon-32x32.webp' %}" alt="لوگو برنج و خشکبار نوبخت"></a>
-                </div>
-                <button class="btn-defIconFlex footer-gotop h-10 px-2 gap-2 mt-1" onclick="document.documentElement.scrollTop = 0" style="height: 60px; padding-top: 17px;">
-                    <div class="btn-title">
-                        بازگشت به بالا
+            <div class="centerbox">
+                <div style="margin-top: -70px;color: var(--color6); background-color: var(--color-footer)" class="footer-infobox flex rounded-4xl justify-between w-[95%]">
+                    <div class="footer-info flex gap-3">
+                        <div class="centerbox items-center mr-4">
+                            <a href="{% url 'home' %}"><img loading="lazy" style="min-width: 100px; max-width: 100px; min-height: 100px; max-height: 100px;" class="" src="{% static 'media/logo/favicon-32x32.webp' %}" alt="لوگو برنج و خشکبار نوبخت"></a>
+                        </div>
+                        <div style="margin: 20px 0">
+                            <h1 class="text-2xl font-bold">برنج و خشکبار نوبخت، فروشگاه تخصصی برنج و خشکبار</h1>
+                            <h4 class="max-w-150 text-[var(--color6)] text-sm">برنج و خشکبار نوبخت، فروشگاهی کیفیت محور واقع در شهر قائمشهر است که در حوزه برنج، آجیل، خشکبار و ... فعالیت میکند. در طی بیش از 20 سال سابقه ای که تا به حال داشتیم، سعی کردیم بهترین کیفیت را در محصولات خود ارائه دهیم و رضایت مشتری را در صدر اولویت های خود قرار دادیم. اکنون، در این فصل از حضورمان در بازار، وبسایتی تاسیس کرده ایم که بتوانیم به تمام چه در قائمشهر، چه در سراسر کشور خدمات غیرحضوری خود را ارائه دهیم.</h4>
+                        </div>
                     </div>
-                    <svg id="Arrow - Top" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                        <g id="Iconly/Bulk/Arrow---Top" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
-                            <g id="Arrow---Left" transform="translate(12.000000, 12.000000) rotate(180.000000) translate(-12.000000, -12.000000) translate(6.000000, 3.000000)" fill="#e5e5e5" fill-rule="nonzero">
-                                <path d="M4.80969341,5.20248239 L4.48254085,1.50325451 C4.48254085,0.673082751 5.16218102,1.37667655e-14 6.00044061,1.37667655e-14 C6.8387002,1.37667655e-14 7.51834037,0.673082751 7.51834037,1.50325451 L7.19118781,5.20248239 C7.19118781,5.85374723 6.6580503,6.38174083 6.00044061,6.38174083 C5.34172939,6.38174083 4.80969341,5.85374723 4.80969341,5.20248239" id="Fill-1" opacity="0.400000006"></path>
-                                <path d="M4.86983661,17.6247318 C4.81145585,17.5669143 4.56471452,17.350917 4.3598311,17.1480103 C3.0765559,15.9643883 0.978153112,12.8738803 0.335964751,11.2571726 C0.23352304,11.0117211 0.0154213328,10.3910013 1.27897692e-13,10.0582781 C1.27897692e-13,9.74082738 0.0738020929,9.43755833 0.219203231,9.14847093 C0.422985129,8.7873844 0.744630072,8.49938789 1.12355425,8.34011709 C1.38571691,8.23866377 2.17330641,8.07939298 2.18762622,8.07939298 C3.04791628,7.92121308 4.44685148,7.8350323 5.99339086,7.8350323 C7.46502662,7.8350323 8.80668258,7.92121308 9.68129245,8.05102968 C9.69671379,8.06521133 10.6737654,8.22448213 11.0086286,8.39793457 C11.6210758,8.71538527 12,9.33610502 12,10.0004606 L12,10.0582781 C11.9856802,10.4913637 11.6056545,11.4011709 11.5924362,11.4011709 C10.9502478,12.9316978 8.95318524,15.9491158 7.62584909,17.162192 C7.62584909,17.162192 7.28437672,17.5047333 7.07178263,17.6530951 C6.76555902,17.884365 6.38663484,18 6.00771067,18 C5.58472554,18 5.19148155,17.8701834 4.86983661,17.6247318" id="Fill-4"></path>
-                            </g>
-                        </g>
-                    </svg>
-                </button>
+                    <div class="p-3 bg-[var(--color6)] m-3 rounded-2xl webapp-install">
+                        <div class="font-semibold text-2xl mx-3 px-2 text-nowrap" style="color: var(--color15);">نصب وب اپلیکیشن</div>
+                        <button id="install-app-btn" class="btn-defIconFlex2 centerbox gap-2" style="height: calc(100% - 40px); width: 100%; margin-top: 10px; align-items: center">
+                            <svg id="Download" class="mt-1" width="40px" height="40px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <g id="Iconly/Bulk/Download" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                                    <g id="Download" transform="translate(2.000000, 2.500000)" fill="#c5b8b4" fill-rule="nonzero">
+                                        <path d="M2.8980937,6.3440937 C2.8980937,3.8930937 4.95788916,1.8980937 7.48952749,1.8980937 L12.5218298,1.8980937 C15.0472732,1.8980937 17.1019063,3.8880937 17.1019063,6.3340937 L17.1019063,17.4500937 C17.1019063,19.9020937 15.0431433,21.8980937 12.511505,21.8980937 L7.4792027,21.8980937 C4.95375924,21.8980937 2.8980937,19.9070937 2.8980937,17.4600937 L2.8980937,16.5200937 L2.8980937,6.3440937 Z" id="Fill-1" opacity="0.400000006" transform="translate(10.000000, 11.898094) rotate(-270.000000) translate(-10.000000, -11.898094) "></path>
+                                        <path d="M16.6539903,6.3383567 L13.6860827,3.4293567 C13.379338,3.1293567 12.8857024,3.1293567 12.5799734,3.4313567 C12.2752601,3.7333567 12.2762758,4.2203567 12.5820048,4.5203567 L14.2071425,6.1133567 L3.89869141,6.1133567 C3.46701423,6.1133567 3.11659393,6.4583567 3.11659393,6.8843567 C3.11659393,7.3093567 3.46701423,7.6533567 3.89869141,7.6533567 L14.2071425,7.6533567 L12.5820048,9.2473567 C12.2762758,9.5473567 12.2752601,10.0343567 12.5799734,10.3363567 C12.7333458,10.4873567 12.9334409,10.5633567 13.1345516,10.5633567 C13.333631,10.5633567 13.5337261,10.4873567 13.6860827,10.3383567 L16.6539903,7.4293567 C16.8012684,7.2843567 16.8845567,7.0883567 16.8845567,6.8843567 C16.8845567,6.6793567 16.8012684,6.4833567 16.6539903,6.3383567" id="Fill-4" transform="translate(10.000575, 6.883981) rotate(-270.000000) translate(-10.000575, -6.883981) "></path>
+                                    </g>
+                                </g>
+                            </svg>
+                            <div class="text-[var(--color3)]">دانلود و نصب</div>
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div class="flex justify-start mt-5 gap-20 flex-wrap items-start" style="padding: 0 40px;">
+            <div class="flex justify-start mt-10 gap-20 flex-wrap items-start" style="padding: 0 40px;">
                 {% for foot in footers %}
                     <div>
                         <div class="text-2xl text-stone-300">{{ foot.title }}</div>

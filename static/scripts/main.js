@@ -809,3 +809,27 @@ let ApplyDiscount = () => {
         code_input.classList.remove('disabled')
     })
 }
+
+
+let deferredPrompt = null;
+
+const installBtn = document.getElementById('install-app-btn');
+
+installBtn.style.display = 'none';
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installBtn.style.display = 'flex';
+});
+
+installBtn.addEventListener('click', async () => {
+    if (!deferredPrompt) {
+        return;
+    }
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log('Install result:', outcome);
+    deferredPrompt = null;
+    installBtn.style.display = 'none';
+});

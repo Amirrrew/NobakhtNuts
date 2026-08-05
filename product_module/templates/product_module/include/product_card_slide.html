@@ -82,7 +82,7 @@
                     <div>{{ p.rating_avarage|default_if_none:'0'|to_fanum }} ({{ p.comments_total|to_fanum }})</div>
                 </div>
             </div>
-            <div class="items-start flex gap-1.5 mt-1">
+            <div class="items-start flex gap-1.5 mt-1 flex-wrap">
                 {% for pack in p.packs.all %}
                     <div class="bg-[var(--color12)] border border-[var(--color8)] py-1 px-2 rounded-xl text-sm text-nowrap text-[var(--color6)]">
                         {{ pack.title|to_fanum }}
