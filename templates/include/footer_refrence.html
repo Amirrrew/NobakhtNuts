@@ -4,18 +4,20 @@
             <div class="centerbox">
                 <div style="margin-top: -70px;color: var(--color6); background-color: var(--color-footer)" class="footer-infobox flex rounded-4xl justify-between w-[95%]">
                     <div class="footer-info flex gap-3">
-                        <div class="centerbox items-center mr-4">
+                        <div class="footer-logo centerbox items-center mr-4">
                             <a href="{% url 'home' %}"><img loading="lazy" style="min-width: 100px; max-width: 100px; min-height: 100px; max-height: 100px;" class="" src="{% static 'media/logo/favicon-32x32.webp' %}" alt="لوگو برنج و خشکبار نوبخت"></a>
                         </div>
                         <div style="margin: 20px 0">
                             <h1 class="text-2xl font-bold">برنج و خشکبار نوبخت، فروشگاه تخصصی برنج و خشکبار</h1>
-                            <h4 class="max-w-150 text-[var(--color6)] text-sm">برنج و خشکبار نوبخت، فروشگاهی کیفیت محور واقع در شهر قائمشهر است که در حوزه برنج، آجیل، خشکبار و ... فعالیت میکند. در طی بیش از 20 سال سابقه ای که تا به حال داشتیم، سعی کردیم بهترین کیفیت را در محصولات خود ارائه دهیم و رضایت مشتری را در صدر اولویت های خود قرار دادیم. اکنون، در این فصل از حضورمان در بازار، وبسایتی تاسیس کرده ایم که بتوانیم به تمام چه در قائمشهر، چه در سراسر کشور خدمات غیرحضوری خود را ارائه دهیم.</h4>
+                            <div class="footer-info-text">
+                                <h4 class=" max-w-150 text-[var(--color6)] text-sm">برنج و خشکبار نوبخت، فروشگاهی کیفیت محور واقع در شهر قائمشهر است که در حوزه برنج، آجیل، خشکبار و ... فعالیت میکند. در طی بیش از 20 سال سابقه ای که تا به حال داشتیم، سعی کردیم بهترین کیفیت را در محصولات خود ارائه دهیم و رضایت مشتری را در صدر اولویت های خود قرار دادیم. اکنون، در این فصل از حضورمان در بازار، وبسایتی تاسیس کرده ایم که بتوانیم به تمام چه در قائمشهر، چه در سراسر کشور خدمات غیرحضوری خود را ارائه دهیم.</h4>
+                            </div>
                         </div>
                     </div>
                     <div class="p-3 bg-[var(--color6)] m-3 rounded-2xl webapp-install">
-                        <div class="font-semibold text-2xl mx-3 px-2 text-nowrap" style="color: var(--color15);">نصب وب اپلیکیشن</div>
+                        <h4 class="text-center font-semibold text-2xl mx-3 px-2 text-nowrap" style="color: var(--color15);">وب اپلیکیشن خشکبار نوبخت</h4>
                         <button id="install-app-btn" class="btn-defIconFlex2 centerbox gap-2" style="height: calc(100% - 40px); width: 100%; margin-top: 10px; align-items: center">
-                            <svg id="Download" class="mt-1" width="40px" height="40px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                            <svg id="Download" class="" width="30px" height="30px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                 <g id="Iconly/Bulk/Download" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
                                     <g id="Download" transform="translate(2.000000, 2.500000)" fill="#c5b8b4" fill-rule="nonzero">
                                         <path d="M2.8980937,6.3440937 C2.8980937,3.8930937 4.95788916,1.8980937 7.48952749,1.8980937 L12.5218298,1.8980937 C15.0472732,1.8980937 17.1019063,3.8880937 17.1019063,6.3340937 L17.1019063,17.4500937 C17.1019063,19.9020937 15.0431433,21.8980937 12.511505,21.8980937 L7.4792027,21.8980937 C4.95375924,21.8980937 2.8980937,19.9070937 2.8980937,17.4600937 L2.8980937,16.5200937 L2.8980937,6.3440937 Z" id="Fill-1" opacity="0.400000006" transform="translate(10.000000, 11.898094) rotate(-270.000000) translate(-10.000000, -11.898094) "></path>
@@ -23,7 +25,7 @@
                                     </g>
                                 </g>
                             </svg>
-                            <div class="text-[var(--color3)]">دانلود و نصب</div>
+                            <div class="text-[var(--color3)] text-xl"> نصب وب اپلیکیشن</div>
                         </button>
                     </div>
                 </div>
@@ -129,7 +131,7 @@
                     </div>
                 </div>
             </div>
-            <div class="px-5 text-stone-500 text-center py-5" style="background-color: rgb(39, 31, 31);;">
+            <div class="px-5 text-stone-500 text-center py-5" style="background-color: rgb(39, 31, 31); border-bottom-left-radius: 30px; border-bottom-right-radius: 30px">
                <h1> © تمامی حقوق محفوظ است</h1>
                 <h3 class="text-stone-600"> {{ site_settings.version }}</h3>
             </div>

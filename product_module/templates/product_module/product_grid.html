@@ -122,7 +122,7 @@
                     {% endfor%}
                 </div>
                 {% if products.count > 0 %}
-                <div class="flex gap-3 flex-wrap mt-2">
+                <div style="" class="{% if not request.GET.q %} product-grid-grid {% else %}search-grid{% endif %} gap-3 mt-2">
                     {% for p in products %}
                         {% include 'product_module/include/product_card.html' %}
                     {% endfor %}
