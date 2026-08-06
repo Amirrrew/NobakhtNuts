@@ -1908,7 +1908,7 @@ header .category-menu {
     opacity: 1;
     transition: 200ms;
     margin-top: 10px;
-    overflow-y: scroll;
+    overflow: hidden;
     top: 70px;
     position: fixed;
     z-index: 1000;
@@ -1930,11 +1930,17 @@ header .category-menu {
     }
 }
 
-.search-suggest::-webkit-scrollbar {
+.search-result {
+    width: 100%;
+    height: 80%;
+    overflow-y: scroll;
+}
+
+.search-result::-webkit-scrollbar {
     display: none;
 }
 
-.search-suggest::-webkit-scrollbar-thumb {
+.search-result::-webkit-scrollbar-thumb {
     background-color: var(--color9);
 }
 
