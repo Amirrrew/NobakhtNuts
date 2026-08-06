@@ -540,7 +540,7 @@ function getSelectedPack() {
 }
 
 // افزودن به سبد خرید
-let AddToOrder = (productId ,isWeight) => {
+let AddToOrder = (productId ,isWeight ,pack_id) => {
     let pack = getSelectedPack()
     let btnAddtocart = document.getElementById('btn-addtocart')
     let url = null;
@@ -548,10 +548,17 @@ let AddToOrder = (productId ,isWeight) => {
     if (isWeight === 'false') {
         url = `/orders/add-to-order/?product_id=${productId}`;
     } else {
-        url = `/orders/add-to-order/?product_id=${productId}&pack_id=${pack.value}`;
+        if (pack_id) {
+            url = `/orders/add-to-order/?product_id=${productId}&pack_id=${pack_id}`;
+        } else {
+            url = `/orders/add-to-order/?product_id=${productId}&pack_id=${pack.value}`;
+        }
     }
 
     document.getElementById('loader').style = 'display: block;'
+    if (pack_id) {
+        document.getElementById('pack-weights').classList.add('disabled')
+    }
     fetch(url)
         .then(res => res.json())
         .then(data => {
@@ -566,6 +573,10 @@ let AddToOrder = (productId ,isWeight) => {
                 PrdNav(true)
             }
         }).finally(()=> {
+            document.getElementById('pack-weights').classList.remove('disabled')
+            if (pack_id) {
+                PopUpWeight('none' ,'close')
+            }
             document.getElementById('loader').style = 'display: none;'
             btnAddtocart.style = 'pointer-events: all; background-color: var(--color6); height: 50px; padding-top: 13px;'
         })
@@ -599,25 +610,21 @@ let navopen = true
 let PrdNav = (force) => {
     let btnnav = document.getElementById('btn-navicon')
     let prditems = document.getElementById('prd-items-mobile')
-    let packsize = document.getElementById('prd-packsize')
 
     if (force) {
         prditems.style = 'display: block; animation: load 300ms;'
         btnnav.style = 'transform: none'
-        packsize.style = 'display: block'
         navopen = true
     }
     else {
         if (navopen) {
             prditems.style = 'display: none'
             btnnav.style = 'transform: rotate(180deg)'
-            packsize.style = 'display: none'
             navopen = false
         }
         else {
             prditems.style = 'display: block; animation: load 300ms;'
             btnnav.style = 'transform: none'
-            packsize.style = 'display: block'
             navopen = true
         }
     }
@@ -833,3 +840,33 @@ installBtn.addEventListener('click', async () => {
     deferredPrompt = null;
     installBtn.style.display = 'none';
 });
+
+const popupClickHandlerWeight = (e) => {
+    let popup = document.getElementById('popup-form')
+
+    if (!popup.contains(e.target)) {
+        PopUpWeight('none', 'close')
+    }
+}
+
+let PopUpWeight = (type ,action) => {
+    let parent = document.getElementById('popup-parent-weight')
+    let popup = document.getElementById('popup-form-weight')
+
+        if (action === 'open') {
+            window.innerWidth > 1130 ? parent.style = 'display: flex; align-items:center;' :parent.style = 'display: flex; align-items:end;'
+            document.body.style.overflowY = 'hidden'
+            window.innerWidth < 1130 ? popup.style = 'animation: popup-mobile 300ms': null
+            setTimeout(() => {
+                document.addEventListener('click', popupClickHandlerWeight)
+            }, 200)
+        } else {
+            window.innerWidth < 1130 ? popup.style = 'animation: popup-mobile-close 300ms' : popup.style = 'animation: unload4 200ms'
+            setTimeout(()=> {
+                parent.style = 'display: none'
+                popup.style = 'animation: load5 300ms;'
+                document.body.style.overflowY = 'scroll'
+                document.removeEventListener('click', popupClickHandlerWeight)
+            } ,100)
+        }
+}

@@ -1428,10 +1428,17 @@ body {
 }
 
 .filter-list-desktop {
-    height: calc(100vh - 70px);
+    height: calc(100vh - 80px);
     position: sticky;
     top: 80px;
     transition: 300ms;
+}
+
+.filter-list-btns {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    padding-left: 20px;
 }
 
 .filter-list-inner {
