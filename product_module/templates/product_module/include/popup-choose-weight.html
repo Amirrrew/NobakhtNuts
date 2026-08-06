@@ -26,7 +26,7 @@
             {% for pack in product.packs.all %}
                 <div onclick="AddToOrder('{{ product.id }}','{% if product.is_byWeight %}true{% else %}false{% endif %}' ,'{{ pack.id }}')" class="w-[100%] block gap-2 p-2 mt-2 cursor-pointer rounded-xl flex {% if product.quantity < pack.size %}disabled{% endif %}" style="background-color: rgba(228,218,218,0.5);">
                     <div class="w-12 h-12 min-h-12 min-w-12 bg-[var(--color17)] rounded-xl">
-                        <img loading="eager" src="{{ p.img }}" alt="{{ p.product_title }}">
+                        <img loading="eager" src="{{ pack.title }}" alt="{{ pack.icon }}">
                     </div>
                     <div class="flex justify-between gap-2 w-[100%]">
                         <div>
