@@ -100,6 +100,7 @@ class ProductBrand(models.Model):
 class PackageSize(models.Model):
     title = models.CharField(max_length=200 ,verbose_name='بسته بندی')
     size = models.FloatField(null=True ,verbose_name='وزن')
+    icon = models.ImageField(upload_to='pack_sizes' ,null=True ,blank=True ,verbose_name='آیکون')
 
     def __str__(self):
         return self.title

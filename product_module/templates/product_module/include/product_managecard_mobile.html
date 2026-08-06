@@ -10,19 +10,6 @@
                     {% include 'product_module/include/product_incart.html' %}
                 </div>
                     <div id="prd-priceandstuff" class="">
-                        <div id="prd-packsize">
-                            {% if product.packs and product.is_byWeight %}
-                                <div class="text-[var(--color10)] mt-5">
-                                    اندازه بسته بندی را انتخاب کنید
-                                </div>
-                                <div class="flex flex-wrap gap-2 mt-1" >
-                                    {% for pack in product.packs.all %}
-                                        <input onchange="CartCheck('btn-addtocart-mobile' ,{{ product.final_price }} ,{{ pack.size }} ,'{{ pack.title }}')" class="pack-size-input" type="radio" name="pack_mobile" id="pack_mobile_{{ pack.id }}" value="{{ pack.id }}" hidden>
-                                        <label class="pack-size relative tooltip-parent" for="pack_mobile_{{ pack.id }}" class="cursor-pointer bg-[var(--color11)] border border-[var(--color8)] py-1 px-2 rounded-xl text-sm text-[var(--color6)] peer-checked:bg-[var(--color6)] tooltip-parent">{{ pack.title|to_fanum }} <div class="tooltip font-semibold" style="top: -60px; background-color: var(--color13); border: 1px solid var(--color11); padding: 5px 15px; width: auto; right: -8px;">{{ product.final_price|pack_price:pack.size|three_digits_currency }}</div></label>
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
-                        </div>
                         {% if product.quantity < 6 and product.quantity > 0 %}
                             {% if product.is_byWeight %}
                                 <div class="flex mt-3 gap-2 text-[var(--color5)]">
@@ -82,7 +69,7 @@
                         {% if request.user.is_authenticated %}
                                 <div class="flex gap-2 w-[100%]">
                                     {% if product.quantity > 0 %}
-                                    <button id="btn-addtocart-mobile" onclick="AddToOrder({{ product.id }} ,{% if product.is_byWeight %}'true'{% else %}'false'{% endif %})" type="button" class="btn-defIconFlex gap-1 mt-2 w-[100%] justify-center" style="height: 50px; padding-top: 13px;{% if product.is_byWeight %}background-color: var(--color9); pointer-events: none;{% endif %}">
+                                    <button id="btn-addtocart-mobile" onclick="{% if product.is_byWeight %}PopUpWeight('none' ,'open'){% else %} AddToOrder('{{ product.id }}' ,'false') {% endif %}" type="button" class="btn-defIconFlex gap-1 mt-2 w-[100%] justify-center" style="height: 50px; padding-top: 13px;{% if product.is_byWeight %}{% endif %}">
                                         <svg class="mt-[-3px]" id="Buy" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M6.39507 6.30158L6.09507 3.24158H2.19507V4.74158H4.73507L6.01507 17.4416H20.8351L22.3051 6.30158H6.39507Z" fill="#c5b8b4"></path>
                                             <path d="M13.8245 11.7118H17.9945V10.2118H13.8245V11.7118Z" fill="#c5b8b4"></path>
@@ -90,7 +77,7 @@
                                             <path d="M17.447 20.5527C17.447 19.8497 18.018 19.2787 18.721 19.2787C19.424 19.2787 19.995 19.8497 19.995 20.5527C19.995 21.2557 19.424 21.8277 18.721 21.8277C18.018 21.8277 17.447 21.2557 17.447 20.5527Z" fill="#c5b8b4"></path>
                                         </svg>
                                         <div>
-                                            افزودن به سبد خرید
+                                            {% if product.is_byWeight %}انتخاب وزن بسته بندی{% else %} افزودن به سبد خرید {% endif %}
                                         </div>
                                     </button>
                                     {% else %}

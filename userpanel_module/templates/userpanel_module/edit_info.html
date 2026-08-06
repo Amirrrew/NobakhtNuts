@@ -26,7 +26,7 @@
                     {% csrf_token %}
                     <div class="flex mt-5 w-[100%] bg-[var(--color12)] p-3 rounded-xl">
                         <div id="upload-avatar" class="image-inputbox" style="{% if user.avatar %}background-image: url({{ user.avatar.url }});{% endif %}">
-                            <input oninput="SetUploadedImage(event ,'upload-avatar')" name="avatar" type="file" class="cursor-pointer w-[100%] h-[100%] opacity-0" style="z-index: 100">
+                            <input oninput="SetUploadedImage(event ,'upload-avatar')" name="avatar" type="file" accept="image/png,image/jpeg,image/webp" class="cursor-pointer w-[100%] h-[100%] opacity-0" style="z-index: 100">
                             {% if not user.avatar %}
                                 <svg style="z-index: -1" class="relative top-[-75px] right-6" id="Upload" width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M16.65 7.28717C15.53 7.20717 14.3499 7.16735 13.1199 7.15735H11.6199C10.4099 7.16735 9.15 7.21717 7.85 7.28717H7.83C3.8 7.65717 2.5 9.48717 2.5 14.7872C2.5 22.3872 5.35 22.3872 12.25 22.3872C19.15 22.3872 22 22.3872 22 14.7872C22 9.48717 20.7 7.65717 16.65 7.28717Z" fill="#674d45"></path>

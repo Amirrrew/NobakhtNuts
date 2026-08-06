@@ -17,6 +17,7 @@ from order_module.models import OrderStatus, Order
 from support_module.form import NewTicketForm
 from support_module.models import Ticket, TicketReason, TicketStatus
 from userpanel_module.form import EditInfoForm, ResetPasswordFormPanel, NewAddressForm
+from utils.my_decorators import validate_image_extension
 
 
 @login_required
@@ -65,7 +66,7 @@ class EditInfo(View):
 
         try:
             if edit_form.is_valid():
-                if avatar:
+                if avatar and validate_image_extension(avatar):
                     user.avatar = avatar
                 edit_form.save(commit=True)
                 message = "تغییرات با موفقیت ذخیره شد"
