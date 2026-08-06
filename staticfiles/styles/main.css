@@ -1932,7 +1932,7 @@ header .category-menu {
 
 .search-result {
     width: 100%;
-    height: 80%;
+    height: calc(100% - 50px);
     overflow-y: scroll;
 }
 
