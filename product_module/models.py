@@ -208,7 +208,7 @@ class Product(models.Model):
 
         indexes = [
             models.Index(
-                fields=["is_active", "is_deleted", "chosen", "quantity"],
+                fields=["is_active", "is_deleted", "chosen", "quantity" ,'view' ,'title'],
                 name="product_listing_idx",
             ),
             models.Index(
