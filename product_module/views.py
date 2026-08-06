@@ -35,7 +35,7 @@ class ProductListView(ListView):
         ).select_related('category','category__main_category' ,'brand')
         .prefetch_related('packs' ,Prefetch('product_image' ,queryset=ProductImage.objects.order_by('-is_Main' ,'id'),to_attr='prefetched_images'))
         .annotate(comments_total=Count('comment_set' ,distinct=True),rating_avarage=Avg('comment_set__rating'))
-        .order_by('-chosen' ,'title'))
+        .order_by('-chosen','?'))
 
         category_slug = self.kwargs.get("category")
         subcategory_slug = self.kwargs.get("subcategory")
