@@ -18,19 +18,21 @@ class SpecialEvents(models.Model):
         verbose_name_plural = 'رویداد ها'
 
 
-class SliderSlide(models.Model):
-    desc = models.CharField(max_length=200 ,null=True ,blank=True ,verbose_name='نوشته')
+class LandingPage(models.Model):
+    pill_text = models.CharField(max_length=200 ,null=True ,blank=True ,verbose_name='نوشته pill-bar')
+    text = models.CharField(max_length=200 ,null=True ,blank=True ,verbose_name='نوشته اصلی')
+    desc = models.CharField(max_length=200 ,null=True ,blank=True ,verbose_name='نوشته کوچک')
     banner = models.ImageField(upload_to='sliders', null=True ,blank=False ,verbose_name='بنر اسلاید')
-    is_primary = models.BooleanField(default=False ,verbose_name='اسلاید اصلی؟')
     url = models.CharField(max_length=1000 ,null=True ,blank=False ,verbose_name='url اسلایدر')
     is_active = models.BooleanField(default=True ,verbose_name='فعال؟')
 
     def __str__(self):
-        return self.title
+        return self.text
 
     class Meta:
-        verbose_name = 'اسلاید'
-        verbose_name_plural = 'اسلایدر ها'
+        verbose_name = 'لندینگ پیج'
+        verbose_name_plural = 'لندینگ پیج ها'
+
 
 class Carousel(models.Model):
     title = models.CharField(max_length=200 ,null=True ,blank=False ,verbose_name='عنوان کاروزل کالا')

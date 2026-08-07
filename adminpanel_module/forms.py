@@ -7,7 +7,7 @@ from django.template.base import kwarg_re
 from django.core import validators
 
 from article_module.models import Article
-from home_module.models import SpecialEvents, SliderSlide, Carousel
+from home_module.models import SpecialEvents, LandingPage, Carousel
 from order_module.models import PaymentMethod, Cards, PostingMethod
 from product_module.models import Product, ProductCategory, ProductSubCategory, PackageSize, ProductBrand
 from account_module.models import User
@@ -154,7 +154,7 @@ class EventForm(forms.ModelForm):
 
 class SliderForm(forms.ModelForm):
     class Meta:
-        model = SliderSlide
+        model = LandingPage
         fields = '__all__'
 
 class CarouselForm(forms.ModelForm):

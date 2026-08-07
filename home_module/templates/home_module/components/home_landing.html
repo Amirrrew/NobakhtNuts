@@ -1,0 +1,38 @@
+{% load static %}
+{% load poll_extras %}
+
+
+<div class="w-[90%]">
+    <div class="home-landing" style="direction: ltr">
+        <div class="home-landing-art">
+            <img alt="landing" class="w-[100%]" src="{% static 'media/posters/home-landing-art.png' %}">
+        </div>
+        <div class="home-landing-textbox" style="direction: rtl">
+            <div class="home-landing-pill">
+                <div>
+                    <svg id="Star" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M21.625 11.5156C17.265 10.3916 13.858 6.98456 12.734 2.62456L12.25 0.747559L11.766 2.62456C10.642 6.98456 7.23505 10.3916 2.87505 11.5156L0.998047 11.9996L2.87505 12.4846C7.23505 13.6086 10.642 17.0156 11.766 21.3746L12.25 23.2526L12.734 21.3746C13.858 17.0156 17.265 13.6086 21.625 12.4846L23.502 11.9996L21.625 11.5156Z" fill="#674d45"></path>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M19.0009 7.747C19.0009 6.585 20.2749 5.248 21.4999 5.248C20.3209 5.248 19.0009 3.897 19.0009 2.75C19.0009 3.897 17.6929 5.248 16.5029 5.248C17.6479 5.248 19.0009 6.578 19.0009 7.747Z" fill="#674d45"></path>
+                    </svg>
+                </div>
+                <h5>بیش از {{ 20|to_fanum }} سال تجربه</h5>
+            </div>
+            <h1 class="home-landing-title text-8xl mt-5" style="max-width: 800px">
+                تو حالا مهموناتو دعوت کن.
+                <em class="home-landing-highlight">برنج و آجیل</em>
+                باما!
+            </h1>
+            <p class="home-landing-undertext mt-2 text-[var(--color7)]">
+                برنج و خشکبار نوبخت، فروشگاهی کیفیت محور واقع در شهر قائمشهر است که در حوزه برنج، آجیل، خشکبار و ... فعالیت میکند. در طی بیش از 20 سال سابقه ای که تا به حال داشتیم، سعی کردیم بهترین کیفیت را در محصولات خود ارائه دهیم و رضایت مشتری را در صدر اولویت های خود قرار دادیم.
+            </p>
+            <div class="flex gap-2 relative mt-2" style="animation: load8 800ms">
+                <a href="{% url 'all_products_page' %}" class="btn-defIconFlex" style="height: 50px; padding: 14px 20px; gap: 10px; border-radius: 15px">
+                    مشاهده محصولات <i class="fa fa-arrow-left mt-0.5"></i>
+                </a>
+                <a href="{% url 'support_page' %}" class="btn-defIconFlex2" style="height: 50px; padding: 14px 20px; border-radius: 15px">
+                    تماس با ما
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

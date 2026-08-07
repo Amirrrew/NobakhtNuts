@@ -23,7 +23,7 @@ from adminpanel_module.forms import ProductAddForm, MainCategoryForm, SubCategor
     SupportWayForm, SiteSettingForm, FooterLinkForm, PaymentForm, CardForm, PostingForm, AdminLoginForm, ArticleForm, \
     EventForm, SliderForm, CarouselForm, FAQForm
 from article_module.models import Article
-from home_module.models import SpecialEvents, SliderSlide, Carousel, CarouselItem
+from home_module.models import SpecialEvents, LandingPage, Carousel, CarouselItem
 from order_module.models import Order, OrderStatus, PaymentMethod, Cards, PostingMethod
 from product_module.models import Product, ProductCategory, ProductSubCategory, ProductBrand, PackageSize, \
     ProductFeature, ProductImage, ProductComment
@@ -1647,13 +1647,13 @@ class EventUpdate(UpdateView):
 
 @method_decorator(permission_checker_decorator_factory() ,name='dispatch')
 class SliderPreview(ListView):
-    model = SliderSlide
+    model = LandingPage
     template_name = 'adminpanel_module/sliders/slider_preview.html'
     context_object_name = 'admin_sliders'
 
 @method_decorator(permission_checker_decorator_factory() ,name='dispatch')
 class SliderAdd(CreateView):
-    model = SliderSlide
+    model = LandingPage
     template_name = 'adminpanel_module/sliders/slider_add_update.html'
     context_object_name = 'admin_slider'
     form_class = SliderForm
@@ -1677,7 +1677,7 @@ class SliderAdd(CreateView):
 
 @method_decorator(permission_checker_decorator_factory() ,name='dispatch')
 class SliderEdit(UpdateView):
-    model = SliderSlide
+    model = LandingPage
     template_name = 'adminpanel_module/sliders/slider_add_update.html'
     context_object_name = 'admin_slider'
     form_class = SliderForm
@@ -1701,7 +1701,7 @@ class SliderEdit(UpdateView):
 
 @permission_checker_decorator_factory({'permission': 'admin_index'})
 def SliderDelete(request ,pk):
-    slide = get_object_or_404(SliderSlide ,pk=pk)
+    slide = get_object_or_404(LandingPage ,pk=pk)
     if slide:
         slide.delete()
     return redirect('admin_sliders')

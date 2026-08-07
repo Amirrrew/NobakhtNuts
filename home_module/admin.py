@@ -1,9 +1,9 @@
 from django.contrib import admin
 
-from home_module.models import SpecialEvents, SliderSlide, Carousel, CarouselItem, HomeCards, CardBlock, Banner
+from home_module.models import SpecialEvents, LandingPage, Carousel, CarouselItem, HomeCards, CardBlock, Banner
 
 admin.site.register(SpecialEvents)
-admin.site.register(SliderSlide)
+admin.site.register(LandingPage)
 
 class CarouselItemInline(admin.TabularInline):
     model = CarouselItem

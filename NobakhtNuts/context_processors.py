@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from unicodedata import category
 
 from account_module.models import Notification
-from home_module.models import SpecialEvents, SliderSlide
+from home_module.models import SpecialEvents, LandingPage
 from order_module.models import OrderDetail, Order
 from product_module.models import ProductCategory, ProductSubCategory, ProductBrand, Product
 from site_settings.models import FooterLinkBox

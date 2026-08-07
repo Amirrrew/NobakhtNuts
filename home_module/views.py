@@ -4,7 +4,7 @@ from pyexpat.errors import messages
 from unicodedata import category
 
 from article_module.models import Article
-from home_module.models import SpecialEvents, SliderSlide, Carousel, CarouselItem, CardBlock, Banner, HomeCards
+from home_module.models import SpecialEvents, LandingPage, Carousel, CarouselItem, CardBlock, Banner, HomeCards
 from product_module.models import Product, ProductImage
 from django.views.generic import View, TemplateView, ListView
 from django.contrib.staticfiles import finders
@@ -36,7 +36,6 @@ class Home(TemplateView):
 
         user = self.request.user
         special_event = SpecialEvents.objects.filter(is_active=True).first()
-        slider = SliderSlide.objects.filter(is_active=True).order_by('-is_primary')
         special_carousel = Carousel.objects.prefetch_related("carousel_set__product").filter(
             is_active=True
         ).first()
@@ -47,7 +46,6 @@ class Home(TemplateView):
 
         context['user'] = user
         context['special_event'] = special_event
-        context['slider'] = slider
         context['is_carousel'] = carousel_exist
         context['special_carousel'] = special_carousel or (Product.objects.filter(is_active=True,is_deleted=False,category__is_active=True ,offer__gt=0 ,quantity__gt=0).select_related('category','category__main_category' ,'brand').prefetch_related('packs' ,Prefetch('product_image' ,queryset=ProductImage.objects.order_by('-is_Main' ,'id'),to_attr='prefetched_images')).annotate(comments_total=Count('comment_set' ,distinct=True),rating_avarage=Avg('comment_set__rating')).order_by('-chosen' ,'-created_at'))
         context['card_block'] = card_block
