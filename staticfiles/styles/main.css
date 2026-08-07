@@ -130,6 +130,11 @@ input[type="number"] {
     body .article-suggestions {
         width: 50%;
     }
+
+    body .home-landing-art:after {
+        width: 400px;
+        height: 400px;
+    }
 }
 
 @media screen and (max-width: 1400px) {
@@ -540,6 +545,12 @@ input[type="number"] {
     body .home-landing {
         margin-top: 100px;
     }
+
+    body .home-landing-art:after {
+        bottom: 0;
+        width: 350px;
+        height: 350px;
+    }
 }
 
 @media screen and (max-width: 890px) {
@@ -840,6 +851,21 @@ input[type="number"] {
     /*.body .home-card-img {*/
     /*    min-width: 100%;*/
     /*}*/
+
+    body .home-landing-art {
+        margin-top: 110px;
+    }
+
+    body .home-landing-art img {
+        transform: scale(140%);
+    }
+
+    body .home-landing-art:after {
+        width: 350px;
+        height: 350px;
+        bottom: -50px;
+        z-index: -1;
+    }
 }
 
 @media screen and (max-width: 450px) {
@@ -3721,6 +3747,24 @@ body .swiper-pagination-bullet-active {
     width: 100%;
     height: 100%;
     margin-top: -50px;
+    position: relative;
+    z-index: 1;
+    animation: load8 300ms;
+}
+
+.home-landing-art:after {
+    content: '';
+    position: absolute;
+    bottom: 50px;
+    width: 500px;
+    height: 500px;
+    z-index: -1;
+    background-color: var(--color14);
+    border-radius: 50%;
+}
+
+.home-landing-art img {
+    z-index: 5;
 }
 
 .home-landing-textbox {
@@ -3740,6 +3784,8 @@ body .swiper-pagination-bullet-active {
     gap: 5px;
     position: relative;
     animation: load8 200ms;
+    z-index: 5;
+    backdrop-filter: blur(10px);
 }
 
 .home-landing-title {
