@@ -1,5 +1,6 @@
 {% extends 'index.html' %}
 {% load static %}
+{% load poll_extras %}
 
 {% block page_title %}
 	 | درباره ما
@@ -16,40 +17,30 @@
 
 {% block page_content %}
 {#    {% include 'userpanel_module/include/pop_up_ticket.html' %}#}
-    <div class="centerbox mt-40">
-        <div>
-            <div class="centerbox">
-                <svg class="relative" style="animation: load4 500ms" id="Info Square" width="70" height="70" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <div class="centerbox about-card mt-40">
+        <div class="w-[90%]">
+            <div class="home-pill">
+                <svg class="relative" id="Info Square" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.052 2.78467 2.5 5.33667 2.5 12.5347C2.5 19.7327 5.052 22.2847 12.25 22.2847C19.448 22.2847 22 19.7327 22 12.5347C22 5.33667 19.448 2.78467 12.25 2.78467Z" fill="#674d45"></path>
                 <path d="M12.2461 9.78467H12.2551C12.6691 9.78467 13.0011 9.44867 13.0011 9.03467C13.0011 8.62067 12.6601 8.28467 12.2461 8.28467C11.8321 8.28467 11.4961 8.62067 11.4961 9.03467C11.4961 9.44867 11.8321 9.78467 12.2461 9.78467Z" fill="#674d45"></path>
                 <path d="M12.2501 17.1797C12.6641 17.1797 13.0001 16.8437 13.0001 16.4297V12.5347C13.0001 12.1207 12.6641 11.7847 12.2501 11.7847C11.8361 11.7847 11.5001 12.1207 11.5001 12.5347V16.4297C11.5001 16.8437 11.8361 17.1797 12.2501 17.1797Z" fill="#674d45"></path>
                 </svg>
+                <p>
+                   درباره ما
+                </p>
             </div>
-            <h1 class="text-5xl relative text-center mt-5 font-black" style="animation: load 500ms">
-                درباره ما
-            </h1>
         </div>
     </div>
-    <section class="container w-[100%] mt-20 centerbox">
+    <section class="container w-[100%] mt-3 centerbox">
         <div class="w-[90%]">
             <div>
-                <h2 aria-labelledby="about-title" class="about-title relative text-2xl font-semibold">برنج و خشکبار نوبخت، فروشگاه تخصصی برنج و خشکبار در قائمشهر و مازندران👋</h2>
+                <h1 aria-labelledby="about-title" class="about-title relative text-7xl font-semibold">برنج و خشکبار نوبخت، فروشگاه
+                    <em class="home-landing-highlight">تخصصی</em> برنج و خشکبار در
+                    <em class="home-landing-highlight">قائمشهر و مازندران </em>
+                    👋
+                </h1>
             </div>
-            <div class="flex gap-10 about-container w-[100%] justify-between">
-                <div class="text-[var(--color6)]">
-                    <p class="mt-8">برنج و خشکبار نوبخت یک فروشگاه تخصصی و کیفیت محور در حوزه برنج ،آجیل و خشکبار واقع در شهر قائمشهر در استان مازندران است.</p>
-                    <p>در طی بیش از 20 سال تجربه کسب و کارمان و حضور در این حوزه، همواره سعی داشته ایم که محصولاتی با بهترین کیفیت و قیمتی مناسب ارائه دهیم و همیشه رضایت مشتری را در اولین اولویت خود قرار داده ایم و اعتقاد داریم که اعتماد و رضایت مشتری بزرگترین سرمایه ای است که یک فروشگاه ،کسب و کار یا یک شرکت میتواند داشته باشد...</p>
-                    <p class="mt-10">در برنج و خشکبار نوبخت، شما با طیف گسترده ای از محصولات مواجه میشوید، که باعث میشود گزینه های متعددی برای انتخاب داشته باشید.</p>
-                    <p>در فروشگاه ما، چه در شعبه حضوری و چه در شعبه اینترنتی، شما میتوانید انواع برنج ،آجیل هایی مانند پسته ،بادام درختی ،بادام هندی ،بادام زمینی ، فندق و خشکبار مانند کشمش ، مویز و و دیگر محصولات منتخب را با اطمینان از کیفیت و تازگی تهیه کنید.</p>
-                    <p>تمامی محصولات ما با دقت انتخاب میشوند تا طعم، عطر و ارزش غذایی آنها حفظ گردد.</p>
-
-                    <P class="mt-5">برای آشنایی با محصولات و اطلاع از اخبار و بروزرسانی ها حتما صفحه ی ما در اینستاگرام را دنبال کنید.</P>
-                    <div class="flex mt-2 gap-2 flex-wrap">
-                        <a href="{{ insta.opt1 }}" target="_blank" class="btn-defIconFlex gap-1">اینستاگرام ما<i class="fa-brands fa-instagram text-xs mt-1 text-[var(--color11)]"></i></a>
-                        <a href="tel:01142031500" target="_blank" class="btn-defIconFlex2 gap-1">تماس با ما<i class="fa fa-phone text-xs mt-1 text-[var(--color10)]"></i></a>
-                        <a href="{% url 'support_page' %}" class="btn-defIconFlex2 gap-2">راه های ارتباطی<i class="fa fa-arrow-left text-xs text-[var(--color10)] mt-1"></i></a>
-                    </div>
-                </div>
+            <div class="flex gap-10 about-container w-[100%] justify-between" style="direction: ltr">
                 <div class="w-[500px] about-swiper-box">
                     <div class="swiper about-swiper h-[500px] w-[100%] mt-3">
                         <div class="swiper-wrapper">
@@ -64,11 +55,185 @@
                             </div>
                         </div>
                     </div>
-                    <div class="flex justify-between mt-2">
+                    <div class="flex justify-between mt-2" style="direction: rtl">
                         <h4 class="text-[var(--color2)] pr-3 text-xl font-semibold">تصاویری از شعبه حضوری خشکبار نوبخت</h4>
                         <div class="flex gap-1">
                             <button class="btn-about-prev cursor-pointer bg-[var(--color12)] rounded-xl w-8 h-8"><i class="fa fa-angle-right text-sm mt-1"></i></button>
                             <button class="btn-about-next cursor-pointer bg-[var(--color12)] rounded-xl w-8 h-8"><i class="fa fa-angle-left text-sm mt-1"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-[var(--color6)] mt-2" style="direction: rtl;">
+                    <p class="mt-8">برنج و خشکبار نوبخت یک فروشگاه تخصصی و کیفیت محور در حوزه برنج ،آجیل و خشکبار واقع در شهر قائمشهر در استان مازندران است.</p>
+                    <p>در طی بیش از 20 سال تجربه کسب و کارمان و حضور در این حوزه، همواره سعی داشته ایم که محصولاتی با بهترین کیفیت و قیمتی مناسب ارائه دهیم و همیشه رضایت مشتری را در اولین اولویت خود قرار داده ایم و اعتقاد داریم که اعتماد و رضایت مشتری بزرگترین سرمایه ای است که یک فروشگاه ،کسب و کار یا یک شرکت میتواند داشته باشد...</p>
+                    <p class="mt-10">در برنج و خشکبار نوبخت، شما با طیف گسترده ای از محصولات مواجه میشوید، که باعث میشود گزینه های متعددی برای انتخاب داشته باشید.</p>
+                    <p>در فروشگاه ما، چه در شعبه حضوری و چه در شعبه اینترنتی، شما میتوانید انواع برنج ،آجیل هایی مانند پسته ،بادام درختی ،بادام هندی ،بادام زمینی ، فندق و خشکبار مانند کشمش ، مویز و و دیگر محصولات منتخب را با اطمینان از کیفیت و تازگی تهیه کنید.</p>
+                    <p>تمامی محصولات ما با دقت انتخاب میشوند تا طعم، عطر و ارزش غذایی آنها حفظ گردد.</p>
+
+                    <P class="mt-5">برای آشنایی با محصولات و اطلاع از اخبار و بروزرسانی ها حتما صفحه ی ما در اینستاگرام را دنبال کنید.</P>
+                    <div class="flex mt-2 gap-2 flex-wrap ">
+                        <a href="{{ insta.opt1 }}" target="_blank" class="btn-defIconFlex gap-1 text-xl gap-2" style="height: 50px; padding: 12px 20px; border-radius: 20px">اینستاگرام ما<i class="fa-brands fa-instagram mt-1 text-[var(--color11)]"></i></a>
+                        <a href="tel:01142031500" target="_blank" class="btn-defIconFlex2 gap-1 text-xl gap-2" style="height: 50px; padding: 12px 20px; background-color: var(--color12); border-radius: 20px">تماس با ما<i class="fa fa-phone  mt-1 text-[var(--color10)]"></i></a>
+                    </div>
+                    {% include 'home_module/components/home_landing_stats.html' %}
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mt-20 centerbox">
+        <div class="w-[90%] animate-on-scroll">
+            <div class="home-pill">
+                <svg id="Time Square" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.25C5.051 2.25 2.5 4.801 2.5 12C2.5 19.198 5.051 21.75 12.25 21.75C19.449 21.75 22 19.198 22 12C22 4.801 19.449 2.25 12.25 2.25Z" fill="#674d45"></path>
+                <path d="M15.639 14.7668C15.895 14.7668 16.144 14.6358 16.284 14.4008C16.496 14.0458 16.38 13.5858 16.024 13.3728L12.999 11.5688V7.63281C12.999 7.21881 12.663 6.88281 12.249 6.88281C11.835 6.88281 11.499 7.21881 11.499 7.63281V11.9948C11.499 12.2578 11.638 12.5038 11.865 12.6388L15.256 14.6618C15.376 14.7328 15.509 14.7668 15.639 14.7668Z" fill="#674d45"></path>
+                </svg>
+                مسیر ما
+            </div>
+            <h4 class="text-5xl mt-2 font-semibold">
+                <em class="home-landing-highlight">داستان</em>
+                و مسیر ما
+            </h4>
+            <div class="timeline mt-5">
+              <div class="timeline-item">
+                <span class="timeline-dot">
+                    <svg id="Play" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.854C5.052 2.854 2.5 5.406 2.5 12.604C2.5 19.802 5.052 22.354 12.25 22.354C19.449 22.354 22 19.802 22 12.604C22 5.406 19.449 2.854 12.25 2.854Z" fill="#674d45"></path>
+                    <path d="M11.0397 16.08C11.3597 16.08 11.7027 15.963 12.0027 15.839C12.7097 15.546 16.0057 13.734 16.0057 12.46C16.0057 11.206 12.7797 9.42902 11.9557 9.08802C11.6217 8.94902 10.8407 8.62802 10.3687 9.09902L10.3681 9.09961C10.2335 9.23521 9.82569 9.64607 9.8147 12.441C9.80271 15.254 10.2294 15.6807 10.3686 15.8199L10.3687 15.82C10.5587 16.01 10.7917 16.08 11.0397 16.08Z" fill="#674d45"></path>
+                    </svg>
+                </span>
+                <span class="year">بیش از ۲۰ سال پیش</span>
+                <h6 class="text-xl">آغاز فعالیت در قائمشهر</h6>
+                <p>در ابتدا ما برنج و خشکبار نوبخت نبودیم! فعالیت ما در دهه 80 با عرضه انواع برنج و حبوبات شروع شد.</p>
+              </div>
+              <div class="timeline-item">
+                <span class="timeline-dot">
+                <svg id="Bag 2" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M22.04 7.49866L20.9 21.8587H3.59996L2.45996 7.49866C8.82834 7.49866 14.2656 7.49866 22.04 7.49866Z" fill="#674d45"></path>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12.2498 4.71057C10.041 4.71057 8.25049 6.50112 8.25049 8.70987V10.5718H6.75049V8.70987C6.75049 5.67269 9.21261 3.21057 12.2498 3.21057C15.287 3.21057 17.7491 5.67269 17.7491 8.70987V10.5718H16.2491V8.70987C16.2491 6.50112 14.4585 4.71057 12.2498 4.71057Z" fill="#674d45"></path>
+                </svg>
+                </span>
+                <span class="year">توسعه تدریجی</span>
+                <h6 class="text-xl">گسترش سبد محصولات</h6>
+                <p>با اعتماد رو به رشد مشتریان، دامنه محصولات از برنج و حبوبات به آجیل، خشکبار، شکلات، چای، قهوه و... گسترش یافت.</p>
+              </div>
+              <div class="timeline-item">
+                <span class="timeline-dot">
+                    <svg id="Face" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.38867C6.874 2.38867 2.5 6.76267 2.5 12.1387C2.5 17.5147 6.874 21.8887 12.25 21.8887C17.626 21.8887 22 17.5147 22 12.1387C22 6.76267 17.626 2.38867 12.25 2.38867Z" fill="#674d45"></path>
+                    <path d="M15.8956 12.0629H17.3956V10.5629H15.8856L15.8956 12.0629Z" fill="#674d45"></path>
+                    <path d="M9.52762 15.9609H14.2936V14.4609H10.6846L12.6176 7.90889L11.1786 7.48389L8.95762 15.0129L9.52762 15.9609Z" fill="#674d45"></path>
+                    <path d="M6.44262 12.0629H7.94262V10.5629H6.43262L6.44262 12.0629Z" fill="#674d45"></path>
+                    </svg>
+                </span>
+                <span class="year">امروز</span>
+                <h6 class="text-xl">حضور آنلاین و ارسال به سراسر ایران</h6>
+                <p>نوبخت امروز علاوه بر شعبه‌ی حضوری، از طریق فروشگاه اینترنتی به مشتریان در سراسر ایران خدمت‌رسانی می‌کند.</p>
+              </div>
+            </div>
+        </div>
+
+    </section>
+
+    <section class="centerbox mt-25 border-t border-b border-[var(--color12)] " style="background-color: var(--color19)">
+        <div class="w-[90%] animate-on-scroll mt-10 mb-10 ">
+            <div class="centerbox">
+                <div class="home-pill">
+                    <svg id="Discovery" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <title>Iconly/Bulk/Discovery</title>
+                        <g id="Iconly/Bulk/Discovery" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                            <g id="Discovery" transform="translate(1.999900, 1.999900)" fill="#674d45" fill-rule="nonzero">
+                                <path d="M20,10 C20,15.523 15.523,20 10,20 C4.477,20 0,15.523 0,10 C0,4.478 4.477,0 10,0 C15.523,0 20,4.478 20,10" id="Fill-1" opacity="0.400000006"></path>
+                                <path d="M13.8599,6.705 L12.2399,11.825 C12.1799,12.035 12.0099,12.205 11.7999,12.266 L6.6999,13.865 C6.3599,13.976 6.0299,13.645 6.1399,13.305 L7.7399,8.175 C7.7999,7.965 7.9699,7.805 8.1799,7.735 L13.2999,6.135 C13.6499,6.025 13.9699,6.355 13.8599,6.705" id="Fill-4"></path>
+                            </g>
+                        </g>
+                    </svg>
+                    روش ما
+                </div>
+            </div>
+            <div class="text-center mt-3">
+                <h4 class="text-5xl font-semibold">
+                    اصول و
+                    <em class="home-landing-highlight">راه و روش</em>
+                    ما
+                </h4>
+                <div class="mt-2 centerbox text-[var(--color10)]">
+                    <p class="text-center max-w-150 ">
+                        اصول و روش هایی که به آنها پایبندیم، تا نه فقط مشتریان از رضایت کامل برخوردار باشند، بلکه خودمان را نیز با توجه به این اصول پیشرفت دهیم!
+                    </p>
+                </div>
+            </div>
+            <div class="swiper mt-2" id="why-nobakht-swiper">
+                <div class="swiper-wrapper">
+                    <div class="home-carousel-category-card swiper-slide py-10" style="width: 100%">
+                        <div class="w-full flex flex-col items-center text-center">
+                            <div class="w-15 h-15 centerbox items-center rounded-2xl bg-[var(--color11)] home-carousel-category-emoji">
+                                <svg id="Shield Done" width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M19.9377 5.42951C19.3317 4.82251 16.0037 2.67651 12.2497 2.67651C8.49369 2.67651 5.16769 4.82251 4.56169 5.42951C3.98069 6.01151 3.98969 6.46451 4.03369 8.97851C4.05269 9.99851 4.07769 11.3865 4.07769 13.3045C4.07769 19.8245 9.39969 22.5315 12.2497 22.5315C15.0987 22.5315 20.4217 19.8245 20.4217 13.3045C20.4217 11.3855 20.4467 9.99651 20.4657 8.97751C20.5107 6.46351 20.5187 6.01151 19.9377 5.42951Z" fill="#674d45"></path>
+                                <path d="M12.073 14.7244L15.971 10.8254C16.264 10.5324 16.264 10.0574 15.971 9.76443C15.678 9.47143 15.203 9.47143 14.91 9.76443L11.543 13.1334L10.181 11.7694C9.88802 11.4764 9.41302 11.4764 9.12102 11.7694C8.82702 12.0614 8.82702 12.5374 9.12002 12.8304L11.012 14.7244C11.153 14.8654 11.344 14.9444 11.543 14.9444C11.742 14.9444 11.932 14.8654 12.073 14.7244Z" fill="#674d45"></path>
+                                </svg>
+                            </div>
+                            <p class="font-semibold text-lg mt-1">
+                                کیفیت بی نظیر
+                            </p>
+                            <p class="text-[var(--color10)]" style="max-width: 80%">
+                                تمام محصولاتمان را پیش از عرضه به درستی میسنجیم تا از کیفیت و تازگی آنها مطمئن باشیم
+                            </p>
+                        </div>
+                    </div>
+                    <div class="home-carousel-category-card swiper-slide py-10" style="width: 100%">
+                        <div class="w-full flex flex-col items-center text-center">
+                            <div class="w-15 h-15 centerbox items-center rounded-2xl bg-[var(--color11)] home-carousel-category-emoji">
+                                <svg id="3 user" width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M18.6948 10.8685H18.7148C20.8448 10.8685 22.5848 9.12855 22.5848 7.00855C22.5848 4.87855 20.8448 3.13855 18.7148 3.13855C18.2948 3.13855 17.8948 3.20855 17.5148 3.32855C18.2048 4.34855 18.6048 5.57855 18.6048 6.90855C18.6148 8.25855 18.1948 9.55855 17.4048 10.6385C17.8148 10.7885 18.2448 10.8685 18.6948 10.8685Z" fill="#674d45"></path>
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M5.77479 10.8685H5.8048C6.2548 10.8685 6.68479 10.7885 7.09479 10.6385C6.33479 9.59855 5.8848 8.30855 5.8848 6.90855C5.8848 5.57855 6.28479 4.34855 6.97479 3.32855C6.59479 3.20855 6.19479 3.13855 5.77479 3.13855C3.64479 3.13855 1.91479 4.87855 1.91479 7.00855C1.91479 9.12855 3.64479 10.8685 5.77479 10.8685Z" fill="#674d45"></path>
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M12.2454 11.7746H12.2784C13.5734 11.7706 14.7894 11.2616 15.7014 10.3426C16.6144 9.42363 17.1144 8.20463 17.1094 6.91163C17.1094 4.22863 14.9284 2.04663 12.2454 2.04663C9.56339 2.04663 7.38239 4.22863 7.38239 6.91163C7.38239 9.59263 9.56339 11.7746 12.2454 11.7746Z" fill="#674d45"></path>
+                                <g opacity="0.4">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M18.7249 12.3083C17.5849 12.3083 16.5149 12.5383 15.6149 12.9283C18.7649 13.8383 20.9949 16.0183 21.0549 18.5683C22.6949 18.3583 24.4649 17.7383 24.4649 16.0483C24.4649 14.0183 21.8349 12.3083 18.7249 12.3083Z" fill="#674d45"></path>
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.87491 12.9183C7.97491 12.5383 6.90491 12.3083 5.77491 12.3083C2.66491 12.3083 0.0349121 14.0183 0.0349121 16.0483C0.0349121 17.7383 1.79491 18.3483 3.43491 18.5683C3.48491 16.0183 5.71491 13.8383 8.87491 12.9183Z" fill="#674d45"></path>
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M12.2445 13.9454C8.28352 13.9454 4.93652 16.1014 4.93652 18.6534C4.93652 21.9534 10.4365 21.9534 12.2445 21.9534C15.3825 21.9534 19.5545 21.6134 19.5545 18.6744C19.5545 16.1104 16.2065 13.9454 12.2445 13.9454Z" fill="#674d45"></path>
+                                </g>
+                                </svg>
+                            </div>
+                            <p class="font-semibold text-lg mt-1">
+                                مشتری مداری
+                            </p>
+                            <p class="text-[var(--color10)]" style="max-width: 80%">
+                                همیشه سعی میکنیم با مشتریانمان همان رفتاری را داشته باشیم که با اعضای خانواده و نزدیکان خودمان داریم
+                            </p>
+                        </div>
+                    </div>
+                    <div class="home-carousel-category-card swiper-slide py-10" style="width: 100%">
+                        <div class="w-full flex flex-col items-center text-center">
+                            <div class="w-15 h-15 centerbox items-center rounded-2xl bg-[var(--color11)] home-carousel-category-emoji">
+                                <svg id="Heart" width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M17.8248 3.28392C16.1048 2.73392 13.7238 2.96192 12.2378 4.64792C10.6768 2.97392 8.37679 2.73092 6.66879 3.28492C2.75379 4.54492 1.53279 9.08092 2.64679 12.5599V12.5609C4.40479 18.0319 10.2498 20.9829 12.2518 20.9829C14.0388 20.9829 20.1158 18.0869 21.8538 12.5599C22.9678 9.08192 21.7438 4.54592 17.8248 3.28392Z" fill="#674d45"></path>
+                                <path d="M17.8817 10.698H17.9067C18.3087 10.698 18.6417 10.379 18.6557 9.973C18.7147 8.227 17.6737 6.944 16.0657 6.78C15.6557 6.736 15.2857 7.039 15.2427 7.45C15.2007 7.862 15.5007 8.23 15.9127 8.272C16.7237 8.355 17.1887 8.972 17.1567 9.923C17.1427 10.337 17.4677 10.683 17.8817 10.698Z" fill="#674d45"></path>
+                                </svg>
+                            </div>
+                            <p class="font-semibold text-lg mt-1">
+                                بسته بندی و بهداشت
+                            </p>
+                            <p class="text-[var(--color10)]" style="max-width: 80%">
+                                 تلاش خود را میکنیم که محصولاتمان را با بهترین بسته بندی و با رعایت اصول بهداشتی به مشتریان ارائه دهیم
+                            </p>
+                        </div>
+                    </div>
+                    <div class="home-carousel-category-card swiper-slide py-10" style="width: 100%">
+                        <div class="w-full flex flex-col items-center text-center">
+                            <div class="w-15 h-15 centerbox items-center rounded-2xl bg-[var(--color11)] home-carousel-category-emoji">
+                                <svg id="Show" width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M22.4035 13.8962C20.2695 9.40519 16.4745 6.72319 12.2525 6.72119H12.2485C8.02548 6.72319 4.23048 9.40519 2.09648 13.8962L1.66748 14.7992L3.47448 15.6582L3.90348 14.7542C5.69748 10.9772 8.81748 8.72219 12.2505 8.72119C15.6825 8.72219 18.8025 10.9772 20.5965 14.7542L21.0265 15.6582L22.8325 14.7992L22.4035 13.8962Z" fill="#674d45"></path>
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M12.2489 10.6641C10.2299 10.6641 8.58789 12.3071 8.58789 14.3261C8.58789 16.3451 10.2299 17.9871 12.2489 17.9871C14.2679 17.9871 15.9109 16.3451 15.9109 14.3261C15.9109 12.3071 14.2679 10.6641 12.2489 10.6641Z" fill="#674d45"></path>
+                                </svg>
+                            </div>
+                            <p class="font-semibold text-lg mt-1">
+                                شفافیت و اعتماد
+                            </p>
+                            <p class="text-[var(--color10)]" style="max-width: 80%">
+                                بین ما و مشتریانمان هیچ پنهانکاری و عدم صداقتی وجود ندارد و سعی میشود همین روند برای همه حفظ شود
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -85,5 +250,38 @@
         },
 
     })
+
+    const why_nobakht_swiper = new Swiper('#why-nobakht-swiper' , {
+        slidesPerView: 4,
+        spaceBetween: 10,
+        navigation: {
+            nextEl: '#card-swiper-button-next',
+            prevEl: '#card-swiper-button-prev',
+        },
+        speed: 500,
+        autoplay: {
+            delay: 2000,
+        },
+
+        breakpoints: {
+            300: {
+                slidesPerView: 1.2
+            },
+            800: {
+                slidesPerView: 2.2
+            },
+            1050: {
+                slidesPerView: 4
+            },
+            1500: {
+                slidesPerView: 4
+            },
+            1800: {
+                slidesPerView: 4
+            }
+        }
+
+    })
+
     </script>
 {% endblock %}

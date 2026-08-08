@@ -65,42 +65,6 @@ const article_carousel = new Swiper('#article-swiper' , {
 
 })
 
-function initScrollAnimation(options = {}) {
-    const {
-        selector = '.animate-on-scroll',
-        activeClass = 'active',
-        threshold = 0.2,
-        rootMargin = '0px 0px -200px 0px',
-        once = true
-    } = options;
-
-    const elements = document.querySelectorAll(selector);
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add(activeClass);
-
-                if (once) {
-                    observer.unobserve(entry.target);
-                }
-            } else if (!once) {
-                entry.target.classList.remove(activeClass);
-            }
-        });
-    }, {
-        threshold: threshold,
-        rootMargin: rootMargin
-    });
-
-    elements.forEach(el => observer.observe(el));
-
-    return observer
-}
-
-
-initScrollAnimation();
-
 const card_block_swiper = new Swiper('#card-block' , {
     slidesPerView: 3.5,
     spaceBetween: 10,
