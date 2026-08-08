@@ -120,12 +120,6 @@ let CategoryMenu = (action) => {
     }
 }
 
-const SearchClickHandler = (e) => {
-    if (!searchbox.contains(e.target) && !searchSuggest.contains(e.target)) {
-        Search_action(false)
-    }
-}
-
 let Search_action = (action) => {
     if (action === true) {
         searchbox.classList.replace('hidden' ,'flex')
@@ -832,25 +826,30 @@ let ApplyDiscount = () => {
 let deferredPrompt = null;
 
 const installBtn = document.getElementById('install-app-btn');
+let spinner = document.getElementById('spinner')
+if (installBtn) {
+    spinner.style.display = 'block'
+    installBtn.style.display = 'none'
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        installBtn.style.display = 'flex';
+        spinner.style.display = 'none'
+    });
 
-installBtn.style.display = 'none';
+    installBtn.addEventListener('click', async () => {
+        if (!deferredPrompt) {
+            return;
+        }
+        deferredPrompt.prompt();
+        const {outcome} = await deferredPrompt.userChoice;
+        console.log('Install result:', outcome);
+        deferredPrompt = null;
+        installBtn.style.display = 'none';
+        spinner.style.display = 'none'
 
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    installBtn.style.display = 'flex';
-});
-
-installBtn.addEventListener('click', async () => {
-    if (!deferredPrompt) {
-        return;
-    }
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    console.log('Install result:', outcome);
-    deferredPrompt = null;
-    installBtn.style.display = 'none';
-});
+    });
+}
 
 const popupClickHandlerWeight = (e) => {
     let popup = document.getElementById('popup-form')
@@ -881,3 +880,39 @@ let PopUpWeight = (type ,action) => {
             } ,100)
         }
 }
+
+function initScrollAnimation(options = {}) {
+    const {
+        selector = '.animate-on-scroll',
+        activeClass = 'active',
+        threshold = 0.2,
+        rootMargin = '0px 0px -200px 0px',
+        once = true
+    } = options;
+
+    const elements = document.querySelectorAll(selector);
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add(activeClass);
+
+                if (once) {
+                    observer.unobserve(entry.target);
+                }
+            } else if (!once) {
+                entry.target.classList.remove(activeClass);
+            }
+        });
+    }, {
+        threshold: threshold,
+        rootMargin: rootMargin
+    });
+
+    elements.forEach(el => observer.observe(el));
+
+    return observer
+}
+
+
+initScrollAnimation();
