@@ -348,7 +348,7 @@ input[type="number"] {
 
     body .searchbox {
         width: 95%;
-        animation: OpenSearch_Mobile 1s;
+        animation: OpenSearch_Mobile .3s;
     }
 
     body .search-suggest {
@@ -1127,31 +1127,12 @@ input[type="number"] {
 
 @keyframes OpenSearch_Mobile {
     0% {
-        width: 10%;
-        border-radius: 50%;
-        top: -300px;
-        background-color: #fff;
-    }
-    29% {
-        width: 10%;
-        border-radius: 50%;
-        background-color: #fff;
-    }
-    30% {
-        top: 50px;
-        width: 10%;
-        border-radius: 30px;
-    }
-    50% {
-        top: 5px;
-        height: 60px;
-    }
-    70% {
-        width: 101%;
+        top: -200px;
+        transform: scale(50%);
     }
     100% {
         top: 10px;
-        width: 95%;
+        transform: none;
     }
 }
 
