@@ -120,6 +120,11 @@ let CategoryMenu = (action) => {
     }
 }
 
+const SearchClickHandler = (e) => {
+    if (!searchbox.contains(e.target) && !searchSuggest.contains(e.target)) {
+        Search_action(false)
+    }
+}
 
 let Search_action = (action) => {
     if (action === true) {
@@ -130,6 +135,9 @@ let Search_action = (action) => {
         searchinput.addEventListener('input' ,() => Search(false))
         document.body.style = 'overflow-y: hidden;'
         searchinput.focus()
+        setTimeout(() => {
+            document.addEventListener('click', SearchClickHandler)
+        }, 200)
     } else {
         searchbox.classList.replace('flex' ,'hidden')
         overlay.classList.replace('flex' ,'hidden')
@@ -138,6 +146,9 @@ let Search_action = (action) => {
         searchinput.removeEventListener('input' ,() => Search(false))
         HeaderManage()
         document.body.style = 'overflow-y: scroll;'
+        setTimeout(() => {
+            document.removeEventListener('click', SearchClickHandler)
+        }, 200)
     }
 }
 

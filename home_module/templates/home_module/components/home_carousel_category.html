@@ -17,4 +17,23 @@
         که نیاز داری!
     </p>
     <p class="mt-1 text-[var(--color10)]"> از برنج طارم و پسته بگیر تاااا شکلات ، گز و سوهان و ...</p>
+    <div class="home-carousel-category mt-3">
+        {% for cat in category %}
+            <a href="{{ cat.get_absolute_url }}" class="home-carousel-category-card">
+                <div class="text-center">
+                    <div class="centerbox">
+                        <div class="home-carousel-category-emoji bg-[var(--color12)] text-2xl pt-1.5 w-15 h-15 rounded-2xl centerbox items-center">
+                            {{ cat.emoji }}
+                        </div>
+                    </div>
+                    <h4 class="mt-3 font-semibold w-[100%]">{{ cat.title }}</h4>
+                    <p class="text-[var(--color10)] text-sm">
+                        {% for sub in cat.subcategory.all|slice:'2' %}
+                            {{ sub.title }} {% if not forloop.last %}،{% else %} و ...{% endif %}
+                        {% endfor %}
+                    </p>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
 </div>

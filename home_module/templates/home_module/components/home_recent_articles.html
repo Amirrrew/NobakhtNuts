@@ -1,22 +1,29 @@
 {% load poll_extras %}
+{% load static %}
 
-<div class="w-[90%] animate-on-scroll">
-    <div class="flex justify-between relative mt-30">
-        <div class="">
+<div class="w-[90%] animate-on-scroll mt-35">
+    <div class="flex justify-between w-[100%] relative">
+        <div>
             <div class="home-pill">
-                <img style="width: 24px;" class="mt-[-5px]" loading="eager" alt="{{ card_block.seo_title }}" src="{% if card_block.icon %}{{ card_block.icon.url }}{% endif %}">
-                <h3 class="sr-only">{{ card_block.seo_name }}</h3>
-                <p class="">{{ card_block.title }}</p>
+                <svg id="Paper" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M14.5401 8.341V3.681L19.0101 8.341H14.5401ZM15.0301 2.25H4.08008V21.75H20.4201V7.87L15.0301 2.25Z" fill="#674d45"></path>
+                <path d="M15.2468 17.052H8.30276V15.552H15.2468V17.052Z" fill="#674d45"></path>
+                <path d="M13.1848 13.269H8.30176V11.769H13.1848V13.269Z" fill="#674d45"></path>
+                </svg>
+                <p>مقالات اخیر</p>
+                <h4 class="sr-only">مقالات اخیر برنج و خشکبار نوبخت</h4>
             </div>
-            <p class="text-5xl font-semibold mt-3">
-                جلو تلویزیون دستت
-                <em class="home-landing-highlight">خالی</em>
-                نباشه!
+            <p class="font-semibold text-5xl mt-3">
+                <em class="home-landing-highlight">خواندنی</em>
+                های
+                اخیر
             </p>
-            <p class="text-[var(--color10)] mt-1">آجیل های تازه مناسب برای هرجا، هرکس و هر کاری...</p>
+            <h4 class="mt-2 text-[var(--color10)]">
+                مقالاتی که شاید به شما کمک کنند. مثلا طرز تهیه برنج مجلسی و ...
+            </h4>
         </div>
         <div class="btn-carousel-category absolute bottom-0 left-0 flex gap-1">
-            <button id="card-swiper-button-prev" class="btn-slider h-10 px-2 gap-2">
+            <button id="btn-article-carousel-prev" class="btn-slider h-10 px-2 gap-2">
                 <svg id="Arrow - Left" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                     <g id="Iconly/Bulk/Arrow---Left" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
                         <g id="Arrow---Left" transform="translate(12.000000, 12.000000) rotate(-90.000000) translate(-12.000000, -12.000000) translate(6.000000, 3.000000)" fill="#674d45" fill-rule="nonzero">
@@ -26,7 +33,7 @@
                     </g>
                 </svg>
             </button>
-            <button id="card-swiper-button-next" class="btn-slider h-10 px-2 gap-2">
+            <button id="btn-article-carousel-next" class="btn-slider h-10 px-2 gap-2">
                 <svg id="Arrow - Left" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                     <g id="Iconly/Bulk/Arrow---Left" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
                         <g id="Arrow---Left" transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) translate(6.000000, 3.000000)" fill="#674d45" fill-rule="nonzero">
@@ -36,7 +43,7 @@
                     </g>
                 </svg>
             </button>
-            <a href="{{ card_block.url_category.get_absolute_url }}" id="tn-carousel-category" class="btn-defIconFlex gap-1">
+            <a href="{% url 'article_grid' %}" id="tn-carousel-category" class="btn-defIconFlex gap-1">
                 <svg class="mt-[-2px]" id="More Circle" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.051 2.78467 2.5 5.33567 2.5 12.5347C2.5 19.7327 5.051 22.2847 12.25 22.2847C19.449 22.2847 22 19.7327 22 12.5347C22 5.33567 19.449 2.78467 12.25 2.78467Z" fill="#c5b8b4"></path>
                 <path d="M14.4592 14.4346C14.4592 14.9876 14.9112 15.4346 15.4632 15.4346C16.0152 15.4346 16.4632 14.9876 16.4632 14.4346C16.4632 13.8816 16.0152 13.4346 15.4632 13.4346H15.4542C14.9022 13.4346 14.4592 13.8816 14.4592 14.4346Z" fill="#c5b8b4"></path>
@@ -47,20 +54,10 @@
             </a>
         </div>
     </div>
-    <div class="swiper card-block mt-3" id="card-block">
-        <div class="swiper-wrapper" style="height: 150px">
-            {% for card in card_block.cardblock_set.all %}
-                <a href="{{ card.category.get_absolute_url }}" class="swiper-slide home-card">
-                    <div class="h-[100%] flex justify-between items-center mr-10">
-                        <div>
-                            <h4 class="text-3xl home-card-title font-semibold">{{ card.category.title }}</h4>
-                            <p class="text-[var(--color10)] mt-1"> شامل {{ card.products_count|to_fanum }} محصول</p>
-                        </div>
-                        <div class="w-[50%] home-card-imgbox absolute bottom-0 left-0">
-                            <img class="w-[100%] home-card-img" alt="{{ card.category.title }}" loading="eager" src="{% if card.cover %}{{ card.cover.url }}{% endif %}">
-                        </div>
-                    </div>
-                </a>
+    <div class="swiper mt-3" id="article-swiper">
+        <div class="swiper-wrapper" style="height: 480px">
+            {% for article in articles %}
+                {% include 'article_module/include/article_card_slide.html' %}
             {% endfor %}
         </div>
     </div>

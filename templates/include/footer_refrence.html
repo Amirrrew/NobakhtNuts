@@ -1,36 +1,20 @@
 {% load static %}    
 <footer id="footer">
         <div class="footer-inner">
-            <div class="centerbox">
-                <div style="margin-top: -70px;color: var(--color6); background-color: var(--color-footer); border: 2px solid var(--color11)" class="footer-infobox flex rounded-4xl justify-between w-[95%]">
-                    <div class="footer-info flex gap-3">
-                        <div class="footer-logo centerbox items-center mr-4">
-                            <a href="{% url 'home' %}"><img loading="lazy" style="min-width: 100px; max-width: 100px; min-height: 100px; max-height: 100px;" class="" src="{% static 'media/logo/favicon-32x32.webp' %}" alt="لوگو برنج و خشکبار نوبخت"></a>
-                        </div>
-                        <div style="margin: 20px 0">
-                            <h1 class="text-2xl font-bold">برنج و خشکبار نوبخت، فروشگاه تخصصی برنج و خشکبار</h1>
-                            <div class="footer-info-text">
-                                <h4 class=" max-w-150 text-[var(--color6)] text-sm">برنج و خشکبار نوبخت، فروشگاهی کیفیت محور واقع در شهر قائمشهر است که در حوزه برنج، آجیل، خشکبار و ... فعالیت میکند. در طی بیش از 20 سال سابقه ای که تا به حال داشتیم، سعی کردیم بهترین کیفیت را در محصولات خود ارائه دهیم و رضایت مشتری را در صدر اولویت های خود قرار دادیم. اکنون، در این فصل از حضورمان در بازار، وبسایتی تاسیس کرده ایم که بتوانیم به تمام چه در قائمشهر، چه در سراسر کشور خدمات غیرحضوری خود را ارائه دهیم.</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-3 bg-[var(--color6)] m-3 rounded-2xl webapp-install">
-                        <h4 class="text-center font-semibold text-2xl mx-3 px-2 text-nowrap" style="color: var(--color15);">وب اپلیکیشن</h4>
-                        <button id="install-app-btn" class="btn-defIconFlex2 centerbox gap-2" style="height: calc(100% - 40px); width: 100%; margin-top: 10px; align-items: center">
-                            <svg id="Download" class="" width="30px" height="30px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                <g id="Iconly/Bulk/Download" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
-                                    <g id="Download" transform="translate(2.000000, 2.500000)" fill="#c5b8b4" fill-rule="nonzero">
-                                        <path d="M2.8980937,6.3440937 C2.8980937,3.8930937 4.95788916,1.8980937 7.48952749,1.8980937 L12.5218298,1.8980937 C15.0472732,1.8980937 17.1019063,3.8880937 17.1019063,6.3340937 L17.1019063,17.4500937 C17.1019063,19.9020937 15.0431433,21.8980937 12.511505,21.8980937 L7.4792027,21.8980937 C4.95375924,21.8980937 2.8980937,19.9070937 2.8980937,17.4600937 L2.8980937,16.5200937 L2.8980937,6.3440937 Z" id="Fill-1" opacity="0.400000006" transform="translate(10.000000, 11.898094) rotate(-270.000000) translate(-10.000000, -11.898094) "></path>
-                                        <path d="M16.6539903,6.3383567 L13.6860827,3.4293567 C13.379338,3.1293567 12.8857024,3.1293567 12.5799734,3.4313567 C12.2752601,3.7333567 12.2762758,4.2203567 12.5820048,4.5203567 L14.2071425,6.1133567 L3.89869141,6.1133567 C3.46701423,6.1133567 3.11659393,6.4583567 3.11659393,6.8843567 C3.11659393,7.3093567 3.46701423,7.6533567 3.89869141,7.6533567 L14.2071425,7.6533567 L12.5820048,9.2473567 C12.2762758,9.5473567 12.2752601,10.0343567 12.5799734,10.3363567 C12.7333458,10.4873567 12.9334409,10.5633567 13.1345516,10.5633567 C13.333631,10.5633567 13.5337261,10.4873567 13.6860827,10.3383567 L16.6539903,7.4293567 C16.8012684,7.2843567 16.8845567,7.0883567 16.8845567,6.8843567 C16.8845567,6.6793567 16.8012684,6.4833567 16.6539903,6.3383567" id="Fill-4" transform="translate(10.000575, 6.883981) rotate(-270.000000) translate(-10.000575, -6.883981) "></path>
-                                    </g>
-                                </g>
-                            </svg>
-                            <div class="text-[var(--color3)] text-xl"> نصب وب اپلیکیشن</div>
-                        </button>
-                    </div>
+            <div class="flex justify-start mt-20 gap-20 flex-wrap items-start" style="padding: 0 40px;">
+                <div>
+                    <a href="{% url 'home' %}" class="w-fit">
+                        <img class="w-20" src="{% static 'media/logo/favicon-32x32.webp' %}" alt="nobakhtnuts-logo">
+                    </a>
+                    <div class="text-3xl" style="color: #fff">برنج و خشکبار نوبخت</div>
+                    <p class="w-80">برنج و خشکبار نوبخت، فروشگاهی کیفیت محور واقع در شهر قائمشهر با بیش از 20 سال سابقه است که در حوزه برنج، آجیل، خشکبار و ... فعالیت میکند.</p>
+                    <ul class=" flex gap-1.5 mt-1 text-2xl">
+                        {% for support in support_ways %}
+                            <a target="_blank" href="{% if support.icon == 'fa fa-phone' %}tel:{% endif %}{{ support.opt1 }}"><li><i class="{{ support.icon }}"></i></a></li>
+                        {% endfor %}
+                    </ul>
                 </div>
-            </div>
-            <div class="flex justify-start mt-10 gap-20 flex-wrap items-start" style="padding: 0 40px;">
+
                 {% for foot in footers %}
                     <div>
                         <div class="text-2xl text-stone-300">{{ foot.title }}</div>
@@ -42,20 +26,11 @@
                     </div>
                 {% endfor %}
 
-                <div>
-                    <div class="text-2xl text-stone-300">راه های ارتباطی</div>
-                    <ul class=" flex gap-1.5 mt-1 text-4xl">
-                        {% for support in support_ways %}
-                            <a target="_blank" href="{% if support.icon == 'fa fa-phone' %}tel:{% endif %}{{ support.opt1 }}"><li><i class="{{ support.icon }}"></i></a></li>
-                        {% endfor %}
-                    </ul>
-                </div>
-
-                <div class="bg-[var(--color9)] p-3 rounded-2xl">
+                <div class="bg-[var(--color9)] p-2 rounded-2xl">
                     <a referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=753588&Code=zdMmqMZco4lMyV1lBgI6DUjZPlSN4pYf'><img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=753588&Code=zdMmqMZco4lMyV1lBgI6DUjZPlSN4pYf' alt='' style='cursor:pointer' code='zdMmqMZco4lMyV1lBgI6DUjZPlSN4pYf'></a>
                 </div>
             </div>
-            <div class="py-2 pr-4 gap-1 flex mt-4" style="background-color: rgba(14,13,11,0.35)">
+            <div class="py-2 pr-4 gap-1 flex mt-4" style="background-color: rgb(33, 26, 26);">
                 <svg class="mt-[-2px]" id="Location" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.5C7.839 2.5 4.25 6.133 4.25 10.599C4.25 16.007 8.904 21.5 12.25 21.5C15.595 21.5 20.25 16.007 20.25 10.599C20.25 6.133 16.661 2.5 12.25 2.5Z" fill="#c5b8b4"></path>
                 <path d="M9.39697 10.7102C9.39697 12.2892 10.681 13.5732 12.26 13.5732C13.839 13.5732 15.124 12.2892 15.124 10.7102C15.124 9.13117 13.839 7.84717 12.26 7.84717C10.681 7.84717 9.39697 9.13117 9.39697 10.7102Z" fill="#c5b8b4"></path>
@@ -64,74 +39,7 @@
                     <a target="_blank" href="https://maps.app.goo.gl/sM1kGk2u9EJi7UWs5">مازندران ،قائمشهر ،خیابان جویبار(دکتر شریعتی) ،روبروی خزر 11 ،برنج و خشکبار نوبخت</a>
                 </h4>
             </div>
-            <div class="flex justify-center flex-wrap bg-dark gap-20 py-5" style="background-color: rgb(33, 26, 26);">
-                <div class="flex">
-                    <svg id="Star" width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12.25 2.75C13.4203 7.28687 16.9631 10.8297 21.5 12C16.9631 13.1703 13.4203 16.7131 12.25 21.25C11.0797 16.7131 7.53687 13.1703 3 12C7.53687 10.8297 11.0797 7.28687 12.25 2.75Z" stroke="#c5b8b4" stroke-width="1.5" stroke-linecap="round"></path>
-                    <path opacity="0.4" d="M19.0013 2.75C19.0013 3.8975 20.3206 5.24836 21.4996 5.24836C20.2752 5.24836 19.0013 6.58523 19.0013 7.74671C19.0013 6.57766 17.648 5.24836 16.5029 5.24836C17.6934 5.24836 19.0013 3.8975 19.0013 2.75Z" stroke="#c5b8b4" stroke-width="1.5" stroke-linecap="round"></path>
-                    </svg>
-                    <div>
-                        <div class="text-white text-xl">
-                            کیفیت بی نظیر
-                        </div>
-                        <div>
-                            بهترین کیفیت ممکن در محصولات
-                        </div>
-                    </div>
-                </div>
-                <div class="flex gap-1">
-                    <svg id="Message" width="50px" height="50px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                        <g id="Iconly/Bulk/Message" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
-                            <g id="Group" transform="translate(1.999900, 2.999600)" fill="#c5b8b4" fill-rule="nonzero">
-                                <path d="M20,12.9406 C20,15.7306 17.76,17.9906 14.97,18.0006 L14.96,18.0006 L5.05,18.0006 C2.27,18.0006 0,15.7506 0,12.9606 L0,12.9506 C0,12.9506 0.006,8.5246 0.014,6.2986 C0.015,5.8806 0.495,5.6466 0.822,5.9066 C3.198,7.7916 7.447,11.2286 7.5,11.2736 C8.21,11.8426 9.11,12.1636 10.03,12.1636 C10.95,12.1636 11.85,11.8426 12.56,11.2626 C12.613,11.2276 16.767,7.8936 19.179,5.9776 C19.507,5.7166 19.989,5.9506 19.99,6.3676 C20,8.5766 20,12.9406 20,12.9406" id="Fill-1" opacity="0.400000006"></path>
-                                <path d="M19.4761,2.674 C18.6101,1.042 16.9061,3.55271368e-15 15.0301,3.55271368e-15 L5.0501,3.55271368e-15 C3.1741,3.55271368e-15 1.4701,1.042 0.6041,2.674 C0.4101,3.039 0.5021,3.494 0.8251,3.752 L8.2501,9.691 C8.7701,10.111 9.4001,10.32 10.0301,10.32 C10.0341,10.32 10.0371,10.32 10.0401,10.32 C10.0431,10.32 10.0471,10.32 10.0501,10.32 C10.6801,10.32 11.3101,10.111 11.8301,9.691 L19.2551,3.752 C19.5781,3.494 19.6701,3.039 19.4761,2.674" id="Fill-4"></path>
-                            </g>
-                        </g>
-                    </svg>
-                    <div>
-                        <div class="text-white text-xl">
-                            امکان مرجوعی
-                        </div>
-                        <div>
-                            برگشت دادن کالا درصورت عدم رضایت
-                        </div>
-                    </div>
-                </div>
-                <div class="flex gap-1">
-                    <svg id="Calling" width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M15.7759 14.4518C14.7779 14.9378 13.9139 15.3598 11.6669 13.1128C9.42088 10.8658 9.84088 10.0028 10.3279 9.00381C11.0329 7.55581 11.3179 6.23881 8.11588 3.60181C7.35088 2.97681 6.52088 2.73681 5.65388 2.90481C3.82088 3.24781 2.52588 5.28781 2.52788 5.28781C1.71588 6.42381 0.603876 9.83981 7.77088 17.0078C12.4849 21.7228 15.5769 22.8538 17.4529 22.8538C18.4289 22.8538 19.0759 22.5478 19.4499 22.2788C19.4699 22.2668 21.5279 20.9918 21.8759 19.1228C22.0379 18.2538 21.8019 17.4268 21.1759 16.6618C18.5399 13.4628 17.2229 13.7468 15.7759 14.4518Z" fill="#c5b8b4"></path>
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M14.8605 2.36C14.4475 2.308 14.0775 2.611 14.0325 3.022C13.9865 3.434 14.2835 3.804 14.6945 3.85C18.0715 4.225 20.6935 6.845 21.0725 10.221C21.1155 10.604 21.4395 10.887 21.8165 10.887C21.8445 10.887 21.8735 10.885 21.9015 10.882C22.3125 10.837 22.6085 10.465 22.5625 10.053C22.1055 5.977 18.9385 2.813 14.8605 2.36Z" fill="#c5b8b4"></path>
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M17.5412 10.2916C17.6112 10.6496 17.9252 10.8976 18.2762 10.8976C18.3242 10.8976 18.3722 10.8936 18.4212 10.8846C18.8272 10.8056 19.0932 10.4106 19.0142 10.0046C18.6072 7.9226 17.0002 6.3156 14.9202 5.9116C14.5232 5.8326 14.1202 6.0986 14.0412 6.5056C13.9622 6.9116 14.2282 7.3056 14.6352 7.3846C16.1112 7.6716 17.2532 8.8126 17.5412 10.2916Z" fill="#c5b8b4"></path>
-                    </svg>
-                    <div>
-                        <div class="text-white text-xl">
-                            پشتیبانی 7 / 24
-                        </div>
-                        <div>
-                            پاسخ به شما در سریع ترین زمان
-                        </div>
-                    </div>
-                </div>
-                <div class="flex gap-1">
-                    <svg id="Send" width="50px" height="50px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                        <g id="Iconly/Bulk/Send" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
-                            <g id="Send" transform="translate(2.000000, 2.000000)" fill="#c5b8b4" fill-rule="nonzero">
-                                <path d="M19.4274202,0.578298605 C18.9274202,0.0672986048 18.1874202,-0.121701395 17.4974202,0.0782986048 L1.40742017,4.7272986 C0.679420165,4.9292986 0.163420165,5.5062986 0.024420165,6.2382986 C-0.117579835,6.9842986 0.378420165,7.9322986 1.02642017,8.3282986 L6.05742017,11.4002986 C6.57342017,11.7162986 7.23942017,11.6372986 7.66642017,11.2092986 L13.4274202,5.4482986 C13.7174202,5.1472986 14.1974202,5.1472986 14.4874202,5.4482986 C14.7774202,5.7372986 14.7774202,6.2082986 14.4874202,6.5082986 L8.71642017,12.2692986 C8.28842017,12.6972986 8.20842017,13.3612986 8.52342017,13.8782986 L11.5974202,18.9282986 C11.9574202,19.5272986 12.5774202,19.8682986 13.2574202,19.8682986 C13.3374202,19.8682986 13.4274202,19.8682986 13.5074202,19.8572986 C14.2874202,19.7582986 14.9074202,19.2272986 15.1374202,18.4772986 L19.9074202,2.5082986 C20.1174202,1.8282986 19.9274202,1.0882986 19.4274202,0.578298605" id="Fill-1"></path>
-                                <path d="M7.45142017,17.1421986 C7.74342017,17.4351986 7.74342017,17.9101986 7.45142017,18.2031986 L6.08542017,19.5681986 C5.93942017,19.7151986 5.74742017,19.7881986 5.55542017,19.7881986 C5.36342017,19.7881986 5.17142017,19.7151986 5.02542017,19.5681986 C4.73242017,19.2751986 4.73242017,18.8011986 5.02542017,18.5081986 L6.39042017,17.1421986 C6.68342017,16.8501986 7.15842017,16.8501986 7.45142017,17.1421986 Z M6.66772017,13.3541986 C6.95972017,13.6471986 6.95972017,14.1221986 6.66772017,14.4151986 L5.30172017,15.7801986 C5.15572017,15.9271986 4.96372017,16.0001986 4.77172017,16.0001986 C4.57972017,16.0001986 4.38772017,15.9271986 4.24172017,15.7801986 C3.94872017,15.4871986 3.94872017,15.0131986 4.24172017,14.7201986 L5.60672017,13.3541986 C5.89972017,13.0621986 6.37472017,13.0621986 6.66772017,13.3541986 Z M2.90652017,12.1617986 C3.19852017,12.4547986 3.19852017,12.9297986 2.90652017,13.2227986 L1.54052017,14.5877986 C1.39452017,14.7347986 1.20252017,14.8077986 1.01052017,14.8077986 C0.818520165,14.8077986 0.626520165,14.7347986 0.480520165,14.5877986 C0.187520165,14.2947986 0.187520165,13.8207986 0.480520165,13.5277986 L1.84552017,12.1617986 C2.13852017,11.8697986 2.61352017,11.8697986 2.90652017,12.1617986 Z" id="Combined-Shape" opacity="0.400000006"></path>
-                            </g>
-                        </g>
-                    </svg>
-                    <div>
-                        <div class="text-white text-xl">
-                            ارسال سریع
-                        </div>
-                        <div>
-                            ارسال در سریع ترین زمان ممکن
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="px-5 text-stone-500 text-center py-5" style="background-color: rgb(39, 31, 31); border-bottom-left-radius: 30px; border-bottom-right-radius: 30px">
+            <div class="px-5 text-stone-500 text-center py-5" style="background-color: rgb(39, 31, 31); ">
                <h1> © تمامی حقوق محفوظ است</h1>
                 <h3 class="text-stone-600"> {{ site_settings.version }}</h3>
             </div>
