@@ -802,24 +802,28 @@ let ApplyDiscount = () => {
     } else {
         page = 'mobile'
     }
-    loader.style = 'display: block;'
-    btn_d.classList.add('disabled')
-    code_input.classList.add('disabled')
-    fetch(`/orders/apply-code/?d=${code}&page=${page}`).then(res => res.json()).then(data=> {
-        if (data.error) {
-            error.style = "display: flex; color: var(--color5)"
-            error_text.innerHTML = data.message
-        }
-        else {
-            Message(data.message ,false)
-            PopUpOrder('none' ,'close')
-            page === 'desktop' ? payment_totalbox_partial_desktop.innerHTML = data.html : payment_totalbox_partial_mobile.innerHTML = data.html
-        }
-    }).finally(() => {
-        loader.style = 'display: none;'
-        btn_d.classList.remove('disabled')
-        code_input.classList.remove('disabled')
-    })
+    if (code.length > 5) {
+        loader.style = 'display: block;'
+        btn_d.classList.add('disabled')
+        code_input.classList.add('disabled')
+        fetch(`/orders/apply-code/?d=${code}&page=${page}`).then(res => res.json()).then(data => {
+            if (data.error) {
+                error.style = "display: flex; color: var(--color5)"
+                error_text.innerHTML = data.message
+            } else {
+                Message(data.message, false)
+                PopUpOrder('none', 'close')
+                page === 'desktop' ? payment_totalbox_partial_desktop.innerHTML = data.html : payment_totalbox_partial_mobile.innerHTML = data.html
+            }
+        }).finally(() => {
+            loader.style = 'display: none;'
+            btn_d.classList.remove('disabled')
+            code_input.classList.remove('disabled')
+        })
+    } else {
+        error.style = "display: flex; color: var(--color5)"
+        error_text.innerHTML = 'کد تخفیف را به درستی وارد کنید'
+    }
 }
 
 
@@ -852,7 +856,7 @@ if (installBtn) {
 }
 
 const popupClickHandlerWeight = (e) => {
-    let popup = document.getElementById('popup-form')
+    let popup = document.getElementById('popup-form-weight')
 
     if (!popup.contains(e.target)) {
         PopUpWeight('none', 'close')

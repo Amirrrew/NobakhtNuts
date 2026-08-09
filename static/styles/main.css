@@ -405,6 +405,11 @@ input[type="number"] {
         margin-right: 15px;
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+
+    body .bulk-buy-art:before {
+        width: 400px;
+        height: 400px;
+    }
 }
 
 @media screen and (max-width: 1000px) {
@@ -602,6 +607,16 @@ input[type="number"] {
         max-width: 100%;
         width: 100%;
         margin-top: 20px;
+    }
+
+    body .bulk-buy {
+        flex-wrap: wrap;
+        margin-top: 30px;
+    }
+
+    body .bulk-buy-art:before {
+        width: 350px;
+        height: 350px;
     }
 }
 
@@ -3350,8 +3365,7 @@ input[type='radio']:checked + label .address-unchecked-icon {
 
 .address-check:active {
     background-color: var(--color3);
-    transform: scale(0.97);
-    filter: blur(2px);
+    transform: scale(0.99);
 }
 
 .address-unchecked-icon {
@@ -4012,3 +4026,76 @@ body .swiper-pagination-bullet-active {
 .timeline-item h4{font-size:16.5px; margin-bottom:6px;}
 .timeline-item p{font-size:14px; color:var(--ink-soft); max-width:600px;}
 
+
+.bulk-buy-art {
+    width: 100%;
+    position: relative;
+    height: 500px;
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.bulk-buy-art:before {
+    content: ' ';
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background-color: var(--color11);
+    position: absolute;
+    z-index: -1;
+}
+
+.art-building {
+    transition: 200ms;
+}
+
+.art-truck {
+    transition: 200ms;
+    animation: truck-go 10s infinite;
+    position: relative;
+}
+
+.art-truck:before {
+    content: 'fwf';
+    width: 100px;
+    height: 10%;
+    position: absolute;
+    bottom: 50px;
+    background-color: #000;
+    box-shadow: 2px 2px 100px #000;
+}
+
+.art-pack {
+    animation: pack-go 10s infinite;
+}
+
+@keyframes pack-go {
+    0% ,40% ,100% {
+        opacity: 0;
+    }
+    50% ,80% {
+        opacity: 1;
+    }
+}
+
+
+@keyframes truck-go {
+    0% {
+        right: -50%;
+    }
+    40% {
+        right: 60%;
+    }
+    70% {
+        right: 60%;
+    }
+    99.99% {
+        right: 200%;
+    }
+    100% {
+        right: -50%;
+    }
+}

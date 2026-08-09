@@ -1,0 +1,56 @@
+{% extends 'index.html' %}
+{% load poll_extras %}
+{% load static %}
+
+{% block page_title %}
+     | خرید عمده و سازمانی
+{% endblock %}
+
+{% block topbar_title %}
+    خرید عمده و سازمانی
+{% endblock %}
+
+{% block page_content %}
+    <div class=" centerbox">
+        <div class="flex justify-between mt-35 w-[90%] bulk-buy" style="direction: ltr">
+            <div class="bulk-buy-art">
+                <img class="art-building" alt="bulk-buy-animation" src="{% static 'media/icons/building.png' %}" style="width: 120px">
+                <img class="art-truck" alt="truck" style="width: 150px; position: absolute; bottom: 30px" src="{% static 'media/icons/truck.png' %}">
+                <img class="art-pack" alt="package" style="width: 50px; position:absolute; bottom: 10px;" src="{% static 'media/icons/package.webp' %}">
+            </div>
+            <div class="w-[100%]" style="direction: rtl">
+                <div class="home-pill text-nowrap">
+                    <svg id="Bag 2" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M7.71924 7.1229C7.72523 4.62077 9.75766 2.5969 12.2607 2.60169C14.7624 2.60768 16.7865 4.64056 16.7812 7.14222V10.1737C16.7812 10.5879 16.4455 10.9237 16.0312 10.9237C15.617 10.9237 15.2812 10.5879 15.2812 10.1737V7.14169L15.2812 7.1399C15.2852 5.46626 13.9315 4.10589 12.2578 4.10169C10.5833 4.09868 9.2237 5.45228 9.21924 7.12564V10.1737C9.21924 10.5879 8.88345 10.9237 8.46924 10.9237C8.05502 10.9237 7.71924 10.5879 7.71924 10.1737L7.71924 7.1229Z" fill="#674d45"></path>
+                        <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M4.89578 9.00122C6.44852 7.78592 8.85701 7.35071 12.25 7.35071C15.6429 7.35071 18.0514 7.78592 19.6041 9.00122C21.1949 10.2463 21.769 12.2069 21.769 14.9097C21.769 17.6121 21.1949 19.5724 19.6041 20.8173C18.0514 22.0325 15.6429 22.4677 12.25 22.4677C8.857 22.4677 6.44853 22.0325 4.89581 20.8173C3.30504 19.5724 2.73096 17.6121 2.73096 14.9097C2.73096 12.2069 3.30502 10.2463 4.89578 9.00122Z" fill="#674d45"></path>
+                    </svg>
+                    <div>
+                        خرید عمده / سازمانی
+                    </div>
+                </div>
+                <h1 style="animation: load8 400ms" class="mt-3 relative text-7xl font-semibold">خرید عمده برای
+                    <em class="home-landing-highlight">رستوران</em>
+                    ها و شرکت ها
+                </h1>
+                <div  style="max-width: 80%; animation: load8 600ms" class="relative">
+                    <p>
+                        اگر که قصد خرید عمده برای رستوران ،شرکت ،مغازه و ... را دارید، ما آماده هستیم که محصولاتمان را با قیمتی مناسب تر به شما ارائه دهیم.
+                    </p>
+                    <p>
+                        محصولاتی مانند برنج، حبوبات ،انواع کشمش و زرشک، انواع ادویه و دیگر اقلامی که در این کار ها استفاده میشوند.
+                    </p>
+                    <p>
+                        اگر که تمایل همکاری دارید میتوانید با استفاده از شماره تلفن زیر باما تماس بگیرید.
+                    </p>
+                    <div class="flex gap-2 mt-3 bg-[var(--color12)] items-center w-fit px-5 py-2 rounded-2xl">
+                        <svg class="mt-[-4px]" id="Call" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M21.4974 16.4125C18.8594 13.2125 17.5444 13.4995 16.0984 14.2025C15.0974 14.6885 14.2334 15.1105 11.9874 12.8635C9.74141 10.6165 10.1624 9.75354 10.6484 8.75454C11.3534 7.30754 11.6394 5.98954 8.43641 3.35254C7.67341 2.72754 6.84141 2.48754 5.97541 2.65554C4.14241 2.99854 2.84741 5.03854 2.84941 5.03854C2.03741 6.17454 0.925409 9.59054 8.09241 16.7585C12.8064 21.4735 15.8974 22.6045 17.7734 22.6045C18.7504 22.6045 19.3964 22.2985 19.7704 22.0295C19.7914 22.0175 21.8494 20.7425 22.1964 18.8735C22.3584 18.0045 22.1234 17.1775 21.4974 16.4125Z" fill="#674d45"></path>
+                        </svg>
+                        <div class="border-l border-[var(--color9)] h-4"></div>
+                        <a href="tel:09119250393" style="direction: ltr" class="mt-0.5 text-xl">{{  '0911 925 0393'|to_fanum }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

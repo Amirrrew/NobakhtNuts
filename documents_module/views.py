@@ -24,3 +24,6 @@ class FAQ(ListView):
 
 class Policies(TemplateView):
     template_name = 'documents_module/policies.html'
+
+class BulkBuy(TemplateView):
+    template_name = 'documents_module/bulk-buy.html'
