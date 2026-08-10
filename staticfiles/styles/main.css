@@ -30,8 +30,8 @@ html {
 
 @font-face {
     font-family: darbareh;
-    src: url(../font/darbarehFaNumWeb-Light.woff2);
-    font-weight: 500;
+    src: url(../font/darbarehFaNumWeb-Regular.woff2);
+    font-weight: 600;
     font-display: swap;
     font-style: normal;
 }
@@ -3851,11 +3851,12 @@ body .swiper-pagination-bullet-active {
 
 .home-landing-highlight {
     font-style: normal;
+    display: inline-block;
     color: var(--color6);
     font-weight: 600;
     position: relative;
     z-index: 5;
-    text-wrap: nowrap;
+    white-space: nowrap;
     font-family: darbareh;
 }
 
