@@ -23,7 +23,7 @@ sitemaps = {
 
 urlpatterns = [
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps ,'template_name': 'sitemap/custom_sitemap.xml'}, name='sitemap'),
-    path('admin/', admin.site.urls),
+    path('admin-nbnadmin-586187/', admin.site.urls),
     path('adminpanel/' ,include('adminpanel_module.url')),
     path('' , include('home_module.url')),
     path('accounts/' ,include('account_module.url')),
