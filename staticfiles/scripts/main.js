@@ -582,7 +582,9 @@ let AddToOrder = (productId ,isWeight ,pack_id) => {
                 });
                 PrdNav(true)
             }
-        }).finally(()=> {
+        }).catch(err => {
+            Message('افزودن به سبد خرید با خطا مواجه شد' ,true)
+    }).finally(()=> {
             document.getElementById('pack-weights').classList.remove('disabled')
             if (pack_id) {
                 PopUpWeight('none' ,'close')
@@ -610,9 +612,11 @@ let change_order_count = (detail_id ,type ,page ,pack) => {
                 item.innerHTML = data.html;
             });
         }
-    }).finally(()=> {
+    }).catch(err => {
+            Message('بروزرسانی سبد با خطا مواجه شد', true)
+        }).finally(()=> {
         document.getElementById('loader').style = 'display: none;'
-        })
+    })
 }
 
 // منوی نویگیشن و قیمت محصول موبایل
@@ -753,6 +757,8 @@ let Get_orderdetail_packs = (detail_id) => {
         } else {
             Message('در دریافت اطلاعات مشکلی پیش آمده!' ,true)
         }
+    }).catch(err => {
+            Message('دریافت اطلاعات با خطا مواجه شد' ,true)
     }).finally(()=> {
         loader.style = 'display: none;'
         let content = document.getElementById('inventory-content')
@@ -820,6 +826,8 @@ let ApplyDiscount = () => {
                 PopUpOrder('none', 'close')
                 page === 'desktop' ? payment_totalbox_partial_desktop.innerHTML = data.html : payment_totalbox_partial_mobile.innerHTML = data.html
             }
+        }).catch(err => {
+            Message('اعمال کد تخفیف با خطا مواجه شد' ,true)
         }).finally(() => {
             loader.style = 'display: none;'
             btn_d.classList.remove('disabled')
