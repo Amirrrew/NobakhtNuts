@@ -293,38 +293,43 @@ let SideMenu = (action ,element ,type) => {
     }
 }
 
+const dialogClickHandler = (e) => {
+    let popup = document.getElementById('dialog')
+
+    if (!popup.contains(e.target)) {
+        CloseDialog()
+    }
+}
 
 // باز کردن مودال بله خیر
 let OpenDialog = (dialogtext ,dialogurl) => {
+    let parent = document.getElementById('dialog-parent')
     let dialog = document.getElementById('dialog')
-    dialog.style.top = "10px"
-    dialog.style.animation = "ShowDialog 3s"
 
-    dialoghtml = `
-                <div class="centerbox" style="margin-top: 30px">
-                    <div class="">
-                        <div class="centerbox">
-                            <svg id="Danger" width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M19.3101 10.6927L19.0981 10.3187C16.1121 5.00867 14.2561 3.03467 12.2501 3.03467C10.2441 3.03467 8.38808 5.00867 5.40208 10.3187L5.19108 10.6927C4.11808 12.5747 1.88808 16.4897 2.30208 18.8257C2.79008 21.5887 5.63508 22.0347 12.2501 22.0347C18.8661 22.0347 21.7111 21.5887 22.1981 18.8257C22.6121 16.4897 20.3821 12.5747 19.3101 10.6927Z" fill="#674d45"></path>
-                            <path d="M11.5005 16.4297C11.5005 16.8437 11.8405 17.1797 12.2545 17.1797C12.6685 17.1797 13.0045 16.8437 13.0045 16.4297C13.0045 16.0157 12.6685 15.6797 12.2545 15.6797H12.2455C11.8315 15.6797 11.5005 16.0157 11.5005 16.4297Z" fill="#674d45"></path>
-                            <path d="M12.2495 8.28467C11.8355 8.28467 11.4995 8.62067 11.4995 9.03467V12.9297C11.4995 13.3437 11.8355 13.6797 12.2495 13.6797C12.6635 13.6797 12.9995 13.3437 12.9995 12.9297V9.03467C12.9995 8.62067 12.6635 8.28467 12.2495 8.28467Z" fill="#674d45"></path>
-                            </svg>
-                        </div>
-                        <div style="margin-top: 20px; color: var(--color6)">
-                            ${dialogtext}
-                        </div>
-                    </div>
-                </div>
-                <div style="padding: 10px">
-                    <div style="display: flex; position:fixed; bottom: 10px; width: 100%; gap: 10px">
-                        <a href="${dialogurl}" style="width: 47%"><button class="btn-defIconFlex text-center" style="width: 100%; height: 50px; font-size: 17px; display: block" onclick="CloseDialog()"><i class="fa fa-trash ml-1 text-[var(--color10)]"></i>حذف</button></a>
-                        <button id="btn-dialog" class="btn-defIconFlex2" style="width: 45%; height: 50px; border-radius: 10px; display: block" onclick="CloseDialog()">لغو</button>
-                    </div>
-                </div>
-            `
+    document.getElementById('dialog-text').innerHTML = dialogtext
+    document.getElementById('dialog-btn').href = dialogurl
 
-    dialog.innerHTML = dialoghtml
+    window.innerWidth > 1130 ? parent.style = 'display: flex; align-items:center;' :parent.style = 'display: flex; align-items:end;'
+    document.body.style.overflowY = 'hidden'
+    window.innerWidth < 1130 ? dialog.style = 'animation: popup-mobile 300ms': null
+    setTimeout(() => {
+        document.addEventListener('click', dialogClickHandler)
+    }, 200)
+
 }
+
+function CloseDialog() {
+    let dialog = document.getElementById('dialog')
+    let parent = document.getElementById('dialog-parent')
+    window.innerWidth < 1130 ? dialog.style = 'animation: popup-mobile-close 300ms' : dialog.style = 'animation: unload4 200ms'
+    setTimeout(()=> {
+        parent.style = 'display: none'
+        dialog.style = 'animation: load5 300ms;'
+        document.body.style.overflowY = 'scroll'
+        document.removeEventListener('click', dialogClickHandler)
+    } ,100)
+}
+
 
 // ست کردن عکس روی اینپوت آپلود عکس ها
 let SetUploadedImage = (event, parentElement) => {

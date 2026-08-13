@@ -51,8 +51,14 @@
 
 
                     {% if product.packs and product.is_byWeight %}
-                        <div class="text-[var(--color10)] mt-5">
-                            اندازه بسته بندی را انتخاب کنید
+                        <div class="text-[var(--color10)] mt-5 flex justify-between">
+                            <p>اندازه بسته بندی را انتخاب کنید</p>
+                            <div onclick="PopUpGuide('none' ,'open')" class="flex gap-1 cursor-pointer text-[var(--color2)]">
+                                <i class="fa fa-question-circle mt-0.5 text-xs text-[var(--color14)]"></i>
+                                <div class="hover-underline text-sm">
+                                    مقدار بیشتر میخوام
+                                </div>
+                            </div>
                         </div>
                         <div class="choose-weight-desktop flex flex-wrap gap-2 mt-1">
                             {% for pack in product.packs.all %}

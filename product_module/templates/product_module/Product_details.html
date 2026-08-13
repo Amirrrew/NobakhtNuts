@@ -24,6 +24,7 @@
     {% include 'product_module/include/popup-choose-weight.html' %}
     {% include 'message_cart_json.html' %}
     {% include 'include/photo_gallery.html' %}
+    {% include 'product_module/include/popup-guide.html' %}
     <div class="product-detail-box mt-40 centerbox">
 
         <div class="product-detail w-[95%]">
@@ -218,8 +219,36 @@
         }
     }
 
+    const popupClickHandlerGuide = (e) => {
+        let popup = document.getElementById('popup-form-guide')
 
+        if (!popup.contains(e.target)) {
+            PopUpGuide('none', 'close')
+        }
+    }
 
+    let PopUpGuide = (type ,action) => {
+        PopUpWeight('none' ,'close')
+        let parent = document.getElementById('popup-parent-guide')
+        let popup = document.getElementById('popup-form-guide')
+
+            if (action === 'open') {
+                window.innerWidth > 1130 ? parent.style = 'display: flex; align-items:center;' :parent.style = 'display: flex; align-items:end;'
+                document.body.style.overflowY = 'hidden'
+                window.innerWidth < 1130 ? popup.style = 'animation: popup-mobile 300ms': null
+                setTimeout(() => {
+                    document.addEventListener('click', popupClickHandlerGuide)
+                }, 200)
+            } else {
+                window.innerWidth < 1130 ? popup.style = 'animation: popup-mobile-close 300ms' : popup.style = 'animation: unload4 200ms'
+                setTimeout(()=> {
+                    parent.style = 'display: none'
+                    popup.style = 'animation: load5 300ms;'
+                    document.body.style.overflowY = 'scroll'
+                    document.removeEventListener('click', popupClickHandlerGuide)
+                } ,100)
+            }
+    }
 
 
     </script>

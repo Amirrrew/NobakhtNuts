@@ -221,6 +221,7 @@ input[type="number"] {
         position: fixed;
         z-index: 100;
         background-color: #fff;
+        padding-right: 5px;
     }
 
     body .filter-list-desktop::-webkit-scrollbar {
@@ -230,7 +231,7 @@ input[type="number"] {
     body .filter-list-btns {
         position: absolute;
         bottom: 10px;
-        width: 98%;
+        width: 100%;
         padding-right: 10px;
         border-radius: 15px;
     }
@@ -238,7 +239,7 @@ input[type="number"] {
 
     .filter-list-desktop .filter-list-inner {
         margin-right: 10px;
-        height: 500px;
+        height: calc(100% - 210px);
     }
 
     .filter-list-desktop .filter-list-inner::-webkit-scrollbar {
@@ -1549,7 +1550,7 @@ body {
 }
 
 .filter-list-inner {
-    height: 400px;
+    height: calc(100% - 180px);
     overflow-y: scroll;
 }
 
@@ -1781,6 +1782,7 @@ header .category-menu {
         height: 510px;
     }
 }
+
 /* -------- header with box inside --------- */
 .header-innerbox {
     width: 98%;

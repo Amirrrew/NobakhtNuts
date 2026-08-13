@@ -12,7 +12,7 @@
                     <div id="prd-priceandstuff" class="">
                         {% if product.quantity < 6 and product.quantity > 0 %}
                             {% if product.is_byWeight %}
-                                <div class="flex mt-3 gap-2 text-[var(--color5)]">
+                                <div class="flex mt-2 gap-2 text-[var(--color5)]">
                                     <svg class="mt-[-2px]" id="Bag" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path opacity="0.4" d="M2.95996 22.6598L3.90996 7.02979H20.59L21.54 22.6598H2.95996Z" fill="#f97e7e"></path>
                                     <path d="M10.1497 4.90967C10.7797 4.27967 11.6597 3.90967 12.5497 3.90967H12.5697C14.3497 3.90967 15.7897 5.28967 15.9397 7.02967H17.4397C17.2897 4.45967 15.1697 2.40967 12.5697 2.40967H12.5497C11.2597 2.40967 9.99969 2.92967 9.08969 3.83967C8.23969 4.68967 7.74969 5.83967 7.67969 7.02967H9.17969C9.24969 6.23967 9.57969 5.46967 10.1497 4.90967Z" fill="#f97e7e"></path>
@@ -33,7 +33,7 @@
                                 </div>
                             {% endif %}
                         {% endif %}
-                        <div class="transition-all flex justify-between pt-3 w-[100%] pr-2 mb-2 relative">
+                        <div class="transition-all flex justify-between pt-2 w-[100%] pr-2 relative">
                             {% if product.offer <= 0 %}
                                 <div class="text-3xl font-bold" id="">
                                     {{ product.price|three_digits_currency }}
