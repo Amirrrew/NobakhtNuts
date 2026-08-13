@@ -142,7 +142,7 @@ body {
     /*top: 50px;*/
     background-color: #eae4e4;
     border: 2px solid var(--color9);
-    animation: load4 500ms;
+    animation: load5 300ms;
 }
 
 .popup-form-category {

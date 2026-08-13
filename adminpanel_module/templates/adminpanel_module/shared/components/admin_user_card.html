@@ -3,7 +3,7 @@
 
 <div class="user-card-admin" id="admin-profile">
     <div class="flex justify-between">
-        <div onclick="PopUp(null ,'open')" class="cursor-pointer overflow-hidden rounded-2xl border-2 border-[var(--color11)] w-15 h-15">
+        <div onclick="PopUpOrder(null ,'open')" class="cursor-pointer overflow-hidden rounded-2xl border-2 border-[var(--color11)] w-15 h-15">
             {% if user.avatar %}
                 <img class="w-[100%] h-[100%]" loading="lazy" src="{{ user.avatar.url }}" alt="{{ user }}'s avatar">
                 {% else %}

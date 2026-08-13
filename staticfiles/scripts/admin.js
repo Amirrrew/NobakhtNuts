@@ -41,20 +41,26 @@ function AdminSideAction() {
     applySidebarState();
 }
 
+
 // پاپ آپ نوتیفیکیشن
 let PopUpNotif = (type ,action) => {
     let parent = document.getElementById('popup-parent-pop-notif')
     let popup = document.getElementById('popup-form-notif')
 
     if (action === 'open') {
-        parent.style = 'display: flex'
+        window.innerWidth > 1130 ? parent.style = 'display: flex; align-items:center;' :parent.style = 'display: flex; align-items:end;'
         document.body.style.overflowY = 'hidden'
+        window.innerWidth < 1130 ? popup.style = 'animation: popup-mobile 300ms': null
+        setTimeout(() => {
+            document.addEventListener('click', popupClickHandler)
+        }, 200)
     } else {
-        popup.style = 'animation: unload3 200ms'
+        window.innerWidth < 1130 ? popup.style = 'animation: popup-mobile-close 300ms' : popup.style = 'animation: unload4 200ms'
         setTimeout(()=> {
             parent.style = 'display: none'
-            popup.style = 'animation: load4 500ms;'
+            popup.style = 'animation: load5 300ms;'
             document.body.style.overflowY = 'scroll'
+            document.removeEventListener('click', popupClickHandler)
         } ,100)
     }
 }

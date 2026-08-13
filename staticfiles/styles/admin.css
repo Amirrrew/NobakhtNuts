@@ -13,7 +13,7 @@ body {
     --profit-bg: #e1f8e1;
     --loss-bg: #ed8787;
     --cancel-bg: #ffd2d2;
-    --del-bg: #efbdbd;
+    --del-bg: #f1aaaa;
     --loss-dot: #731919;
     --deny-bg: #ffac89;
     --deny-text: #731919;
@@ -142,7 +142,7 @@ body {
     /*top: 50px;*/
     background-color: #eae4e4;
     border: 2px solid var(--color9);
-    animation: load4 500ms;
+    animation: load5 300ms;
 }
 
 .popup-form-category {
