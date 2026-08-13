@@ -9,7 +9,7 @@ from django.template.defaultfilters import default
 from django.urls import reverse
 from urllib3 import request
 
-from account_module.models import User, Address
+from account_module.models import User, Address, Notification
 from product_module.models import Product, PackageSize
 
 
@@ -310,6 +310,12 @@ class Order(models.Model):
             'receipt', 'status', 'is_paid', 'payment_date',
             'postage_fee', 'finalized_price'
         ])
+        new_notif = Notification(
+            title=f' سفارش شما با شماره #{self.pk} با موفقیت ثبت شد',
+            text='سفارش شما با موفقیت ثبت شد. از خرید شما سپاسگزاریم. از الان میتوانید در پنل سفارشات، وضعیت کنونی سفارشتان را بصورت بروز چک کنید.',
+            user=self.user
+        )
+        new_notif.save()
 
     @transaction.atomic
     def order_fail(self ,receipt ,status):
@@ -334,17 +340,42 @@ class Order(models.Model):
             'postage_fee', 'finalized_price'
         ])
 
+        new_notif = Notification(
+            title=f' سفارش شما با شماره #{self.pk} با شکست مواجه شد.',
+            text='سفارش شما به دلیل عدم موجود یکی از اقلام با شکست مواجه شد. متاسفیم بگوییم که شما در یک موقعیت نادر قرار گرفته اید که هنگام پرداخت، کاربری دیگر همین محصول را خریداری کرده و باعث شده که شما نتوانید سفارش خود را تکمیل کنید. لطفا سریعا باما جهت بازگشت وجه تماس بگیرید.',
+            user=self.user
+        )
+        new_notif.save()
+
     def approve_order(self):
         self.status = OrderStatus.objects.filter(title__iexact='در حال آماده سازی').first()
         self.save()
+        new_notif = Notification(
+            title='سفارش شما تایید شد!',
+            text=f'سفارش شما با شماره #{self.pk} تایید شد و در مرحله آماده سازی قرار گرفت. شما میتوانید از پنل کاربری > سفارشات من، آخرین وضعیت سفارش خود را چک کنید.',
+            user=self.user
+        )
+        new_notif.save()
 
     def send_order(self):
         self.status = OrderStatus.objects.filter(title__iexact='ارسال شده').first()
         self.save()
+        new_notif = Notification(
+            title=f'سفارش شما ارسال شده!',
+            text=f'سفارش شما با شماره #{self.pk} ارسال شد! اگر که روش ارسال را پست پیشتاز انتخاب کردید، میتوانید کد رهگیری سفارش خود را در کانال تلگرام ما ببینید.',
+            user=self.user
+        )
+        new_notif.save()
 
     def reject_order(self):
         self.status = OrderStatus.objects.filter(title__iexact='رد شده').first()
         self.save()
+        new_notif = Notification(
+            title=f'سفارش شما رد شده!',
+            text=f'سفارش شما با #{self.pk} شماره بنا به دلایلی رد شده! با شما تماس میگیرم.',
+            user=self.user
+        )
+        new_notif.save()
 
 
     def return_order(self):
@@ -366,6 +397,13 @@ class Order(models.Model):
         self.is_done = True
         self.status = OrderStatus.objects.filter(title__iexact="رد شده").first()
         self.save()
+        new_notif = Notification(
+            title=f'سفارش شما رد شده!',
+            text=f'سفارش شما با #{self.pk} شماره بنا به دلایلی رد شده! با شما تماس میگیرم.',
+            user=self.user
+        )
+        new_notif.save()
+
 
     def cancel_order(self):
         for o in self.orderdetails_set.all():
@@ -383,6 +421,12 @@ class Order(models.Model):
         self.fail_state = False
         self.status = OrderStatus.objects.filter(title__iexact='بازگشت وجه انجام شد').first()
         self.save()
+        new_notif = Notification(
+            title=f'بازگشت وجه انجام شد.',
+            text=f'بازگشت وجه #{self.pk} بابت سفارش شماره انجام شد.',
+            user=self.user
+        )
+        new_notif.save()
 
 
 

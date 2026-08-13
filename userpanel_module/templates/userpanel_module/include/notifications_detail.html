@@ -3,7 +3,7 @@
 {% load poll_extras %}
 
 {% block page_title %}
-
+    {{ notification.title }}
 {% endblock %}
 
 
@@ -15,7 +15,7 @@
             <div class=" userpanel-form address-list">
                 <div class="flex flex-wrap justify-between items-start">
                     <div class="flex gap-2">
-                        <button class="btn-prdcounter text-sm pt-1 rounded-2xl mt-2" onclick="history.back()"><i class="fa fa-angle-right"></i></button>
+                        <button class="back-btn btn-prdcounter text-sm pt-1 rounded-2xl mt-2" onclick="history.back()"><i class="fa fa-angle-right"></i></button>
                         <div class="text-xl mt-1.5 font-black">
                             {{ notification.title }}
                         </div>
