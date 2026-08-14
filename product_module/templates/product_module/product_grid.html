@@ -140,7 +140,7 @@
                     {% endfor%}
                 </div>
                 {% if products.count > 0 %}
-                <div style="{% if products.count < 3 %} grid-template-columns: repeat(4, minmax(0, 1fr)); {% endif %}" class="{% if not request.GET.q %} product-grid-grid {% else %} search-grid {% endif %} gap-3 mt-2">
+                <div style="{% if products.count < 3 %} grid-template-columns: repeat(3, minmax(0, 1fr)); {% endif %}" class="{% if not request.GET.q %} product-grid-grid {% else %} search-grid {% endif %} gap-3 mt-2">
                     {% for p in products %}
                         {% include 'product_module/include/product_card.html' %}
                     {% endfor %}
