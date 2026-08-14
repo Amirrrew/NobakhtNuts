@@ -3,7 +3,7 @@
 
 <div class="product-detail-navbox relative" style="animation: load8 400ms">
                     {% if product.brand %}
-                        <a href="/products/?brand={{ product.brand.pk }}" class="flex w-[100%] p-2 rounded-xl bg-[var(--color13)] gap-3">
+                        <a href="/products/?brand={{ product.brand.pk }}&brandgrid=1" class="flex w-[100%] p-2 rounded-xl bg-[var(--color13)] gap-3">
                             {% if product.brand.logo %}
                             <div class="bg-[var(--color8)] p-2 rounded-lg">
                                 <img loading="lazy" alt="{{ product.brand.title }}" class="w-10 h-10" src="{{ product.brand.logo.url }}">
