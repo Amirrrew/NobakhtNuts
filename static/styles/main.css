@@ -284,10 +284,6 @@ input[type="number"] {
         width: 100%;
     }
 
-    body #prd-navbar {
-        display: block;
-    }
-
     body .prd-item {
         border: 1px solid var(--color9);
     }
@@ -375,10 +371,6 @@ input[type="number"] {
 
     body .top-navigator{
         display: flex;
-    }
-
-    body .product-title {
-        display: none;
     }
 
     body .product-titlebar {
@@ -618,6 +610,21 @@ input[type="number"] {
     body .bulk-buy-art:before {
         width: 350px;
         height: 350px;
+    }
+    body #prd-navbar {
+        display: block;
+    }
+    body .product-detail-box {
+        display: none;
+    }
+    body .product-details {
+        flex-wrap: wrap;
+    }
+    body .product-details-box {
+        margin-top: 80px;
+    }
+    body .product-detail-details {
+        margin-top: -10px;
     }
 }
 
@@ -3152,9 +3159,9 @@ footer {
 }
 
 .prd-photo-gallery {
-    width: 500px;
+    width: 100%;
     min-width: 500px;
-    height: auto;
+    height: 100%;
     overflow-x: hidden;
     overflow-y: visible;
 }
@@ -3162,7 +3169,7 @@ footer {
 .pg-mainphoto {
     width: 100%;
     height: 500px;
-    border: 2px solid var(--color8);
+    border: 2px solid var(--color13);
     border-radius: 15px;
     cursor: pointer;
     overflow: hidden;
@@ -3241,24 +3248,24 @@ footer {
 
 
 .product-detail-navbox {
-    width: 400px;
+    width: 100%;
     height: auto;
-    background-color: var(--color12);
-    margin-top: 20px;
+    background-color: var(--color19);
+    border: 2px solid var(--color12);
+    margin-top: 10px;
     border-radius: 15px;
     position: sticky;
     top: 80px;
     padding: 10px;
-
 }
 
 .pack-size {
     cursor: pointer;
     border: 1px solid var(--color8);
-    border-radius: 10px;
+    border-radius: 15px;
     color: var(--color6);
-    background-color: var(--color11);
-    padding: 2px 5px;
+    background-color: var(--color19);
+    padding: 10px 14px;
     transition: 200ms;
     font-size: 15px;
 }

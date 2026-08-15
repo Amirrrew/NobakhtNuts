@@ -4,7 +4,7 @@
                         <div class="cart-items" id="cart-items" style="z-index: 80">
                             {% for o in basket.orderdetails_set.all %}
                                 {% if o.product.id == product.id %}
-                                <div id="prd-item" class="prd-item mt-2 p-2 bg-[var(--color13)] w-[100%] rounded-2xl relative">
+                                <div id="prd-item" class="prd-item p-2 bg-[var(--color12)] w-[100%] rounded-2xl relative">
                                     <div class="flex gap-2">
                                         <div class="bg-[var(--color11)] w-20 rounded-xl" style="overflow:hidden;">
                                             <img loading="lazy" alt="{{ product.title }}" class="w-[100%]" src="{% if product.product_image.first %}{{ product.product_image.first.image.url }}{% endif %}">
