@@ -529,16 +529,17 @@ let CartCheck = (id ,productprice ,size ,packtitle) => {
     let btn = document.getElementById(id)
     let pricebox = document.querySelectorAll('.pricebox')
     let price = productprice
-    btn.style = 'pointer-events: all; background-color: var(--color6); height: 50px; padding-top: 13px;'
-    pricebox.forEach(item => {item.style = 'display: block; animation: load5 300ms;'})
+    if (btn)
+        btn.style = 'pointer-events: all; background-color: var(--color6); height: 50px; padding-top: 13px;'
+    pricebox.forEach(item => {item.style = 'display: flex; animation: load5 300ms; justify-content: space-between; margin-top: 0; margin-bottom: 5px;'})
 
     setTimeout(()=> {
-        pricebox.style = 'display: block; animation: none;'
+        pricebox.style = 'display: flex; animation: none;'
     },300)
 
     let cartpackhtml = `
-    <div class="text-[var(--color10)] text-sm text-thin">قیمت بسته ${to_fanum(packtitle)}</div>
-    <div class="text-black">${threeDigitsCurrency(price * size)} تومان</div>
+    <div class="text-[var(--color10)] text-sm text-thin mt-2">قیمت بسته ${to_fanum(packtitle)}</div>
+    <div class="text-black mt-0.5 font-semibold">${threeDigitsCurrency(price * size)} تومان</div>
     `
     pricebox.forEach(item => {item.innerHTML = cartpackhtml})
 }
