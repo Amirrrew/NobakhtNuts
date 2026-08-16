@@ -18,10 +18,12 @@
     </div>
     {% include 'userpanel_module/include/popup_celebrate.html' %}
 
-    <div class="flex">
+    <div class="flex w-[100%]">
         {% render_partial 'userpanel_module.views.side_bar' %}
-        {% block panel_content %}
+        <div class=" relative userpanel-content">
+            {% block panel_content %}
 
-        {% endblock %}
+            {% endblock %}
+        </div>
     </div>
 {% endblock %}

@@ -185,9 +185,8 @@ input[type="number"] {
     header .header-subbox ,.header-search ,.header-row {
         display: none;
     }
-    body    .userpanel-sidebar {
-        position: fixed;
-        right: -400px;
+    body .userpanel-sidebar {
+        display: none;
     }
     .editpanel-box {
         gap: 0;
@@ -399,6 +398,12 @@ input[type="number"] {
     body .bulk-buy-art:before {
         width: 400px;
         height: 400px;
+    }
+
+    body .userpanel-content {
+        width: 100%;
+        position: relative;
+        right: 0;
     }
 
     body .product-detail-navbox {
@@ -2444,6 +2449,11 @@ footer {
     z-index: 0;
 }
 
+.userpanel-content {
+    right: 300px;
+    width: 80%;
+}
+
 /*---------- messages -------------*/
 
 .message-box {
@@ -2819,10 +2829,11 @@ footer {
     border: 2px solid var(--color12);
     z-index: 3;
     padding: 15px;
-    margin: 0 10px;
-    top: 100px;
+    top: 90px;
+    background-color: var(--color3);
     bottom: 95%;
     border-radius: 10px;
+    position: fixed;
 }
 
 
