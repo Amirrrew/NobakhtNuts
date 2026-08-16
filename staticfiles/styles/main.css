@@ -2977,6 +2977,11 @@ footer {
     animation: load5 300ms;
 }
 
+.basket-total {
+    background-color: var(--color19);
+    border: 2px solid var(--color12);
+}
+
 .input-placeholder-popup {
     background-color: #eae4e4;
 }

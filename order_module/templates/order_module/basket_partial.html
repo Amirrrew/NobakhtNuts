@@ -5,7 +5,7 @@
     <div class="basket-box w-[90%]">
         {% for o in orders.orderdetails_set.all %}
 
-            <div class="relative py-4 border-b border-[var(--color11)] items-stretch w-full">
+            <div class="relative py-4 border-b border-[var(--color13)] {% if forloop.first %}border-t border-[var(--color13)] mt-3{% endif %} items-stretch w-full">
                 <div class="flex gap-4 ">
 
               <a href="{{ o.product.get_absolute_url }}"
@@ -20,7 +20,7 @@
                 <div class="">
                     <div class="flex gap-2">
                         <div class="flex text-[var(--color10)] gap-1 text-sm">
-                            <a target="_blank" href="{{ o.product.category.get_absolute_url }}">{{ o.product.category }}</a> <i class="fa fa-angle-left mt-0.5 text-[var(--color14)] text-xs"></i> <a target="_blank" href="{{ o.product.category.main_category.get_absolute_url }}">{{ o.product.category.main_category }}</a>
+                            <a target="_blank" href="{{ o.product.category.get_absolute_url }}">{{ o.product.category }}</a> <i class="fa fa-angle-left mt-[3px] text-[var(--color14)] text-xs"></i> <a target="_blank" href="{{ o.product.category.main_category.get_absolute_url }}">{{ o.product.category.main_category }}</a>
                         </div>
                         {% if o.product.is_byWeight %}
                         <div class="bg-[var(--color12)] mt-[-2px] rounded-lg py-0.5 px-2.5 text-sm text-nowrap flex-shrink-0">
@@ -29,7 +29,7 @@
                       {% endif %}
                     </div>
                   <a href="{{ o.product.get_absolute_url }}"
-                     class="basket-item-title mt-2 text-2xl font-medium leading-snug">
+                     class="basket-item-title mt-1 text-2xl font-semibold leading-snug">
                     {{ o.product.title|to_fanum }}
                   </a>
                 </div>
