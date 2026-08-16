@@ -329,7 +329,7 @@ class ProductListView(ListView):
     model = Product
     template_name = 'adminpanel_module/products/product_list.html'
     context_object_name = 'products'
-    paginate_by = 20
+    paginate_by = 40
 
     def get_queryset(self):
         search = self.request.GET.get('q')
