@@ -1,22 +1,60 @@
 {% load static %}
 {% load poll_extras %}
 
-<div class="product-detail-navbox relative" style="animation: load8 400ms">
+<div class="product-detail-navbox relative" style="animation: load9 400ms">
 
                     {% include 'product_module/include/product_incart.html' %}
 
 
+                    <div class="transition-all flex justify-between pt-2 w-[100%] pr-2 mb-2">
+                        {% if product.offer <= 0 %}
+                            <div class="flex relative gap-2">
+                                <p class="text-4xl flex mt-2 font-bold" id="">
+                                    {{ product.price|three_digits_currency }}
+                                </p>
+                                <p class="text-[var(--color10)] mt-5">
+                                    {% if product.is_byWeight %}
+                                         / کیلو
+                                    {% else %}
+                                         / عدد
+                                    {% endif %}
+                                </p>
+                            </div>
+                        {% else %}
+                            <div class="">
+                                <div class="flex gap-2">
+                                    <div style="text-decoration: line-through 1px solid var(--color7)" class="text-sm">{{ product.price|three_digits_currency }}</div>
+                                    <div class="px-3 py-0.5 mt-[-2px] text-sm text-[var(--deny-text)] rounded-lg" style="background-color: var(--del-bg2)">
+                                        {{ product.offer|to_fanum }} % تخفیف
+                                    </div>
+                                </div>
+                                <div class="flex relative gap-2">
+                                    <p class="text-4xl flex mt-2 font-bold" id="">
+                                        {{ product.final_price|three_digits_currency }}
+                                    </p>
+                                    <p class="text-[var(--color10)] mt-5">
+                                        {% if product.is_byWeight %}
+                                             / کیلو
+                                        {% else %}
+                                             / عدد
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+
                     {% if product.packs and product.is_byWeight %}
-                        <div class="text-[var(--color10)] mt-5 flex justify-between">
-                            <p>اندازه بسته بندی را انتخاب کنید</p>
+                        <div class="text-[var(--color10)] flex gap-5">
+                            <p>اندازه بسته بندی</p>
                             <div onclick="PopUpGuide('none' ,'open')" class="flex gap-1 cursor-pointer text-[var(--color2)]">
-                                <i class="fa fa-question-circle mt-0.5 text-xs text-[var(--color14)]"></i>
+                                <i class="fa fa-question-circle mt-1 text-xs text-[var(--color14)]"></i>
                                 <div class="hover-underline text-sm">
                                     مقدار بیشتر میخوام
                                 </div>
                             </div>
                         </div>
-                        <div class="choose-weight-desktop flex flex-wrap gap-2 mt-1">
+                        <div class="choose-weight-desktop flex flex-wrap gap-2">
                             {% for pack in product.packs.all %}
                                 <input onchange="CartCheck('btn-addtocart' ,{{ product.final_price }} ,{{ pack.size }} ,'{{ pack.title }}')" type="radio" name="pack" id="pack{{ pack.id }}" value="{{ pack.id }}" hidden>
                                 <label class="pack-size" for="pack{{ pack.id }}" class="cursor-pointer bg-[var(--color11)] border border-[var(--color8)] py-1 px-2 rounded-xl text-sm text-[var(--color6)] peer-checked:bg-[var(--color6)]">{{ pack.title|to_fanum }}</label>
@@ -46,40 +84,7 @@
                             </div>
                         {% endif %}
                     {% endif %}
-                    <div class="transition-all flex justify-between pt-3 w-[100%] pr-2 mb-2">
-                        {% if product.offer <= 0 %}
-                            <div class="text-3xl font-bold" id="">
-                                {{ product.price|three_digits_currency }}
-                            </div>
-
-                            <div class="h-7 px-2 pt-0.5 mt-1 bg-[var(--color11)] text-[var(--color6)] rounded-lg">
-                                {% if product.is_byWeight %}
-                                    کیلویی
-                                {% else %}
-                                    عددی
-                                {% endif %}
-                            </div>
-
-                        {% else %}
-                            <div class="">
-                                <div style="text-decoration: line-through 1px solid var(--color7)" class="text-sm">{{ product.price|three_digits_currency }}</div>
-                                <div class="text-2xl font-bold">{{ product.final_price|three_digits_currency }}</div>
-                            </div>
-                            <div class="flex gap-2">
-                                <div class="h-7 px-2 pt-0.5 mt-5 bg-[var(--color11)] text-[var(--color6)] rounded-lg">
-                                    {% if product.is_byWeight %}
-                                        کیلویی
-                                    {% else %}
-                                        عددی
-                                    {% endif %}
-                                </div>
-                                <div class=" h-7 px-2 pt-0.5 mt-5 bg-[var(--color5)] text-[var(--color13)] rounded-lg">
-                                    {{ product.offer|to_fanum }} %
-                                </div>
-                            </div>
-                        {% endif %}
-                    </div>
-                    <div class="pricebox w-[100%] flex rounded-lg bg-[var(--color13)] p-2 text-3xl text-[var(--color6)] relative" style="display: none;" id="pricebox">
+                    <div class="pricebox w-[100%] flex rounded-2xl p-2 text-[var(--color6)] relative" style="display: none;" id="pricebox">
                         <div id="prd-pack" class="mt-5">قیمت بسته</div>
                     </div>
                     <div class="w-[100%] flex gap-2">
@@ -121,7 +126,7 @@
                                 </button>
                             </a>
                         {% endif %}
-                        <button class="btn-defIconFlex2 centerbox items-center gap-2 mt-2" style="height: 50px; background-color: var(--color12)" onclick="CopyToClipboard('share-icon' ,'share-check' ,'{{ product.get_absolute_url }}') ,Message('لینک کپی شد' ,false)">
+                        <button class="btn-defIconFlex2 centerbox items-center gap-2 mt-2" style="height: 50px; background-color: var(--color12)" onclick="CopyToClipboard('share-icon' ,'share-check' ,'https://nobakhtnuts.ir{{ product.get_absolute_url }}') ,Message('لینک کپی شد' ,false)">
                             <svg id="share-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                                 <path d="M0 0h24v24H0z" fill="none" />
                                 <path fill="#c2b8b5" fill-rule="evenodd" d="M13.803 5.333c0-1.84 1.5-3.333 3.348-3.333A3.34 3.34 0 0 1 20.5 5.333c0 1.841-1.5 3.334-3.349 3.334a3.35 3.35 0 0 1-2.384-.994l-4.635 3.156a3.34 3.34 0 0 1-.182 1.917l5.082 3.34a3.35 3.35 0 0 1 2.12-.753a3.34 3.34 0 0 1 3.348 3.334C20.5 20.507 19 22 17.151 22a3.34 3.34 0 0 1-3.348-3.333a3.3 3.3 0 0 1 .289-1.356L9.05 14a3.35 3.35 0 0 1-2.202.821A3.34 3.34 0 0 1 3.5 11.487a3.34 3.34 0 0 1 3.348-3.333c1.064 0 2.01.493 2.623 1.261l4.493-3.059a3.3 3.3 0 0 1-.161-1.023" clip-rule="evenodd" />

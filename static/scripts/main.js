@@ -124,7 +124,6 @@ let Search_action = (action) => {
     if (action === true) {
         searchbox.classList.replace('hidden' ,'flex')
         overlay.classList.replace('hidden' ,'flex')
-        header.style = 'top: -300px;'
         CategoryMenu(false)
         searchinput.addEventListener('input' ,() => Search(false))
         document.body.style = 'overflow-y: hidden;'
@@ -135,7 +134,6 @@ let Search_action = (action) => {
     } else {
         searchbox.classList.replace('flex' ,'hidden')
         overlay.classList.replace('flex' ,'hidden')
-        header.style = 'top: 0px;'
         searchSuggest.style = 'display: none;'
         searchinput.removeEventListener('input' ,() => Search(false))
         HeaderManage()
@@ -531,15 +529,15 @@ let CartCheck = (id ,productprice ,size ,packtitle) => {
     let price = productprice
     if (btn)
         btn.style = 'pointer-events: all; background-color: var(--color6); height: 50px; padding-top: 13px;'
-    pricebox.forEach(item => {item.style = 'display: flex; animation: load5 300ms; justify-content: space-between; margin-top: 0; margin-bottom: 5px;'})
+    pricebox.forEach(item => {item.style = 'background-color: var(--color19); border: 2px solid var(--color16); display: flex; animation: load5 300ms; justify-content: space-between; margin-top: 10px; margin-bottom: 2px;'})
 
     setTimeout(()=> {
         pricebox.style = 'display: flex; animation: none;'
     },300)
 
     let cartpackhtml = `
-    <div class="text-[var(--color10)] text-sm text-thin mt-2">قیمت بسته ${to_fanum(packtitle)}</div>
-    <div class="text-black mt-0.5 font-semibold">${threeDigitsCurrency(price * size)} تومان</div>
+    <div class="text-[var(--color10)] text-thin mt-1.5">قیمت بسته ${to_fanum(packtitle)}</div>
+    <div class="text-black mt-0.5 text-3xl font-semibold">${threeDigitsCurrency(price * size)} تومان</div>
     `
     pricebox.forEach(item => {item.innerHTML = cartpackhtml})
 }

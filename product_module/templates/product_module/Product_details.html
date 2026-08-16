@@ -88,7 +88,7 @@
 {#                                <div class="pt-1">#}
 {#                                    <div class="text-xl flex gap-2">#}
 {#                                        <div>دیدگاه های کاربران</div>#}
-{#                                        <div class="text-[var(--color14)]">({{ product.comments_count|to_fanum }})</div>#}
+{#                                        <div class="text-[var(--color14)]">()</div>#}
 {#                                    </div>#}
 {#                                    <div class="flex gap-2 mt-0.5">#}
 {#                                        <div class="flex">#}
@@ -159,10 +159,7 @@
 {##}
 {#                {% include 'product_module/include/product_managecard_desktop.html' %}#}
 {#            </div>#}
-{#            {% include 'product_module/include/product_desc.html' %}#}
-{#            {% include 'product_module/include/product_features.html' %}#}
-{#            {% include 'product_module/product_comment_section.html' %}#}
-{#            {% include 'product_module/include/product_suggestion.html' %}#}
+
 {#        </div>#}
 {#    </div>#}
 
@@ -197,12 +194,12 @@
                         <a href="{{ product.category.get_absolute_url }}" class="" style="">{{ product.category }}</a>
                     </div>
 
-                    <div class="product-titlebar flex gap-2 mt-2 relative" style="animation: load8 200ms">
+                    <div class="product-titlebar flex gap-2 mt-3 relative" style="animation: load8 200ms">
                         <h1 class="product-title text-5xl font-bold">{{ product.title|to_fanum }}</h1>
                     </div>
 
-                    <div class="flex gap-2 mt-3">
-                        <div class="flex gap-1">
+                    <div class="flex codeandcomment gap-2 mt-3 text-nowrap flex-wrap">
+                        <div class="flex gap-1 items-start">
                             <svg id="Star" width="20px" height="20px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                 <g id="Iconly/Bold/Star" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
                                     <g id="Star" transform="translate(1.999624, 2.500100)" fill="#C2B8B5" fill-rule="nonzero">
@@ -210,7 +207,10 @@
                                     </g>
                                 </g>
                             </svg>
-                            <div>0 از 10 نظر</div>
+                            <div>{{ product.average_rating|to_fanum }} از {{ product.comments_count|to_fanum }} نظر</div>
+                            <button onclick="ScrollTo('comments')" class="rounded-lg text-xs border border-[var(--color11)] pt-1 mt-[-2px] mr-1 cursor-pointer h-7 w-7 bg-[var(--color12)] text-[var(--color6)]">
+                                <i class="fa fa-arrow-down"></i>
+                            </button>
                         </div>
                         <div class="border-l border-[var(--color11)]"></div>
                         <div class="flex gap-1">
@@ -236,7 +236,7 @@
 
                     <div class="product-features flex mt-2 gap-2" style="animation: load8 200ms">
                         {% for spec in product.features.all|slice:3 %}
-                            <div class="prd-feature overflow-hidden w-[100%] h-14 rounded-xl p-2 border-2 border-[var(--color12)] relative" style="background-color: var(--color19)">
+                            <div class="prd-feature overflow-hidden w-[100%] h-14 rounded-2xl p-2 border-2 border-[var(--color12)] relative" style="background-color: var(--color19)">
                                 <div class="text-[var(--color10)] px-1 text-sm">{{ spec.title }}</div>
                                 <div class="text-m truncate text-[var(--color6)] mt-[-3px] text-nowrap">{{ spec.desc|to_fanum }}</div>
                             </div>
@@ -244,7 +244,7 @@
                     </div>
 
                     {% if product.brand %}
-                        <a href="/products/?brand={{ product.brand.pk }}&brandgrid=1" class="flex justify-between w-[100%] p-2 mt-2 rounded-xl gap-3" style="background-color: var(--color19); border: 2px solid var(--color12); animation: load8 400ms">
+                        <a href="/products/?brand={{ product.brand.pk }}&brandgrid=1" class="flex justify-between w-[100%] p-2 mt-2 rounded-2xl gap-3" style="background-color: var(--color19); border: 2px solid var(--color12); animation: load8 400ms">
                             <div class="flex gap-3">
                                 {% if product.brand.logo %}
                                 <div class="bg-[var(--color13)] p-2 rounded-lg">
@@ -257,7 +257,7 @@
                                 </div>
                             </div>
                             <button class="btn-defIconFlex2 gap-2 mt-2 ml-2" style="background-color: var(--color12)">
-                                مشاهده محصولات این برند
+                                <p id="btn-showbrand-title">مشاهده محصولات این برند</p>
                                 <i class="fa fa-arrow-left mt-1"></i>
                             </button>
                         </a>
@@ -266,8 +266,71 @@
 
 
                 {% include 'product_module/include/product_managecard_desktop.html' %}
+
+                <div class="home-landing-stats stats-details gap-4 centerbox p-5 border-2 border-[var(--color12)] rounded-2xl mt-2.5" style="animation: load8 500ms; background-color: var(--color19)">
+                    <div class="home-landing-stat flex gap-2 w-[100%]">
+                        <div class="w-10 h-10 centerbox items-center rounded-xl bg-[var(--color11)]"><img class="w-6" alt="fast-delivery" src="{% static 'media/icons/truck.png' %}"></div>
+                        <div class="">
+                            <strong>ارسال سریع</strong>
+                            <p class="mt-[-5px] text-sm text-[var(--color10)]">به سراسر ایران </p>
+                        </div>
+                    </div>
+                    <span class="seprator w-1 border-l border-[var(--color9)]"></span>
+                    <div class="home-landing-stat details-stat flex gap-2 w-[100%]">
+                        <div class="w-10 h-10 centerbox items-center rounded-xl bg-[var(--color11)]">
+                            <svg id="Shield Done" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M19.9377 5.42951C19.3317 4.82251 16.0037 2.67651 12.2497 2.67651C8.49369 2.67651 5.16769 4.82251 4.56169 5.42951C3.98069 6.01151 3.98969 6.46451 4.03369 8.97851C4.05269 9.99851 4.07769 11.3865 4.07769 13.3045C4.07769 19.8245 9.39969 22.5315 12.2497 22.5315C15.0987 22.5315 20.4217 19.8245 20.4217 13.3045C20.4217 11.3855 20.4467 9.99651 20.4657 8.97751C20.5107 6.46351 20.5187 6.01151 19.9377 5.42951Z" fill="#674d45"></path>
+                            <path d="M12.073 14.7244L15.971 10.8254C16.264 10.5324 16.264 10.0574 15.971 9.76443C15.678 9.47143 15.203 9.47143 14.91 9.76443L11.543 13.1334L10.181 11.7694C9.88802 11.4764 9.41302 11.4764 9.12102 11.7694C8.82702 12.0614 8.82702 12.5374 9.12002 12.8304L11.012 14.7244C11.153 14.8654 11.344 14.9444 11.543 14.9444C11.742 14.9444 11.932 14.8654 12.073 14.7244Z" fill="#674d45"></path>
+                            </svg>
+                        </div>
+                        <div class="">
+                            <strong>کیفیت بالا</strong>
+                            <p class="mt-[-5px] text-sm text-[var(--color10)]">و تضمین شده</p>
+                        </div>
+                    </div>
+                    <span class="seprator w-1 border-l border-[var(--color9)]"></span>
+                    <div class="details-stat flex gap-2 w-[100%]">
+                        <div class="w-10 h-10 centerbox items-center rounded-xl bg-[var(--color11)]">
+                            <svg id="Bag 3" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M2.5 6.95215V12.3921C2.5 17.7721 6.87 22.1421 12.25 22.1421C17.63 22.1421 22 17.7721 22 12.3921V6.95215H2.5Z" fill="#674d45"></path>
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M7.48048 6.87493C7.49183 4.24547 9.63258 2.12481 12.2611 2.13529C14.8891 2.13617 17.0194 4.26727 17.0194 6.89625V10.8695H15.5194V6.89625C15.5194 5.0949 14.0595 3.63529 12.2595 3.63529H12.2563C10.4552 3.62751 8.98907 5.07973 8.98047 6.87988V10.8695H7.48047L7.48048 6.87493Z" fill="#674d45"></path>
+                            </svg>
+                        </div>
+                        <div class="">
+                            <strong>امکان مرجوعی</strong>
+                            <p class="mt-[-5px] text-sm text-[var(--color10)]">تا هفت روز پس از تحویل</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="prd-detail-row1 flex mt-3 gap-1">
+                    <div>
+                    <svg id="Info Square" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.052 2.78467 2.5 5.33667 2.5 12.5347C2.5 19.7327 5.052 22.2847 12.25 22.2847C19.448 22.2847 22 19.7327 22 12.5347C22 5.33667 19.448 2.78467 12.25 2.78467Z" fill="#674d45"></path>
+                    <path d="M12.2461 9.78467H12.2551C12.6691 9.78467 13.0011 9.44867 13.0011 9.03467C13.0011 8.62067 12.6601 8.28467 12.2461 8.28467C11.8321 8.28467 11.4961 8.62067 11.4961 9.03467C11.4961 9.44867 11.8321 9.78467 12.2461 9.78467Z" fill="#674d45"></path>
+                    <path d="M12.2501 17.1797C12.6641 17.1797 13.0001 16.8437 13.0001 16.4297V12.5347C13.0001 12.1207 12.6641 11.7847 12.2501 11.7847C11.8361 11.7847 11.5001 12.1207 11.5001 12.5347V16.4297C11.5001 16.8437 11.8361 17.1797 12.2501 17.1797Z" fill="#674d45"></path>
+                    </svg>
+                    </div>
+                    <div class="text-[var(--color10)]">
+                        مرجوع کردن محصول در صورت عدم رضایت یا دلایل همانند خرابی و ایراد در کالا امکان پذیر است. جهت کسب اطلاعات بیشتر درباره شرایط مرجوع کردن بار در بخش
+                        <a target="_blank" style="display: inline" class="font-black text-[var(--color6)] hover:underline" href="{% url 'faq' %}"> سوالات متداول <i class="fa fa-external-link text-xs ml-1"></i></a>
+                        منوی مرجوعی سفارشات یا در بخش
+                        <a target="_blank" style="display: inline" class="font-black text-[var(--color6)] hover:underline" href="{% url 'policies' %}">قوانین و شرایط</a>
+                        شرایط بازگشت و مرجوعی را مطالعه کنید.
+                    </div>
+                </div>
+
             </div>
 
+        </div>
+    </div>
+
+    <div class="w-[100%] centerbox">
+        <div class="w-[90%]">
+            {% include 'product_module/include/product_desc.html' %}
+            {% include 'product_module/include/product_features.html' %}
+            {% include 'product_module/product_comment_section.html' %}
+            {% include 'product_module/include/product_suggestion.html' %}
         </div>
     </div>
 
