@@ -2,7 +2,7 @@
                     {% if my_address %}
                         {% for address in my_address %}
                             <input type="radio" name="address" id="{{ address.id }}" value="{{ address.id }}" {% if forloop.first %}checked{% endif %} hidden>
-                            <label class="address-check flex items-start w-[100%] gap-2 bg-[var(--color12)] text-[var(--color6)] cursor-pointer border-2 border-[var(--color12)] p-3 rounded-2xl mt-2 relative transition-all" style="animation: load {% widthratio forloop.counter 1 300 %}ms; background-color: var(--color19)" for="{{ address.id }}">
+                            <label class="address-check flex items-start w-[100%] gap-2 bg-[var(--color12)] text-[var(--color6)] cursor-pointer border-2 border-[var(--color13)] p-3 rounded-2xl mt-2 relative transition-all" style="animation: load {% widthratio forloop.counter 1 300 %}ms; background-color: var(--color19)" for="{{ address.id }}">
                                 <div class="address-checked transition-all centerbox items-center rounded-xl w-10 h-10 mt-4 bg-[var(--color9)]">
                                     <div class="address-checked-icon text-[var(--color14)] mt-1"><i class="fa fa-check"></i></div>
                                     <div class="address-unchecked-icon text-[var(--color10)] mt-1"><i class="fa fa-circle"></i></div>

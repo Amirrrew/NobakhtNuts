@@ -288,9 +288,6 @@ input[type="number"] {
         font-size: 20px;
     }
 
-    body .choose-weight-desktop {
-        display: none;
-    }
 
     body .comment-box {
         width: 100%;
@@ -2990,7 +2987,7 @@ footer {
 
 .basket-total {
     background-color: var(--color19);
-    border: 2px solid var(--color12);
+    border: 2px solid var(--color13);
 }
 
 .input-placeholder-popup {
@@ -3302,7 +3299,7 @@ footer {
     width: 100%;
     height: auto;
     background-color: var(--color19);
-    border: 2px solid var(--color12);
+    border: 2px solid var(--color13);
     margin-top: 10px;
     border-radius: 20px;
     padding: 10px;

@@ -20,7 +20,7 @@
                         </div>
                         {% for me in posting_methods %}
                             <input type="radio" name="posting" id="{{ me.id }}" value="{{ me.id }}" {% if orders.posting_method.id == me.id %}checked{% endif %} hidden>
-                            <label  class="{% if not me.is_active %}disabled{% endif %} address-check flex items-start w-[100%] gap-2 bg-[var(--color12)] text-[var(--color6)] cursor-pointer border-2 border-[var(--color12)] p-3 rounded-2xl mt-2 relative transition-all" style="animation: load {% widthratio forloop.counter 1 300 %}ms; background-color: var(--color19)" for="{{ me.id }}">
+                            <label  class="{% if not me.is_active %}disabled{% endif %} address-check flex items-start w-[100%] gap-2 bg-[var(--color12)] text-[var(--color6)] cursor-pointer border-2 border-[var(--color13)] p-3 rounded-2xl mt-2 relative transition-all" style="animation: load {% widthratio forloop.counter 1 300 %}ms; background-color: var(--color19)" for="{{ me.id }}">
                                 <div class="address-checked transition-all centerbox items-center rounded-xl w-10 h-10 mt-4 bg-[var(--color9)]">
                                     <div class="address-checked-icon text-[var(--color14)] mt-1"><i class="fa fa-check"></i></div>
                                     <div class="address-unchecked-icon text-[var(--color10)] mt-1"><i class="fa fa-circle"></i></div>

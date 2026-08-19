@@ -36,9 +36,28 @@ class Home(TemplateView):
 
         user = self.request.user
         special_event = SpecialEvents.objects.filter(is_active=True).first()
-        special_carousel = Carousel.objects.prefetch_related("carousel_set__product").filter(
-            is_active=True
-        ).first()
+        special_carousel = (
+            Carousel.objects
+            .filter(is_active=True)
+            .prefetch_related(
+                Prefetch(
+                    'carousel_set',
+                    queryset=CarouselItem.objects.select_related(
+                        'product',
+                        'product__category',
+                        'product__brand',
+                    ).prefetch_related(
+                        'product__packs',
+                        Prefetch(
+                            'product__product_image',
+                            queryset=ProductImage.objects.order_by('-is_Main', 'id'),
+                            to_attr='prefetched_images'
+                        )
+                    )
+                )
+            )
+            .first()
+        )
         carousel_exist = bool(special_carousel)
         card_block = CardBlock.objects.filter(is_active=True).prefetch_related(Prefetch('cardblock_set' ,queryset=HomeCards.objects.select_related('category').annotate(products_count=Count('category__products' ,filter=Q(category__products__is_active=True ,category__products__is_deleted=False))))).first()
         banners = Banner.objects.select_related('category', 'sub_category').filter(is_active=True)
