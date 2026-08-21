@@ -1,7 +1,7 @@
 import json
 import os
 from datetime import timedelta
-
+from urllib.parse import urlencode
 from django.contrib.auth.decorators import login_required
 from django.core.validators import validate_image_file_extension
 from django.urls import reverse
@@ -25,7 +25,7 @@ from order_module.models import Order, OrderDetail, OrderStatus, PostingMethod, 
     DiscountCode
 from product_module.models import Product, PackageSize, ProductImage
 from userpanel_module.form import NewAddressForm
-from utils.my_decorators import permission_checker_decorator_factory, validate_image_extension
+from utils.my_decorators import permission_checker_decorator_factory, validate_image_extension, get_redirect_url
 
 
 def add_to_order(request: HttpRequest):
@@ -107,7 +107,7 @@ def add_to_order(request: HttpRequest):
                 message = 'محصول با این مقدار موجود نیست'
                 error = True
         else:
-            return redirect('login_page')
+            return redirect(get_redirect_url(request))
     except Exception as e: return JsonResponse({'message': f'{e}' ,'error': True})
 
     prefetch_related_objects([current_order], 'orderdetails_set')
@@ -285,7 +285,7 @@ def my_basket(request: HttpRequest):
         .annotate(comments_total=Count('comment_set' ,distinct=True),rating_avarage=Avg('comment_set__rating'))
         .order_by('-created_at'))[:10]
     else:
-        return redirect('login_page')
+        return redirect(get_redirect_url(request))
 
     context = {
         'slider_title': 'جدیدترین محصولات',
@@ -312,7 +312,7 @@ def delete_cart(request):
 class BasketCheckout(View):
     def get(self ,request):
         if not request.user.is_authenticated:
-            return redirect('login_page')
+            return redirect(get_redirect_url(request))
         address_form = NewAddressForm()
         order_form = OrderForm()
         message = None
@@ -494,7 +494,7 @@ def get_postage_fee(request):
 class BasketPayment(View):
     def get(self ,request):
         if not request.user.is_authenticated:
-            return redirect('login_page')
+            return redirect(get_redirect_url(request))
         message = None
         message_e = None
         current_order, create = Order.objects.prefetch_related('orderdetails_set').get_or_create(is_paid=False,user_id=request.user.id)
@@ -619,7 +619,7 @@ def apply_discount(request):
 class Deposit(View):
     def get(self ,request):
         if not request.user.is_authenticated:
-            return redirect('login_page')
+            return redirect(get_redirect_url(request))
         message = None
         message_e = None
         failed_item = None

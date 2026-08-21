@@ -5,6 +5,7 @@ from django.contrib.auth import login, logout
 from django.http import Http404
 from django.shortcuts import render, redirect
 from django.template.context_processors import request
+from urllib.parse import urlencode
 from django.urls import reverse
 from django.utils.crypto import get_random_string
 from django.views import View
@@ -18,7 +19,6 @@ from account_module.form import LoginForm, VerifySignupForm
 from django.utils import timezone
 
 
-# Create your views here.
 
 
 
@@ -52,14 +52,18 @@ class LoginView(View):
                         request.session['verify_expiry'] = (timezone.now() + timedelta(seconds=120)).isoformat()
                         request.session['verify_expiry_front'] = (timezone.now() + timedelta(seconds=120)).timestamp()
                         request.session['verify_code'] = verify_sms.get('code')
-                        return redirect(reverse('verify_page'))
+                        next_url = request.GET.get('next', '')
+                        query = urlencode({
+                            'next': next_url
+                        })
+                        return redirect(f"{reverse('verify_page')}?{query}")
                     else:
                         message_e = 'شماره تلفن اشتباه است!'
                 else:
                     message_e = 'شماره تلفن اشتباه است!'
             else:
                 message_e = "شماره تلفن خود را به درستی وارد کنید!"
-        except:
+        except Exception as e:
             message_e = f"در ورود مشکلی پیش آمده!"
 
         context = {'login_form': login_form , 'message_e': message_e , 'message': message}
@@ -112,6 +116,11 @@ class VerifyView(View):
 
                         for key in ['verify_code' ,'verify_expiry','verify_expiry_front' ,'phone']:
                             request.session.pop(key,None)
+
+                        next_url = request.GET.get('next')
+
+                        if next_url:
+                            return redirect(next_url)
 
                         return redirect('home')
 

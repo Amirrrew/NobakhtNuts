@@ -128,9 +128,6 @@ let Search_action = (action) => {
         searchinput.addEventListener('input' ,() => Search(false))
         document.body.style = 'overflow-y: hidden;'
         searchinput.focus()
-        setTimeout(() => {
-            document.addEventListener('click', SearchClickHandler)
-        }, 200)
     } else {
         searchbox.classList.replace('flex' ,'hidden')
         overlay.classList.replace('flex' ,'hidden')
@@ -138,9 +135,6 @@ let Search_action = (action) => {
         searchinput.removeEventListener('input' ,() => Search(false))
         HeaderManage()
         document.body.style = 'overflow-y: scroll;'
-        setTimeout(() => {
-            document.removeEventListener('click', SearchClickHandler)
-        }, 200)
     }
 }
 
@@ -276,11 +270,11 @@ let Search = (mobile) => {
 let SideMenu = (action ,element ,type) => {
     let el = document.getElementById(element)
     if (action === "open") {
-        el.style = "right: 0;"
+        el.style = "transform: translateX(0);"
         document.body.style.overflowY = 'hidden'
     }
     else {
-        el.style = "right: -100%"
+        el.style = "transform: translateX(100%);"
         document.body.style.overflowY = 'scroll'
     }
 

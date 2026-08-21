@@ -99,7 +99,7 @@
                                 </a>
                             </div>
                             {% else %}
-                            <a href="{% url 'login_page' %}">
+                            <a href="{% url 'login_page' %}?next={{ request.get_full_path|urlencode }}">
                                 <button type="button" class="btn-defIconFlex gap-1 mt-2 w-[100%] justify-center" style="height: 50px; padding-top: 13px;">
                                     <svg id="User" width="22px" height="22px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                     <g id="Iconly/Bulk/2-User" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">

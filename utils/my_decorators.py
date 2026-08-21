@@ -3,6 +3,7 @@ from django.http import HttpRequest
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.conf import settings
+from urllib.parse import urlencode
 import requests
 from django.db.models import Case, When, Value, IntegerField,Q
 import os
@@ -83,3 +84,11 @@ def filter_products(request, queryset):
         queryset = queryset.order_by('-offer')
 
     return queryset.distinct()
+
+
+def get_redirect_url(request):
+    login_url = reverse('login_page')
+    query = urlencode({
+        'next': request.get_full_path()
+    })
+    return f'{login_url}?{query}'

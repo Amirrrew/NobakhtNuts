@@ -1655,7 +1655,7 @@ header::before {
     position: fixed;
     top: 0;
     border-left: 2px solid var(--color8);
-    right: -1000px;
+    transform: translateX(100%);
     transition: 200ms;
     z-index: 1000;
 }
@@ -1711,7 +1711,7 @@ header::before {
     border-left: 2px solid var(--color8);
     backdrop-filter: blur(0px);
     transition: 200ms;
-    right: -500px;
+    transform: translateX(100%);
 }
 
 .side-category-box::-webkit-scrollbar {
