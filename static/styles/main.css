@@ -1559,11 +1559,11 @@ input[type="number"] {
 }
 
 .bottom-bar-option:active {
-    filter: blur(3px);
+    filter: blur(3px) brightness(150%);
 }
 
 .bottom-bar:has(.bottom-bar-option:active) {
-    transform: scale(0.95);
+    transform: scale(95%);
     background-color: var(--color3);
 }
 
@@ -3807,13 +3807,13 @@ body .swiper-pagination-bullet-active {
 }
 
 @keyframes popup-mobile {
-    from {bottom: -100%}
-    to{bottom: 0}
+    from {transform: translateY(100%)}
+    to{transform: none}
 }
 
 @keyframes popup-mobile-close {
-    from {bottom: 0}
-    to{bottom: -100%}
+    from {transform: none}
+    to{transform: translateY(100%)}
 }
 
 #fireworkCanvas {

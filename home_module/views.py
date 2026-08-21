@@ -54,6 +54,7 @@ class Home(TemplateView):
                             to_attr='prefetched_images'
                         )
                     )
+                    .annotate(comments_total=Count('product__comment_set' ,distinct=True),rating_avarage=Avg('product__comment_set__rating'))
                 )
             )
             .first()
