@@ -1,7 +1,7 @@
 {% load static %}
-
+{% load poll_extras %}
 <div id="popup-parent-pop" class="popup-parent" style="{% if popup_open %}display: flex;{% endif %}">
-    <div id="popup-form" class="popup-form form-default">
+    <div id="popup-form" class="popup-form-inventory overflow-hidden form-default">
         <div class="hidden popup-closer">
             <div class="h-1 mt-1 w-10 bg-[var(--color14)] rounded-2xl">
             </div>
@@ -29,36 +29,54 @@
             </button>
         </div>
 
-        <form enctype="multipart/form-data" method="post" id="popup-actual-form" class="popup-actual-form px-4">
-            {% csrf_token %}
-            <div class="flex mt-7 gap-3">
-                <div class="star">
-                    <div class="star-back">
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-
-                    <div class="star-front">
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-                </div>
-
-                <div class="flex gap-2">
-                    <button type="button" onclick="change_rating('increase')" class="btn-prdcounter mt-8"><i class="fa fa-add mt-1.5 text-sm"></i></button>
-                    <div class="flex">
-                        <input readonly name="rating" class="outline-none border-none w-5 text-3xl h-auto cursor-default" id="ratingInput" type="number" min="0" max="5" step="1" value="5">
-                        <div class="mt-8.5 text-[var(--color14)]">/5</div>
-                    </div>
-                    <button type="button" onclick="change_rating('decrease')" class="btn-prdcounter mt-8"><i class="fa fa-minus mt-1.5 text-sm"></i></button>
+        {% if not request.user.is_authenticated %}
+            <div class="signin-container w-[100%] h-[100%] centerbox z-20 items-center top-0 absolute backdrop-filter-[blur(3px)] rounded-xl" style="background-color: rgba(0,0,0,0.03)">
+                <div>
+                    <div>برای ثبت نظر باید وارد شوید</div>
+                    <a class="btn-defIconFlex centerbox gap-2 mt-2" href="{% url 'login_page' %}?next={{ request.get_full_path|urlencode }}">
+                        <svg id="Login" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M7.53753 7.6C7.45753 8.72 7.41771 9.90005 7.40771 11.1301L7.40771 12.6301C7.41771 13.8401 7.46753 15.1 7.53753 16.4L7.53753 16.42C7.90753 20.45 9.73753 21.75 15.0375 21.75C22.6375 21.75 22.6375 18.9 22.6375 12C22.6375 5.1 22.6375 2.25 15.0375 2.25C9.73753 2.25 7.90753 3.55 7.53753 7.6Z" fill="#c5b8b4"></path>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M12.8417 11.2497L11.1987 9.61068C11.0517 9.46468 10.9777 9.27168 10.9777 9.07968C10.9777 8.88868 11.0517 8.69668 11.1967 8.55068C11.4897 8.25668 11.9647 8.25668 12.2577 8.54868L15.1857 11.4687C15.4687 11.7497 15.4687 12.2497 15.1857 12.5307L12.2577 15.4507C11.9647 15.7427 11.4897 15.7427 11.1967 15.4487C10.9047 15.1547 10.9047 14.6807 11.1987 14.3887L12.8417 12.7497L2.60484 12.7497C2.19316 12.7497 1.86258 12.4042 1.86259 11.9925C1.86259 11.5806 2.19353 11.2497 2.60544 11.2497L12.8417 11.2497Z" fill="#c5b8b4"></path>
+                        </svg>
+                        ورود به حساب
+                    </a>
+                    <button class="btn-defIconFlex2 w-[100%] centerbox mt-2" onclick="PopUpOrder('none' ,'close')">
+                        لفو
+                    </button>
                 </div>
             </div>
-            <div class="input-icon-def1" style="height: 250px">
+        {% endif %}
+
+        <form enctype="multipart/form-data" method="post"  class="popup-actual-form px-4">
+            {% csrf_token %}
+            <div class="centerbox gap-1 text-5xl text-[var(--color14)]" style="direction: ltr">
+                <div class="tooltip-parent"><div style="padding: 2px 10px" class="tooltip gap-1 border border-[var(--color12)] flex text-lg"><i class="fa fa-star text-xs mt-1.5 text-[var(--color10)]"></i>{{ 1|to_fanum }} / {{ 5|to_fanum }}</div><i onclick="SetRating(1)" class="fa fa-star cursor-pointer rating-star star-1" id="rating-star-1"></i></div>
+                <div class="tooltip-parent"><div style="padding: 2px 10px" class="tooltip gap-1 border border-[var(--color12)] flex text-lg"><i class="fa fa-star text-xs mt-1.5 text-[var(--color10)]"></i>{{ 2|to_fanum }} / {{ 5|to_fanum }}</div><i onclick="SetRating(2)" class="fa fa-star cursor-pointer rating-star star-2" id="rating-star-2"></i></div>
+                <div class="tooltip-parent"><div style="padding: 2px 10px" class="tooltip gap-1 border border-[var(--color12)] flex text-lg"><i class="fa fa-star text-xs mt-1.5 text-[var(--color10)]"></i>{{ 3|to_fanum }} / {{ 5|to_fanum }}</div><i onclick="SetRating(3)" class="fa fa-star cursor-pointer rating-star star-3" id="rating-star-3"></i></div>
+                <div class="tooltip-parent"><div style="padding: 2px 10px" class="tooltip gap-1 border border-[var(--color12)] flex text-lg"><i class="fa fa-star text-xs mt-1.5 text-[var(--color10)]"></i>{{ 4|to_fanum }} / {{ 5|to_fanum }}</div><i onclick="SetRating(4)" class="fa fa-star cursor-pointer rating-star star-4" id="rating-star-4"></i></div>
+                <div class="tooltip-parent"><div style="padding: 2px 10px" class="tooltip gap-1 border border-[var(--color12)] flex text-lg"><i class="fa fa-star text-xs mt-1.5 text-[var(--color10)]"></i>{{ 5|to_fanum }} / {{ 5|to_fanum }}</div><i onclick="SetRating(5)" class="fa fa-star cursor-pointer rating-star star-5" id="rating-star-5"></i></div>
+            </div>
+            <div class="centerbox">
+                <div id="comment-your-rating" class="bg-[var(--color8)] mt-2 w-[100%] transition-all hidden gap-20 items-center text-[var(--color6)] font-semibold flex justify-between rounded-xl gap-2 px-2 py-1" style="animation: load2 300ms">
+                    <div class="text-wrap text-sm w-2">امتیاز شمــــا</div>
+                    <div class="flex gap-2 pt-2">
+                        <div class="text-5xl" id="comment-rating">5 / 5</div>
+                        <div id="comment-emotion" class="text-3xl mt-2">😀</div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-1 text-[var(--color10)]" id="comment-tip">
+                امتیاز خود را با کلیک روی ستاره ها مشخص کنید
+            </div>
+            <input name="rating" type="hidden" id="final-rating">
+            <div class="input-icon-def1 mt-3" style="height: 250px; margin-bottom: 80px">
                 <svg id="Chat 2" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M19.1555 5.25821C17.3205 3.42321 14.8795 2.41321 12.2795 2.41321C9.68049 2.41321 7.23749 3.42421 5.40249 5.25921C3.56249 7.09921 2.55049 9.54321 2.55249 12.1442C2.55549 15.4952 2.50449 21.3382 2.50449 21.3382L2.50049 21.8472L3.00849 21.8432C3.06649 21.8422 8.81749 21.7912 12.0685 21.8622C12.1425 21.8632 12.2155 21.8642 12.2895 21.8642C14.8825 21.8642 17.3135 20.8572 19.1555 19.0152C22.9475 15.2222 22.9475 9.05121 19.1555 5.25821Z" fill="#674d45"></path>
                     <path d="M16.7872 13.2701H15.1892V11.7701H16.7872V13.2701Z" fill="#674d45"></path>
                     <path d="M13.0532 13.2701H11.4542V11.7701H13.0532V13.2701Z" fill="#674d45"></path>
                     <path d="M9.31921 13.2701H7.72021V11.7701H9.31921V13.2701Z" fill="#674d45"></path>
                 </svg>
-                <textarea style="height: 100%; min-height: 250px" name="text" id="comment-inp" onfocus="PlaceHolderHandle('comment-inp' ,'comment-plc' ,'fc')" onblur="PlaceHolderHandle('comment-inp' ,'comment-plc' ,'bl')"></textarea>
+                <textarea oninput="CheckCommentCondition()" style="height: 100%; min-height: 250px;" name="text" id="comment-inp" onfocus="PlaceHolderHandle('comment-inp' ,'comment-plc' ,'fc')" onblur="PlaceHolderHandle('comment-inp' ,'comment-plc' ,'bl')"></textarea>
                 <div class="input-placeholder input-placeholder-popup" style="" id="comment-plc">
                     نظر خود را بنویسید
                 </div>
@@ -67,7 +85,7 @@
 
             <div class="flex gap-2 w-[94%] absolute bottom-4">
                 {% if request.user.is_authenticated %}
-                    <button type="submit" class="btn-defIconFlex gap-2" style="width: 100%; height: 50px; font-size: 17px; justify-content: center; padding-top: 12px">
+                    <button id="btn-sendcomment" type="submit" class="btn-defIconFlex gap-2 disabled" style="width: 100%; height: 50px; font-size: 17px; justify-content: center; padding-top: 12px">
                         <svg id="Send" width="24" style="margin-top: 0;" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M11.3565 12.8934C11.3694 12.9519 11.3842 13.0176 11.4006 13.09C11.4738 13.4129 11.581 13.8688 11.7172 14.4028C11.989 15.4682 12.3788 16.8545 12.8475 18.1152C13.0818 18.7455 13.339 19.3529 13.6149 19.8769C13.8872 20.3942 14.194 20.8617 14.5381 21.1862C14.8813 21.5098 15.3414 21.7597 15.8734 21.6332C16.3742 21.514 16.7676 21.0965 17.0902 20.5376C18.1385 18.7214 19.5304 14.763 20.5433 11.0838C21.0521 9.23596 21.4716 7.43589 21.7073 5.98436C21.825 5.25971 21.8989 4.60988 21.9128 4.07868C21.9243 3.64052 21.9223 3.14268 21.7108 2.74545C21.664 2.65772 21.5922 2.5859 21.5045 2.53917C21.1072 2.32761 20.6094 2.32565 20.1712 2.33712C19.64 2.35102 18.9902 2.42491 18.2656 2.54259C16.814 2.7783 15.014 3.19781 13.1661 3.70659C9.48696 4.71957 5.52852 6.11138 3.71239 7.1597C3.15349 7.48233 2.73593 7.8757 2.61678 8.37649C2.49019 8.90853 2.74015 9.36859 3.06377 9.71184C3.38819 10.0559 3.85573 10.3627 4.37304 10.6351C4.89706 10.911 5.50445 11.1681 6.13473 11.4024C7.39547 11.8711 8.78173 12.2609 9.84714 12.5327C10.3811 12.6689 10.8371 12.7761 11.1599 12.8493C11.2323 12.8658 11.2981 12.8805 11.3565 12.8934Z" fill="#c5b8b4"></path>
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M19.0624 5.60285C19.3553 5.89574 19.3553 6.37062 19.0624 6.66351L13.5306 12.1953C13.2377 12.4882 12.7628 12.4882 12.4699 12.1953C12.177 11.9024 12.177 11.4275 12.4699 11.1346L18.0017 5.60285C18.2946 5.30996 18.7695 5.30996 19.0624 5.60285Z" fill="#c5b8b4"></path>

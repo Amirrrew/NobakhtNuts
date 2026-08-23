@@ -660,50 +660,7 @@ function LikeAction(id) {
 
 
 // امتیاز دهی برای کامنت
-const input = document.getElementById("ratingInput");
-const front = document.querySelector(".star-front");
 
-const max = 5;
-
-function update_rating() {
-  let value = Number(input.value);
-  value = Math.max(0, Math.min(max, value));
-
-  const percent = (value / max) * 100;
-
-  front.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
-}
-
-
-// تغییر ریتینگ
-let change_rating = (action) => {
-    let input = document.getElementById('ratingInput');
-    let star = document.querySelector('.star')
-    const max = 5;
-
-    let value = Number(input.value);
-
-    if (action === 'increase') {
-        if (value + 1 <= max) {
-            value = value + 1;
-            star.style = 'animation: posRate 300ms';
-            setTimeout(() => {
-                star.style = 'aniamtion: none'
-            },200)
-        }
-    } else {
-        if (value - 1 >= 1) {
-            value = value - 1;
-            star.style = 'animation: negRate 300ms';
-            setTimeout(() => {
-                star.style = 'aniamtion: none'
-            },200)
-        }
-    }
-
-    input.value = value;
-    update_rating()
-}
 
 // اسکرول به میزان مشخص
 let ScrollTo = (element) => {
@@ -889,6 +846,54 @@ let PopUpWeight = (type ,action) => {
                 document.removeEventListener('click', popupClickHandlerWeight)
             } ,100)
         }
+}
+
+const ratings_emotion = [
+    {title: '1 / 5' ,emoji: '😡'},
+    {title: '2 / 5' ,emoji: '☹️'},
+    {title: '3 / 5' ,emoji: '😐'},
+    {title: '4 / 5' ,emoji: '🙂'},
+    {title: '5 / 5' ,emoji: '😀'},
+]
+
+
+let is_rated = false
+let is_comment_written = false
+let SetRating = (rate) => {
+    let rating_input = document.getElementById('final-rating')
+    let your_rating = document.getElementById('comment-your-rating')
+    rating_input.value = rate
+    for (let i = 1; i<= 5; i++) {
+        let star = document.querySelector(`.star-${i}`)
+        if (i <= rate) {
+            star.classList.remove('text-[var(--color14)]')
+            star.classList.add('text-[var(--color6)]')
+        } else {
+            star.classList.remove('text-[var(--color6)]')
+            star.classList.add('text-[var(--color14)]')
+        }
+    }
+    document.getElementById('comment-rating').innerHTML = to_fanum(ratings_emotion[rate -1].title)
+    document.getElementById('comment-emotion').innerHTML = ratings_emotion[rate-1].emoji
+    your_rating.classList.replace('hidden' ,'flex')
+    document.getElementById('comment-tip').classList.add('hidden')
+    is_rated = true
+    CheckCommentCondition()
+}
+
+let CheckCommentCondition = () => {
+    let comment_text = document.getElementById('comment-inp')
+    if (comment_text.value.length > 0) {
+        is_comment_written = true
+    } else {
+        is_comment_written = false
+    }
+    if (is_rated && is_comment_written) {
+        document.getElementById('btn-sendcomment').classList.remove('disabled')
+    } else {
+        is_comment_written = false
+        document.getElementById('btn-sendcomment').classList.add('disabled')
+    }
 }
 
 function initScrollAnimation(options = {}) {

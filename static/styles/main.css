@@ -1066,38 +1066,38 @@ input[type="number"] {
 
 @keyframes load {
     0% {
-        top: 30px;
+        transform: translateY(30px);
         filter: blur(10px);
     }
 
     100% {
-        top: 0;
+        transform: translateY(0px);
         filter: none;
     }
 }
 
 @keyframes load2 {
     0% {
-        top: -30px;
+        transform: translateY(-30px);
         filter: blur(10px);
     }
 
     100% {
-        top: 0;
+        transform: translateY(0px);
         filter: none;
     }
 }
 
 @keyframes load3 {
     0% {
-        top: 200px;
+        transform: translateY(200px);
         opacity: 0;
     }
     40% {
-        top: -10px;
+        transform: translateY(-10px);
     }
     100% {
-        top: 0;
+        transform: translateY(0px);
         opacity: 1;
     }
 }
@@ -1120,12 +1120,12 @@ input[type="number"] {
     0% {
         opacity: 0;
         filter: blur(10px);
-        top: 50px;
+        transform: translateY(50px);
     }
     100% {
         opacity: 1;
         filter: none;
-        top: 0px;
+        transform: translateY(0px);
     }
 }
 
@@ -1170,7 +1170,7 @@ input[type="number"] {
     0% {
         width: 3%;
         border-radius: 50%;
-        top: -300px;
+        transform: translateY(-300px);
         background-color: #fff;
     }
     29% {
@@ -1179,30 +1179,28 @@ input[type="number"] {
         background-color: #fff;
     }
     30% {
-        top: 70px;
+        transform: translateY(70px);
         width: 3%;
         border-radius: 30px;
     }
     50% {
-        top: 5px;
+        transform: translateY(-7px);
         height: 60px;
     }
     70% {
         width: 62%;
     }
     100% {
-        top: 10px;
+        transform: translateY(0px);
         width: 60%;
     }
 }
 
 @keyframes OpenSearch_Mobile {
     0% {
-        top: -200px;
-        transform: scale(50%);
+        transform: scale(50%) translateY(-200px);
     }
     100% {
-        top: 10px;
         transform: none;
     }
 }
@@ -1713,7 +1711,7 @@ header::before {
     transition: 200ms;
     transform: translateX(100%);
 }
-
+n m
 .side-category-box::-webkit-scrollbar {
     display: none;
 }
@@ -1793,7 +1791,7 @@ header .category-menu {
     position: fixed;
     background-color: rgba(0, 0, 0, 0.29);
     z-index: 101;
-    animation: load8 200ms;
+    animation: load9 200ms;
     backdrop-filter: blur(20px);
 }
 
@@ -4154,4 +4152,11 @@ body .swiper-pagination-bullet-active {
     100% {
         right: -50%;
     }
+}
+
+.rating-star {
+    transition: 200ms;
+}
+.rating-star:hover {
+    transform: scale(120%);
 }
