@@ -1314,7 +1314,7 @@ input[type="number"] {
 }
 
 .btn-defIconFlex:hover {
-    background-color: var(--color2);
+    box-shadow: 0px 0px 0px 5px rgba(103, 77, 69, 0.3);
 }
 
 .btn-defIconFlex:active {
@@ -3965,7 +3965,7 @@ body .swiper-pagination-bullet-active {
 }
 
 .home-carousel-category-card:hover {
-    border: 2px solid var(--color13);
+    border: 2px solid var(--color11);
 }
 
 .home-carousel-category-emoji {
