@@ -44,7 +44,7 @@
                 {% if is_carousel %}
                     {% for item in special_carousel.carousel_set.all %}
                         {% with p=item.product %}
-                            {% include 'product_module/include/product_card_slide.html' %}
+                            {% include 'home_module/components/special_carousels/special_carousel_card.html' %}
                         {% endwith %}
                     {% endfor %}
                 {% else %}
