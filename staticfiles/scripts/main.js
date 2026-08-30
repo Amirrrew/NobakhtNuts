@@ -188,7 +188,7 @@ let Search = (mobile) => {
             if (data.data.length > 0) {
                 data.data.forEach((product, p) => {
                     search_result += `
-                        <a href="${product.url}" class="search-result-card mt-2 pb-2 border-b border-[#dad9d9]" style="animation: load ${(p + 1) * 150}ms; border-radius:0;">
+                        <a href="${product.url}" class="search-result-card mt-2 pb-2 border-b border-[#dad9d9]" style="animation: load10 ${(p + 1) * 150}ms; border-radius:0;">
                             <div class="rounded-2xl min-w-15 min-h-15 max-w-15 bg-[var(--color11)] border border-[#dad9d9] overflow-hidden">
                                 <img alt="${product.title}" class="w-full h-full" src="${product.image}">
                             </div>

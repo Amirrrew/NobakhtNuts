@@ -136,11 +136,11 @@
             <div class="w-[100%]">
                 <div class="flex gap-1 w-[100%] items-start flex-wrap mt-2">
                     {% for sub in subcats %}
-                        <a onclick="Showloader(3000)" class="{% if sub.id == current_subcategory.id %}active-category{% endif %} bg-[var(--color12)] p-2 rounded-xl text-[var(--color6)]" href="{{ sub.get_absolute_url }}">{{ sub.title }}</a>
+                        <a onclick="Showloader(3000)" class="{% if sub.id == current_subcategory.id %}active-category {% else %} category-option {% endif %} bg-[var(--color12)] border-2 border-[var(--color12)] p-2 rounded-xl text-[var(--color6)]" href="{{ sub.get_absolute_url }}">{{ sub.title }}</a>
                     {% endfor%}
                 </div>
                 {% if products.count > 0 %}
-                <div style="{% if products.count < 3 %} grid-template-columns: repeat(3, minmax(0, 1fr)); {% endif %}" class="{% if not request.GET.q %} product-grid-grid {% else %} search-grid {% endif %} gap-3 mt-2">
+                <div style="" class="{% if not request.GET.q %} product-grid-grid {% else %} search-grid {% endif %} {% if products.count < 3 %} product-grid-low {% endif %} gap-3 mt-2">
                     {% for p in products %}
                         {% include 'product_module/include/product_card.html' %}
                     {% endfor %}

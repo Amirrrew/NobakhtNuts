@@ -164,6 +164,10 @@ input[type="number"] {
     .head-title {
         display: none;
     }
+
+    body .product-grid-low {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 }
 
 @media screen and (max-width: 1130px) {
@@ -736,6 +740,14 @@ input[type="number"] {
     body .about-card {
         margin-top: 100px;
     }
+
+
+}
+
+@media screen and (max-width: 680px) {
+    body .product-grid-low {
+        display: block;
+    }
 }
 
 @media screen and (max-width: 650px) {
@@ -1138,6 +1150,17 @@ input[type="number"] {
     }
 }
 
+@keyframes load10 {
+    0% {
+        opacity: 0;
+        filter: blur(10px);
+    }
+    100% {
+        opacity: 1;
+        filter: none;
+    }
+}
+
 
 
 
@@ -1337,6 +1360,8 @@ input[type="number"] {
 
 .btn-defIconFlex2:hover {
     color: var(--color6);
+    box-shadow: 0px 0px 0px 5px rgba(221, 216, 216, 0.11);
+
 }
 
 .btn-defIconFlex2:active {
@@ -2124,7 +2149,10 @@ header .category-menu {
 
 .active-category {
     background-color: var(--color6);
-    color: var(--color13);
+    color: var(--color3);
+    border: 2px solid var(--color6);
+    border-radius: 20px;
+    transition: 200ms;
 }
 
 .active-category .emoji-card {
@@ -2132,13 +2160,32 @@ header .category-menu {
 }
 
 .active-category .cat-sub {
-    color: var(--color7);
+    color: var(--color11);
+}
+
+.category-option {
+    background-color: var(--color19);
+    border: 2px solid var(--color18);
+    transition: 200ms;
+}
+
+.category-option:hover {
+    border: 2px solid var(--color13);
+}
+
+.category-option-related {
+    border-radius: 20px;
+    transition: 200ms;
 }
 
 .product-grid-grid {
     width: 98%;
     display: grid;
     grid-template-columns: repeat(auto-fit ,minmax(350px ,1fr));
+}
+
+.product-grid-low {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .search-grid {
@@ -2165,16 +2212,6 @@ header .category-menu {
     transform: scale(98%);
 }
 
-.product-card:hover .btn-prdcard {
-    transition-delay: 100ms;
-    bottom: -2px;
-    animation: loadbtn 500ms;
-}
-
-.product-card:hover .prd-btbox {
-    bottom: -200px;
-    filter: blur(10px);
-}
 
 @keyframes loadbtn {
     0% {
@@ -3351,10 +3388,10 @@ input[type='checkbox']:checked + .pack-size {
 .btn-prdcounter {
     width: 25px;
     height: 25px;
-    background-color: var(--color9);
+    background-color: var(--color11);
     color: var(--color6);
     cursor: pointer;
-    border-radius: 4px;
+    border-radius: 7px;
 }
 
 .prd-navbar:has(.btn-prdnavbar:active ,.pack-size-input:active) {
@@ -3539,7 +3576,7 @@ input[type='radio']:checked + label .address-unchecked-icon {
     0% {
         width: 5%;
         border-radius: 50%;
-        bottom: -300px;
+        transform: translateY(300px);
         background-color: #fff;
     }
     29% {
@@ -3548,13 +3585,13 @@ input[type='radio']:checked + label .address-unchecked-icon {
         background-color: #fff;
     }
     30% {
-        bottom: 35px;
+        transform: translateY(-35px);
         height: 80px;
         width: 5%;
         border-radius: 30px;
     }
     50% {
-        bottom: 5px;
+        transform: translateY(5px);
         height: 60px;
         background-color: var(--color12);
     }
@@ -3562,7 +3599,7 @@ input[type='radio']:checked + label .address-unchecked-icon {
         width: 31%;
     }
     100% {
-        bottom: 10px;
+        transform: translateY(0px);
         width: 30%;
     }
 }
@@ -3571,7 +3608,7 @@ input[type='radio']:checked + label .address-unchecked-icon {
     0% {
         width: 10%;
         border-radius: 50%;
-        bottom: -300px;
+        transform: translateY(300px);
         background-color: #fff;
     }
     29% {
@@ -3580,13 +3617,13 @@ input[type='radio']:checked + label .address-unchecked-icon {
         background-color: #fff;
     }
     30% {
-        bottom: 95px;
+        transform: translateY(-25px);
         height: 80px;
         width: 10%;
         border-radius: 30px;
     }
     50% {
-        bottom: 65px;
+        transform: translateY(5px);
         height: 60px;
         background-color: var(--color12);
     }
@@ -3594,7 +3631,7 @@ input[type='radio']:checked + label .address-unchecked-icon {
         width: 97%;
     }
     100% {
-        bottom: 70px;
+        transform: translateY(0px);
         width: 96%;
     }
 }
