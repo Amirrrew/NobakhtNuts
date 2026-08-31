@@ -249,11 +249,12 @@ class Order(models.Model):
 
         return progress
 
-    def get_other_packs_weight(self ,product, exclude_detail_id):
+    def get_other_packs_weight(self ,product, exclude_detail_id=None):
         total = 0
         for detail in self.orderdetails_set.all():
             if detail.product_id == product.id and detail.id != exclude_detail_id:
-                total += detail.count * detail.pack_size.size
+                pack_size = detail.pack_size.size if (detail.pack_size and product.is_byWeight) else 1
+                total += detail.count * pack_size
         return total
 
     def Check_insufficient_items(self):
@@ -305,7 +306,9 @@ class Order(models.Model):
         self.is_paid = True
         self.payment_date = timezone.now()
         self.postage_fee = self.calculate_postage_fee()
-        self.finalized_price = self.include_postage_fee()
+        self.finalized_price = self.get_order_summary()['total_to_pay']
+        if self.discount_code:
+            self.discount_code.self_use()
         self.save(update_fields=[
             'receipt', 'status', 'is_paid', 'payment_date',
             'postage_fee', 'finalized_price'
@@ -334,7 +337,7 @@ class Order(models.Model):
         self.fail_state = True
         self.payment_date = timezone.now()
         self.postage_fee = self.calculate_postage_fee()
-        self.finalized_price = self.include_postage_fee()
+        self.finalized_price = self.get_order_summary()['total_to_pay']
         self.save(update_fields=[
             'receipt', 'status', 'is_paid', 'payment_date',
             'postage_fee', 'finalized_price'

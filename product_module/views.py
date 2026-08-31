@@ -182,12 +182,17 @@ class ProductDetailView(DetailView):
         context['popup_open'] = popup_open
         return self.render_to_response(context)
 
-def delete_comment(self ,id):
+@login_required
+def delete_comment(request ,id):
     try:
-        comment = get_object_or_404(ProductComment, id=id)
+        if request.user.is_superuser:
+            comment = get_object_or_404(ProductComment, id=id)
+        else:
+            comment = get_object_or_404(ProductComment, id=id, user=request.user)
         if comment:
+            product_slug = comment.product.slug
             comment.delete()
-            return redirect('product_detail_page', slug=comment.product.slug)
+            return redirect('product_detail_page', slug=product_slug)
     except:
         return redirect('home')
 

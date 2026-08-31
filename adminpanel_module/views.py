@@ -11,7 +11,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
-from django.views.generic import View , ListView, DeleteView, CreateView, UpdateView
+from django.views.generic import View , ListView, DeleteView, CreateView, UpdateView, DetailView
 import json
 
 from unicodedata import category
@@ -299,7 +299,7 @@ def OrderSelectedAction(request):
     })
 
 @method_decorator(permission_checker_decorator_factory(), name='dispatch')
-class OrderDetailView(DeleteView):
+class OrderDetailView(DetailView):
     model = Order
     template_name = 'adminpanel_module/orders/order_details_admin.html'
 

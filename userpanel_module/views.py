@@ -368,25 +368,28 @@ class Notif_detail(DetailView):
         return super().get(request, *args, **kwargs)
 
 
+@login_required
 def delete_notif(request ,pk):
     try:
-        notification = Notification.objects.filter(pk=pk).first()
+        notification = Notification.objects.filter(pk=pk, user=request.user).first()
         if notification:
             notification.delete()
         return redirect('notifications_page')
     except:
         return redirect('home')
 
+@login_required
 def OrderFinish(request ,pk):
-    order = Order.objects.filter(pk=pk).first()
+    order = Order.objects.filter(pk=pk, user=request.user).first()
     if order:
         order.status = OrderStatus.objects.filter(title='پایان یافته').first()
         order.is_done = True
         order.save()
     return redirect('order_detail_page' ,pk=pk)
 
+@login_required
 def OrderCancel(request,pk):
-    order = Order.objects.filter(pk=pk).first()
+    order = Order.objects.filter(pk=pk, user=request.user).first()
     if order:
         order.cancel_order()
     return redirect('order_detail_page' ,pk=pk)

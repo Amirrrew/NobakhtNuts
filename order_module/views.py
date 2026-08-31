@@ -72,16 +72,9 @@ def add_to_order(request: HttpRequest):
             new_count = existing_count + 1
             requested_amount = (new_count * pack) if product.is_byWeight else new_count
 
-            def get_other_packs_weight(product, exclude_detail_id):
-                total = 0
-                for detail in current_order.orderdetails_set.all():
-                    if detail.product_id == product.id:
-                        total += detail.count * detail.pack_size.size
-                return total
-
             if order_detail:
                 if product.is_byWeight:
-                    other_packs_weight = get_other_packs_weight(product, order_detail.id)
+                    other_packs_weight = current_order.get_other_packs_weight(product, current_order_detail.id if current_order_detail else None)
                     total_needed = other_packs_weight + requested_amount
                 else:
                     total_needed = requested_amount
@@ -153,15 +146,8 @@ def change_order_count(request: HttpRequest):
         new_count = existing_count + 1
         requested_amount = (new_count * pack) if product.is_byWeight else new_count
 
-        def get_other_packs_weight(product, exclude_detail_id):
-            total = 0
-            for detail in current_order.orderdetails_set.all():
-                if detail.product_id == product.id and detail.id != exclude_detail_id:
-                    total += detail.count * detail.pack_size.size
-            return total
-
         if product.is_byWeight:
-            other_packs_weight = get_other_packs_weight(product, order_detail.id)
+            other_packs_weight = current_order.get_other_packs_weight(product, order_detail.id)
             total_needed = other_packs_weight + requested_amount
         else:
             total_needed = requested_amount
@@ -573,7 +559,6 @@ def apply_discount(request):
             is_valid = discount.self_check(order_total)
             if is_valid == '':
                 current_order.discount_code = discount
-                discount.self_use()
                 current_order.save()
                 message = 'کد تخفیف اعمال شد'
                 error = False
@@ -624,10 +609,15 @@ class Deposit(View):
         message_e = None
         failed_item = None
         payment_method = PaymentMethod.objects.filter(title='کارت به کارت').first()
-        current_order ,created = Order.objects.get_or_create(user=request.user ,is_paid=False ,payment_method=payment_method)
+        current_order = Order.objects.prefetch_related('orderdetails_set').filter(user=request.user, is_paid=False, is_done=False).first()
+        if not current_order or not current_order.orderdetails_set.exists():
+            return redirect('my_basket_page')
+        if payment_method:
+            current_order.payment_method = payment_method
+            current_order.save(update_fields=['payment_method'])
         order_summary = current_order.get_order_summary()
         total_amount = order_summary['total_to_pay'] * 10
-        card = payment_method.card
+        card = payment_method.card if payment_method else None
 
 
         context = {
@@ -646,10 +636,15 @@ class Deposit(View):
         message_e = None
         failed_item = None
         payment_method = PaymentMethod.objects.filter(title='کارت به کارت').first()
-        current_order ,created = Order.objects.get_or_create(user=request.user ,is_paid=False ,payment_method=payment_method)
+        current_order = Order.objects.prefetch_related('orderdetails_set').filter(user=request.user, is_paid=False, is_done=False).first()
+        if not current_order or not current_order.orderdetails_set.exists():
+            return redirect('my_basket_page')
+        if payment_method:
+            current_order.payment_method = payment_method
+            current_order.save(update_fields=['payment_method'])
         order_summary = current_order.get_order_summary()
         total_amount = order_summary['total_to_pay'] * 10
-        card = payment_method.card
+        card = payment_method.card if payment_method else None
 
         receipt = request.FILES.get('receipt')
         if not receipt:
@@ -661,8 +656,9 @@ class Deposit(View):
                     status = OrderStatus.objects.filter(title__iexact='در انتظار تایید').first()
                     address = current_order.address
                     current_order.finalize_order(receipt ,status)
-                    address.can_delete = False
-                    address.save()
+                    if address:
+                        address.can_delete = False
+                        address.save()
                     self.request.session['message'] = 'سفارش با موفقیت ثبت شد'
                     return redirect(current_order.get_absolute_url())
                 except InsufficientStockError as e:
@@ -729,7 +725,7 @@ def request_online_payment(request):
 
 def verify_payment(request: HttpRequest):
     t_authority = request.GET.get('Authority')
-    online_pay_merchant = PaymentMethod.objects.filter(id=2).first()
+    online_pay_merchant = PaymentMethod.objects.filter(title='پرداخت آنلاین').first() or PaymentMethod.objects.filter(id=2).first()
     if request.GET.get('Status') == 'OK':
         try:
             current_order = Order.objects.get(user=request.user ,is_paid=False ,is_done=False)
@@ -742,7 +738,7 @@ def verify_payment(request: HttpRequest):
             return render(request ,'order_module/include/payment_verify.html' ,context)
 
         order_summary = current_order.get_order_summary()
-        total_amount = order_summary['total_to_pay'] * 10
+        total_amount = order_summary['total_to_pay']
         total_to_irrial = total_amount * 10
 
         req_header = {'accept': 'application/json', 'content-type': 'application/json'}
@@ -764,8 +760,9 @@ def verify_payment(request: HttpRequest):
                     current_order.finalize_order(None ,status)
                     current_order.payment_ref = ref_id
                     current_order.save()
-                    current_order.address.can_delete = False
-                    current_order.address.save()
+                    if current_order.address:
+                        current_order.address.can_delete = False
+                        current_order.address.save()
                 except Exception as e:
                     current_order.order_fail(None ,status)
                     request.session['na_item'] = str(e)
