@@ -54,13 +54,19 @@
                 </div>
                 <div onclick="PhotoGallery(false ,0)" class="pg-mainphoto">
                     <img loading="eager" alt="{{ product.title }}" onclick="" src="{{ product.product_image.first.image.url }}">
+                    <div class="centerbox absolute bottom-0 click-to-expand gap-2">
+                       <i class="fa fa-hand-pointer mt-1 text-xs"></i> برای بزرگنمایی کلیک کنید
+                    </div>
                 </div>
                 <div id="swiper-prd" class="swiper mt-2">
                     <div class="swiper-wrapper">
                         {% for img in product.product_image.all %}
                             {% if not img.is_Main %}
-                                <div onclick="PhotoGallery(false ,{{ forloop.counter0 }})" class="swiper-slide pg-img-card">
+                                <div onclick="PhotoGallery(false ,{{ forloop.counter0 }})" class="swiper-slide pg-img-card relative">
                                     <img loading="lazy" alt="{{ product.title }}" src="{{ img.image.url }}">
+                                    <div onclick="PhotoGallery(false ,{{ forloop.counter0 }})" class="prd-img-expand transition-all absolute top-2 right-2 rounded-lg backdrop-filter-[blur(3px)] bg-[var(--color12)] p-1.5 border border-[var(--color11)] hidden items-center text-[var(--color6)]">
+                                        <i class="fa fa-arrows-alt text-sm" style="transform: rotate(45deg)"></i>
+                                    </div>
                                 </div>
                             {% endif %}
                         {% endfor %}
@@ -151,7 +157,7 @@
 
                 {% include 'product_module/include/product_managecard_desktop.html' %}
 
-                <div class="home-landing-stats stats-details gap-4 centerbox p-5 border-2 border-[var(--color13)] rounded-2xl mt-2.5" style="animation: load8 500ms; background-color: var(--color19)">
+                <div class="home-landing-stats stats-details gap-4 centerbox p-5 border-2 border-[var(--color13)] rounded-2xl mt-2.5" style="animation: load5 500ms; background-color: var(--color19)">
                     <div class="home-landing-stat flex gap-2 w-[100%]">
                         <div class="w-10 h-10 centerbox items-center rounded-xl bg-[var(--color11)]"><img class="w-6" alt="fast-delivery" src="{% static 'media/icons/truck.png' %}"></div>
                         <div class="">

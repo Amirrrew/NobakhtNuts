@@ -1,6 +1,6 @@
 {% load static %}
 
-<div style="animation: load8 {% widthratio s.id 1 100 %}ms;" class="w-[300px] h-[300px] overflow-hidden bg-[var(--color12)] rounded-xl relative hover:bg-[var(--color8)] transition-all">
+<div style="animation: load8 {% widthratio s.id 1 100 %}ms; background-color: var(--color19)" class="w-[300px] h-[300px] overflow-hidden rounded-xl relative hover:bg-[var(--color13)] transition-all border-2 border-[var(--color12)]">
     <div class="w-[100%] p-3">
         <div class="text-[var(--color7)] flex justify-between">
             <div class="flex gap-3">
@@ -24,7 +24,7 @@
         </div>
         <div class="mt-3 absolute bottom-2 w-[93%]">
             {% if s.opt1 %}
-                <div class="w-[100%] text-[13px] p-0.5 px-3 rounded-lg bg-[var(--color8)] flex justify-between" style="overflow: hidden">
+                <div class="w-[100%] text-[13px] p-0.5 px-3 rounded-lg bg-[var(--color12)] flex justify-between" style="overflow: hidden">
                     <a id="clipb-text1" target="_blank" href="{% if s.icon == 'fa fa-phone' %}tel:{{ s.opt1 }}{% else %}{{ s.opt1 }}{% endif %}">{{ s.opt1 }}</a>
                     {% if s.icon == 'fa fa-phone' %}
                             <i onclick="CopyToClipboard('clipboard1' ,'check1' ,'{{ s.opt1 }}')" class="fa fa-copy cursor-pointer text-[var(--color10)] mt-0.5 relative" id="clipboard1"></i>
@@ -33,7 +33,7 @@
                 </div>
             {% endif %}
             {% if s.opt2 %}
-                <div class="w-[100%] text-[13px] mt-1 p-0.5 px-3 rounded-lg bg-[var(--color8)] flex justify-between" style="overflow: hidden">
+                <div class="w-[100%] text-[13px] mt-1 p-0.5 px-3 rounded-lg bg-[var(--color12)] flex justify-between" style="overflow: hidden">
                     <a id="clipb-text2" target="_blank" href="{% if s.icon == 'fa fa-phone' %}tel:{{ s.opt2 }}{% else %}{{ s.opt2 }}{% endif %}">{{ s.opt2 }}</a>
                     {% if s.icon == 'fa fa-phone' %}
                         <i onclick="CopyToClipboard('clipboard2' ,'check2' ,'{{ s.opt2 }}')" class="fa fa-copy cursor-pointer text-[var(--color10)] mt-0.5 relative" id="clipboard2"></i>
@@ -42,7 +42,7 @@
                 </div>
             {% endif %}
             {% if s.opt3 %}
-                <div class="w-[100%] text-[13px] mt-1 p-0.5 px-3 rounded-lg bg-[var(--color8)] flex justify-between" style="overflow: hidden">
+                <div class="w-[100%] text-[13px] mt-1 p-0.5 px-3 rounded-lg bg-[var(--color12)] flex justify-between" style="overflow: hidden">
                     <a id="clipb-text3" target="_blank" href="{% if s.icon == 'fa fa-phone' %}tel:{{ s.opt3 }}{% else %}{{ s.opt3 }}{% endif %}">{{ s.opt3 }}</a>
                     {% if s.icon == 'fa fa-phone' %}
                         <i onclick="CopyToClipboard('clipboard3' ,'check3' ,'{{ s.opt3 }}')" class="fa fa-copy cursor-pointer text-[var(--color10)] mt-0.5 relative" id="clipboard3"></i>

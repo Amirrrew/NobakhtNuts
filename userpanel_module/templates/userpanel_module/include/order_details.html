@@ -14,7 +14,7 @@
     </div>
 
     <div class="order-features flex mt-20 gap-2  w-[100%]">
-        <div class="w-[100%] p-4 bg-[var(--color12)] rounded-xl">
+        <div class="w-[100%] p-4 border-2 border-[var(--color12)] rounded-xl" style="background-color: var(--color19)">
             <div class="text-[var(--color10)]">
                 <i class="fa fa-wallet ml-1"></i> مجموع سفارش
             </div>
@@ -22,7 +22,7 @@
                 {{ order.finalized_price|three_digits_currency }}
             </div>
         </div>
-        <div class="w-[100%] p-4 bg-[var(--color12)] rounded-xl">
+        <div class="w-[100%] p-4 border-2 border-[var(--color12)] rounded-xl" style="background-color: var(--color19)">
             <div class="text-[var(--color10)]">
                 <i class="fa fa-sort-amount-desc ml-1"></i>تعداد اقلام
             </div>
@@ -30,7 +30,7 @@
                 {{ order.total_items|to_fanum }} عدد
             </div>
         </div>
-        <div class="w-[100%] p-4 bg-[var(--color12)] rounded-xl">
+        <div class="w-[100%] p-4 border-2 border-[var(--color12)] rounded-xl" style="background-color: var(--color19)">
             <div class="text-[var(--color10)]">
                 <i class="fa fa-weight ml-1"></i>وزن کل مرسوله
             </div>
@@ -55,7 +55,7 @@
     <div class="order-detail-grid grid grid-cols-2 sm:grid-cols-1 lg:grid-cols-2 mt-2 gap-2">
         {% for o in order.orderdetails_set.all %}
             <a href="{{ o.product.get_absolute_url }}" class="w-[100%]">
-                <div class="flex justify-between p-2 bg-[var(--color12)] h-auto mt-1 w-[100%] rounded-2xl items-start">
+                <div class="flex justify-between p-2 border-2 border-[var(--color12)] h-auto mt-1 w-[100%] rounded-3xl items-start" style="background-color: var(--color19)">
                     <div class="flex gap-4">
                         <div class="w-30 h-30 min-w-30 max-h-30 overflow-hidden rounded-xl bg-[var(--color13)]">
                             <img class="w-[100%] h-[100%]" src="{{ o.product.product_image.first.image.url }}">
@@ -102,6 +102,10 @@
     </div>
     <table class="tb-features mt-3 w-[100%]" style="margin-bottom: 100px">
         <tbody class="border-t border-[var(--color12)]">
+            <tr>
+                <td class="border border-[var(--color13)]">شماره سفارش</td>
+                <td class="border border-[var(--color13)]">#{{ order.pk|to_fanum }}</td>
+            </tr>
             <tr>
                 <td class="border border-[var(--color13)]">تاریخ ثبت</td>
                 <td class="border border-[var(--color13)]">{{ order.payment_date|show_jalali_date|to_fanum }}</td>

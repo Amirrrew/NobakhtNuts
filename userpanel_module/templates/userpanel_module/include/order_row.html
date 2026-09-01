@@ -1,13 +1,28 @@
 {% load static %}
 {% load poll_extras %}
 
-    <a href="{{ order.get_absolute_url }}" class="w-[100%] flex justify-between mt-2 p-3 bg-[var(--color12)] rounded-lg">
-        <div class="flex w-15 h-15 mr-8">
-            {% for o in order.orderdetails_set.all|slice:":3" %}
-                <img class="bg-[var(--color15)] w-15 h-15 rounded-full border-2 border-[var(--color17)] mr-[-30px]" src="{{ o.product.product_image.first.image.url }}">
-            {% endfor %}
+    <a href="{{ order.get_absolute_url }}" class="block mt-2 p-3 border-2 border-[var(--color12)] rounded-3xl" style="background-color: var(--color19); display: block">
+        <div class="flex justify-between text-nowrap">
+            <div class="flex gap-2 items-start order-title">
+                <div class="bg-[var(--color6)] p-1.5 mt-1 rounded-full order-dot"></div>
+                سفارش #{{ order.pk|to_fanum }}
+            </div>
+            <div class="flex items-start gap-1 flex-wrap">
+                <div class="p-1 px-2 rounded-4xl bg-[var(--color6)] gap-2 items-start text-[var(--color11)] text-sm centerbox">
+                    <div class="bg-[var(--color10)] rounded-full p-1 mt-1.5"></div>
+                    پایان یافته
+                </div>
+            </div>
         </div>
-        <div class="order-statusbox-price text-3xl mt-3">
-            {{ order.finalized_price|three_digits_currency }}
+        <div class="w-[100%] flex justify-between">
+            <div class="flex w-15 h-15 mr-8">
+                {% for o in order.orderdetails_set.all|slice:":3" %}
+                    <img class="bg-[var(--color12)] backdrop-filter-[blur(3px)] w-15 h-15 rounded-full border-2 border-[var(--color17)] mr-[-30px]" src="{{ o.product.product_image.first.image.url }}">
+                {% endfor %}
+            </div>
+            <div class="order-statusbox-price text-3xl font-semibold mt-3">
+                <div class="flex justify-end text-sm font-medium text-[var(--color10)]">مبلغ کل</div>
+                {{ order.finalized_price|three_digits_currency }}
+            </div>
         </div>
     </a>
