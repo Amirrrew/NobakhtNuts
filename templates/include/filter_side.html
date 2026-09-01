@@ -120,7 +120,7 @@
                                     {% for b in brand %}
                                         <label for="{{ b.id }}" class="drawer-option relative text-[var(--color6)] text-lg cursor-pointer transition-all active:transform-[scale(0.95)] active:filter-[blur(2px)]" style="animation: load5 {% widthratio forloop.counter 1 50 %}ms">
                                             <div class="flex gap-2">
-                                                <img loading="lazy" alt="{{ b.title }}" class="w-5 h-5" src="{% if b.logo %}{{ b.logo.url }}{% endif %}">
+                                                <img loading="lazy" alt="{% static 'media/icons/package.webp' %}" class="w-5 h-5" src="{% if b.logo %}{{ b.logo.url }}{% endif %}">
                                                 <h1 class="mt-[-2px]">{{ b.title }}</h1>
                                             </div>
                                             <input value="{{ b.id }}" id="{{ b.id }}" name="brand" type="checkbox" class="ui-checkbox" {% if b.id|stringformat:'s' in selected_brands_ids %} checked {% endif %}>
@@ -155,7 +155,7 @@
                                 </button>
 
                                 <a href="{{ request.path }}">
-                                    <button type="button" class="btn-defIconFlex2 mt-2 w-[100%] centerbox gap-2" style="backdrop-filter: blur(10px); height: 50px; padding-top: 14px">
+                                    <button type="button" class="btn-defIconFlex2 mt-2 w-[100%] centerbox gap-2" style="backdrop-filter: blur(10px); height: 50px; padding-top: 14px; background-color: var(--color12)">
                                         <svg class="mt-[-3px]" id="Delete" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                             <g id="Iconly/Bulk/Delete" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
                                                 <g id="Delete" transform="translate(3.000000, 2.000000)" fill="#674d45" fill-rule="nonzero">
