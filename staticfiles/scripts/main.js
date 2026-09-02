@@ -252,7 +252,7 @@ let Search = (mobile) => {
             } else {
 
                 search_result = `
-                    <div class="${!mobile ? 'mt-3' : 'mt-64'} mx-2" style="animation:load .2s;">
+                    <div class="${!mobile ? 'mt-3' : 'mt-64'} mx-4" style="animation:load .2s;">
                         نتیجه‌ای برای "${q}" پیدا نشد
                     </div>
                 `;
