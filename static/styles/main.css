@@ -411,7 +411,14 @@ input[type="number"] {
     body .product-detail-navbox {
         margin-top: 20px;
     }
+
 }
+
+@media screen and (max-width: 1270px) {
+    body .search-menu {
+        width: 70%;
+    }
+ }
 
 @media screen and (max-width: 1000px) {
 
@@ -640,6 +647,13 @@ input[type="number"] {
     }
     body .stats-details {
         margin-top: 20px;
+    }
+
+    body .search-menu {
+        width: 95%;
+        height: 97%;
+        top: 10px;
+        backdrop-filter: blur(20px);
     }
 }
 
@@ -1196,60 +1210,24 @@ input[type="number"] {
 
 @keyframes OpenSearch {
     0% {
-        width: 3%;
-        border-radius: 50%;
-        transform: translateY(-300px);
-        background-color: #fff;
-    }
-    29% {
-        width: 3%;
-        border-radius: 50%;
-        background-color: #fff;
-    }
-    30% {
-        transform: translateY(70px);
-        width: 3%;
-        border-radius: 30px;
-    }
-    50% {
-        transform: translateY(-7px);
-        height: 60px;
-    }
-    70% {
-        width: 62%;
+        opacity: 0;
+        transform: translateY(-20px) scale(95%);
     }
     100% {
-        transform: translateY(0px);
-        width: 60%;
-    }
-}
-
-@keyframes OpenSearch_Mobile {
-    0% {
-        transform: scale(50%) translateY(-200px);
-    }
-    100% {
+        opacity: 1;
         transform: none;
     }
 }
 
-
-
 @keyframes CloseSearch {
     0% {
-        top: 50px;
-        filter: none;
-        width: 300px;
-    }
-
-    10% {
-        filter: blur(10px);
+        opacity: 1;
+        transform: none;
     }
 
     100% {
-        filter: none;
-        top: 0px;
-        width: 300px;
+        opacity: 0;
+        transform: translateY(-20px) scale(95%);
     }
 }
 
@@ -1925,6 +1903,18 @@ header .category-menu {
 }
 
 /* ------- header searchbox -------- */
+
+.search-menu {
+    width: 45%;
+    height: calc(100vh - 14%);
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 1000;
+    border-radius: 20px;
+    backdrop-filter: blur(5px);
+    animation: OpenSearch 300ms;
+    position: fixed;
+    top: 7%;
+}
 
 
 .searchbox {

@@ -733,7 +733,7 @@ def verify_payment(request: HttpRequest):
     if request.GET.get('Status') == 'OK':
         try:
             current_order = Order.objects.get(user=request.user ,is_paid=False ,is_done=False)
-        except Order.DoesNotExist:
+        except Exception as e:
             context = {
                 'error': 'سفارش یافت نشد!',
                 'returning': 'درحال بازگشت به سبد خرید',
@@ -742,7 +742,7 @@ def verify_payment(request: HttpRequest):
             return render(request ,'order_module/include/payment_verify.html' ,context)
 
         order_summary = current_order.get_order_summary()
-        total_amount = order_summary['total_to_pay'] * 10
+        total_amount = order_summary['total_to_pay']
         total_to_irrial = total_amount * 10
 
         req_header = {'accept': 'application/json', 'content-type': 'application/json'}
@@ -773,8 +773,9 @@ def verify_payment(request: HttpRequest):
                 context = {
                     'success': 'پرداخت موفق!',
                     'returning': 'در حال انتقال به صفحه سفارش های من',
-                    'redirect_url': reverse('my_orders_page'),
+                    'redirect_url': current_order.get_absolute_url(),
                 }
+                request.session['message'] = 'سفارش با موفقیت ثبت شد'
                 return render(request ,'order_module/include/payment_verify.html' ,context)
 
             elif t_status == 101:

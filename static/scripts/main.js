@@ -122,19 +122,25 @@ let CategoryMenu = (action) => {
 
 let Search_action = (action) => {
     if (action === true) {
-        searchbox.classList.replace('hidden' ,'flex')
+        searchbox.classList.replace('hidden' ,'block')
+        searchbox.style.animation = 'OpenSearch 300ms'
         overlay.classList.replace('hidden' ,'flex')
         CategoryMenu(false)
         searchinput.addEventListener('input' ,() => Search(false))
         document.body.style = 'overflow-y: hidden;'
         searchinput.focus()
+        overlay.addEventListener('click' ,() => Search_action(false))
     } else {
-        searchbox.classList.replace('flex' ,'hidden')
-        overlay.classList.replace('flex' ,'hidden')
+        searchbox.style.animation = 'CloseSearch 200ms'
         searchSuggest.style = 'display: none;'
         searchinput.removeEventListener('input' ,() => Search(false))
         HeaderManage()
         document.body.style = 'overflow-y: scroll;'
+        setTimeout(()=> {
+            searchbox.classList.replace('block' ,'hidden')
+            overlay.classList.replace('flex' ,'hidden')
+            overlay.removeEventListener('click' ,() => Search_action(false))
+        } ,190)
     }
 }
 
