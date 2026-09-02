@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from home_module.models import SpecialEvents, LandingPage, Carousel, CarouselItem, HomeCards, CardBlock, Banner
+from home_module.models import SpecialEvents, LandingPage, Carousel, CarouselItem, HomeCards, CardBlock, Banner, \
+    TrendingWords
 
 admin.site.register(SpecialEvents)
 admin.site.register(LandingPage)
@@ -23,6 +24,7 @@ class CardBlockAdmin(admin.ModelAdmin):
 admin.site.register(CardBlock ,CardBlockAdmin)
 admin.site.register(Carousel ,CarouselAdmin)
 admin.site.register(Banner)
+admin.site.register(TrendingWords)
 
 
 

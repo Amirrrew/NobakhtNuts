@@ -1,4 +1,5 @@
 {% load poll_extras %}
+{% load static %}
 
 <div class="w-[100%] centerbox items-center">
     <div class="search-menu hidden" id="searchbox">
@@ -8,113 +9,193 @@
             <path fill-rule="evenodd" clip-rule="evenodd" d="M20.1373 17.9767C19.0833 17.9767 18.2253 18.8327 18.2253 19.8867C18.2253 20.9407 19.0833 21.7977 20.1373 21.7977C21.1903 21.7977 22.0473 20.9407 22.0473 19.8867C22.0473 18.8327 21.1903 17.9767 20.1373 17.9767Z" fill="#674d45"></path>
             </svg>
             <input id="search-input" class="search-input" placeholder="جستجو بین محصولات">
-            <button onclick="Search_action(false)" class="w-[60px] h-[100%] cursor-pointer transition-all rounded-xl">
-                <i class="fa fa-close mt-1"></i>
+            <button onclick="Search_action(false)" style="width: 70px" class="h-[100%] cursor-pointer transition-all rounded-xl">
+                <i class="fa fa-close mt-1.5"></i>
             </button>
         </div>
-        <div>
-            <div class="flex gap-1">
-                <i class="fa fa-fire"></i>
+        <div id="search-menu">
+            <div class="px-4 mt-4 border-b border-[var(--color9)] pb-4">
+                <div class="">
+                    <div class="flex gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 12 12">
+                            <path d="M0 0h12v12H0z" fill="none" />
+                            <path fill="#ad8f86" d="M2 12h7v-1h1v-1h1V7h-1v1H9V6H8V4H7V3H6v2H5V2H4v1H3v2H2v3H1V6H0v3h1v2h1Zm2-1v-1H3V9h1V7h1v1h1v1h1V8h1v2H7v1Zm1-9h1V1H5Zm5 4h1V4h-1ZM9 4h1V3H9Zm0 0" />
+                        </svg>
+                        <div class="text-[var(--color7)]">جستجو های پرطرفدار</div>
+                    </div>
+                    <div class="flex gap-1 flex-wrap">
+                        {% for word in trending_words %}
+                            <a href="{% if word.category %}{{ word.category.get_absolute_url }}{% elif word.subcategory %}{{ word.subcategory.get_absolute_url }}{% else %}{{ word.url }}{% endif %}" class="rounded-4xl trending-word mt-1 transition-all flex px-2 py-1 text-[var(--color6)]" style="border: 1px solid rgba(207,200,200,0.61)">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="mt-0.5" width="20" height="20" viewBox="0 0 24 24">
+                                    <path d="M0 0h24v24H0z" fill="none" />
+                                    <path fill="none" stroke="#674d45" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m20 7l-5.846 5.938c-.105.106-.158.16-.205.202c-.76.68-1.907.68-2.667 0a5 5 0 0 1-.205-.203c-.105-.106-.158-.16-.205-.202a2 2 0 0 0-2.667 0a5 5 0 0 0-.204.202L4 17M20 7v6m0-6h-6" />
+                                </svg>
+                                <p>{{ word.title }}</p>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
+            <div class="px-4 mt-4 pb-4">
+                <div class="">
+                    <div class="flex gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="-7.5 -3.5 24 24">
+                            <path d="M-7.5 -3.5h24v24H-7.5z" fill="none" />
+                            <path fill="#a69893" d="M5.708 4.968h1.789a1.5 1.5 0 0 1 1.378 2.09l-3.96 9.243a1.049 1.049 0 0 1-2.012-.413v-6.92L1.45 8.923A1.5 1.5 0 0 1 0 7.423V1.5A1.5 1.5 0 0 1 1.5 0h2.708a1.5 1.5 0 0 1 1.5 1.5z" />
+                        </svg>
+
+                        <div class="text-[var(--color7)]">دسترسی سریع</div>
+                    </div>
+                    <a href="{% url 'all_products_page' %}" class="flex quick-access py-1 transition-all rounded-2xl justify-between mt-2 px-1">
+                        <div class="flex gap-2 items-center">
+                            <div class="bg-[var(--color11)] border-2 border-[var(--color17)] p-3 rounded-xl">
+                                <img style="width: 24px" src="{% static 'media/icons/package.webp' %}">
+                            </div>
+                            <p>محصولات</p>
+                        </div>
+                        <i class="fa fa-arrow-left text-xs mt-4.5 ml-1"></i>
+                    </a>
+                    <a href="{% url 'article_grid' %}" class="flex quick-access py-1 transition-all rounded-2xl justify-between mt-1 px-1">
+                        <div class="flex gap-2 items-center">
+                            <div class="bg-[var(--color11)] border-2 border-[var(--color17)] p-3 rounded-xl">
+                                <svg id="Folder" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M20.5419 7.25362C19.4449 6.07162 18.0459 6.09962 16.8129 6.12162C16.0399 6.13562 15.3089 6.15062 14.7869 5.85262C14.1419 5.48562 13.9189 5.06962 13.6599 4.58662C13.3739 4.05262 13.0499 3.44762 12.1689 2.97162C10.5429 2.09562 8.63389 1.92462 6.16189 2.43462C3.71889 2.93462 2.13989 5.09962 2.13989 7.94962V14.0156C2.13989 21.2876 6.33089 21.8506 12.2499 21.8506C17.9779 21.8506 22.3599 21.2736 22.3599 13.9886C22.3599 12.2036 22.3599 9.21562 20.5419 7.25362Z" fill="#674d45"></path>
+                                <path d="M7.44556 15.4756H17.0386C17.4526 15.4756 17.7886 15.1396 17.7886 14.7256C17.7886 14.3116 17.4526 13.9756 17.0386 13.9756H7.44556C7.03156 13.9756 6.69556 14.3116 6.69556 14.7256C6.69556 15.1396 7.03156 15.4756 7.44556 15.4756Z" fill="#674d45"></path>
+                                </svg>
+                            </div>
+                            <p>مقالات اخیر</p>
+                        </div>
+                        <i class="fa fa-arrow-left text-xs mt-4.5 ml-1"></i>
+                    </a>
+                    <a href="{% url 'my_orders_page' %}" class="flex quick-access py-1 transition-all rounded-2xl justify-between mt-1 px-1">
+                        <div class="flex gap-2 items-center">
+                            <div class="bg-[var(--color11)] border-2 border-[var(--color17)] p-3 rounded-xl">
+                                <svg id="Chart" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.2499 2.29761C4.69094 2.29761 2.01294 4.97561 2.01294 12.5346C2.01294 20.0936 4.69094 22.7716 12.2499 22.7716C19.8079 22.7716 22.4869 20.0936 22.4869 12.5346C22.4869 4.97561 19.8079 2.29761 12.2499 2.29761Z" fill="#674d45"></path>
+                                <path d="M16.729 18.2024C17.143 18.2024 17.479 17.8664 17.479 17.4524V14.2954C17.479 13.8814 17.143 13.5454 16.729 13.5454C16.315 13.5454 15.979 13.8814 15.979 14.2954V17.4524C15.979 17.8664 16.315 18.2024 16.729 18.2024Z" fill="#674d45"></path>
+                                <path d="M12.25 18.2024C12.664 18.2024 13 17.8664 13 17.4524V7.55444C13 7.13944 12.664 6.80444 12.25 6.80444C11.836 6.80444 11.5 7.13944 11.5 7.55444V17.4524C11.5 17.8664 11.836 18.2024 12.25 18.2024Z" fill="#674d45"></path>
+                                <path d="M7.69604 18.2024C8.11004 18.2024 8.44604 17.8664 8.44604 17.4524V10.7584C8.44604 10.3444 8.11004 10.0084 7.69604 10.0084C7.28204 10.0084 6.94604 10.3444 6.94604 10.7584V17.4524C6.94604 17.8664 7.28204 18.2024 7.69604 18.2024Z" fill="#674d45"></path>
+                                </svg>
+                            </div>
+                            <p>سفارش های من</p>
+                        </div>
+                        <i class="fa fa-arrow-left text-xs mt-4.5 ml-1"></i>
+                    </a>
+                    <a href="{% url 'support_page' %}" class="flex quick-access py-1 transition-all rounded-2xl justify-between mt-1 px-1">
+                        <div class="flex gap-2 items-center">
+                            <div class="bg-[var(--color11)] border-2 border-[var(--color17)] p-3 rounded-xl">
+                                <svg id="Calling" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M15.7759 14.4518C14.7779 14.9378 13.9139 15.3598 11.6669 13.1128C9.42088 10.8658 9.84088 10.0028 10.3279 9.00381C11.0329 7.55581 11.3179 6.23881 8.11588 3.60181C7.35088 2.97681 6.52088 2.73681 5.65388 2.90481C3.82088 3.24781 2.52588 5.28781 2.52788 5.28781C1.71588 6.42381 0.603876 9.83981 7.77088 17.0078C12.4849 21.7228 15.5769 22.8538 17.4529 22.8538C18.4289 22.8538 19.0759 22.5478 19.4499 22.2788C19.4699 22.2668 21.5279 20.9918 21.8759 19.1228C22.0379 18.2538 21.8019 17.4268 21.1759 16.6618C18.5399 13.4628 17.2229 13.7468 15.7759 14.4518Z" fill="#674d45"></path>
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M14.8605 2.36C14.4475 2.308 14.0775 2.611 14.0325 3.022C13.9865 3.434 14.2835 3.804 14.6945 3.85C18.0715 4.225 20.6935 6.845 21.0725 10.221C21.1155 10.604 21.4395 10.887 21.8165 10.887C21.8445 10.887 21.8735 10.885 21.9015 10.882C22.3125 10.837 22.6085 10.465 22.5625 10.053C22.1055 5.977 18.9385 2.813 14.8605 2.36Z" fill="#674d45"></path>
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M17.5412 10.2916C17.6112 10.6496 17.9252 10.8976 18.2762 10.8976C18.3242 10.8976 18.3722 10.8936 18.4212 10.8846C18.8272 10.8056 19.0932 10.4106 19.0142 10.0046C18.6072 7.9226 17.0002 6.3156 14.9202 5.9116C14.5232 5.8326 14.1202 6.0986 14.0412 6.5056C13.9622 6.9116 14.2282 7.3056 14.6352 7.3846C16.1112 7.6716 17.2532 8.8126 17.5412 10.2916Z" fill="#674d45"></path>
+                                </svg>
+                            </div>
+                            <p>ارتباط باما</p>
+                        </div>
+                        <i class="fa fa-arrow-left text-xs mt-4.5 ml-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="w-[100%] centerbox">
+            <div class="search-suggest" id="search-suggest">
+                            <div id="skeletons" class="skeletons hidden">
+                                <div class="skeleton-card mt-2">
+                                    <div class="card__skeleton rounded-2xl min-w-20 min-h-20 w-20 h-20"></div>
+                                    <div class="flex justify-between w-[100%]">
+                                        <div class="w-[100%]">
+                                            <div class="card__skeleton w-[50%] p-2 mt-2 rounded-xl"></div>
+                                            <div class="card__skeleton px-10 py-5 w-50 mt-2 rounded-xl"></div>
+                                        </div>
+                                        <div class="p-2">
+                                            <div class="card__skeleton w-10 py-3 rounded-xl"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="skeleton-card mt-2">
+                                    <div class="card__skeleton rounded-2xl min-w-20 min-h-20 w-20 h-20"></div>
+                                    <div class="flex justify-between w-[100%]">
+                                        <div class="w-[100%]">
+                                            <div class="card__skeleton w-[50%] p-2 mt-2 rounded-xl"></div>
+                                            <div class="card__skeleton px-10 py-5 w-50 mt-2 rounded-xl"></div>
+                                        </div>
+                                        <div class="p-2">
+                                            <div class="card__skeleton w-10 py-3 rounded-xl"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="skeleton-card mt-2">
+                                    <div class="card__skeleton rounded-2xl min-w-20 min-h-20 w-20 h-20"></div>
+                                    <div class="flex justify-between w-[100%]">
+                                        <div class="w-[100%]">
+                                            <div class="card__skeleton w-[50%] p-2 mt-2 rounded-xl"></div>
+                                            <div class="card__skeleton px-10 py-5 w-50 mt-2 rounded-xl"></div>
+                                        </div>
+                                        <div class="p-2">
+                                            <div class="card__skeleton w-10 py-3 rounded-xl"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="skeleton-card mt-2">
+                                    <div class="card__skeleton rounded-2xl min-w-20 min-h-20 w-20 h-20"></div>
+                                    <div class="flex justify-between w-[100%]">
+                                        <div class="w-[100%]">
+                                            <div class="card__skeleton w-[50%] p-2 mt-2 rounded-xl"></div>
+                                            <div class="card__skeleton px-10 py-5 w-50 mt-2 rounded-xl"></div>
+                                        </div>
+                                        <div class="p-2">
+                                            <div class="card__skeleton w-10 py-3 rounded-xl"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="skeleton-card mt-2">
+                                    <div class="card__skeleton rounded-2xl min-w-20 min-h-20 w-20 h-20"></div>
+                                    <div class="flex justify-between w-[100%]">
+                                        <div class="w-[100%]">
+                                            <div class="card__skeleton w-[50%] p-2 mt-2 rounded-xl"></div>
+                                            <div class="card__skeleton px-10 py-5 w-50 mt-2 rounded-xl"></div>
+                                        </div>
+                                        <div class="p-2">
+                                            <div class="card__skeleton w-10 py-3 rounded-xl"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="skeleton-card mt-2">
+                                    <div class="card__skeleton rounded-2xl min-w-20 min-h-20 w-20 h-20"></div>
+                                    <div class="flex justify-between w-[100%]">
+                                        <div class="w-[100%]">
+                                            <div class="card__skeleton w-[50%] p-2 mt-2 rounded-xl"></div>
+                                            <div class="card__skeleton px-10 py-5 w-50 mt-2 rounded-xl"></div>
+                                        </div>
+                                        <div class="p-2">
+                                            <div class="card__skeleton w-10 py-3 rounded-xl"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="skeleton-card mt-2">
+                                    <div class="card__skeleton rounded-2xl min-w-20 min-h-20 w-20 h-20"></div>
+                                    <div class="flex justify-between w-[100%]">
+                                        <div class="w-[100%]">
+                                            <div class="card__skeleton w-[50%] p-2 mt-2 rounded-xl"></div>
+                                            <div class="card__skeleton px-10 py-5 w-50 mt-2 rounded-xl"></div>
+                                        </div>
+                                        <div class="p-2">
+                                            <div class="card__skeleton w-10 py-3 rounded-xl"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                <div id="search-result" class="search-result">
+
+                </div>
+                <div id="search-result-box" class="absolute bottom-0 w-[100%] z-300">
+
+                </div>
+            </div>
+
         </div>
     </div>
-</div>
-
-
-<div class="w-[100%] centerbox">
-        <div class="search-suggest" id="search-suggest">
-                        <div id="skeletons" class="skeletons hidden">
-                            <div class="skeleton-card mt-2">
-                                <div class="card__skeleton rounded-2xl min-w-20 min-h-20 w-20 h-20"></div>
-                                <div class="flex justify-between w-[100%]">
-                                    <div class="w-[100%]">
-                                        <div class="card__skeleton w-[50%] p-2 mt-2 rounded-xl"></div>
-                                        <div class="card__skeleton px-10 py-5 w-50 mt-2 rounded-xl"></div>
-                                    </div>
-                                    <div class="p-2">
-                                        <div class="card__skeleton w-10 py-3 rounded-xl"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="skeleton-card mt-2">
-                                <div class="card__skeleton rounded-2xl min-w-20 min-h-20 w-20 h-20"></div>
-                                <div class="flex justify-between w-[100%]">
-                                    <div class="w-[100%]">
-                                        <div class="card__skeleton w-[50%] p-2 mt-2 rounded-xl"></div>
-                                        <div class="card__skeleton px-10 py-5 w-50 mt-2 rounded-xl"></div>
-                                    </div>
-                                    <div class="p-2">
-                                        <div class="card__skeleton w-10 py-3 rounded-xl"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="skeleton-card mt-2">
-                                <div class="card__skeleton rounded-2xl min-w-20 min-h-20 w-20 h-20"></div>
-                                <div class="flex justify-between w-[100%]">
-                                    <div class="w-[100%]">
-                                        <div class="card__skeleton w-[50%] p-2 mt-2 rounded-xl"></div>
-                                        <div class="card__skeleton px-10 py-5 w-50 mt-2 rounded-xl"></div>
-                                    </div>
-                                    <div class="p-2">
-                                        <div class="card__skeleton w-10 py-3 rounded-xl"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="skeleton-card mt-2">
-                                <div class="card__skeleton rounded-2xl min-w-20 min-h-20 w-20 h-20"></div>
-                                <div class="flex justify-between w-[100%]">
-                                    <div class="w-[100%]">
-                                        <div class="card__skeleton w-[50%] p-2 mt-2 rounded-xl"></div>
-                                        <div class="card__skeleton px-10 py-5 w-50 mt-2 rounded-xl"></div>
-                                    </div>
-                                    <div class="p-2">
-                                        <div class="card__skeleton w-10 py-3 rounded-xl"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="skeleton-card mt-2">
-                                <div class="card__skeleton rounded-2xl min-w-20 min-h-20 w-20 h-20"></div>
-                                <div class="flex justify-between w-[100%]">
-                                    <div class="w-[100%]">
-                                        <div class="card__skeleton w-[50%] p-2 mt-2 rounded-xl"></div>
-                                        <div class="card__skeleton px-10 py-5 w-50 mt-2 rounded-xl"></div>
-                                    </div>
-                                    <div class="p-2">
-                                        <div class="card__skeleton w-10 py-3 rounded-xl"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="skeleton-card mt-2">
-                                <div class="card__skeleton rounded-2xl min-w-20 min-h-20 w-20 h-20"></div>
-                                <div class="flex justify-between w-[100%]">
-                                    <div class="w-[100%]">
-                                        <div class="card__skeleton w-[50%] p-2 mt-2 rounded-xl"></div>
-                                        <div class="card__skeleton px-10 py-5 w-50 mt-2 rounded-xl"></div>
-                                    </div>
-                                    <div class="p-2">
-                                        <div class="card__skeleton w-10 py-3 rounded-xl"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="skeleton-card mt-2">
-                                <div class="card__skeleton rounded-2xl min-w-20 min-h-20 w-20 h-20"></div>
-                                <div class="flex justify-between w-[100%]">
-                                    <div class="w-[100%]">
-                                        <div class="card__skeleton w-[50%] p-2 mt-2 rounded-xl"></div>
-                                        <div class="card__skeleton px-10 py-5 w-50 mt-2 rounded-xl"></div>
-                                    </div>
-                                    <div class="p-2">
-                                        <div class="card__skeleton w-10 py-3 rounded-xl"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-            <div id="search-result" class="search-result">
-
-            </div>
-            <div id="search-result-box" class="absolute bottom-4 w-[100%] z-300">
-    
-            </div>
-        </div>
 
 </div>
+
+

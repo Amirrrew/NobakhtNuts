@@ -341,13 +341,10 @@ input[type="number"] {
     }
 
     body .searchbox {
-        width: 95%;
         animation: OpenSearch_Mobile .3s;
     }
 
     body .search-suggest {
-        width: 95%;
-        right: 3%;
         overflow-x: hidden;
     }
 
@@ -888,9 +885,6 @@ input[type="number"] {
         display: flex;
     }
 
-    body #search-result-box {
-        width: 94%;
-    }
 
     body .empty-cart {
         width: 50%;
@@ -1211,7 +1205,7 @@ input[type="number"] {
 @keyframes OpenSearch {
     0% {
         opacity: 0;
-        transform: translateY(-20px) scale(95%);
+        transform: translateY(-20px) scale(98%);
     }
     100% {
         opacity: 1;
@@ -1227,7 +1221,7 @@ input[type="number"] {
 
     100% {
         opacity: 0;
-        transform: translateY(-20px) scale(95%);
+        transform: translateY(-20px) scale(98%);
     }
 }
 
@@ -2073,23 +2067,17 @@ header .category-menu {
     padding-top: 3px;
 }
 
+
 .search-suggest {
     display: none;
-    width: 60%;
-    height: calc(100% - 100px);
-    right: 20%;
+    width: 100%;
+    height: 100%;
     opacity: 1;
     transition: 200ms;
-    margin-top: 10px;
     overflow: hidden;
-    top: 70px;
-    position: fixed;
     z-index: 1000;
-    backdrop-filter: blur(20px);
-    background-color: rgba(255, 255, 255, 0.75);
     border-radius: 20px;
     animation: loadsearchsuggest 300ms;
-    padding: 10px 20px;
 }
 
 @keyframes loadsearchsuggest {
@@ -3038,12 +3026,13 @@ footer {
 
 @keyframes unload4 {
     0% {
-        top: 0;
         opacity: 1;
+        transform: none;
     }
+
     100% {
-        top: -50px;
         opacity: 0;
+        transform: translateY(-20px) scale(98%);
     }
 }
 
@@ -3112,14 +3101,12 @@ footer {
 
 @keyframes load5 {
     0% {
-        top: -20px;
         opacity: 0;
-        filter: blur(10px);
+        transform: translateY(-20px) scale(98%);
     }
     100% {
         opacity: 1;
-        top: 0;
-        filter: none;
+        transform: none;
     }
 }
 
@@ -4212,4 +4199,12 @@ body .swiper-pagination-bullet-active {
 }
 .rating-star:hover {
     transform: scale(120%);
+}
+
+.trending-word:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+.quick-access:hover {
+    background-color: rgba(0, 0, 0, 0.03);
 }

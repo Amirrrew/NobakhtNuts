@@ -122,19 +122,24 @@ let CategoryMenu = (action) => {
 
 let Search_action = (action) => {
     if (action === true) {
-        searchbox.classList.replace('hidden' ,'flex')
+        searchbox.classList.replace('hidden' ,'block')
+        searchbox.style.animation = 'OpenSearch 300ms'
         overlay.classList.replace('hidden' ,'flex')
         CategoryMenu(false)
         searchinput.addEventListener('input' ,() => Search(false))
         document.body.style = 'overflow-y: hidden;'
         searchinput.focus()
+        overlay.addEventListener('click' ,() => Search_action(false))
     } else {
-        searchbox.classList.replace('flex' ,'hidden')
-        overlay.classList.replace('flex' ,'hidden')
-        searchSuggest.style = 'display: none;'
+        searchbox.style.animation = 'CloseSearch 200ms'
         searchinput.removeEventListener('input' ,() => Search(false))
         HeaderManage()
         document.body.style = 'overflow-y: scroll;'
+        setTimeout(()=> {
+            searchbox.classList.replace('block' ,'hidden')
+            overlay.classList.replace('flex' ,'hidden')
+            overlay.removeEventListener('click' ,() => Search_action(false))
+        } ,190)
     }
 }
 
@@ -155,9 +160,12 @@ let search_resultbox_result = document.getElementById('search-result-box')
 let skeleton = document.querySelectorAll('.skeletons');
 let search_resultbox = document.getElementById('search-result');
 let search_resultbox_mobile = document.getElementById('search-result-mobile');
-
+let SearchMenu = document.getElementById('search-menu')
 let Search = (mobile) => {
+
     searchSuggest.style = 'display: block'
+    SearchMenu.style = 'display: none'
+
 
     clearTimeout(search_timeout);
 
@@ -176,6 +184,7 @@ let Search = (mobile) => {
             return;
         }
 
+
         document.getElementById('loader').style.display = 'block';
         skeleton.forEach(item => item.style.display = 'block');
 
@@ -188,14 +197,14 @@ let Search = (mobile) => {
             if (data.data.length > 0) {
                 data.data.forEach((product, p) => {
                     search_result += `
-                        <a href="${product.url}" class="search-result-card mt-2 pb-2 border-b border-[#dad9d9]" style="animation: load10 ${(p + 1) * 150}ms; border-radius:0;">
-                            <div class="rounded-2xl min-w-15 min-h-15 max-w-15 bg-[var(--color11)] border border-[#dad9d9] overflow-hidden">
+                        <a href="${product.url}" class="search-result-card mt-2 pb-2 border-b px-4 border-[#dad9d9]" style="animation: load10 ${(p + 1) * 150}ms; border-radius:0;">
+                            <div class="rounded-2xl min-w-15 min-h-15 max-w-15 overflow-hidden border-2 border-[var(--color11)]" style="background-color: var(--color19)">
                                 <img alt="${product.title}" class="w-full h-full" src="${product.image}">
                             </div>
 
                             <div class="flex w-full">
                                 <div class="w-full">
-                                    <div class="flex justify-between items-start ">
+                                    <div class="flex justify-between mt-1 items-start ">
                                         <div class="search-result-title flex text-start items-start">
                                             ${to_fanum(product.title)}
                                         </div>
@@ -206,14 +215,14 @@ let Search = (mobile) => {
                                         ${
                                             !product.offer
                                             ?
-                                            `<div class="text-2xl">${threeDigitsCurrency(product.price)} تومان</div>`
+                                            `<div class="text-xl">${threeDigitsCurrency(product.price)} تومان</div>`
                                             :
                                             `
                                             <div class="text-[var(--color10)] line-through mt-1">
                                                 ${threeDigitsCurrency(product.price)} 
                                             </div>
 
-                                            <div class="text-2xl">
+                                            <div class="text-xl">
                                                 ${threeDigitsCurrency(product.final_price)} تومان
                                             </div>
 
@@ -231,7 +240,7 @@ let Search = (mobile) => {
                 });
 
                 search_resultbox_result.innerHTML = `
-                <div style="background-color: rgba(255,255,255,0.76)" class="flex justify-between px-3 w-[96%] rounded-xl pt-2 bg-[rgba(255, 255, 255, 0.75)] h-10 border border-[var(--color11)]">
+                <div style="background-color: rgba(255,255,255,0.76); border-bottom-left-radius: 17px; border-bottom-right-radius: 17px;" class="flex justify-between px-3 pt-3 w-[100%] h-12 border border-[var(--color11)]">
                     <div>
                         ${to_fanum(data.result_count)} محصول پیدا شد
                     </div>

@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from unicodedata import category
 
 from account_module.models import Notification
-from home_module.models import SpecialEvents, LandingPage
+from home_module.models import SpecialEvents, LandingPage, TrendingWords
 from order_module.models import OrderDetail, Order
 from product_module.models import ProductCategory, ProductSubCategory, ProductBrand, Product
 from site_settings.models import FooterLinkBox
@@ -20,9 +20,11 @@ def global_context(request):
             'category': ProductCategory.objects.filter(is_active=True).prefetch_related('subcategory'),
             'footers': FooterLinkBox.objects.prefetch_related('links').all(),
             'support_ways': SupportWays.objects.all(),
+            'trending_words': TrendingWords.objects.all()
         }
         cache.set('global_navigation' ,navigation ,60*15)
     context = navigation.copy()
+
 
     if request.user.is_authenticated:
         context["basket"] = (

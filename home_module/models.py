@@ -104,3 +104,17 @@ class Banner(models.Model):
     class Meta:
         verbose_name = 'بنر صفحه اصلی'
         verbose_name_plural = 'بنر های صفحه اصلی'
+
+
+class TrendingWords(models.Model):
+    title = models.CharField(max_length=200 ,null=False ,blank=False ,verbose_name='کلمه')
+    url = models.CharField(max_length=1000 ,null=True ,blank=True ,verbose_name='url')
+    category = models.ForeignKey(ProductCategory ,null=True ,blank=True,on_delete=models.CASCADE ,verbose_name='مرتبط با شاخه اصلی?')
+    subcategory = models.ForeignKey(ProductSubCategory ,null=True ,blank=True,on_delete=models.CASCADE ,verbose_name='مرتبط با زیرشاخه?')
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = 'کلمه پرطرفدار'
+        verbose_name_plural = 'کلمات پرطرفدار'
