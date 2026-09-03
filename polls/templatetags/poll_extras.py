@@ -27,7 +27,7 @@ def three_digits_currency(value):
     return value + ' تومان'
 
 @register.filter(name='three_digits_currency_no_extension')
-def three_digits_currency(value):
+def three_digits_currency_no_extension(value):
     value = '{:,}'.format(value)
 
     persian = '۰۱۲۳۴۵۶۷۸۹'

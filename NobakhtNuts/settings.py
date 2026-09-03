@@ -153,7 +153,7 @@ AUTH_USER_MODEL = 'account_module.User'
 
 SANDBOX = True
 
-SMS_API_KEY = "https://console.melipayamak.com/api/send/otp/410281e7a9a74a2283fd51b6b8653654"
+SMS_API_KEY = config('SMS_API_KEY', default="https://console.melipayamak.com/api/send/otp/410281e7a9a74a2283fd51b6b8653654")
 
 
 CKEDITOR_UPLOAD_PATH = "uploads/"
