@@ -2093,7 +2093,7 @@ header .category-menu {
 
 .search-result {
     width: 100%;
-    height: calc(100% - 130px);
+    height: calc(100% - 205px);
     overflow-y: scroll;
 }
 
