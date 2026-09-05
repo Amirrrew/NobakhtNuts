@@ -1,0 +1,355 @@
+/* =========================================
+   CKEditor Product Description
+   ========================================= */
+
+.product-description {
+    width: 100%;
+    font-size: 16px;
+    line-height: 1.25;
+    word-break: break-word;
+}
+
+
+/* ---------- Headings ---------- */
+
+.product-description h1 {
+    font-size: 2rem !important;
+    line-height: 1.05 !important;
+    font-weight: 900;
+    margin: 1rem 0 .4rem;
+}
+
+.product-description h2 {
+    font-size: 1.7rem !important;
+    line-height: 1.1 !important;
+    font-weight: 800;
+    margin: .9rem 0 .35rem;
+}
+
+.product-description h3 {
+    font-size: 1.4rem !important;
+    line-height: 1.1 !important;
+    font-weight: 800;
+    margin: .8rem 0 .3rem;
+}
+
+.product-description h4 {
+    font-size: 1.2rem !important;
+    line-height: 1.1 !important;
+    font-weight: 700;
+    margin: .7rem 0 .25rem;
+}
+
+.product-description h5 {
+    font-size: 1.05rem !important;
+    line-height: 1.1 !important;
+    font-weight: 700;
+    margin: .6rem 0 .2rem;
+}
+
+.product-description h6 {
+    font-size: 1rem !important;
+    line-height: 1.1 !important;
+    font-weight: 700;
+    margin: .5rem 0 .2rem;
+}
+
+
+/* ---------- Paragraph ---------- */
+
+.product-description p {
+    font-size: 1rem;
+    line-height: 1.25 !important;
+    margin: 0 0 .5rem;
+}
+
+
+/* ---------- Bold ---------- */
+
+.product-description strong,
+.product-description b {
+    font-weight: 800;
+}
+
+
+/* ---------- Italic ---------- */
+
+.product-description em,
+.product-description i {
+    font-style: italic;
+}
+
+
+/* ---------- Links ---------- */
+
+.product-description a {
+    color: var(--color9);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+
+/* ---------- Lists ---------- */
+
+.product-description ul,
+.product-description ol {
+    margin: .4rem 0;
+    padding-right: 1.5rem;
+}
+
+.product-description ul {
+    list-style: disc;
+}
+
+.product-description ol {
+    list-style: decimal;
+}
+
+.product-description ul ul {
+    list-style: circle;
+}
+
+.product-description ul ul ul {
+    list-style: square;
+}
+
+.product-description ol ol {
+    list-style: lower-alpha;
+}
+
+.product-description ol ol ol {
+    list-style: lower-roman;
+}
+
+.product-description li {
+    line-height: 1.25 !important;
+    margin: .1rem 0;
+}
+
+
+/* ---------- Blockquote ---------- */
+
+.product-description blockquote {
+    margin: .7rem 0;
+    padding: .5rem .8rem;
+    border-right: 3px solid var(--color9);
+    background: var(--color11);
+    border-radius: 5px;
+    line-height: 1.25;
+}
+
+.product-description blockquote p {
+    margin: 0;
+}
+
+
+/* ---------- Horizontal Rule ---------- */
+
+.product-description hr {
+    border: 0;
+    border-top: 1px solid var(--color9);
+    margin: .8rem 0;
+    opacity: .35;
+}
+
+
+/* ---------- Images ---------- */
+
+.product-description img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: .8rem auto;
+    border-radius: 8px;
+}
+
+
+/* ---------- Figure ---------- */
+
+.product-description figure {
+    max-width: 100%;
+    margin: .8rem auto;
+}
+
+.product-description figcaption {
+    text-align: center;
+    font-size: .8rem;
+    line-height: 1.2;
+    opacity: .7;
+    margin-top: .2rem;
+}
+
+
+/* ---------- Tables ---------- */
+
+.product-description table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: .8rem 0;
+}
+
+.product-description th,
+.product-description td {
+    border: 1px solid var(--color9);
+    padding: .35rem .5rem;
+    text-align: right;
+    line-height: 1.2;
+}
+
+.product-description th {
+    font-weight: 800;
+}
+
+
+/* ---------- Inline Code ---------- */
+
+.product-description code {
+    font-family: monospace;
+    font-size: .9em;
+    line-height: 1.2;
+    padding: .05rem .25rem;
+    border-radius: 3px;
+}
+
+
+/* ---------- Code Block ---------- */
+
+.product-description pre {
+    direction: ltr;
+    text-align: left;
+    overflow-x: auto;
+    padding: .6rem;
+    margin: .8rem 0;
+    border-radius: 6px;
+    line-height: 1.2;
+    font-family: monospace;
+}
+
+.product-description pre code {
+    padding: 0;
+}
+
+
+/* ---------- Alignment ---------- */
+
+.product-description [style*="text-align: center"] {
+    text-align: center;
+}
+
+.product-description [style*="text-align: right"] {
+    text-align: right;
+}
+
+.product-description [style*="text-align: left"] {
+    text-align: left;
+}
+
+.product-description [style*="text-align: justify"] {
+    text-align: justify;
+}
+
+
+/* ---------- CKEditor Font Size ---------- */
+
+.product-description span[style*="font-size"] {
+    line-height: inherit;
+}
+
+
+/* ---------- Sup / Sub ---------- */
+
+.product-description sup {
+    vertical-align: super;
+    font-size: .7em;
+}
+
+.product-description sub {
+    vertical-align: sub;
+    font-size: .7em;
+}
+
+
+/* ---------- Highlight ---------- */
+
+.product-description mark {
+    padding: .02em .15em;
+    border-radius: 2px;
+}
+
+
+/* ---------- Video / iframe ---------- */
+
+.product-description iframe,
+.product-description video {
+    max-width: 100%;
+    display: block;
+    margin: .8rem auto;
+    border-radius: 7px;
+}
+
+
+/* =========================================
+   Responsive
+   ========================================= */
+
+@media (max-width: 768px) {
+
+    .product-description {
+        font-size: 15px;
+        line-height: 1.2;
+    }
+
+    .product-description h1 {
+        font-size: 1.7rem !important;
+        line-height: 1.05 !important;
+    }
+
+    .product-description h2 {
+        font-size: 1.45rem !important;
+        line-height: 1.05 !important;
+    }
+
+    .product-description h3 {
+        font-size: 1.25rem !important;
+        line-height: 1.05 !important;
+    }
+
+    .product-description h4 {
+        font-size: 1.1rem !important;
+        line-height: 1.05 !important;
+    }
+
+    .product-description p {
+        font-size: .95rem;
+        line-height: 1.2 !important;
+    }
+
+    .product-description li {
+        line-height: 1.2 !important;
+    }
+}
+
+
+@media (max-width: 480px) {
+
+    .product-description {
+        font-size: 14px;
+        line-height: 1.2;
+    }
+
+    .product-description h1 {
+        font-size: 1.5rem !important;
+    }
+
+    .product-description h2 {
+        font-size: 1.3rem !important;
+    }
+
+    .product-description h3 {
+        font-size: 1.15rem !important;
+    }
+
+    .product-description p {
+        font-size: .9rem;
+    }
+}

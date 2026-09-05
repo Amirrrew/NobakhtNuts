@@ -1506,6 +1506,16 @@ input[type="number"] {
     background-color: #fff;
     border: 2px solid var(--color12);
     filter: blur(2px);
+    animation: topbar-btn 200ms;
+}
+
+@keyframes topbar-btn {
+    50% {
+        transform: scale(140%);
+    }
+    100% {
+        transform: scale(120%);
+    }
 }
 
 .top-navigator-pill {

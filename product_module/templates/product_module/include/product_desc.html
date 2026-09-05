@@ -1,6 +1,8 @@
 {% load static %}
 {% load poll_extras %}
 
+
+
 {% if product.desc %}
     <div class="mt-20 w-[100%] h-auto" id="prd-descs">
         <div class="comment-titlebar flex justify-between border-b border-[var(--color9)] pb-3">
@@ -14,33 +16,8 @@
                 <div class="font-black text-2xl mt-1">توضیحات</div>
             </div>
         </div>
-        <div id="prd-desc-text" class="mt-2 transition-all overflow-hidden w-[100%]">
-
+        <div id="prd-desc-text" class="mt-2 product-description transition-all overflow-hidden w-[100%]">
+            {{ product.desc|safe }}
         </div>
-        {% if product.desc|safe|length > 550 %}
-            <button onclick="DescExpantion('more')" id="more-desc" class="px-2 py-1 cursor-pointer rounded-xl bg-[var(--color12)] text-[var(--color6)] ">بیشتر <i class="fa fa-angle-left mr-1 text-xs"></i></button>
-            <button onclick="DescExpantion('less')" id="less-desc" class="hidden px-2 py-1 cursor-pointer rounded-xl bg-[var(--color12)] text-[var(--color6)] ">کمتر <i class="fa fa-angle-right mr-1 text-xs"></i></button>
-        {% endif %}
     </div>
-    <script>
-    let desc = document.getElementById('prd-desc-text')
-    desc.innerHTML = `{{ product.desc|safe }}`;
-    let more_desc = document.getElementById('more-desc')
-    let less_desc = document.getElementById('less-desc')
-    if (desc.innerHTML.length > 550) {
-        more_desc.classList.add('hidden')
-    }
-    let DescExpantion = (action) => {
-        if (action === 'more') {
-            desc.innerHTML = `{{ product.desc|safe }}`
-            more_desc.classList.add('hidden')
-            less_desc.classList.replace('hidden' ,'block')
-        }
-        else {
-            desc.innerHTML = `{{ product.desc|safe|truncatechars:"550" }}`
-            more_desc.classList.replace('hidden' ,'block')
-            less_desc.classList.replace('block' ,'hidden')
-        }
-    }
-    </script>
 {% endif %}
