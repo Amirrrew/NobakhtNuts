@@ -17,14 +17,14 @@
         <div id="prd-desc-text" class="mt-2 transition-all overflow-hidden w-[100%]">
 
         </div>
-        {% if product.desc|length > 550 %}
+        {% if product.desc|safe|length > 550 %}
             <button onclick="DescExpantion('more')" id="more-desc" class="px-2 py-1 cursor-pointer rounded-xl bg-[var(--color12)] text-[var(--color6)] ">بیشتر <i class="fa fa-angle-left mr-1 text-xs"></i></button>
             <button onclick="DescExpantion('less')" id="less-desc" class="hidden px-2 py-1 cursor-pointer rounded-xl bg-[var(--color12)] text-[var(--color6)] ">کمتر <i class="fa fa-angle-right mr-1 text-xs"></i></button>
         {% endif %}
     </div>
     <script>
     let desc = document.getElementById('prd-desc-text')
-    desc.innerHTML = `{{ product.desc|to_fanum|truncatechars:"550" }}`;
+    desc.innerHTML = `{{ product.desc|safe }}`;
     let more_desc = document.getElementById('more-desc')
     let less_desc = document.getElementById('less-desc')
     if (desc.innerHTML.length > 550) {
@@ -32,12 +32,12 @@
     }
     let DescExpantion = (action) => {
         if (action === 'more') {
-            desc.innerHTML = `{{ product.desc|to_fanum }}`
+            desc.innerHTML = `{{ product.desc|safe }}`
             more_desc.classList.add('hidden')
             less_desc.classList.replace('hidden' ,'block')
         }
         else {
-            desc.innerHTML = `{{ product.desc|to_fanum|truncatechars:"550" }}`
+            desc.innerHTML = `{{ product.desc|safe|truncatechars:"550" }}`
             more_desc.classList.replace('hidden' ,'block')
             less_desc.classList.replace('block' ,'hidden')
         }

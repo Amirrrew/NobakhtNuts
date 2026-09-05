@@ -122,7 +122,7 @@ class Product(models.Model):
     price = models.IntegerField(default=0,blank=True ,null=True ,verbose_name="قیمت")
     is_byWeight = models.BooleanField(default=False ,verbose_name='کالای وزنی؟')
     quantity = models.FloatField(default=0 ,verbose_name="تعداد")
-    desc = models.TextField(max_length=500000 ,null=True, blank=True ,verbose_name='توضیحات')
+    desc = RichTextUploadingField(null=True ,blank=True ,verbose_name='توضیحات')
     user = models.ForeignKey(User ,null=True ,blank=True,on_delete=models.DO_NOTHING ,verbose_name="افزوده شده توسط کاربر")
     offer = models.IntegerField(default=0,blank=True ,null=True,db_index=True ,verbose_name="تخفیف")
     is_active = models.BooleanField(default=True,db_index=True ,verbose_name="فعال / غیر فعال")

@@ -124,9 +124,9 @@
                         </div>
                     </div>
 
-                    <div class="product-features flex mt-2 gap-2" style="animation: load8 200ms">
+                    <div class="product-features flex mt-2 gap-2">
                         {% for spec in product.features.all|slice:3 %}
-                            <div class="prd-feature overflow-hidden w-[100%] h-14 rounded-2xl p-2 border-2 border-[var(--color13)] relative" style="background-color: var(--color19)">
+                            <div class="prd-feature overflow-hidden w-[100%] h-14 rounded-2xl p-2 border-2 border-[var(--color13)] relative" style="background-color: var(--color19);  animation: load9 {% widthratio forloop.counter 1 300 %}ms">
                                 <div class="text-[var(--color10)] px-1 text-sm">{{ spec.title }}</div>
                                 <div class="text-m truncate text-[var(--color6)] mt-[-3px] text-nowrap">{{ spec.desc|to_fanum }}</div>
                             </div>
@@ -134,7 +134,7 @@
                     </div>
 
                     {% if product.brand %}
-                        <a href="/products/?brand={{ product.brand.pk }}&brandgrid=1" class="flex justify-between w-[100%] p-2 mt-2 rounded-2xl gap-3" style="background-color: var(--color19); border: 2px solid var(--color13); animation: load8 400ms">
+                        <a href="/products/?brand={{ product.brand.pk }}&brandgrid=1" class="flex justify-between w-[100%] p-2 mt-2 rounded-2xl gap-3" style="background-color: var(--color19); border: 2px solid var(--color13); animation: load9 400ms">
                             <div class="flex gap-3">
                                 {% if product.brand.logo %}
                                 <div class="bg-[var(--color13)] p-2 rounded-lg">
@@ -157,7 +157,7 @@
 
                 {% include 'product_module/include/product_managecard_desktop.html' %}
 
-                <div class="home-landing-stats stats-details gap-4 centerbox p-5 border-2 border-[var(--color13)] rounded-2xl mt-2.5" style="animation: load5 500ms; background-color: var(--color19)">
+                <div class="home-landing-stats stats-details gap-4 centerbox p-5 border-2 border-[var(--color13)] rounded-2xl mt-2.5" style="animation: load9 500ms; background-color: var(--color19)">
                     <div class="home-landing-stat flex gap-2 w-[100%]">
                         <div class="w-10 h-10 centerbox items-center rounded-xl bg-[var(--color11)]"><img class="w-6" alt="fast-delivery" src="{% static 'media/icons/truck.png' %}"></div>
                         <div class="">
