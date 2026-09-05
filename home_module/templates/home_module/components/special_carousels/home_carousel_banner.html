@@ -7,8 +7,8 @@
             {% elif special_carousel.emoji %}
             <h5 class="text-9xl text-center">{{ special_carousel.emoji }}</h5>
         {% endif %}
-        <a {% if special_carousel.url %}href="{{ special_carousel.url }}"{% endif %} class="text-center mt-20">
-            <h4 id="carousel-desc" class="carousel-colorfore text-5xl text-wrap text-[{{ special_carousel.color_fore|default_if_none:"var(--color6)" }}]">{{ special_carousel.desc }}</h4>
+        <a {% if special_carousel.url %}href="{{ special_carousel.url }}"{% endif %} class="text-center">
+            <h4 id="carousel-desc" class="carousel-colorfore font-bold text-5xl text-wrap text-[{{ special_carousel.color_fore|default_if_none:"var(--color6)" }}]">{{ special_carousel.desc }}</h4>
         </a>
         <div class="centerbox gap-2 mt-1">
             <button class="carousel-colorbg btn-special-carousel-prev bg-[{{ special_carousel.color_bg|default_if_none:"var(--color6)" }}] text-[{{ special_carousel.color_fore|default_if_none:"var(--color3)" }}] transition-all rounded-xl w-10 h-10 text-white cursor-pointer"><i class="fa fa-angle-right mt-1.5"></i></button>
