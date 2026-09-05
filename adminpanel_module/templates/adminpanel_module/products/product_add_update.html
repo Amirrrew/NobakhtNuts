@@ -11,6 +11,7 @@
     {% endblock %}
 
     {% block admin_content %}
+        {{ form.media }}
         <form id="product-form" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div id="" class="flex justify-between p-2 pt-6 sticky mt-[-10px] top-[-10px] z-10 bg-[var(--header-bg)] backdrop-filter-[blur(10px)] rounded-xl">
@@ -180,7 +181,7 @@
                                 </div>
                                 <div class="w-[100%] mt-7">
                                     <div>توضیحات تکمیلی</div>
-                                    <textarea name="desc" class="input-admin" style="height: 400px; padding-top: 15px" placeholder="چند خط توضیحات بنویسید">{{ product.desc|default_if_none:'' }}</textarea>
+                                    {{ form.desc }}
                                 </div>
                             </div>
                         </div>
