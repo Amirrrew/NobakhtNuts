@@ -1,6 +1,6 @@
 {% load poll_extras %}
 
-<div id="carousel-banner" class="carousel-colorbg carousel-banner centerbox items-center w-[100%] h-[100%] rounded-xl border-1 border-[var(--color11)]" style="{% if special_carousel.banner %}background-image: url('{{ special_carousel.banner.url }}');{% endif %} background-size: cover; background-repeat: no-repeat">
+<div id="carousel-banner" class="carousel-colorbg carousel-banner centerbox items-center w-[100%] h-[100%] rounded-xl border-1 border-[var(--color11)]" style="{% if special_carousel.banner %}background-image: url('{{ special_carousel.banner.url }}');{% else %} background-color: {{ special_carousel.color_bg }}; {% endif %} background-size: cover; background-repeat: no-repeat">
     <div class="carousel-banner-content">
         {% if special_carousel.icon %}
             {{ special_carousel.icon|safe }}
