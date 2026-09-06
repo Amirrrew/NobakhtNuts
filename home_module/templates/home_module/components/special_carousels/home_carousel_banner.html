@@ -11,8 +11,8 @@
             <h4 id="carousel-desc" class="carousel-colorfore font-bold text-5xl text-wrap" style="color: {{ special_carousel.color_fore|default_if_none:"var(--color6)" }}">{{ special_carousel.desc }}</h4>
         </a>
         <div class="centerbox gap-2 mt-1">
-            <button class="carousel-colorbg btn-special-carousel-prev bg-[{{ special_carousel.color_bg|default_if_none:"var(--color6)" }}] text-[{{ special_carousel.color_fore|default_if_none:"var(--color3)" }}] transition-all rounded-xl w-10 h-10 text-white cursor-pointer"><i class="fa fa-angle-right mt-1.5"></i></button>
-            <button class="carousel-colorbg btn-special-carousel-next bg-[{{ special_carousel.color_bg|default_if_none:"var(--color6)" }}] text-[{{ special_carousel.color_fore|default_if_none:"var(--color3)" }}] transition-all rounded-xl w-10 h-10 text-white cursor-pointer"><i class="fa fa-angle-left mt-1.5"></i></button>
+            <button class="carousel-colorbg btn-special-carousel-prev transition-all rounded-xl w-10 h-10 text-white cursor-pointer" style="background-color: {{ special_carousel.color_bg|default_if_none:"var(--color6)" }}; color: {{ special_carousel.color_fore|default_if_none:"var(--color3)" }};"><i class="fa fa-angle-right mt-1.5"></i></button>
+            <button class="carousel-colorbg btn-special-carousel-next transition-all rounded-xl w-10 h-10 text-white cursor-pointer" style="background-color: {{ special_carousel.color_bg|default_if_none:"var(--color6)" }}; color: {{ special_carousel.color_fore|default_if_none:"var(--color3)" }};"><i class="fa fa-angle-left mt-1.5"></i></button>
         </div>
     </div>
 </div>
