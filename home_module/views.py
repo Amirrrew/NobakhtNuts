@@ -63,12 +63,18 @@ class Home(TemplateView):
         card_block = CardBlock.objects.filter(is_active=True).prefetch_related(Prefetch('cardblock_set' ,queryset=HomeCards.objects.select_related('category').annotate(products_count=Count('category__products' ,filter=Q(category__products__is_active=True ,category__products__is_deleted=False))))).first()
         banners = Banner.objects.select_related('category', 'sub_category').filter(is_active=True)
         recent_articles = Article.objects.select_related('author').filter(is_active=True).order_by('-created_at')[:10]
+        popular_nuts = Product.objects.filter(
+            is_active=True,
+            is_deleted=False,
+            category__is_active=True
+        ).select_related('category','category__main_category' ,'brand').prefetch_related('packs' ,Prefetch('product_image' ,queryset=ProductImage.objects.order_by('-is_Main' ,'id'),to_attr='prefetched_images')).annotate(comments_total=Count('comment_set' ,distinct=True),rating_avarage=Avg('comment_set__rating')).order_by('-chosen','-created_at')[:10]
 
         context['user'] = user
         context['special_event'] = special_event
         context['is_carousel'] = carousel_exist
         context['special_carousel'] = special_carousel or (Product.objects.filter(is_active=True,is_deleted=False,category__is_active=True ,offer__gt=0 ,quantity__gt=0).select_related('category','category__main_category' ,'brand').prefetch_related('packs' ,Prefetch('product_image' ,queryset=ProductImage.objects.order_by('-is_Main' ,'id'),to_attr='prefetched_images')).annotate(comments_total=Count('comment_set' ,distinct=True),rating_avarage=Avg('comment_set__rating')).order_by('-chosen' ,'-created_at'))
         context['card_block'] = card_block
+        context['popular_nuts'] = popular_nuts
         context['banners']= banners
         context['articles']= recent_articles
         return context
