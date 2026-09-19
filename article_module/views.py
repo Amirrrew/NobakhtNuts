@@ -13,7 +13,7 @@ class ArticleListView(ListView):
     paginate_by = 20
 
     def get_queryset(self):
-        return Article.objects.filter(is_active=True)
+        return Article.objects.filter(is_active=True).order_by('-created_at')
 
 class ArticleDetailView(DetailView):
     model = Article
@@ -26,6 +26,6 @@ class ArticleDetailView(DetailView):
         Article.objects.filter(pk=article.pk).update(view=F('view')+1)
         context = super(ArticleDetailView ,self).get_context_data(**kwargs)
         context['most_viewed_articles'] = Article.objects.filter(is_active=True).exclude(id=article.id).order_by('-view')[:4]
-        context['recent_products'] = Product.objects.filter(is_active=True ,is_deleted=False ,quantity__gt=0).order_by('created_at')[:6]
+        context['recent_products'] = Product.objects.filter(is_active=True ,is_deleted=False ,quantity__gt=0).order_by('-created_at')[:6]
         return context
 
