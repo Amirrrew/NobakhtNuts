@@ -14,6 +14,10 @@
     {{ article.title|truncatechars:'35' }}
 {% endblock %}
 
+{% block extra_head %}
+    <link href="{% static 'styles/product-description.css' %}" rel="stylesheet">
+{% endblock %}
+
 {% block page_content %}
     <div class="centerbox">
         <div class="w-[90%]">
