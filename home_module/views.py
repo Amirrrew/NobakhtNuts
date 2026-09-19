@@ -68,7 +68,7 @@ class Home(TemplateView):
             is_deleted=False,
             category__is_active=True,
             category__main_category__title='آجیل'
-        ).select_related('category','category__main_category' ,'brand').prefetch_related('packs' ,Prefetch('product_image' ,queryset=ProductImage.objects.order_by('-is_Main' ,'id'),to_attr='prefetched_images')).annotate(comments_total=Count('comment_set' ,distinct=True),rating_avarage=Avg('comment_set__rating')).order_by('-chosen','-created_at')[:10]
+        ).select_related('category','category__main_category' ,'brand').prefetch_related('packs' ,Prefetch('product_image' ,queryset=ProductImage.objects.order_by('-is_Main' ,'id'),to_attr='prefetched_images')).annotate(comments_total=Count('comment_set' ,distinct=True),rating_avarage=Avg('comment_set__rating')).order_by('-chosen','-view','-created_at')[:10]
 
         context['user'] = user
         context['special_event'] = special_event
