@@ -676,6 +676,10 @@ body:has(#admin-searchbox input:focus) .overlay {
     transition: 300ms;
 }
 
+.quick-access:hover {
+    background-color: rgba(244, 244, 244, 0.43);
+}
+
 .sales-stats-option:hover {
     transform: scale(0.98);
     border: 1px solid var(--color11);

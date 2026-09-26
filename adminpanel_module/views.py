@@ -139,7 +139,7 @@ def Products_Stats(request):
     category_data = get_category_chart()
     context = {
         'all_products_count': Product.objects.count,
-        'all_available_products': Product.objects.filter(quantity__gte=0).count(),
+        'all_available_products': Product.objects.filter(quantity__gt=0).count(),
         'all_unavailable_products': Product.objects.filter(quantity=0).count(),
         'low_stock_products': get_lowstock_products(10),
         'best_selling_products': get_best_selling_products(10),
@@ -1164,6 +1164,29 @@ class UserEdit(UpdateView):
         context['orders_commited'] = Order.objects.filter(is_paid=True ,user=self.object)
         context['comments_sent'] = ProductComment.objects.filter(user=self.object)
         return context
+
+def SignToUser(request):
+    try:
+        if request.user.is_authenticated and request.user.is_superuser:
+            user_pk = request.GET.get('user_pk')
+            if not user_pk:
+                return JsonResponse({
+                    'message': 'کاربری انتخاب نشده است!',
+                    'error': True
+                }, status=400)
+
+            user = get_object_or_404(User, pk=user_pk)
+            login(request, user)
+            return redirect('home')
+        else:
+            return redirect('home')
+    except Exception as e:
+        return JsonResponse({
+            'message': e,
+            'error': True
+        }, status=400)
+
+
 
 @method_decorator(permission_checker_decorator_factory(), name='dispatch')
 class TicketList(ListView):

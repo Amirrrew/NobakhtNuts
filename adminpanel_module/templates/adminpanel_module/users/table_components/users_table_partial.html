@@ -8,6 +8,16 @@
                             <td>{% if user.get_full_name %}{{ user.get_full_name }}{% else %}-{% endif %}</td>
                             <td>{{ user.phone|to_fanum }}</td>
                             <td class="flex justify-center items-start gap-1">
+                                <div class="btn-defIconFlex tooltip-parent relative" onclick="SignToUser('{{ user.pk }}')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24">
+                                        <path d="M0 0h24v24H0z" fill="none" />
+                                        <g fill="none" stroke="#c2b8b5" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                            <path d="m19 16l-3 3M2 21a8 8 0 0 1 12.664-6.5M22 19h-6l3 3" />
+                                            <circle cx="10" cy="8" r="5" />
+                                        </g>
+                                    </svg>
+                                    <div class="tooltip" style="top: -40px; border: 1px solid var(--color9); padding: 5px 10px">ورود</div>
+                                </div>
                                 <a href="{% url 'admin_user_edit' user.pk %}" class="btn-defIconFlex2 w-[40px] h-[30px] text-sm gap-2 text-nowrap tooltip-parent relative" style="justify-content: center; padding-top: 7px; background-color: var(--color12)">
                                     <svg id="Edit" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" clip-rule="evenodd" d="M9.61691 8.34324C9.71636 8.21098 9.90412 8.18421 10.0366 8.28343L15.2165 12.1638C15.3492 12.2632 15.3761 12.4514 15.2766 12.584L10.4569 19.0039C9.29688 20.5539 7.54688 20.8639 6.33688 20.8639C5.58688 20.8639 5.04688 20.7439 4.98688 20.7339C4.85688 20.7039 4.73688 20.6139 4.66688 20.4939C4.59688 20.3639 2.87688 17.3039 4.79688 14.7539L9.61691 8.34324Z" fill="#674d45"></path>

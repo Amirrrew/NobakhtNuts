@@ -330,3 +330,7 @@ let Carousel_grab_item = (carousel_pk ,product_pk ,action) => {
     })
 }
 
+let SignToUser = (pk) => {
+    loader.style.display = 'block';
+    window.location.href = `/adminpanel/users/signtouser/?user_pk=${pk}`;
+}

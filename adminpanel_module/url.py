@@ -1,4 +1,6 @@
 from django.urls import path
+from zope.interface import named
+
 from . import views
 from .views import FooterBoxDelete
 
@@ -46,6 +48,7 @@ urlpatterns = [
     path('users/<int:pk>/delete' ,views.UserDelete ,name='admin_user_delete'),
     path('users/<int:pk>/edit' ,views.UserEdit.as_view() ,name='admin_user_edit'),
     path('users/<int:pk>/delete-avatar' ,views.UserAvatarDelete ,name='admin_user_deleteavatar'),
+    path('users/signtouser/' ,views.SignToUser ,name='admin_user_signin'),
     # path('tickets/' ,views.TicketList.as_view() ,name='admin_ticket_list')
     path('support-ways/' ,views.SupportWays_list.as_view() ,name='admin_supportways_list'),
     path('support-ways/add' ,views.SupportWayAdd.as_view() ,name='admin_supportways_add'),
