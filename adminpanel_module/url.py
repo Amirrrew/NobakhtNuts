@@ -1,5 +1,4 @@
 from django.urls import path
-from zope.interface import named
 
 from . import views
 from .views import FooterBoxDelete
