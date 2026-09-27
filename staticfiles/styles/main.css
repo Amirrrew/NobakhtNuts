@@ -4209,3 +4209,7 @@ body .swiper-pagination-bullet-active {
 .quick-access:hover {
     background-color: rgba(0, 0, 0, 0.03);
 }
+
+#article-text p {
+    color: #7a6964;
+}
