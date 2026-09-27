@@ -1881,7 +1881,7 @@ header .category-menu {
     border: 1px solid var(--color11);
     border-radius: 12px;
     height: 50px;
-    margin-top: 10px;
+    margin-top: 8px;
     transition: 200ms;
     position: relative;
     padding: 5px;
@@ -4211,5 +4211,5 @@ body .swiper-pagination-bullet-active {
 }
 
 #article-text p {
-    color: #000000;
+    color: #675a53;
 }
