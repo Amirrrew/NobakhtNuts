@@ -72,8 +72,8 @@ let HeaderManage = () => {
                 headerLogo.style = "width: 35px; height: 35px;";
                 headerrow.style = "margin-top: -5px; position: absolute;"
                 headtitle.style = "display: none;"
-                btn_opensearch.style = 'margin-top: -5px;'
-                headersubbox.style = "margin-top: -5px"
+                btn_opensearch.style = 'margin-top: -7px;'
+                headersubbox.style = "margin-top: -7px"
                 headershrunk = true
             } else {
                 parentHeader.style = "height: 95px"
