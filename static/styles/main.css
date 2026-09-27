@@ -3518,7 +3518,7 @@ input[type='radio']:checked + label .address-unchecked-icon {
 
 .article-card {
     width: 360px;
-    height: 480px;
+    height:430px;
     border: 1px solid var(--color8);
     border-radius: 15px;
     overflow: hidden;
@@ -4211,5 +4211,5 @@ body .swiper-pagination-bullet-active {
 }
 
 #article-text p {
-    color: #7a6964;
+    color: #000000;
 }
