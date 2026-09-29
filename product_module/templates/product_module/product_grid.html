@@ -12,6 +12,11 @@
 {% endblock %}
 
 {% block extra_head %}
+    {% if title_prd == 'همه محصولات' and not request.GET.q and not request.GET.offer %}
+        <meta name="description" content="محصولات برنج و خشکبار نوبخت، خرید از خشکبار نوبخت"/>
+        {% else %}
+        <meta name="description" content="خرید {{ title_prd }} از برنج و خشکبار نوبخت، خرید {{ title_prd }} ،خرید {{ title_prd }} از خشکبار نوبخت "/>
+    {% endif %}
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 {% endblock %}

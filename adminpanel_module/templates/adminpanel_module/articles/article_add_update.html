@@ -74,6 +74,13 @@
                         </div>
                     </div>
 
+                    <div class="editpanel-row mt-2 flex gap-2">
+                        <div class="w-[100%]">
+                            <div>متا دسکریپشن<span class="text-[var(--loss-dot)]">*</span></div>
+                            <input value="{{ article.meta_desc }}" class="input-admin" name="meta_desc" id="title" placeholder="متا دسکریپشن بنویسید">
+                        </div>
+                    </div>
+
                     <div class="editpanel-row mt-2 gap-2">
                         <div>توضیحات<span class="text-[var(--loss-dot)]">*</span></div>
                         <textarea style="height: 150px; padding: 10px" class="input-admin" name="desc" placeholder="چند خط توضیحات برای مقاله بنویسید">{{ article.desc|default_if_none:"" }}</textarea>

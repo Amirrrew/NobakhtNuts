@@ -15,6 +15,7 @@ class Article(models.Model):
     desc = models.TextField(null=True ,blank=True ,verbose_name='توضیحات کوتاه')
     time_to_read = models.IntegerField(default=0 ,verbose_name='زمان برای خواندن')
     content = RichTextUploadingField()
+    meta_desc = models.CharField(max_length=500 ,null=True ,blank=True ,verbose_name='متا دسکریپشن')
     is_active = models.BooleanField(default=True ,db_index=True)
     slug = models.SlugField(null=True ,blank=False ,unique=True ,verbose_name='عنوان در url')
 
