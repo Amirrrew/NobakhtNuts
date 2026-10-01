@@ -20,7 +20,7 @@
                         <img class="w-20" src="{% static 'media/logo/favicon-32x32.webp' %}" alt="nobakhtnuts-logo">
                     </a>
                     <div class="text-3xl" style="color: #fff">برنج و خشکبار نوبخت</div>
-                    <p class="w-80">برنج و خشکبار نوبخت، فروشگاهی کیفیت محور واقع در شهر قائمشهر با بیش از 20 سال سابقه است که در حوزه برنج، آجیل، خشکبار و ... فعالیت میکند.</p>
+                    <h1 class="w-80">برنج و خشکبار نوبخت، فروشگاهی کیفیت محور واقع در شهر قائمشهر با بیش از 20 سال سابقه است که در حوزه برنج، آجیل، خشکبار و ... فعالیت میکند.</h1>
                     <ul class=" flex gap-1.5 mt-1 text-2xl">
                         {% for support in support_ways %}
                             <a target="_blank" href="{% if support.icon == 'fa fa-phone' %}tel:{% endif %}{{ support.opt1 }}"><li><i class="{{ support.icon }}"></i></a></li>
@@ -53,8 +53,8 @@
                 </h4>
             </div>
             <div class="px-5 text-stone-500 text-center py-5" style="background-color: rgb(39, 31, 31); ">
-               <h1> © تمامی حقوق محفوظ است</h1>
-                <h3 class="text-stone-600"> {{ site_settings.version }}</h3>
+               <p> © تمامی حقوق محفوظ است</p>
+                <p class="text-stone-600"> {{ site_settings.version }}</p>
             </div>
         </div>
     </footer>
