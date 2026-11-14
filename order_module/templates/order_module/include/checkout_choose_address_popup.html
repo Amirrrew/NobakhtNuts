@@ -26,7 +26,6 @@
 
         <div class="px-5 mt-[-10px] mb-3 pb-2" id="basket-address-partial">
             {% include 'order_module/include/checkout_choose_address_popup_partial.html' %}
-            {% if my_address %}
                 <button onclick="PopUpOrder('none' ,'open') ,PopUpAddress('none' ,'close')" class="btn-defIconFlex mt-4 gap-2" style="width: 100%; height: 50px; justify-content: center; padding-top: 13px">
                     <svg class="mt-[-1px]" id="Plus" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.2499 2.29761C4.69094 2.29761 2.01294 4.97561 2.01294 12.5346C2.01294 20.0936 4.69094 22.7716 12.2499 22.7716C19.8079 22.7716 22.4869 20.0936 22.4869 12.5346C22.4869 4.97561 19.8079 2.29761 12.2499 2.29761Z" fill="#c5b8b4"></path>
@@ -34,7 +33,6 @@
                     </svg>
                     <p>افزودن آدرس جدید</p>
                 </button>
-            {% endif %}
         </div>
 
     </div>

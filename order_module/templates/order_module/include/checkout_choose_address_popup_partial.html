@@ -24,4 +24,10 @@
             </label>
     {% endfor %}
      </div>
+    {% else %}
+    <div class="text-center mt-6 text-[var(--color6)]">
+        <div class="centerbox"><img src="{% static 'media/icons/no-location.webp' %}" class="w-[120px]"></div>
+        <p class="text-xl font-bold mt-5">شما آدرسی ندارید!</p>
+        <p class="px-10">برای ارسال سفارش نیاز است یک آدرس ثبت کنید.لطفا اطلاعات را بصورت دقیق وارد نمایید.</p>
+    </div>
 {% endif %}
