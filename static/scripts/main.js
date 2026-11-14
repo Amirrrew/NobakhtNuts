@@ -905,6 +905,60 @@ let CheckCommentCondition = () => {
     }
 }
 
+let SetOrderAddress = (id) => {
+    let address_popup = document.getElementById('address-popup')
+    let address_box = document.getElementById('address-box')
+    loader.style = 'display: block;'
+    address_popup.classList.add('disabled')
+    fetch(`/orders/set-address/?id=${id}`).then(res => res.json()).then(data => {
+        if (data.error) {
+            Message(data.message, data.error)
+            address_popup.classList.remove('disabled')
+        }
+        else {
+            address_popup.innerHTML = data.address_popup
+            address_box.innerHTML = data.address_box
+        }
+    }).catch(err => {
+        Message(err, true)
+    }).finally(() => {
+        loader.style = 'display: none;'
+        address_popup.classList.remove('disabled')
+        PopUpAddress('none','close' )
+    })
+}
+
+const popupClickHandlerAddress = (e) => {
+    let popup = document.getElementById('popup-form-address')
+
+    if (!popup.contains(e.target)) {
+        PopUpAddress('none', 'close')
+    }
+}
+
+let PopUpAddress = (type ,action) => {
+    let parent = document.getElementById('popup-parent-address')
+    let popup = document.getElementById('popup-form-address')
+
+    if (action === 'open') {
+        window.innerWidth > 1130 ? parent.style = 'display: flex; align-items:center;' :parent.style = 'display: flex; align-items:end;'
+        document.body.style.overflowY = 'hidden'
+        window.innerWidth < 1130 ? popup.style = 'animation: popup-mobile 300ms': null
+        setTimeout(() => {
+            document.addEventListener('click', popupClickHandlerAddress)
+        }, 200)
+    } else {
+        window.innerWidth < 1130 ? popup.style = 'animation: popup-mobile-close 300ms' : popup.style = 'animation: unload4 200ms'
+        setTimeout(()=> {
+            parent.style = 'display: none'
+            popup.style = 'animation: load5 300ms;'
+            document.body.style.overflowY = 'scroll'
+            document.removeEventListener('click', popupClickHandlerAddress)
+        } ,100)
+    }
+}
+
+
 function initScrollAnimation(options = {}) {
     const {
         selector = '.animate-on-scroll',

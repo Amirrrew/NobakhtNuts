@@ -40,7 +40,7 @@ class Address(models.Model):
     details = models.CharField(max_length=1000 ,null=True ,blank=True ,verbose_name='جزئیات آدرس')
     phone = models.CharField(max_length=11 ,null=True ,blank=True ,verbose_name='شماره ثابت')
     receiver = models.CharField(max_length=200 ,null=True ,blank=True ,verbose_name='نام دریافت کننده')
-    is_Default = models.BooleanField(default=False ,verbose_name="آدرس پیشفرض")
+    is_default = models.BooleanField(default=False ,verbose_name="آدرس پیشفرض")
     can_delete = models.BooleanField(default=True ,verbose_name='قابلیت حذف')
 
     def __str__(self):

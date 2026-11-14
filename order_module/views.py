@@ -385,6 +385,10 @@ class BasketCheckout(View):
                 province = Province.objects.filter(id=province_id).first()
                 city = City.objects.filter(id=city_id).first()
 
+                for address in my_address:
+                    address.is_default = False
+                    address.save()
+
                 new_address = Address(
                     title=title,
                     province=province,
@@ -395,10 +399,13 @@ class BasketCheckout(View):
                     details=details,
                     user=user,
                     receiver=receiver,
-                    is_Default=False,
+                    is_default=True,
                 )
-
                 new_address.save()
+
+                current_order.address = new_address
+                current_order.save()
+
                 request.session['message'] = 'آدرس جدید با موفقیت ثبت شد'
                 return redirect('checkout_page')
             else:
@@ -410,20 +417,16 @@ class BasketCheckout(View):
             order_form = OrderForm(request.POST)
             if order_form.is_valid():
                 desc = request.POST.get('desc')
-                address_id = request.POST.get('address')
                 posting_id = request.POST.get('posting')
 
                 if not posting_id:
                     message_e = 'روش ارسال را انتخاب کنید'
-                elif not address_id:
+                elif not current_order.address:
                     message_e = 'آدرس خود را انتخاب یا در صورت نیاز ثبت کنید'
                 else:
-                    address = Address.objects.filter(id=address_id ,user=request.user).first()
-                    if address:
-                        address.can_delete = False
-                        address.save()
                     posting = PostingMethod.objects.filter(id=posting_id).first()
-                    current_order.address = address
+                    current_order.address.can_delete = False
+                    current_order.address.save()
                     current_order.desc = desc
                     current_order.posting_method = posting
                     current_order.save()
@@ -454,6 +457,63 @@ class BasketCheckout(View):
             'posting_methods': posting_methods,
         }
         return render(request ,'order_module/basket_checkout.html' ,context)
+
+def set_order_address(request):
+    error = False
+    message = None
+    address_id = None
+    address_popup_html = None
+    address_box_html = None
+    try:
+        address_id = request.GET.get('id')
+    except:
+        error = True
+        message = 'تغییر آدرس با مشکل مواجه شد!'
+
+    address = Address.objects.filter(id=address_id ,user=request.user).first()
+    current_order, created = Order.objects.get_or_create(is_paid=False, user_id=request.user.id, is_done=False)
+
+    if address:
+        try:
+            current_order.address = address
+            current_order.save()
+            current_order.refresh_from_db()
+
+            my_address = Address.objects.filter(user=request.user)
+            address_popup_html = render_to_string(
+                'order_module/include/checkout_choose_address_popup_partial.html',
+                {
+                    'orders': current_order,
+                    'my_address': my_address
+                },
+                request=request
+            )
+
+            address_box_html = render_to_string(
+                'order_module/include/checkout_address_partial.html',
+                {
+                    'orders': current_order,
+                    'my_address': my_address
+                },
+                request=request
+            )
+
+            message = 'آدرس بروزرسانی شد'
+            error = False
+
+        except Exception as e:
+            error = True
+            message = str(e)
+    else:
+        error = True
+        message = 'آدرسی با همچین آیدی پیدا نشد!'
+
+    return JsonResponse({
+        'error': error,
+        'message': message,
+        'address_box': address_box_html,
+        'address_popup': address_popup_html
+    })
 
 def get_postage_fee(request):
     post_pk = request.GET.get('post')

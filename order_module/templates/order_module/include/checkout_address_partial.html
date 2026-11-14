@@ -1,0 +1,35 @@
+{% load poll_extras %}
+
+{% if not orders.address %}
+        <div class="mr-3 flex justify-between w-[100%]">
+            <div>
+                <p class="font-bold">آدرس ارسال را انتخاب کنید</p>
+                <p class="text-[var(--color7)]">میتوانید از آدرس هایی که قبلا اضافه کردید هم اضافه کنید</p>
+            </div>
+            <div class="flex items-center gap-1 ml-2 font-bold" style="color: rgb(96,52,3)">
+                <p>انتخاب</p>
+                <i class="fa fa-angle-left"></i>
+            </div>
+        </div>
+        {% else %}
+        <div class="mr-3 flex justify-between w-[100%]">
+            <div>
+                <p class="font-bold text-2xl">{{ orders.address.title }}</p>
+                <div class="flex flex-wrap gap-2 text-[var(--color7)]">
+                    <div class="flex gap-1 items-center">
+                        <i class="fa fa-user text-xs mt-[-4px]"></i>
+                        <p>{{ orders.address.receiver }}</p>
+                    </div>
+                    <div class="flex gap-1 items-center">
+                        <i class="fa fa-phone text-xs mt-[-4px]"></i>
+                        <p>{{ orders.address.phone|default_if_none:''|to_fanum }}</p>
+                    </div>
+                </div>
+                <p>{{ orders.address.details }}</p>
+            </div>
+            <div class="flex items-center gap-1 ml-2 font-bold" style="color: rgb(96,52,3)">
+                <p>تغییر</p>
+                <i class="fa fa-angle-left"></i>
+            </div>
+        </div>
+    {% endif %}
