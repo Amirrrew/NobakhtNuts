@@ -15,5 +15,7 @@ urlpatterns = [
     path('apply-fee/' ,views.get_postage_fee ,name='apply_postage_fee'),
     path('item-not-available' ,views.NaItemView.as_view() ,name='na_item'),
     path('apply-code/' ,views.apply_discount ,name='apply_code'),
-    path('set-address/' ,views.set_order_address ,name='set_address')
+    path('set-address/' ,views.set_order_address ,name='set_address'),
+    path('get-address-for-edit/' ,views.get_address_for_edit ,name='get_address_for_edit'),
+    path('apply-address-edit/' ,views.apply_address_edit ,name='apply_address_edit')
 ]

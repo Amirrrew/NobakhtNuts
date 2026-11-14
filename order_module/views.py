@@ -519,6 +519,106 @@ def set_order_address(request):
         'address_popup': address_popup_html
     })
 
+def get_address_for_edit(request):
+    error = False
+    message = None
+    address_id = None
+    address_html = None
+    try:
+        address_id = request.GET.get('id')
+    except:
+        error = True
+        message = 'ویرایش آدرس با مشکل مواجه شد'
+
+    address = Address.objects.filter(id=address_id ,user=request.user).first()
+    if address:
+        provinces = Province.objects.all()
+        address_html = render_to_string(
+            'order_module/include/edit_address_popup_partial.html',
+            {
+                'address': address,
+                'provinces': provinces,
+            },
+            request=request
+        )
+
+
+    return JsonResponse({
+        'error':error,
+        'message': message,
+        'address_html': address_html,
+        'province_name': address.province
+    })
+
+def apply_address_edit(request):
+    address_id = request.GET.get('id')
+    address_title = request.GET.get('title')
+    address_postal = request.GET.get('postal')
+    address_plate = request.GET.get('plate')
+    address_rec = request.GET.get('rec')
+    address_phone = request.GET.get('phone')
+    address_details = request.GET.get('details')
+    error = False
+    message = None
+    address_box_html = None
+    address_popup_html = None
+
+    if all([
+        address_id,
+        address_title,
+        address_postal,
+        address_plate,
+        address_rec,
+        address_phone,
+        address_details
+    ]):
+        address = Address.objects.filter(id=address_id ,user=request.user).first()
+        if address:
+            address.title = address_title
+            address.postal_code = address_postal
+            address.number_plate = address_plate
+            address.receiver = address_rec
+            address.phone = address_phone
+            address.details = address_details
+            address.save()
+
+            current_order, created = Order.objects.get_or_create(is_paid=False, user_id=request.user.id, is_done=False)
+            my_address = Address.objects.filter(user=request.user)
+
+            address_popup_html = render_to_string(
+                'order_module/include/checkout_choose_address_popup_partial.html',
+                {
+                    'orders': current_order,
+                    'my_address': my_address
+                },
+                request=request
+            )
+
+            address_box_html = render_to_string(
+                'order_module/include/checkout_address_partial.html',
+                {
+                    'orders': current_order,
+                    'my_address': my_address
+                },
+                request=request
+            )
+
+            message = 'آدرس ویرایش شد!'
+        else:
+            message = 'آدرسی پیدا نشد!'
+            error = True
+    else:
+        message = 'لطفا همه ی فیلد هارا پر کنید!'
+        error = True
+
+    return JsonResponse({
+        'error': error,
+        'message': message,
+        'address_popup': address_popup_html,
+        'address_box': address_box_html
+    })
+
+
 def get_postage_fee(request):
     post_pk = request.GET.get('post')
     post_type = request.GET.get('type')

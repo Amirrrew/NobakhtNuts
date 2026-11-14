@@ -905,9 +905,10 @@ let CheckCommentCondition = () => {
     }
 }
 
+
+let address_popup = document.getElementById('address-popup')
+let address_box = document.getElementById('address-box')
 let SetOrderAddress = (id) => {
-    let address_popup = document.getElementById('address-popup')
-    let address_box = document.getElementById('address-box')
     loader.style = 'display: block;'
     address_popup.classList.add('disabled')
     fetch(`/orders/set-address/?id=${id}`).then(res => res.json()).then(data => {
@@ -956,6 +957,84 @@ let PopUpAddress = (type ,action) => {
             document.removeEventListener('click', popupClickHandlerAddress)
         } ,100)
     }
+}
+
+
+const popupClickHandlerEditAddress = (e) => {
+    let popup = document.getElementById('popup-form-edit-address')
+
+    if (!popup.contains(e.target)) {
+        PopUpEditAddress('none', 'close')
+    }
+}
+
+
+
+let edit_address_partial = document.getElementById('edit-address-partial')
+let PopUpEditAddress = (id, action) => {
+    let parent = document.getElementById('popup-parent-edit-address')
+    let popup = document.getElementById('popup-form-edit-address')
+
+    if (action === 'open') {
+        loader.style = 'display: block;';
+        address_popup.classList.add('disabled')
+
+        fetch(`/orders/get-address-for-edit/?id=${id}`).then(res => res.json()).then(data => {
+            if (data.error) {
+                Message(data.message ,data.error)
+            }
+            else {
+                edit_address_partial.innerHTML = data.address_html
+                window.innerWidth > 1130 ? parent.style = 'display: flex; align-items:center;' :parent.style = 'display: flex; align-items:end;'
+                document.body.style.overflowY = 'hidden'
+                window.innerWidth < 1130 ? popup.style = 'animation: popup-mobile 300ms': null
+                setTimeout(() => {
+                    document.addEventListener('click', popupClickHandlerEditAddress)
+                }, 200)
+                PopUpAddress('none' ,'close')
+            }
+        }).catch(err => {
+            Message(err ,true)
+        }).finally(() => {
+            loader.style = 'display: none;';
+            address_popup.classList.remove('disabled')
+        })
+    }
+    else {
+        window.innerWidth < 1130 ? popup.style = 'animation: popup-mobile-close 300ms' : popup.style = 'animation: unload4 200ms'
+        setTimeout(()=> {
+            parent.style = 'display: none'
+            popup.style = 'animation: load5 300ms;'
+            document.body.style.overflowY = 'scroll'
+            document.removeEventListener('click', popupClickHandlerEditAddress)
+        } ,100)
+    }
+}
+
+let ApplyAddressEdit = () => {
+    const id = document.getElementById('ead-id').value
+    const title = document.getElementById('ead-title').value
+    const postal = document.getElementById('ead-postal').value
+    const plaque = document.getElementById('ead-plaque').value
+    const rec = document.getElementById('ead-rec').value
+    const phone = document.getElementById('ead-phone').value
+    const details = document.getElementById('ead-details').value
+
+    edit_address_partial.classList.add('disabled')
+    loader.style = 'display: block;'
+    fetch(`/orders/apply-address-edit/?id=${id}&title=${title}&postal=${postal}&plate=${plaque}&rec=${rec}&phone=${phone}&details=${details}`).then(res => res.json()).then(data => {
+        Message(data.message ,data.error)
+        if (!data.error)
+            address_popup.innerHTML = data.address_popup
+            address_box.innerHTML = data.address_box
+    }).catch(err =>{
+        Message(err ,true)
+    }).finally(() => {
+        PopUpEditAddress('none' ,'close')
+        PopUpAddress('none' ,'open')
+        edit_address_partial.classList.remove('disabled')
+        loader.style = 'display: none;'
+    })
 }
 
 
