@@ -27,6 +27,7 @@ class PostingMethod(models.Model):
     desc = models.TextField(max_length=1000,null=True ,blank=True ,verbose_name='توضیحات')
     order_type = models.PositiveIntegerField(null=True ,blank=True ,verbose_name='ترتیب')
     icon = models.CharField(max_length= 1000,null=True ,blank=True ,verbose_name='آیکون')
+    no_address = models.BooleanField(default=False ,verbose_name='بی نیاز به آدرس')
 
     def __str__(self):
         return self.title

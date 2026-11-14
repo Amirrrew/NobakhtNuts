@@ -418,15 +418,19 @@ class BasketCheckout(View):
             if order_form.is_valid():
                 desc = request.POST.get('desc')
                 posting_id = request.POST.get('posting')
+                posting= None
+
+                if posting_id:
+                    posting = PostingMethod.objects.filter(id=posting_id).first()
 
                 if not posting_id:
                     message_e = 'روش ارسال را انتخاب کنید'
-                elif not current_order.address:
+                elif not current_order.address and not posting.no_address:
                     message_e = 'آدرس خود را انتخاب یا در صورت نیاز ثبت کنید'
                 else:
-                    posting = PostingMethod.objects.filter(id=posting_id).first()
-                    current_order.address.can_delete = False
-                    current_order.address.save()
+                    if current_order.address:
+                        current_order.address.can_delete = False
+                        current_order.address.save()
                     current_order.desc = desc
                     current_order.posting_method = posting
                     current_order.save()
@@ -558,7 +562,9 @@ class BasketPayment(View):
         message = None
         message_e = None
         current_order, create = Order.objects.prefetch_related('orderdetails_set').get_or_create(is_paid=False,user_id=request.user.id)
-        if not current_order.address or not current_order.posting_method:
+        if not current_order.posting_method:
+            return redirect('checkout_page')
+        if not current_order.address and not current_order.posting_method.no_address:
             return redirect('checkout_page')
         order_summary = current_order.get_order_summary()
         postage_fee = current_order.calculate_postage_fee()
@@ -721,8 +727,9 @@ class Deposit(View):
                     status = OrderStatus.objects.filter(title__iexact='در انتظار تایید').first()
                     address = current_order.address
                     current_order.finalize_order(receipt ,status)
-                    address.can_delete = False
-                    address.save()
+                    if address:
+                        address.can_delete = False
+                        address.save()
                     self.request.session['message'] = 'سفارش با موفقیت ثبت شد'
                     return redirect(current_order.get_absolute_url())
                 except InsufficientStockError as e:
