@@ -109,6 +109,7 @@ input[type="number"] {
     --color17: rgba(198, 175, 175, 0.15);
     --color18: rgb(250, 246, 246);
     --color19: rgba(181, 157, 157, 0.04);
+    --color20: rgba(90, 68, 68, 0.05);
     --header-bg: rgba(255, 255, 255, 0.78);
     --color-footer: #e8e3e3;
     --color-landing-text: #7c6d6d;
@@ -999,6 +1000,12 @@ input[type="number"] {
     body .verify-code-titlebar {
         margin: 0;
     }
+
+    body .btn-prdcounter2 {
+        width: 25px;
+        height: 25px;
+        border-radius: 7px;
+    }
 }
 
 @media screen and (max-width: 420px) {
@@ -1544,7 +1551,7 @@ input[type="number"] {
     bottom: 5px;
     backdrop-filter: blur(10px);
     display: none;
-    border: 1px solid var(--color11);
+    border: 2px solid var(--color20);
     padding: 5px;
     transition: 200ms;
     z-index: 10;
@@ -1691,6 +1698,11 @@ header::before {
     display: flex;
     padding: 12px;
     justify-content: space-between;
+}
+
+.offer {
+    background-color: var(--del-bg2);
+    color: var(--deny-text);
 }
 
 .side-profile {
@@ -3294,10 +3306,10 @@ footer {
     width: 97%;
     height: auto;
     border-radius: 20px;
-    background-color: var(--color16);
+    background-color: var(--color12);
     backdrop-filter: blur(10px);
     position: relative;
-    border: 2px solid var(--color11);
+    border: 2px solid var(--color20);
     padding: 0px 10px;
     padding-bottom: 10px;
     display: none;
@@ -3393,9 +3405,20 @@ input[type='checkbox']:checked + .pack-size {
     width: 25px;
     height: 25px;
     background-color: var(--color11);
+    border: 1px solid rgba(62, 47, 47, 0.06);
     color: var(--color6);
     cursor: pointer;
     border-radius: 7px;
+}
+
+.btn-prdcounter2 {
+    width: 35px;
+    height: 35px;
+    background-color: var(--color19);
+    border: 2px solid var(--color20);
+    color: var(--color6);
+    cursor: pointer;
+    border-radius: 12px;
 }
 
 .prd-navbar:has(.btn-prdnavbar:active ,.pack-size-input:active) {

@@ -96,7 +96,7 @@
                             {{ p.price|three_digits_currency }}
                         </div>
 
-                        <div class="h-7 px-2 pt-0.5 mt-1 bg-[var(--color12)] text-[var(--color6)] rounded-lg">
+                        <div class="h-7 px-2 pt-0.5 mt-1 bg-[var(--color12)] text-[var(--color6)] rounded-lg" style="border: 2px solid var(--color20); background-color: var(--color19)">
                             {% if p.is_byWeight %}
                                 کیلویی
                                 {% else %}
@@ -110,14 +110,14 @@
                             <div class="text-2xl font-black">{{ p.final_price|three_digits_currency }}</div>
                         </div>
                         <div class="flex gap-2">
-                            <div class="h-7 px-2 pt-0.5 mt-5 bg-[var(--color12)] text-[var(--color6)] rounded-lg">
+                            <div class="h-7 px-2 pt-0.5 mt-5 bg-[var(--color12)] text-[var(--color6)] rounded-lg" style="border: 2px solid var(--color20); background-color: var(--color19)">
                                 {% if p.is_byWeight %}
                                     کیلویی
                                     {% else %}
                                     عددی
                                 {% endif %}
                             </div>
-                            <div class=" h-7 px-2 pt-0.5 mt-5 bg-[var(--color5)] text-[var(--color12)] rounded-lg">
+                            <div class=" h-7 px-2 pt-0.5 mt-5 bg-[var(--color5)] offer text-[var(--color12)] rounded-lg">
                                 {{ p.offer|to_fanum }} %
                             </div>
                         </div>

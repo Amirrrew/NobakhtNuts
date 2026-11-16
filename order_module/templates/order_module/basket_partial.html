@@ -9,7 +9,7 @@
                 <div class="flex gap-4 ">
 
               <a href="{{ o.product.get_absolute_url }}"
-                 class="flex-shrink-0 w-[130px] h-[130px] rounded-2xl bg-[var(--color12)] overflow-hidden">
+                 class="flex-shrink-0 w-[130px] h-[130px] rounded-2xl overflow-hidden" style="background-color: var(--color19); border: 2px solid var(--color20)">
                 <img loading="lazy" class="w-full h-full object-cover"
                      src="{{ o.product.product_image.first.image.url }}"
                      alt="{{ o.product.title }}">
@@ -18,12 +18,12 @@
               <div class="flex flex-col justify-between flex-1 min-w-0">
 
                 <div class="">
-                    <div class="flex gap-2">
-                        <div class="flex text-[var(--color10)] gap-1 text-sm">
+                    <div class="flex gap-2 justify-between pl-2">
+                        <div class="flex text-[var(--color6)] gap-1 text-sm">
                             <a target="_blank" href="{{ o.product.category.get_absolute_url }}">{{ o.product.category }}</a> <i class="fa fa-angle-left mt-[3px] text-[var(--color14)] text-xs"></i> <a target="_blank" href="{{ o.product.category.main_category.get_absolute_url }}">{{ o.product.category.main_category }}</a>
                         </div>
                         {% if o.product.is_byWeight %}
-                        <div class="bg-[var(--color12)] mt-[-2px] rounded-lg py-0.5 px-2.5 text-sm text-nowrap flex-shrink-0">
+                        <div class="mt-[-4px] rounded-lg py-0.5 px-2.5 text-sm text-nowrap flex-shrink-0" style="background-color: var(--color19); border: 2px solid var(--color20)">
                           {{ o.pack_size|to_fanum }}
                         </div>
                       {% endif %}
@@ -41,7 +41,7 @@
                     <div class="">
                         <div class="text-sm flex w-[100%] gap-2">
                             <div style="text-decoration: line-through 1px solid var(--color7)" class="mt-5">{{ o.total_price_without_discount|three_digits_currency }}</div>
-                            <div class="h-5 text-nowrap px-2 pt-0.5 mt-5 bg-[var(--color5)] text-[var(--color3)] rounded-lg">
+                            <div class="h-5 text-nowrap px-2 offer pt-0.5 mt-5 text-[var(--color3)] rounded-lg">
                                 {{ o.product.offer|to_fanum }} %
                             </div>
                         </div>
@@ -51,14 +51,14 @@
 
                   <div class="flex items-center rounded-lg overflow-hidden pl-3  {% if o.Check_product_inventory %}absolute left-0  bottom-3{% else %}relative top-2{% endif %}">
                     <button onclick="change_order_count({{ o.id }}, 'increase','basket')"
-                            class="btn-prdcounter flex items-center justify-center">
+                            class="btn-prdcounter2 flex items-center justify-center" >
                       <i class="fa fa-add text-sm"></i>
                     </button>
                     <div class="min-w-[36px] h-[38px] flex items-center justify-center text-base font-medium px-1">
                       {{ o.count|to_fanum }}
                     </div>
                     <button onclick="change_order_count({{ o.id }}, 'decrease','basket')"
-                            class="btn-prdcounter flex items-center justify-center">
+                            class="btn-prdcounter2 flex items-center justify-center" >
                       {% if o.count == 1 %}
                         <i class="fa fa-trash text-sm"></i>
                       {% else %}

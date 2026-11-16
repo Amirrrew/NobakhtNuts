@@ -1,10 +1,10 @@
 {% load static %}
 {% load poll_extras %}
-<div class="prd-navbarbox centerbox w-[100%] fixed bottom-1" style="z-index: 100; overflow: visible">
-        <div id="prd-navbar" class="prd-navbar">
-            <div onclick="PrdNav()" class="btn-prdnavbar flex justify-between w-[100%] p-2 pt-3 items-start">
+<div class="prd-navbarbox centerbox w-[100%] fixed bottom-1" style="z-index: 100; overflow: visible;">
+        <div id="prd-navbar" class="prd-navbar" style=" background-color: var(--color16)">
+            <div onclick="PrdNav()" class="btn-prdnavbar flex justify-between w-[100%] p-1 pb-2 pt-3 items-start">
                 <div>{{ product.title|to_fanum }}</div>
-                <button class="btn-prdnavbar rounded-lg bg-[var(--color9)] w-6 pt-1 h-6 text-xs cursor-pointer"><i id="btn-navicon" class="fa fa-angle-down"></i></button>
+                <button class="btn-prdnavbar rounded-lg bg-[var(--color11)] w-6 pt-1 h-6 text-xs cursor-pointer"><i id="btn-navicon" class="fa fa-angle-down"></i></button>
             </div>
                 <div id="prd-items-mobile" class="relative">
                     {% include 'product_module/include/product_incart.html' %}
@@ -33,13 +33,13 @@
                                 </div>
                             {% endif %}
                         {% endif %}
-                        <div class="transition-all flex justify-between pt-2 w-[100%] pr-2 relative">
+                        <div class="transition-all flex justify-between w-[100%] pr-2 relative">
                             {% if product.offer <= 0 %}
                                 <div class="text-3xl font-bold" id="">
                                     {{ product.price|three_digits_currency }}
                                 </div>
 
-                                <div class="h-7 px-2 pt-0.5 mt-1 bg-[var(--color11)] text-[var(--color6)] rounded-lg">
+                                <div class="h-7 px-2 pt-0.5 mt-1 bg-[var(--color13)] text-[var(--color6)] rounded-lg" style="border: 1px solid var(--color11)">
                                     {% if product.is_byWeight %}
                                         کیلویی
                                     {% else %}
@@ -53,14 +53,14 @@
                                     <div class="text-2xl font-bold">{{ product.final_price|three_digits_currency }}</div>
                                 </div>
                                 <div class="flex gap-2">
-                                    <div class="h-7 px-2 pt-0.5 mt-5 bg-[var(--color11)] text-[var(--color6)] rounded-lg">
+                                    <div class="h-7 px-2 pt-0.5 mt-5 bg-[var(--color13)] text-[var(--color6)] rounded-lg" style="border: 1px solid var(--color11)">
                                         {% if product.is_byWeight %}
                                             کیلویی
                                         {% else %}
                                             عددی
                                         {% endif %}
                                     </div>
-                                    <div class=" h-7 px-2 pt-0.5 mt-5 bg-[var(--color5)] text-[var(--color3)] rounded-lg">
+                                    <div class="offer h-7 px-2 pt-0.5 mt-5 text-[var(--color3)] rounded-lg">
                                         {{ product.offer|to_fanum }} %
                                     </div>
                                 </div>
@@ -88,7 +88,7 @@
                                     </button>
                             {% endif %}
                                 <a href="{% url 'my_basket_page' %}" class="bottom-bar-option" style="width: 20%; margin-top: -2px;">
-                                    <button style="width: 100%; height: 50px; padding-top: 13px; justify-content: center" class="btn-defIconFlex2">
+                                    <button style="width: 100%; height: 50px; padding-top: 13px; justify-content: center; background-color: var(--color11)" class="btn-defIconFlex2">
                                         <svg id="Buy" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M6.39507 6.30158L6.09507 3.24158H2.19507V4.74158H4.73507L6.01507 17.4416H20.8351L22.3051 6.30158H6.39507Z" fill="#674d45"></path>
                                             <path d="M13.8245 11.7118H17.9945V10.2118H13.8245V11.7118Z" fill="#674d45"></path>
