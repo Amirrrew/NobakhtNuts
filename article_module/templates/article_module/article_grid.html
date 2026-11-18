@@ -33,7 +33,7 @@
                     <h2 class=" mt-1 text-[var(--color10)]">{{ page_obj.paginator.count|to_fanum }} مقاله</h2>
                 {% endif %}
             </div>
-            <div class="article-grid mt-10 flex flex-wrap gap-3">
+            <div class="article-grid mt-10 flex w-[100%] flex-wrap gap-3">
                 {% for article in articles %}
                     {% include 'article_module/include/article_card.html' %}
                 {% endfor %}
