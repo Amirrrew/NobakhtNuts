@@ -621,6 +621,25 @@ let change_order_count = (detail_id ,type ,page ,pack) => {
     })
 }
 
+let PackPanel = (open ,id) => {
+    let packpanel = document.getElementById(`pack-panel-${id}`)
+    let btn_openpack = document.getElementById(`btn-openpack-${id}`)
+    let btn_closepack = document.getElementById(`btn-closepack-${id}`)
+    if (open) {
+        packpanel.classList.replace('--pack-close' ,'--pack-open')
+        btn_openpack.style = 'display: none;'
+        btn_closepack.style = 'display: block;'
+    } else {
+        packpanel.classList.replace('--pack-open' ,'--pack-close')
+        btn_openpack.style = 'display: block;'
+        btn_closepack.style = 'display: none;'
+    }
+}
+
+let AddToOrder_grid = (productId ,isWeight ,pack_id) => {
+
+}
+
 // منوی نویگیشن و قیمت محصول موبایل
 let navopen = true
 let PrdNav = (force) => {
