@@ -637,7 +637,39 @@ let PackPanel = (open ,id) => {
 }
 
 let AddToOrder_grid = (productId ,isWeight ,pack_id) => {
+    let url = ``
+    let btn_spinner = document.getElementById(`btn-spinner-${productId}`)
+    let btn_openpack = document.getElementById(`btn-openpack-${productId}`)
 
+
+    if (isWeight) {
+        url = `/orders/add-to-order/?product_id=${productId}&pack_id=${pack_id}`;
+    } else {
+        url = `/orders/add-to-order/?product_id=${productId}`;
+    }
+    console.log(`${productId} ,${isWeight} ,${pack_id}`)
+
+    PackPanel(false ,productId)
+    btn_spinner.style = 'display: block;'
+    btn_openpack.style = 'display: none;'
+    loader.style = 'display: block;'
+
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            if (data.error) {
+                data.error ? Message(data.message ,true) : Message(data.message ,false);
+            }
+            else {
+
+            }
+        }).catch(err => {
+            Message('افزودن به سبد خرید با خطا مواجه شد' ,true)
+    }).finally(()=> {
+        btn_spinner.style = 'display: none;'
+        btn_openpack.style = 'display: block;'
+        loader.style = 'display: none;'
+    })
 }
 
 // منوی نویگیشن و قیمت محصول موبایل
