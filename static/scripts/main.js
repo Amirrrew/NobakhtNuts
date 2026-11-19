@@ -643,13 +643,16 @@ let AddToOrder_grid = (productId ,isWeight ,pack_id) => {
 
 
     if (isWeight) {
-        url = `/orders/add-to-order/?product_id=${productId}&pack_id=${pack_id}`;
+        url = `/orders/add-to-order/?product_id=${productId}&pack_id=${pack_id}&grid=1`;
     } else {
-        url = `/orders/add-to-order/?product_id=${productId}`;
+        url = `/orders/add-to-order/?product_id=${productId}&grid=1`;
     }
-    console.log(`${productId} ,${isWeight} ,${pack_id}`)
 
-    PackPanel(false ,productId)
+    console.log(url ,isWeight)
+
+    if (isWeight) {
+        PackPanel(false, productId)
+    }
     btn_spinner.style = 'display: block;'
     btn_openpack.style = 'display: none;'
     loader.style = 'display: block;'
@@ -661,7 +664,9 @@ let AddToOrder_grid = (productId ,isWeight ,pack_id) => {
                 data.error ? Message(data.message ,true) : Message(data.message ,false);
             }
             else {
-
+                let oldcard = document.querySelector(`#product-card-partial-${productId}`)
+                if (oldcard)
+                    oldcard.innerHTML = data.html
             }
         }).catch(err => {
             Message('افزودن به سبد خرید با خطا مواجه شد' ,true)

@@ -127,6 +127,8 @@ input[type="number"] {
     --del-bg2: #fadada;
     --deny-text: #731919;
     --cancel-bg: rgba(255, 1, 1, 0.11);
+    --profit-dot: #689568;
+    --profit-bg: #e1f8e1;
 }
 
 @media screen and (max-width: 1200px) {
@@ -2198,7 +2200,7 @@ header .category-menu {
 
 .product-card {
     width: 100%;
-    height: 370px;
+    height: 375px;
     border-radius: 30px;
     overflow: hidden;
     border: 2px solid var(--color20);
@@ -2219,14 +2221,14 @@ header .category-menu {
     padding: 5px;
     background-color: var(--color19);
     border: 2px solid var(--color20);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(30px);
     border-radius: 20px;
     position: absolute;
     width: 100%;
     bottom: 55px;
     min-width: 200px;
     left: 0px;
-    transition: 300ms;
+    transition: 250ms;
 }
 
 .--pack-open {

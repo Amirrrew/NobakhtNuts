@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.utils import timezone
 from itertools import product
 import datetime
-from django.db.models import F, prefetch_related_objects, Prefetch, Count ,Avg
+from django.db.models import F, prefetch_related_objects, Prefetch, Count ,Avg ,Sum
 from django.conf import settings
 import requests
 from django.http import HttpRequest, JsonResponse, HttpResponse
@@ -34,9 +34,12 @@ def add_to_order(request: HttpRequest):
     pack_id = None
     product_id = None
     product = None
+    grid = None
+
     try:
         try:
             #دریافت اطلاعات از گت
+            grid = request.GET.get('grid')
             product_id = int(request.GET.get('product_id'))
             pack_id = int(request.GET.get('pack_id'))
         except(TypeError ,ValueError) as e:
@@ -112,13 +115,36 @@ def add_to_order(request: HttpRequest):
 
     prefetch_related_objects([current_order], 'orderdetails_set')
 
-    html = render_to_string(
-        'product_module/include/product_incart.html',
-        {'orders': current_order.orderdetails_set.filter(product=product),
-            'product': product ,
-        },
-        request=request
-    )
+
+    if not grid:
+        html = render_to_string(
+            'product_module/include/product_incart.html',
+            {'orders': current_order.orderdetails_set.filter(product=product),
+             'product': product,
+             },
+            request=request
+        )
+    else:
+        basket_product_ids = dict(
+            current_order.orderdetails_set
+            .values('product_id')
+            .annotate(total_count=Sum('count'))
+            .values_list('product_id', 'total_count')
+        )
+        product_card = (Product.objects
+        .select_related('category','category__main_category' ,'brand')
+        .prefetch_related('packs' ,Prefetch('product_image' ,queryset=ProductImage.objects.order_by('-is_Main' ,'id'),to_attr='prefetched_images'))
+        .annotate(comments_total=Count('comment_set' ,distinct=True),rating_avarage=Avg('comment_set__rating'))
+        .order_by('-chosen','?').get(id=product.id))
+        html = render_to_string(
+            'product_module/include/product_card_partial.html',
+            {'basket': current_order.orderdetails_set.filter(product=product),
+                 'p': product_card,
+                 'basket_product_ids': basket_product_ids,
+                'order': current_order_detail,
+             },
+            request=request
+        )
 
     return JsonResponse({
         'message': message,

@@ -92,3 +92,4 @@ def get_redirect_url(request):
         'next': request.get_full_path()
     })
     return f'{login_url}?{query}'
+

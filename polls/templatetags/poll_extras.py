@@ -141,3 +141,7 @@ def pack_price(price, weight):
         return int(float(price) * float(weight))
     except (TypeError, ValueError):
         return 0
+
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key, 0)
