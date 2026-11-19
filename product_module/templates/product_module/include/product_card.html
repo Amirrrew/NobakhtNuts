@@ -6,8 +6,8 @@
     <a href="{{ p.get_absolute_url }}" class="product-card-imagebox">
         <img loading="lazy" alt="{{ p.title }}" class="product-card-image {% if p.quantity == 0 %} product-card-na {% endif %}" src="{{ p.prefetched_images.0.image.url }}">
         <div class="flex z-4 gap-1 absolute" style="top: 20px; right: 20px">
-            {% if p.quantity < 6 %}
-                {% if p.quantity < 5 and p.quantity != 0 %}
+            {% if p.quantity <= 5 %}
+                {% if p.quantity <= 5 and p.quantity != 0 %}
                     <div class="flex gap-2">
                         <div class="offer text-[13px] gap-1 flex p-1 px-2 rounded-2xl text-nowrap mt-[-2px]">
                             <svg class="mt-[1px]" id="Bag" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -46,7 +46,7 @@
             <div class="prd-dot mt-[-3px]">.</div>
             <a href="{{ p.category.get_absolute_url }}" class="text-nowrap cursor-pointer hover:underline">{{ p.category }}</a>
         </div>
-        <h3 class="text-xl truncate font-black mt-1">{{ p.title|to_fanum }}</h3>
+        <a href="{{ p.get_absolute_url }}"><h3 class="text-xl truncate font-semibold mt-1">{{ p.title|to_fanum }}</h3></a>
         <div class="flex gap-1 mt-1 text-nowrap" style="width: auto;">
             {% if p.label %}
                 <div class="flex relative prd-label gap-1 bg-[var(--color13)] text-[var(--color6)] rounded-3xl px-2 pt-0.5 " style="background-color: var(--color19); border: 2px solid var(--color20)">
@@ -73,14 +73,36 @@
                     <div>{{ p.rating_avarage|default_if_none:'0'|to_fanum }} ({{ p.comments_total|to_fanum }})</div>
                 </div>
             </div>
-        <div class="bottom-4 absolute px-2" style="width: 102%">
-            <div class="flex justify-between w-[100%]">
-                <div class="flex gap-1 mt-3 items-center">
-                    <p class="text-3xl font-semibold">{{ p.final_price|three_digits_currency_no_extension }}</p>
-                    <p class="text-xs"> تومان</p>
-                </div>
-                <div class="p-1 rounded-3xl flex" style="background-color: var(--color19); border: 2px solid var(--color20)">
-                    <button class="btn-defIconFlex" style="border-radius: 50%; justify-content: center; align-items: center">
+        <div class="bottom-4 left-0 absolute" style="width: 100%">
+            <div class="flex pr-2 justify-between w-[100%]">
+                {% if p.offer %}
+                    <div class="">
+                        <p class="text-xs" style="text-decoration: line-through 1px var(--color7)">{{ p.price|three_digits_currency_no_extension }}</p>
+                        <div class="flex gap-1 items-center">
+                            <p class="text-2xl font-black">{{ p.final_price|three_digits_currency_no_extension }}</p>
+                            <p class="text-xs"> تومان</p>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="flex gap-1 mt-3 items-center">
+                        <p class="text-3xl font-black">{{ p.final_price|three_digits_currency_no_extension }}</p>
+                        <p class="text-xs"> تومان</p>
+                    </div>
+                {% endif %}
+                <div class="relative p-1 rounded-3xl flex" style="background-color: var(--color19); border: 2px solid var(--color20)">
+                    {% if p.is_byWeight %}
+                        <div class="pick-pack-panel --pack-close" id="pack-panel-{{ p.id }}">
+                            <p class="text-sm text-[var(--color7)] text-center text-nowrap">اندازه بسته را انتخاب کنید</p>
+                            <div class="mt-1 flex flex-wrap gap-1">
+                                {% for pack in p.packs.all %}
+                                    <div class=" text-center py-1 px-2 rounded-xl text-sm text-nowrap text-[var(--color6)] pick-pack-pill" style="">
+                                        {{ pack.title|to_fanum }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                    <button id="btn-openpack-{{ p.id }}" onclick="PackPanel(true ,'{{ p.id }}')" class="btn-defIconFlex product-card-add" style="">
                         <svg id="Buy" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M6.39507 6.30158L6.09507 3.24158H2.19507V4.74158H4.73507L6.01507 17.4416H20.8351L22.3051 6.30158H6.39507Z" fill="#c5b8b4"></path>
                         <path d="M13.8245 11.7118H17.9945V10.2118H13.8245V11.7118Z" fill="#c5b8b4"></path>
@@ -88,8 +110,11 @@
                         <path d="M17.447 20.5527C17.447 19.8497 18.018 19.2787 18.721 19.2787C19.424 19.2787 19.995 19.8497 19.995 20.5527C19.995 21.2557 19.424 21.8277 18.721 21.8277C18.018 21.8277 17.447 21.2557 17.447 20.5527Z" fill="#c5b8b4"></path>
                         </svg>
                     </button>
+                    <button id="btn-closepack-{{ p.id }}" onclick="PackPanel(false ,'{{ p.id }}')" class="btn-defIconFlex product-card-add" style="display: none">
+                        <i class="fa fa-close text-center mt-1" style="width: 20px; height: 100%; color: var(--color7)"></i>
+                    </button>
                     <a href="{{ p.get_absolute_url }}" class="">
-                        <button style="width: 40px" class="cursor-pointer"><i class="fa fa-angle-left mt-2"></i></button>
+                        <button style="width: 35px" class="cursor-pointer"><i class="fa fa-angle-left mt-2"></i></button>
                     </a>
                 </div>
             </div>
