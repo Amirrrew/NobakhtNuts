@@ -997,7 +997,6 @@ let PopUpEditAddress = (id, action) => {
     if (action === 'open') {
         loader.style = 'display: block;';
         address_popup.classList.add('disabled')
-
         fetch(`/orders/get-address-for-edit/?id=${id}`).then(res => res.json()).then(data => {
             if (data.error) {
                 Message(data.message ,data.error)
