@@ -32,14 +32,14 @@
         </a>
     {% endif %}
     <div class="home-carousel flex w-[100%] gap-2 mt-4">
-        <div class="special-carousel-sidebanner min-w-[350px] h-[465px]">
+        <div class="special-carousel-sidebanner min-w-[350px]" style="height: 375px;">
             {% if is_carousel %}
                 {% include 'home_module/components/special_carousels/home_carousel_banner.html' %}
                 {% else %}
                 {% include 'home_module/components/special_carousels/home_carousel_offer_banner.html' %}
             {% endif %}
         </div>
-        <div class="special-carousel swiper w-[100%]" style="height: 470px">
+        <div class="special-carousel swiper w-[100%]" style="height: 375px">
             <div class="swiper-wrapper">
                 {% if is_carousel %}
                     {% for item in special_carousel.carousel_set.all %}
