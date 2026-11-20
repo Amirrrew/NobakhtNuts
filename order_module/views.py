@@ -155,16 +155,22 @@ def add_to_order(request: HttpRequest):
 def change_order_count(request: HttpRequest):
     message = ''
     error = False
+    html = None
     detail_id = int(request.GET.get('detail_id'))
     type = str(request.GET.get('type'))
     page = str(request.GET.get('page'))
 
 
-    if detail_id is None or type is None:
-        message= 'سبد خرید پیدا نشد'
-        error= True
+    if not page == 'grid':
+        if detail_id is None or type is None:
+            message= 'سبد خرید پیدا نشد'
+            error= True
     current_order ,created = Order.objects.prefetch_related('orderdetails_set').get_or_create(is_paid=False ,is_done=False ,user=request.user)
-    order_detail = current_order.orderdetails_set.filter(id=detail_id).first()
+    if page == 'grid':
+        order_detail = current_order.orderdetails_set.filter(product_id=detail_id).first()
+    else:
+        order_detail = current_order.orderdetails_set.filter(id=detail_id).first()
+
     if order_detail is None:
         message= 'سبد خرید پیدا نشد'
         error= True
@@ -285,6 +291,26 @@ def change_order_count(request: HttpRequest):
                 'total_discount': int(order_summary['total_discount']),
                 'insufficient_items': current_order.Check_insufficient_items()
             },
+            request=request
+        )
+    elif page == 'grid':
+        basket_product_ids = dict(
+            current_order.orderdetails_set
+            .values('product_id')
+            .annotate(total_count=Sum('count'))
+            .values_list('product_id', 'total_count')
+        )
+        product_card = (Product.objects
+        .select_related('category','category__main_category' ,'brand')
+        .prefetch_related('packs' ,Prefetch('product_image' ,queryset=ProductImage.objects.order_by('-is_Main' ,'id'),to_attr='prefetched_images'))
+        .annotate(comments_total=Count('comment_set' ,distinct=True),rating_avarage=Avg('comment_set__rating'))
+        .order_by('-chosen','?').get(id=product.id))
+        html = render_to_string(
+            'product_module/include/product_card_partial.html',
+            {'basket': current_order.orderdetails_set.filter(product=product),
+                 'p': product_card,
+                 'basket_product_ids': basket_product_ids,
+             },
             request=request
         )
 

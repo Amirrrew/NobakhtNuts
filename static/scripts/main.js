@@ -677,6 +677,28 @@ let AddToOrder_grid = (productId ,isWeight ,pack_id) => {
     })
 }
 
+let change_order_count_grid = (product_id ,type) => {
+    let url = `/orders/change-order-count/?detail_id=${product_id}&type=${type}&page=grid`
+
+    document.getElementById('loader').style = 'display: block;'
+    document.getElementById(`product-countbar-${product_id}`).classList.add('disabled')
+    fetch(url).then(res => res.json()).then(data => {
+        if (data.error) {
+            data.error ? Message(data.message ,true) : Message(data.message ,false);
+        }
+        else {
+            let oldcard = document.querySelector(`#product-card-partial-${product_id}`)
+            if (oldcard)
+                oldcard.innerHTML = data.html
+        }
+    }).catch(err => {
+            Message('بروزرسانی سبد با خطا مواجه شد', true)
+        }).finally(()=> {
+        document.getElementById('loader').style = 'display: none;'
+        document.getElementById(`product-countbar-${product_id}`).classList.remove('disabled')
+    })
+}
+
 // منوی نویگیشن و قیمت محصول موبایل
 let navopen = true
 let PrdNav = (force) => {
