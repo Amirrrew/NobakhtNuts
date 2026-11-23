@@ -13,7 +13,6 @@
 {% endblock %}
 
 {% block page_content %}
-    {% include 'message_json.html' %}
     {% include 'order_module/include/basket_popup_edit_inventory.html' %}
     {% if orders.orderdetails_set.all %}
         <div class="shopping-basket centerbox mt-35">

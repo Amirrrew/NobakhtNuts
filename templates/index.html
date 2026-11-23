@@ -19,6 +19,7 @@
     {% include 'loader.html' %}
     {% include 'yesno_dialog.html' %}
     {% include 'include/header_refrence.html' %}
+    {% include 'message_json.html' %}
     {% include 'include/navigation_components/searchbox.html' %}
     <div class="top-navigator">
         <div class="flex gap-1 {% if request.resolver_match.url_name == 'home' or request.resolver_match.url_name == 'product_detail_page' %} w-[100%] {% endif %}">
