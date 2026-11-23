@@ -14,7 +14,7 @@
                             <h1 class="text-3xl font-black">فیلتر ها</h1>
                         </div>
 
-                        <div class="filter-list-inner mt-4">
+                        <div class="filter-list-inner mt-1">
 
                             <div class="drawer-menu mt-2"  id="drawer-order">
                                 <div class="flex justify-between cursor-pointer m-2.5" onclick="Drawer('drawer-order' ,'drawer2' ,'drawer-angle-2')">
@@ -69,7 +69,7 @@
                                 </div>
                             </div>
 
-                            <div class="input-icon-def1 mt-2">
+                            <div class="input-icon-def1 mt-2" style="border: 2px solid var(--color20); border-radius: 15px">
                                 <svg id="Arrow - Down" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                     <g id="Iconly/Bulk/Arrow---Down" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
                                         <g id="Arrow---Down" transform="translate(6.000000, 3.000000)" fill="#674d45" fill-rule="nonzero">
@@ -82,7 +82,7 @@
                                 <div class="pt-4 pl-2 text-[var(--color7)] text-sm">تومان</div>
                             </div>
 
-                            <div class="input-icon-def1 mt-2">
+                            <div class="input-icon-def1 mt-2" style="border: 2px solid var(--color20); border-radius: 15px">
                                 <svg id="Arrow - Up" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                     <g id="Iconly/Bulk/Arrow---Up" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
                                         <g id="Arrow---Up" transform="translate(12.000000, 12.000000) rotate(-180.000000) translate(-12.000000, -12.000000) translate(6.000000, 3.000000)" fill="#674d45" fill-rule="nonzero">
@@ -129,7 +129,7 @@
                                 </div>
                             </div>
 
-                            <label for="available" class="flex justify-between w-[100%] h-[60px] border-2 border-[var(--color8)] rounded-lg mt-2 p-4">
+                            <label for="available" class="flex justify-between cursor-pointer w-[100%] h-[60px] rounded-2xl mt-2 p-4" style="border: 2px solid var(--color20)">
                                 <div class="flex gap-1">
                                     <svg class="mt-[-2px]" id="Shield Done" width="24" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M19.9377 5.42951C19.3317 4.82251 16.0037 2.67651 12.2497 2.67651C8.49369 2.67651 5.16769 4.82251 4.56169 5.42951C3.98069 6.01151 3.98969 6.46451 4.03369 8.97851C4.05269 9.99851 4.07769 11.3865 4.07769 13.3045C4.07769 19.8245 9.39969 22.5315 12.2497 22.5315C15.0987 22.5315 20.4217 19.8245 20.4217 13.3045C20.4217 11.3855 20.4467 9.99651 20.4657 8.97751C20.5107 6.46351 20.5187 6.01151 19.9377 5.42951Z" fill="#674d45"></path>
@@ -142,7 +142,7 @@
                         </div>
 
                         <div class="filter-list-btns">
-                                <button onclick="Showloader(3000)" type="submit" class="btn-defIconFlex mt-2 w-[100%] centerbox gap-2" style="height: 50px; padding-top: 14px">
+                                <button onclick="Showloader(3000)" type="submit" class="btn-defIconFlex mt-2 w-[100%] centerbox gap-2" style="height: 50px; padding-top: 14px; border-radius: 15px">
                                     <svg class="mt-[-2px]" id="Tick Square" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                         <g id="Iconly/Bulk/Tick-Square" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
                                             <g id="Tick-Square" transform="translate(2.000300, 1.999800)" fill="#c5b8b4" fill-rule="nonzero">
@@ -155,7 +155,7 @@
                                 </button>
 
                                 <a href="{{ request.path }}">
-                                    <button type="button" class="btn-defIconFlex2 mt-2 w-[100%] centerbox gap-2" style="backdrop-filter: blur(10px); height: 50px; padding-top: 14px; background-color: var(--color12)">
+                                    <button type="button" class="btn-defIconFlex2 mt-2 w-[100%] centerbox gap-2" style="backdrop-filter: blur(10px); height: 50px; padding-top: 14px; background-color: var(--color19); border: 2px solid var(--color20); border-radius: 15px">
                                         <svg class="mt-[-3px]" id="Delete" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                             <g id="Iconly/Bulk/Delete" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
                                                 <g id="Delete" transform="translate(3.000000, 2.000000)" fill="#674d45" fill-rule="nonzero">
