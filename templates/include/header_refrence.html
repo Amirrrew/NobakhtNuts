@@ -1,138 +1,120 @@
 {% load static %}
 {% load poll_extras %}
-    <header id="header"><div class="header-innerbox"  id="header-box">
-            <div class="flex justify-between">
-                <div class="flex gap-5">
-                    <div class="header-logobox relative" id="header-logo"
-                        style="transition: 200ms;">
+    <header id="header">
+        <div class="w-[70%]">
+            <div class="header-innerbox"  id="header-box">
+                    <div class="header-logobox p-1 relative" id="header-logo" style="transition: 200ms;">
                         <a class="flex" href="{% url 'home' %}">
-                            <img alt="برنج و خشکبار نوبخت" class="main-logo" id="main-logo" src="{% static 'media/logo/favicon-32x32.webp'%}">
-                            <div id="head-title" class="head-title font-bold text-2xl mt-5 mr-3" style="">برنج و خشکبار
+                            <div class="logo-case"><img alt="برنج و خشکبار نوبخت" class="main-logo" id="main-logo" src="{% static 'media/logo/favicon-32x32.webp'%}"></div>
+                            <div id="head-title" class="head-title font-bold text-nowrap mt-3.5 mr-3" style="">برنج و خشکبار
                                 نوبخت</div>
                         </a>
                     </div>
-                    <div class="mt-3">
-                        <div id="header-option-row" class="header-row flex gap-5 relative"
-                            style="margin-top: 10px; transition: 200ms;">
-                            <div>
-                                <div id="category-btn" class="header-option" onclick="CategoryMenu(true)">
-                                    <svg id="Category" width="22px" height="22px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                        <g id="Iconly/Bulk/Category" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
-                                            <g id="Category" transform="translate(2.000000, 2.000000)" fill="#674d45" fill-rule="nonzero">
-                                                <path d="M14.0755097,2.66453526e-15 L17.4614756,2.66453526e-15 C18.8637443,2.66453526e-15 20,1.1458518 20,2.55996321 L20,5.97452492 C20,7.38863633 18.8637443,8.53448813 17.4614756,8.53448813 L14.0755097,8.53448813 C12.673241,8.53448813 11.5369853,7.38863633 11.5369853,5.97452492 L11.5369853,2.55996321 C11.5369853,1.1458518 12.673241,2.66453526e-15 14.0755097,2.66453526e-15" id="Fill-1" opacity="0.400000006"></path>
-                                                <path d="M5.9244903,11.4655119 C7.32675901,11.4655119 8.46301469,12.6113637 8.46301469,14.0254751 L8.46301469,17.4400368 C8.46301469,18.8531901 7.32675901,20 5.9244903,20 L2.53852439,20 C1.13625568,20 8.8817842e-16,18.8531901 8.8817842e-16,17.4400368 L8.8817842e-16,14.0254751 C8.8817842e-16,12.6113637 1.13625568,11.4655119 2.53852439,11.4655119 L5.9244903,11.4655119 Z M17.4614756,11.4655119 C18.8637443,11.4655119 20,12.6113637 20,14.0254751 L20,17.4400368 C20,18.8531901 18.8637443,20 17.4614756,20 L14.0755097,20 C12.673241,20 11.5369853,18.8531901 11.5369853,17.4400368 L11.5369853,14.0254751 C11.5369853,12.6113637 12.673241,11.4655119 14.0755097,11.4655119 L17.4614756,11.4655119 Z M5.9244903,7.99360578e-15 C7.32675901,7.99360578e-15 8.46301469,1.1458518 8.46301469,2.55996321 L8.46301469,5.97452492 C8.46301469,7.38863633 7.32675901,8.53448813 5.9244903,8.53448813 L2.53852439,8.53448813 C1.13625568,8.53448813 8.8817842e-16,7.38863633 8.8817842e-16,5.97452492 L8.8817842e-16,2.55996321 C8.8817842e-16,1.1458518 1.13625568,7.99360578e-15 2.53852439,7.99360578e-15 L5.9244903,7.99360578e-15 Z" id="Combined-Shape"></path>
+                    <div class="mt-[-10px]">
+                            <div id="header-option-row" class="header-row flex gap-4 relative"
+                                style="margin-top: 10px; transition: 200ms;">
+                                <div>
+                                    <div id="category-btn" class="header-category" onclick="CategoryMenu(true)">
+                                        <svg class="mt-[3px]" id="Category" width="15px" height="15px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                            <g id="Iconly/Bulk/Category" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                                                <g id="Category" transform="translate(2.000000, 2.000000)" fill="#674d45" fill-rule="nonzero">
+                                                    <path d="M14.0755097,2.66453526e-15 L17.4614756,2.66453526e-15 C18.8637443,2.66453526e-15 20,1.1458518 20,2.55996321 L20,5.97452492 C20,7.38863633 18.8637443,8.53448813 17.4614756,8.53448813 L14.0755097,8.53448813 C12.673241,8.53448813 11.5369853,7.38863633 11.5369853,5.97452492 L11.5369853,2.55996321 C11.5369853,1.1458518 12.673241,2.66453526e-15 14.0755097,2.66453526e-15" id="Fill-1" opacity="0.400000006"></path>
+                                                    <path d="M5.9244903,11.4655119 C7.32675901,11.4655119 8.46301469,12.6113637 8.46301469,14.0254751 L8.46301469,17.4400368 C8.46301469,18.8531901 7.32675901,20 5.9244903,20 L2.53852439,20 C1.13625568,20 8.8817842e-16,18.8531901 8.8817842e-16,17.4400368 L8.8817842e-16,14.0254751 C8.8817842e-16,12.6113637 1.13625568,11.4655119 2.53852439,11.4655119 L5.9244903,11.4655119 Z M17.4614756,11.4655119 C18.8637443,11.4655119 20,12.6113637 20,14.0254751 L20,17.4400368 C20,18.8531901 18.8637443,20 17.4614756,20 L14.0755097,20 C12.673241,20 11.5369853,18.8531901 11.5369853,17.4400368 L11.5369853,14.0254751 C11.5369853,12.6113637 12.673241,11.4655119 14.0755097,11.4655119 L17.4614756,11.4655119 Z M5.9244903,7.99360578e-15 C7.32675901,7.99360578e-15 8.46301469,1.1458518 8.46301469,2.55996321 L8.46301469,5.97452492 C8.46301469,7.38863633 7.32675901,8.53448813 5.9244903,8.53448813 L2.53852439,8.53448813 C1.13625568,8.53448813 8.8817842e-16,7.38863633 8.8817842e-16,5.97452492 L8.8817842e-16,2.55996321 C8.8817842e-16,1.1458518 1.13625568,7.99360578e-15 2.53852439,7.99360578e-15 L5.9244903,7.99360578e-15 Z" id="Combined-Shape"></path>
+                                                </g>
+                                            </g>
+                                        </svg>
+                                        <div class=""> دسته بندی محصولات</div>
+                                        <i class="category-arrow relative fa fa-angle-down transition-all duration-300 mt-1.5" style="transition: 200ms; font-size: 10px; color: var(--color6); width: 10px; height: 10px" id="category-arrow"></i>
+                                    </div>
+                                    {% include 'include/navigation_components/category_menu_desktop.html' %}
+                                </div>
+
+                                <a href="{% url 'article_grid' %}">
+                                    <div class="header-option">
+                                        <div>مقالات</div>
+                                        <i class="fa fa-angle-left"></i>
+                                    </div>
+                                </a>
+
+                                <a href="{% url 'bulk_buy' %}">
+                                    <div class="header-option">
+                                        <div>خرید عمده</div>
+                                        <i class="fa fa-angle-left"></i>
+                                    </div>
+                                </a>
+
+                                <a href="{% url 'about_us' %}">
+                                    <div class="header-option">
+                                        <div>درباره ما</div>
+                                        <i class="fa fa-angle-left"></i>
+                                    </div>
+                                </a>
+
+                                <a href="{% url 'support_page' %}">
+                                    <div class="header-option">
+                                        <div>ارتباط باما</div>
+                                        <i class="fa fa-angle-left"></i>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    <div class="flex gap-1" style="height: 50px;">
+                        <div id="btn-opensearch" onclick="Search_action(true)" class="relative items-start tooltip-parent centerbox cursor-pointer transition-all rounded-3xl px-2 gap-2 h-[50px]" style="border: 1px solid var(--color20)">
+                            <div class="flex text-[var(--color6)] text-sm rounded-4xl px-2 py-0.5 pt-1.5" style="background-color: var(--color19); border: 1px solid var(--color20); margin-top: 10px">k + <p class="text-xs mt-[3px]">⌘</p></div>
+                            <div class="mt-3">جستجو</div>
+                            <svg class="mt-3" id="Search" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M11.5139 2.20227C6.51788 2.20227 2.45288 6.26727 2.45288 11.2643C2.45288 16.2603 6.51788 20.3243 11.5139 20.3243C16.5099 20.3243 20.5749 16.2603 20.5749 11.2643C20.5749 6.26727 16.5099 2.20227 11.5139 2.20227Z" fill="#674d45"></path>
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M20.1373 17.9767C19.0833 17.9767 18.2253 18.8327 18.2253 19.8867C18.2253 20.9407 19.0833 21.7977 20.1373 21.7977C21.1903 21.7977 22.0473 20.9407 22.0473 19.8867C22.0473 18.8327 21.1903 17.9767 20.1373 17.9767Z" fill="#674d45"></path>
+                            </svg>
+                            <div class="tooltip w-15">جستجو</div>
+                        </div>
+                        <div id="header-subbox" class="header-subbox">
+                            <a href="{% url 'notifications_page' %}" class="flex items-start tooltip-parent">
+                                {% if new_notifs %}
+                                    <div class="absolute right-3 top-2 p-1 bg-[var(--color5)] rounded-full"></div>
+                                {% endif %}
+                                <button id="basket" class="btn-header h-max px-1.5 w-11" style="margin-top: -3px;">
+                                    <svg id="Notification" width="23" height="23" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path opacity="0.4" d="M18.9375 13.304L20.7695 18.232H3.73047L5.56247 13.304V8.813C5.56247 5.125 8.56247 2.125 12.2505 2.125C15.9375 2.125 18.9375 5.125 18.9375 8.813V13.304Z" fill="#674d45"></path>
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M16.1398 18.2319H14.6398C14.5018 19.4349 13.4898 20.3749 12.2518 20.3749C11.0128 20.3749 10.0008 19.4349 9.86279 18.2319H8.36279C8.50579 20.2619 10.1858 21.8749 12.2518 21.8749C14.3168 21.8749 15.9968 20.2619 16.1398 18.2319Z" fill="#674d45"></path>
+                                    </svg>
+                                </button>
+                                <div class="tooltip w-15 right-[-5px]">پیام ها</div>
+                            </a>
+                            <a href="{% url 'my_basket_page' %}" class="tooltip-parent">
+                                <button id="basket" class="btn-header h-max px-1.5 w-11" style="margin-top: -3px;">
+                                    <svg id="Buy" width="23" height="23" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M6.39507 6.30158L6.09507 3.24158H2.19507V4.74158H4.73507L6.01507 17.4416H20.8351L22.3051 6.30158H6.39507Z" fill="#674d45"></path>
+                                    <path d="M13.8245 11.7118H17.9945V10.2118H13.8245V11.7118Z" fill="#674d45"></path>
+                                    <path d="M6.57983 20.5527C6.57983 19.8497 7.15083 19.2787 7.85383 19.2787C8.55583 19.2787 9.12683 19.8497 9.12683 20.5527C9.12683 21.2557 8.55583 21.8277 7.85383 21.8277C7.15083 21.8277 6.57983 21.2557 6.57983 20.5527Z" fill="#674d45"></path>
+                                    <path d="M17.447 20.5527C17.447 19.8497 18.018 19.2787 18.721 19.2787C19.424 19.2787 19.995 19.8497 19.995 20.5527C19.995 21.2557 19.424 21.8277 18.721 21.8277C18.018 21.8277 17.447 21.2557 17.447 20.5527Z" fill="#674d45"></path>
+                                    </svg>
+                                </button>
+                                {% if basket.orderdetails_set.all %}
+                                    <div class="absolute h-4 w-4 text-[var(--color11)] text-center pt-0.5 text-xs rounded-full bg-[var(--color6)]">
+                                        {{ basket.total_items|to_fanum }}
+                                    </div>
+                                {% endif %}
+                                <div class="tooltip w-20 left-7">سبد خرید</div>
+                            </a>
+                            <a href="{% url 'login_page' %}" class="tooltip-parent">
+                                <button class="btn-icon w-10 flex justify-center pt-2 hsb-user w-10" style="background-color: var(--color6); border-radius: 50%;">
+                                    <svg id="User" width="22px" height="22px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                        <g id="Iconly/Bulk/2-User" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
+                                            <g id="2-User" transform="translate(2.000000, 3.000000)" fill="#e5e5e5" fill-rule="nonzero">
+                                                <path d="M7.34933305,11.8577345 C3.38552687,11.8577345 -6.83897383e-14,12.4700446 -6.83897383e-14,14.9173685 C-6.83897383e-14,17.3666088 3.3640004,18 7.34933305,18 C11.3131392,18 14.6986661,17.3876899 14.6986661,14.940366 C14.6986661,12.4911257 11.3346657,11.8577345 7.34933305,11.8577345" id="Fill-1"></path>
+                                                <path d="M7.34933305,9.52482353 C10.0489483,9.52482353 12.2123586,7.40617314 12.2123586,4.76241176 C12.2123586,2.11865038 10.0489483,-9.76996262e-15 7.34933305,-9.76996262e-15 C4.65069631,-9.76996262e-15 2.48630745,2.11865038 2.48630745,4.76241176 C2.48630745,7.40617314 4.65069631,9.52482353 7.34933305,9.52482353" id="Fill-3" opacity="0.400000006"></path>
+                                                <path d="M14.1734202,4.84874844 C14.1734202,6.19506404 13.7605033,7.45130586 13.0364311,8.49482023 C12.9610885,8.60214218 13.0276248,8.74683517 13.1587406,8.76983274 C13.3407371,8.79953792 13.527626,8.81774432 13.7184289,8.82157725 C15.6166723,8.87044707 17.3201989,7.67361562 17.7908459,5.87118171 C18.4884992,3.19675692 16.4415275,0.79542817 13.833889,0.79542817 C13.5511095,0.79542817 13.2800716,0.824175122 13.0158831,0.876877868 C12.9796795,0.884543722 12.9405405,0.901791893 12.9209709,0.932455309 C12.8955306,0.971742811 12.9141216,1.02252909 12.939562,1.0560672 C13.7233212,2.13216145 14.1734202,3.44206424 14.1734202,4.84874844" id="Fill-5" opacity="0.400000006"></path>
+                                                <path d="M19.779109,12.1693515 C19.4317501,11.4439701 18.5931962,10.9466478 17.3172635,10.7022987 C16.7155008,10.5585639 15.0853598,10.3544606 13.5697005,10.3832075 C13.5471956,10.3860822 13.5344754,10.4014139 13.5325184,10.4109962 C13.529583,10.4263279 13.5364323,10.4493255 13.5657866,10.4656155 C14.2663754,10.8048295 16.9738184,12.2805064 16.6333088,15.3928431 C16.6186317,15.528912 16.7291994,15.6438998 16.8671645,15.6247352 C17.5335067,15.5317867 19.2477966,15.1705333 19.779109,14.0474857 C20.0736303,13.453382 20.0736303,12.7634552 19.779109,12.1693515" id="Fill-7"></path>
                                             </g>
                                         </g>
                                     </svg>
-                                    <div class=""> دسته بندی محصولات</div>
-                                    <i class="category-arrow relative fa fa-angle-down transition-all duration-300" style="transition: 200ms; color: var(--color6);" id="category-arrow"></i>
-                                </div>
-                                {% include 'include/navigation_components/category_menu_desktop.html' %}
-                            </div>
-
-                            <a href="{% url 'article_grid' %}">
-                                <div class="header-option">
-                                    <svg id="Folder" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M20.5419 7.25362C19.4449 6.07162 18.0459 6.09962 16.8129 6.12162C16.0399 6.13562 15.3089 6.15062 14.7869 5.85262C14.1419 5.48562 13.9189 5.06962 13.6599 4.58662C13.3739 4.05262 13.0499 3.44762 12.1689 2.97162C10.5429 2.09562 8.63389 1.92462 6.16189 2.43462C3.71889 2.93462 2.13989 5.09962 2.13989 7.94962V14.0156C2.13989 21.2876 6.33089 21.8506 12.2499 21.8506C17.9779 21.8506 22.3599 21.2736 22.3599 13.9886C22.3599 12.2036 22.3599 9.21562 20.5419 7.25362Z" fill="#674d45"></path>
-                                    <path d="M7.44556 15.4756H17.0386C17.4526 15.4756 17.7886 15.1396 17.7886 14.7256C17.7886 14.3116 17.4526 13.9756 17.0386 13.9756H7.44556C7.03156 13.9756 6.69556 14.3116 6.69556 14.7256C6.69556 15.1396 7.03156 15.4756 7.44556 15.4756Z" fill="#674d45"></path>
-                                    </svg>
-                                    <div>مقالات</div>
-                                </div>
-                            </a>
-
-                            <a href="{% url 'bulk_buy' %}">
-                                <div class="header-option">
-                                    <svg id="Bag 2" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M7.71924 7.1229C7.72523 4.62077 9.75766 2.5969 12.2607 2.60169C14.7624 2.60768 16.7865 4.64056 16.7812 7.14222V10.1737C16.7812 10.5879 16.4455 10.9237 16.0312 10.9237C15.617 10.9237 15.2812 10.5879 15.2812 10.1737V7.14169L15.2812 7.1399C15.2852 5.46626 13.9315 4.10589 12.2578 4.10169C10.5833 4.09868 9.2237 5.45228 9.21924 7.12564V10.1737C9.21924 10.5879 8.88345 10.9237 8.46924 10.9237C8.05502 10.9237 7.71924 10.5879 7.71924 10.1737L7.71924 7.1229Z" fill="#674d45"></path>
-                                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M4.89578 9.00122C6.44852 7.78592 8.85701 7.35071 12.25 7.35071C15.6429 7.35071 18.0514 7.78592 19.6041 9.00122C21.1949 10.2463 21.769 12.2069 21.769 14.9097C21.769 17.6121 21.1949 19.5724 19.6041 20.8173C18.0514 22.0325 15.6429 22.4677 12.25 22.4677C8.857 22.4677 6.44853 22.0325 4.89581 20.8173C3.30504 19.5724 2.73096 17.6121 2.73096 14.9097C2.73096 12.2069 3.30502 10.2463 4.89578 9.00122Z" fill="#674d45"></path>
-                                    </svg>
-                                    <div>خرید عمده</div>
-                                </div>
-                            </a>
-
-                            <a href="{% url 'about_us' %}">
-                                <div class="header-option">
-                                    <svg id="Info Square" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M12.25 2.78467C5.052 2.78467 2.5 5.33667 2.5 12.5347C2.5 19.7327 5.052 22.2847 12.25 22.2847C19.448 22.2847 22 19.7327 22 12.5347C22 5.33667 19.448 2.78467 12.25 2.78467Z" fill="#674d45"></path>
-                                    <path d="M12.2461 9.78467H12.2551C12.6691 9.78467 13.0011 9.44867 13.0011 9.03467C13.0011 8.62067 12.6601 8.28467 12.2461 8.28467C11.8321 8.28467 11.4961 8.62067 11.4961 9.03467C11.4961 9.44867 11.8321 9.78467 12.2461 9.78467Z" fill="#674d45"></path>
-                                    <path d="M12.2501 17.1797C12.6641 17.1797 13.0001 16.8437 13.0001 16.4297V12.5347C13.0001 12.1207 12.6641 11.7847 12.2501 11.7847C11.8361 11.7847 11.5001 12.1207 11.5001 12.5347V16.4297C11.5001 16.8437 11.8361 17.1797 12.2501 17.1797Z" fill="#674d45"></path>
-                                    </svg>
-                                    <div>درباره ما</div>
-                                </div>
-                            </a>
-
-                            <a href="{% url 'support_page' %}">
-                                <div class="header-option">
-                                    <svg id="Calling" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M13.8515 16.2338C13.3315 16.0538 11.8365 15.4498 10.4695 14.0838C9.18645 12.8008 8.65145 11.3828 8.49445 10.8888L10.1935 7.93779L6.49545 2.85779L6.10445 3.08779C4.52245 4.01579 3.36245 5.17579 2.45345 6.73879L2.39445 6.89879C1.88045 9.64279 3.45145 13.6868 6.30045 16.9628C9.39045 20.5158 13.4025 22.5178 17.3845 22.5178C17.5645 22.5178 17.7455 22.5138 17.9245 22.5058L18.0435 22.5008L18.1465 22.4418C19.7485 21.5448 20.9135 20.3808 21.8095 18.7788L22.0245 18.3938L16.7965 14.5388L13.8515 16.2338Z" fill="#674d45"></path>
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M20.6279 10.6343L20.7109 11.3803L22.2019 11.2123L22.1179 10.4673C21.6609 6.39031 18.4939 3.22631 14.4159 2.77331L13.6699 2.69031L13.5049 4.18131L14.2499 4.26431C17.6269 4.63931 20.2489 7.25931 20.6279 10.6343Z" fill="#674d45"></path>
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M17.0966 10.7046L17.2406 11.4406L18.7126 11.1546L18.5696 10.4186C18.1636 8.33662 16.5576 6.72962 14.4766 6.32562L13.7406 6.18262L13.4536 7.65462L14.1896 7.79762C15.6676 8.08462 16.8086 9.22562 17.0966 10.7046Z" fill="#674d45"></path>
-                                    </svg>
-                                    <div>ارتباط باما</div>
-                                </div>
+                                </button>
+                                <div class="tooltip w-30 left-[-5px]">حساب کاربری</div>
                             </a>
                         </div>
                     </div>
                 </div>
-                <div class="flex gap-1" style="height: 50px;">
-                    <div id="btn-opensearch" onclick="Search_action(true)" class="relative items-start tooltip-parent centerbox cursor-pointer border border-[var(--color11)] transition-all mt-2.5 rounded-xl px-2 gap-2 h-[50px]">
-                        <div class="flex text-[var(--color6)] bg-[var(--color12)] border border-[var(--color11)] rounded-lg px-1 py-0.5 pt-1 mt-2">k + <p class="text-sm mt-[3px]">⌘</p></div>
-                        <div class="mt-3">جستجو</div>
-                        <svg class="mt-3" id="Search" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M11.5139 2.20227C6.51788 2.20227 2.45288 6.26727 2.45288 11.2643C2.45288 16.2603 6.51788 20.3243 11.5139 20.3243C16.5099 20.3243 20.5749 16.2603 20.5749 11.2643C20.5749 6.26727 16.5099 2.20227 11.5139 2.20227Z" fill="#674d45"></path>
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M20.1373 17.9767C19.0833 17.9767 18.2253 18.8327 18.2253 19.8867C18.2253 20.9407 19.0833 21.7977 20.1373 21.7977C21.1903 21.7977 22.0473 20.9407 22.0473 19.8867C22.0473 18.8327 21.1903 17.9767 20.1373 17.9767Z" fill="#674d45"></path>
-                        </svg>
-                        <div class="tooltip w-15">جستجو</div>
-                    </div>
-                    <div id="header-subbox" class="header-subbox">
-                        <a href="{% url 'notifications_page' %}" class="flex items-start tooltip-parent">
-                            {% if new_notifs %}
-                                <div class="absolute right-3 top-2 p-1 bg-[var(--color5)] rounded-full"></div>
-                            {% endif %}
-                            <button id="basket" class="btn-header h-max px-1.5 w-11" style="margin-top: -3px;">
-                                <svg id="Notification" width="23" height="23" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path opacity="0.4" d="M18.9375 13.304L20.7695 18.232H3.73047L5.56247 13.304V8.813C5.56247 5.125 8.56247 2.125 12.2505 2.125C15.9375 2.125 18.9375 5.125 18.9375 8.813V13.304Z" fill="#674d45"></path>
-                                <path fill-rule="evenodd" clip-rule="evenodd" d="M16.1398 18.2319H14.6398C14.5018 19.4349 13.4898 20.3749 12.2518 20.3749C11.0128 20.3749 10.0008 19.4349 9.86279 18.2319H8.36279C8.50579 20.2619 10.1858 21.8749 12.2518 21.8749C14.3168 21.8749 15.9968 20.2619 16.1398 18.2319Z" fill="#674d45"></path>
-                                </svg>
-                            </button>
-                            <div class="tooltip w-15 right-[-5px]">پیام ها</div>
-                        </a>
-                        <a href="{% url 'my_basket_page' %}" class="tooltip-parent">
-                            <button id="basket" class="btn-header h-max px-1.5 w-11" style="margin-top: -3px;">
-                                <svg id="Buy" width="23" height="23" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M6.39507 6.30158L6.09507 3.24158H2.19507V4.74158H4.73507L6.01507 17.4416H20.8351L22.3051 6.30158H6.39507Z" fill="#674d45"></path>
-                                <path d="M13.8245 11.7118H17.9945V10.2118H13.8245V11.7118Z" fill="#674d45"></path>
-                                <path d="M6.57983 20.5527C6.57983 19.8497 7.15083 19.2787 7.85383 19.2787C8.55583 19.2787 9.12683 19.8497 9.12683 20.5527C9.12683 21.2557 8.55583 21.8277 7.85383 21.8277C7.15083 21.8277 6.57983 21.2557 6.57983 20.5527Z" fill="#674d45"></path>
-                                <path d="M17.447 20.5527C17.447 19.8497 18.018 19.2787 18.721 19.2787C19.424 19.2787 19.995 19.8497 19.995 20.5527C19.995 21.2557 19.424 21.8277 18.721 21.8277C18.018 21.8277 17.447 21.2557 17.447 20.5527Z" fill="#674d45"></path>
-                                </svg>
-                            </button>
-                            {% if basket.orderdetails_set.all %}
-                                <div class="absolute h-4 w-4 text-[var(--color11)] text-center pt-0.5 text-xs rounded-full bg-[var(--color6)]">
-                                    {{ basket.total_items|to_fanum }}
-                                </div>
-                            {% endif %}
-                            <div class="tooltip w-20 left-7">سبد خرید</div>
-                        </a>
-                        <a href="{% url 'login_page' %}" class="tooltip-parent">
-                            <button class="btn-icon w-10 flex justify-center pt-2 hsb-user w-10" style="background-color: var(--color6); border-radius: 8px">
-                                <svg id="User" width="22px" height="22px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                    <g id="Iconly/Bulk/2-User" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">
-                                        <g id="2-User" transform="translate(2.000000, 3.000000)" fill="#e5e5e5" fill-rule="nonzero">
-                                            <path d="M7.34933305,11.8577345 C3.38552687,11.8577345 -6.83897383e-14,12.4700446 -6.83897383e-14,14.9173685 C-6.83897383e-14,17.3666088 3.3640004,18 7.34933305,18 C11.3131392,18 14.6986661,17.3876899 14.6986661,14.940366 C14.6986661,12.4911257 11.3346657,11.8577345 7.34933305,11.8577345" id="Fill-1"></path>
-                                            <path d="M7.34933305,9.52482353 C10.0489483,9.52482353 12.2123586,7.40617314 12.2123586,4.76241176 C12.2123586,2.11865038 10.0489483,-9.76996262e-15 7.34933305,-9.76996262e-15 C4.65069631,-9.76996262e-15 2.48630745,2.11865038 2.48630745,4.76241176 C2.48630745,7.40617314 4.65069631,9.52482353 7.34933305,9.52482353" id="Fill-3" opacity="0.400000006"></path>
-                                            <path d="M14.1734202,4.84874844 C14.1734202,6.19506404 13.7605033,7.45130586 13.0364311,8.49482023 C12.9610885,8.60214218 13.0276248,8.74683517 13.1587406,8.76983274 C13.3407371,8.79953792 13.527626,8.81774432 13.7184289,8.82157725 C15.6166723,8.87044707 17.3201989,7.67361562 17.7908459,5.87118171 C18.4884992,3.19675692 16.4415275,0.79542817 13.833889,0.79542817 C13.5511095,0.79542817 13.2800716,0.824175122 13.0158831,0.876877868 C12.9796795,0.884543722 12.9405405,0.901791893 12.9209709,0.932455309 C12.8955306,0.971742811 12.9141216,1.02252909 12.939562,1.0560672 C13.7233212,2.13216145 14.1734202,3.44206424 14.1734202,4.84874844" id="Fill-5" opacity="0.400000006"></path>
-                                            <path d="M19.779109,12.1693515 C19.4317501,11.4439701 18.5931962,10.9466478 17.3172635,10.7022987 C16.7155008,10.5585639 15.0853598,10.3544606 13.5697005,10.3832075 C13.5471956,10.3860822 13.5344754,10.4014139 13.5325184,10.4109962 C13.529583,10.4263279 13.5364323,10.4493255 13.5657866,10.4656155 C14.2663754,10.8048295 16.9738184,12.2805064 16.6333088,15.3928431 C16.6186317,15.528912 16.7291994,15.6438998 16.8671645,15.6247352 C17.5335067,15.5317867 19.2477966,15.1705333 19.779109,14.0474857 C20.0736303,13.453382 20.0736303,12.7634552 19.779109,12.1693515" id="Fill-7"></path>
-                                        </g>
-                                    </g>
-                                </svg>
-                            </button>
-                            <div class="tooltip w-30 left-[-5px]">حساب کاربری</div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-
         </div>
     </header>
 
@@ -222,7 +204,7 @@
                     <div class="side-user-loggedin flex">
                         <div class="side-profile" style="{% if user.avatar %} padding: 2px; {% endif %}">
                             {% if user.avatar %}
-                                <img class="w-[100%] rounded-lg" src="{{ user.avatar.url }}">
+                                <img class="w-[100%] rounded-lg" src="{{ user.avatar.url }}" alt="user-profile" loading="lazy">
                                 {% else %}
                                 <svg id="User" width="22px" height="22px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                     <g id="Iconly/Bulk/2-User" stroke="none" stroke-width="1.5" fill="none" fill-rule="evenodd">

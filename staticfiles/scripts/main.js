@@ -105,17 +105,15 @@ let category_menu = document.getElementById('category-menu')
 let CategoryMenu = (action) => {
     if (action === true) {
         category_menu.classList.replace('hidden', 'flex')
-        document.getElementById('category-arrow').classList.add('transform-[rotate(180deg)]', 'top-[-5px]')
+        document.getElementById('category-arrow').classList.add('transform-[rotate(180deg)]')
         category_menu.addEventListener('mouseleave', () => {
             category_menu.classList.replace('flex', 'hidden')
             document.getElementById('category-arrow').classList.replace('transform-[rotate(180deg)]', 'transform-[none]')
-            document.getElementById('category-arrow').classList.replace('top-[-5px]', 'top-0')
             category_menu.removeEventListener('mouseleave', () => {})
         })
     }else {
         category_menu.classList.replace('flex', 'hidden')
         document.getElementById('category-arrow').classList.replace('transform-[rotate(180deg)]', 'transform-[none]')
-        document.getElementById('category-arrow').classList.replace('top-[-5px]', 'top-0')
         category_menu.removeEventListener('mouseleave', () => {})
     }
 }
@@ -133,7 +131,6 @@ let Search_action = (action) => {
     } else {
         searchbox.style.animation = 'CloseSearch 200ms'
         searchinput.removeEventListener('input' ,() => Search(false))
-        HeaderManage()
         document.body.style = 'overflow-y: scroll;'
         setTimeout(()=> {
             searchbox.classList.replace('block' ,'hidden')
